@@ -1,11 +1,15 @@
 {
-  "name": "infomap-app",
-  "version": "0.1.0",
+  "name": "infomap-online",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "arg": "^4.1.0",
+    "file-saver": "^2.0.2",
+    "immer": "^3.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.0",
+    "semantic-ui-react": "^0.87.1"
   },
   "scripts": {
     "start": "react-scripts start",
