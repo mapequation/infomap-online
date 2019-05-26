@@ -436,7 +436,6 @@ const cli = [
 ];
 
 const argSpec = getArgSpec();
-console.log(argSpec);
 
 function getArgSpec() {
   const spec = {};
@@ -562,24 +561,28 @@ export default class Infomap extends React.Component {
   }
 
   onClickRun = () => {
-    this.cluster();
+    this.run();
   }
 
-  clearOutput = () => {
-    this.setState({
-      output: [],
-    });
+  onClickCancelRun = () => {
+    this.clearInfomap(false);
+  }
+
+  clearInfomap = (clearOutput = true) => {
     if (this.worker) {
       this.worker.terminate();
       delete this.worker;
     }
+    this.setState({
+      output: clearOutput ? [] : this.state.output,
+      running: false,
+    });
   }
 
-  cluster = () => {
-    this.clearOutput();
+  run = () => {
+    this.clearInfomap();
     const args = this.state.args.length === 0 ? [] : this.state.args.split(' ');
 
-    console.log("Creating worker...");
     const worker = this.worker = new Worker('Infomap-worker.js');
     
     worker.onmessage = this.onInfomapMessage;
@@ -592,12 +595,12 @@ export default class Infomap extends React.Component {
     };
 
     window.setTimeout(() => {
-      console.log("Init Infomap worker with message:", message);
       worker.postMessage(message);
     }, 20);
 
     this.setState({
       running: true,
+      infomapError: '',
     });
   }
 
@@ -616,10 +619,10 @@ export default class Infomap extends React.Component {
           output: [...this.state.output, data.content],
           running: false,
         });
+        this.worker = null;
         break;
       }
       case 'finished': {
-        console.log("Worker finished!");
         const { clu, tree } = data.output;
         this.setState({
           clu,
@@ -627,7 +630,6 @@ export default class Infomap extends React.Component {
           running: false,
           completed: true,
         });
-        console.log("Terminating worker...");
         this.worker.terminate();
         delete this.worker;
         break;
@@ -705,15 +707,18 @@ export default class Infomap extends React.Component {
                 <Checkbox toggle id='--directed' checked={!!options['--directed']} label='Directed links' onChange={this.onChangeOption}/>
               </Form.Field>
               <Form.Group widths="equal">
-                <Form.Input fluid placeholder="Optional command line arguments" value={this.state.args} onChange={this.onChangeArgs}
-                  action={<Form.Button primary disabled={!!this.state.argsError} loading={this.state.running} onClick={this.onClickRun}>Run</Form.Button>}/>
+                <Form.Input fluid placeholder="Optional command line arguments" value={this.state.args} onChange={this.onChangeArgs}/>
               </Form.Group>
               <div style={{ position: 'relative', margin: '-8px 15px 35px' }}>
                 <Header color='red' content={this.state.argsError} style={{ position: 'absolute', fontSize: '1rem', fontWeight: 300 }}/>
               </div>
             </Form>
             <Form error={!!this.state.infomapError}>
-              <Form.TextArea label='Console' value={this.state.output.join('\n')} placeholder='Infomap command line output will be printed here' style={{ minHeight: 400 }} />
+              <Form.Group>
+                <Form.Button primary disabled={!!this.state.argsError || this.state.running} loading={this.state.running} onClick={this.onClickRun}>Run</Form.Button>
+                { this.state.running ? <Form.Button secondary onClick={this.onClickCancelRun}>Cancel</Form.Button> : null }
+              </Form.Group>
+              <Form.TextArea value={this.state.output.join('\n')} placeholder='Infomap command line output will be printed here' style={{ minHeight: 400 }} />
               <Message error header='Infomap error' content={this.state.infomapError} />
             </Form>
           </Segment>
@@ -722,9 +727,9 @@ export default class Infomap extends React.Component {
           <Header>Output</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
             <Form>
-              <Form.TextArea value={this.state.tree} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
+              <Form.TextArea value={this.state.tree || this.state.clu} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
               <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button>
-              <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadClu}>Download .clu file</Form.Button>
+              <Form.Button disabled={!this.state.clu} onClick={this.onClickDownloadClu}>Download .clu file</Form.Button>
             </Form>
           </Segment>
         </Grid.Column>

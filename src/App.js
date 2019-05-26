@@ -18,7 +18,7 @@ function App() {
           <Grid.Column>
           <Header as="h1">Feedback</Header>
           <p>
-            If you have any questions, suggestions or issues regarding the software, please add them to <a href="https://github.com/mapequation/infomap/issues"><Icon name="github"></Icon>GitHub issues</a>.
+            If you have any questions, suggestions or issues regarding the software, please add them to <a href="https://github.com/mapequation/infomap-online/issues"><Icon name="github"></Icon>GitHub issues</a>.
           </p>
           
           <Header as="h1">References</Header>
