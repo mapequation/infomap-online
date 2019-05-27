@@ -688,7 +688,7 @@ export default class Infomap extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3} style={{ minHeight: 500 }}>
-          <Header>Input</Header>
+          <Header as="h2">Input</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} loading={this.state.loading} color='red'>
             <Form>
               <Form.TextArea value={this.state.network} onChange={this.onChangeNetwork} placeholder='# Paste your network here' style={{ minHeight: 500 }} />
@@ -697,7 +697,7 @@ export default class Infomap extends React.Component {
           </Segment>
         </Grid.Column>
         <Grid.Column width={9} floated="left">
-          <Header>Options</Header>
+          <Header as="h2">Options</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
             <Form error={!!this.state.argsError} className='attached'>
               <Form.Field>
@@ -724,7 +724,7 @@ export default class Infomap extends React.Component {
           </Segment>
         </Grid.Column>
         <Grid.Column width={4}>
-          <Header>Output</Header>
+          <Header as="h2">Output</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
             <Form>
               <Form.TextArea value={this.state.tree || this.state.clu} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
