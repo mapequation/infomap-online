@@ -5,7 +5,7 @@ import { Container, Menu, Header as H, Icon } from 'semantic-ui-react';
 const Header = () => (
   <header>
     <Container>
-      <Menu borderless className="header-menu">
+      <Menu borderless className="header-menu documentation">
         <Menu.Item>
           <H as="h1">
             <a href="https://www.mapequation.org">
