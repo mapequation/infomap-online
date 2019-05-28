@@ -1,5 +1,5 @@
 import React from 'react';
-import { Step, Header, Grid, Segment, Form, Input, Checkbox, Message, Image, Item, Table } from 'semantic-ui-react';
+import { Button, Step, Header, Grid, Segment, Form, Checkbox, Message, Image, Item, Table } from 'semantic-ui-react';
 import { saveAs } from 'file-saver';
 import arg from 'arg';
 import produce from 'immer';
@@ -708,7 +708,15 @@ export default class Infomap extends React.Component {
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} loading={this.state.loading} color='red'>
             <Form>
               <Form.TextArea value={this.state.network} onChange={this.onChangeNetwork} placeholder='# Paste your network here' style={{ minHeight: 500 }} />
-              <Input type="file" onChange={this.onLoadNetwork}></Input>
+              <Button as="label" htmlFor="fileInput">
+                Load from file...
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  id="fileInput"
+                  onChange={this.onLoadNetwork}
+                />
+              </Button>
             </Form>
           </Segment>
         </Grid.Column>
@@ -749,7 +757,7 @@ export default class Infomap extends React.Component {
                 </Table.Row>
               </Table.Body>
             </Table>
-            <Form>
+            <Form onSubmit={this.onClickRun}>
               <Form.Group widths="equal">
                 <Form.Input fluid placeholder="Optional command line arguments" value={this.state.args} onChange={this.onChangeArgs}/>
               </Form.Group>
