@@ -1,5 +1,5 @@
 import React from 'react';
-import { Step, Header, Grid, Segment, Form, Input, Checkbox, Message, Image } from 'semantic-ui-react';
+import { Step, Header, Grid, Segment, Form, Input, Checkbox, Message, Image, Item, Table } from 'semantic-ui-react';
 import { saveAs } from 'file-saver';
 import arg from 'arg';
 import produce from 'immer';
@@ -480,10 +480,19 @@ export default class Infomap extends React.Component {
       completed: false,
       clu: '',
       tree: '',
+      ftree: '',
       downloaded: false,
       loading: false, // True while loading input network
       options: {},
       infomapError: '',
+    }
+  }
+
+  componentDidMount = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const args = urlParams.get('args');
+    if (args) {
+      this.onChangeArgs(null, { value: args });
     }
   }
 
@@ -557,7 +566,7 @@ export default class Infomap extends React.Component {
     }
     const args = argv.join(' ');
 
-    this.setState({ options, args });
+    this.setState({ options, args, argsError: '' });
   }
 
   onClickRun = () => {
@@ -623,10 +632,11 @@ export default class Infomap extends React.Component {
         break;
       }
       case 'finished': {
-        const { clu, tree } = data.output;
+        const { clu, tree, ftree } = data.output;
         this.setState({
           clu,
           tree,
+          ftree,
           running: false,
           completed: true,
         });
@@ -638,16 +648,22 @@ export default class Infomap extends React.Component {
         throw new Error(`Unknown target on message from worker: ${data}`);
     }
   }
+  
+  onClickDownloadClu = () => {
+    const blob = new Blob([this.state.clu], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${this.state.name}.clu`);
+    this.setState({ downloaded: true });
+  }
 
   onClickDownloadTree = () => {
     const blob = new Blob([this.state.tree], { type: "text/plain;charset=utf-8" });
     saveAs(blob, `${this.state.name}.tree`);
     this.setState({ downloaded: true });
   }
-  
-  onClickDownloadClu = () => {
-    const blob = new Blob([this.state.clu], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${this.state.name}.clu`);
+
+  onClickDownloadFTree = () => {
+    const blob = new Blob([this.state.ftree], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${this.state.name}.ftree`);
     this.setState({ downloaded: true });
   }
 
@@ -699,13 +715,41 @@ export default class Infomap extends React.Component {
         <Grid.Column width={9} floated="left">
           <Header as="h2">Options</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
-            <Form error={!!this.state.argsError} className='attached'>
-              <Form.Field>
-              <Checkbox toggle id='--two-level' checked={!!options['--two-level']} label='Two-level clustering' onChange={this.onChangeOption}/>
-              </Form.Field>
-              <Form.Field>
-                <Checkbox toggle id='--directed' checked={!!options['--directed']} label='Directed links' onChange={this.onChangeOption}/>
-              </Form.Field>
+            <Table basic="very">
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>
+                    <Item.Group>
+                      <Item>
+                        <Item.Content>
+                          <Item.Header as='h4' className="ui">-2, --two-level</Item.Header>
+                          <Item.Meta>Optimize for a two-level instead of a multi-level solution</Item.Meta>
+                        </Item.Content>
+                      </Item>
+                    </Item.Group>
+                  </Table.Cell>
+                  <Table.Cell collapsing>
+                    <Checkbox toggle id='--two-level' checked={!!options['--two-level']} onChange={this.onChangeOption}/>
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Item.Group>
+                      <Item>
+                        <Item.Content>
+                          <Item.Header as='h4' className="ui">--directed</Item.Header>
+                          <Item.Meta>Treat links as directed (default: undirected)</Item.Meta>
+                        </Item.Content>
+                      </Item>
+                    </Item.Group>
+                  </Table.Cell>
+                  <Table.Cell collapsing>
+                    <Checkbox toggle id='--directed' checked={!!options['--directed']} onChange={this.onChangeOption}/>
+                  </Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+            <Form>
               <Form.Group widths="equal">
                 <Form.Input fluid placeholder="Optional command line arguments" value={this.state.args} onChange={this.onChangeArgs}/>
               </Form.Group>
@@ -727,9 +771,10 @@ export default class Infomap extends React.Component {
           <Header as="h2">Output</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
             <Form>
-              <Form.TextArea value={this.state.tree || this.state.clu} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
-              <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button>
+              <Form.TextArea value={this.state.tree || this.state.clu || this.state.ftree} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
               <Form.Button disabled={!this.state.clu} onClick={this.onClickDownloadClu}>Download .clu file</Form.Button>
+              <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button>
+              <Form.Button disabled={!this.state.ftree} onClick={this.onClickDownloadFTree}>Download .ftree file</Form.Button>
             </Form>
           </Segment>
         </Grid.Column>

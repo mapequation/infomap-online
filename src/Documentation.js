@@ -7,7 +7,7 @@ function Documentation() {
       <Grid.Column>
       <Header as="h1">Infomap Online</Header>
       <p>
-        Infomap Online is a client-side web application that makes it possible for users to run <a href="https://www.mapequation.org/code.html">Infomap</a> without any installation. Everything is run locally on your computer and no data will be uploaded to any server. To support that, Infomap is compiled from C++ to JavaScript with <a href="https://emscripten.org/">Emscripten</a>. Note that this gives a performance penalty compared to the <a href="https://www.mapequation.org/code.html">stand-alone</a> version of Infomap.
+        Infomap Online is a client-side web application that makes it possible for users to run <a href="https://www.mapequation.org/code.html">Infomap</a> without any installation. Infomap runs locally on your computer and uploads no data to any server. We support this solution by compiling Infomap from C++ to JavaScript with <a href="https://emscripten.org/">Emscripten</a>, which gives a performance penalty compared to the stand-alone version of Infomap.
       </p>
       </Grid.Column>
       <Grid.Column>
