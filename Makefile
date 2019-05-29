@@ -1,2 +1,7 @@
-push:
-	rsync -havz build/* icelab-mapequation:/var/www/infomap/
+.PHONY: build push
+
+build:
+	yarn build
+
+push: build
+	scp -r build/* icelab-mapequation:/var/www/mapequation/infomap
