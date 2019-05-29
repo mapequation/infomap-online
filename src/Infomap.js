@@ -3,6 +3,7 @@ import { Button, Step, Header, Grid, Segment, Form, Checkbox, Message, Image, It
 import { saveAs } from 'file-saver';
 import arg from 'arg';
 import produce from 'immer';
+import Console from './Console';
 
 export const SAMPLE_NETWORK = `#source target [weight]
 1 2
@@ -770,7 +771,7 @@ export default class Infomap extends React.Component {
                 <Form.Button primary disabled={!!this.state.argsError || this.state.running} loading={this.state.running} onClick={this.onClickRun}>Run</Form.Button>
                 { this.state.running ? <Form.Button secondary onClick={this.onClickCancelRun}>Cancel</Form.Button> : null }
               </Form.Group>
-              <Form.TextArea value={this.state.output.join('\n')} placeholder='Infomap command line output will be printed here' style={{ minHeight: 400 }} />
+              <Console value={this.state.output.join('\n')} placeholder='Infomap command line output will be printed here' style={{ minHeight: 400 }} />
               <Message error header='Infomap error' content={this.state.infomapError} />
             </Form>
           </Segment>
