@@ -6,7 +6,7 @@ const Header = () => (
   <header>
     <Container>
       <Menu borderless className="header-menu documentation">
-        <Menu.Item>
+        <Menu.Item fitted>
           <H as="h1">
             <a href="https://www.mapequation.org">
               <img className="mapequation-logo"
