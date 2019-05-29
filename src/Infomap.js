@@ -1,4 +1,5 @@
 import React from 'react';
+import localforage from "localforage";
 import { Button, Step, Header, Grid, Segment, Form, Checkbox, Message, Image, Item, Table } from 'semantic-ui-react';
 import { saveAs } from 'file-saver';
 import arg from 'arg';
@@ -468,28 +469,26 @@ const getShortOptionIfExist = (longOpt) => {
 }
 
 export default class Infomap extends React.Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      network: SAMPLE_NETWORK,
-      args: '',
-      argsError: '',
-      output: [],
-      name: 'network',
-      running: false,
-      completed: false,
-      clu: '',
-      tree: '',
-      ftree: '',
-      downloaded: false,
-      loading: false, // True while loading input network
-      options: {},
-      infomapError: '',
-    }
-  }
+  state = {
+    network: SAMPLE_NETWORK,
+    args: '',
+    argsError: '',
+    output: [],
+    name: 'network',
+    running: false,
+    completed: false,
+    clu: '',
+    tree: '',
+    ftree: '',
+    downloaded: false,
+    loading: false, // True while loading input network
+    options: {},
+    infomapError: '',
+  };
 
   componentDidMount = () => {
+    localforage.config({ name: "infomap" });
+
     const urlParams = new URLSearchParams(window.location.search);
     const args = urlParams.get('args');
     if (args) {
@@ -517,7 +516,7 @@ export default class Infomap extends React.Component {
     if (nameParts.length > 1)
       nameParts.pop();
     const name = nameParts.join('.');
-    
+
     const reader = new FileReader();
     reader.onloadend = (event) => {
       this.onChangeNetwork(event, { value: reader.result, name });
@@ -594,7 +593,7 @@ export default class Infomap extends React.Component {
     const args = this.state.args.length === 0 ? [] : this.state.args.split(' ');
 
     const worker = this.worker = new Worker('Infomap-worker.js');
-    
+
     worker.onmessage = this.onInfomapMessage;
 
     const message = {
@@ -634,6 +633,7 @@ export default class Infomap extends React.Component {
       }
       case 'finished': {
         const { clu, tree, ftree } = data.output;
+        this.store(ftree);
         this.setState({
           clu,
           tree,
@@ -649,7 +649,11 @@ export default class Infomap extends React.Component {
         throw new Error(`Unknown target on message from worker: ${data}`);
     }
   }
-  
+
+  store = async (ftree) => {
+    await localforage.setItem("ftree", ftree);
+  }
+
   onClickDownloadClu = () => {
     const blob = new Blob([this.state.clu], { type: "text/plain;charset=utf-8" });
     saveAs(blob, `${this.state.name}.clu`);
@@ -694,7 +698,7 @@ export default class Infomap extends React.Component {
                 <Step.Description>Toggle options or add command line arguments</Step.Description>
                 </Step.Content>
                 </Step>
-                
+
                 <Step completed={this.state.downloaded} active={this.state.completed}>
                 <Step.Content>
                 <Step.Title>Download partition</Step.Title>
@@ -785,6 +789,8 @@ export default class Infomap extends React.Component {
               <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button>
               <Form.Button disabled={!this.state.ftree} onClick={this.onClickDownloadFTree}>Download .ftree file</Form.Button>
             </Form>
+            <br/>
+            <Button disabled={!this.state.ftree} as="a" href={"//www.mapequation.org/navigator?infomap=" + this.state.name + ".ftree"}>Open in Infomap Network Navigator</Button>
           </Segment>
         </Grid.Column>
       </Grid>
