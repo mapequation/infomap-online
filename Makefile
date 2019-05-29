@@ -4,4 +4,4 @@ build:
 	yarn build
 
 push: build
-	scp -r build/* icelab-mapequation:/var/www/mapequation/infomap
+	scp -r build/* icelab-mapequation:/var/www/infomap
