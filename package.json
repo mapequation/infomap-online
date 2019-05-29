@@ -2,6 +2,7 @@
   "name": "infomap-online",
   "version": "1.0.0",
   "private": true,
+  "homepage": "/infomap",
   "dependencies": {
     "arg": "^4.1.0",
     "file-saver": "^2.0.2",
