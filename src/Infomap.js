@@ -1,6 +1,6 @@
 import React from 'react';
 import localforage from "localforage";
-import { Button, Step, Header, Grid, Segment, Form, Checkbox, Message, Image, Item, Table } from 'semantic-ui-react';
+import { Button, Step, Header, Grid, Segment, Form, Checkbox, Message, Image, Item, Table, Divider } from 'semantic-ui-react';
 import { saveAs } from 'file-saver';
 import arg from 'arg';
 import produce from 'immer';
@@ -701,8 +701,8 @@ export default class Infomap extends React.Component {
 
                 <Step completed={this.state.downloaded} active={this.state.completed}>
                 <Step.Content>
-                <Step.Title>Download partition</Step.Title>
-                <Step.Description>Copy from text field or download file</Step.Description>
+                <Step.Title>Explore map!</Step.Title>
+                <Step.Description>Save result or open in <span className="brand brand-nn">Network Navigator</span></Step.Description>
               </Step.Content>
             </Step>
           </Step.Group>
@@ -784,13 +784,21 @@ export default class Infomap extends React.Component {
           <Header as="h2">Output</Header>
           <Segment basic style={{ borderRadius: 5, padding: '10px 0 0 0' }} color='red'>
             <Form>
-              <Form.TextArea value={this.state.tree || this.state.clu || this.state.ftree} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
-              <Form.Button disabled={!this.state.clu} onClick={this.onClickDownloadClu}>Download .clu file</Form.Button>
-              <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button>
+              <Form.TextArea value={this.state.ftree || this.state.tree || this.state.clu} placeholder='Infomap cluster output will be printed here' style={{ minHeight: 500 }} onCopy={this.onCopyClusters} />
+              { !this.state.clu ? null : <Form.Button disabled={!this.state.clu} onClick={this.onClickDownloadClu}>Download .clu file</Form.Button> }
+              { !this.state.tree ? null : <Form.Button disabled={!this.state.tree} onClick={this.onClickDownloadTree}>Download .tree file</Form.Button> }
               <Form.Button disabled={!this.state.ftree} onClick={this.onClickDownloadFTree}>Download .ftree file</Form.Button>
             </Form>
-            <br/>
-            <Button disabled={!this.state.ftree} as="a" href={"//www.mapequation.org/navigator?infomap=" + this.state.name + ".ftree"}>Open in Infomap Network Navigator</Button>
+            <Divider horizontal><span style={{ color: !this.state.ftree ? '#ccc' : '#666'}}>Or</span></Divider>
+            <Button disabled={!this.state.ftree} as="a" href={"//www.mapequation.org/navigator?infomap=" + this.state.name + ".ftree"} style={{ padding: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ fontWeight: 300, marginBottom: 5 }}>Explore in</div>
+                <Image size="tiny" src="https://www.mapequation.org/assets/img/twocolormapicon_whiteboarder.svg" />
+                <div className="brand" style={{ fontSize: 18, lineHeight: 1.1, marginTop: 5 }}>
+                  <span className="brand-infomap">Infomap</span> <span className="brand-nn">Network Navigator</span>
+                </div>
+              </div>
+            </Button>
           </Segment>
         </Grid.Column>
       </Grid>
