@@ -42,6 +42,7 @@ header {
 
 .brand-nn {
   color: #B22222;
+  white-space: nowrap;
 }
 
 .content {
