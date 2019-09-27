@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "/infomap",
   "dependencies": {
+    "@sentry/browser": "^5.6.3",
     "arg": "^4.1.0",
     "file-saver": "^2.0.2",
     "immer": "^3.1.2",
