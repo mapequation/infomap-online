@@ -512,10 +512,15 @@ export default class Infomap extends React.Component {
 
     const { files } = event.target;
     const file = files[0];
-    let nameParts = file.name.split('.');
-    if (nameParts.length > 1)
-      nameParts.pop();
-    const name = nameParts.join('.');
+
+    let name = null;
+
+    if (file.name) {
+      const nameParts = file.name.split('.');
+      if (nameParts.length > 1)
+        nameParts.pop();
+      name = nameParts.join('.');
+    }
 
     const reader = new FileReader();
     reader.onloadend = (event) => {
