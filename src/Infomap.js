@@ -209,12 +209,6 @@ const cli = [
     "type": "Boolean"
   },
   {
-    "desc": "Assume undirected links. (default)",
-    "short": "-u",
-    "long": "--undirected",
-    "type": "Boolean"
-  },
-  {
     "desc": "Assume directed links.",
     "short": "-d",
     "long": "--directed",
