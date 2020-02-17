@@ -609,6 +609,7 @@ export default class Infomap extends React.Component {
     }
 
     worker.onmessage = this.onInfomapMessage;
+    worker.onerror = err => err.preventDefault();
 
     const message = {
       target: 'Infomap',
