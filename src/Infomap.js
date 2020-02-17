@@ -515,7 +515,7 @@ export default class Infomap extends React.Component {
 
     let name = null;
 
-    if (file.name) {
+    if (file && file.name) {
       const nameParts = file.name.split('.');
       if (nameParts.length > 1)
         nameParts.pop();
@@ -583,7 +583,7 @@ export default class Infomap extends React.Component {
   }
 
   clearInfomap = (clearOutput = true) => {
-    if (this.worker) {
+    if (this.worker && this.worker.terminate) {
       this.worker.terminate();
       delete this.worker;
     }
@@ -597,7 +597,16 @@ export default class Infomap extends React.Component {
     this.clearInfomap();
     const args = this.state.args.length === 0 ? [] : this.state.args.split(' ');
 
-    const worker = this.worker = new Worker('Infomap-worker.js');
+    let worker;
+    try {
+      worker = this.worker = new Worker('Infomap-worker.js');
+    } catch (e) {
+      this.setState({
+        running: false,
+        infomapError: e.message
+      });
+      return;
+    }
 
     worker.onmessage = this.onInfomapMessage;
 
