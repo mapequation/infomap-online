@@ -483,7 +483,8 @@ export default class Infomap extends React.Component {
   componentDidMount = () => {
     localforage.config({ name: "infomap" });
 
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlSearchParams = URLSearchParams || window.URLSearchParams;
+    const urlParams = new urlSearchParams(window.location.search);
     const args = urlParams.get('args');
     if (args) {
       this.onChangeArgs(null, { value: args });
