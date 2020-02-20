@@ -18,6 +18,7 @@ import { saveAs } from "file-saver";
 import arg from "arg";
 import produce from "immer";
 import Console from "./Console";
+import Infomap,  {infomapChangelog, infomapParameters} from "@mapequation/infomap";
 
 export const SAMPLE_NETWORK = `#source target [weight]
 1 2
@@ -530,7 +531,7 @@ const getShortOptionIfExist = longOpt => {
   return opt.short || opt.long;
 };
 
-export default class Infomap extends React.Component {
+export default class InfomapOnline extends React.Component {
   state = {
     network: SAMPLE_NETWORK,
     args: "--ftree",
@@ -548,6 +549,15 @@ export default class Infomap extends React.Component {
     options: {},
     infomapError: "",
   };
+
+  constructor(props) {
+    super(props);
+
+    this.infomap = new Infomap()
+      .on("data", this.onInfomapData)
+      .on("error", this.onInfomapError)
+      .on("finished", this.onInfomapFinished)
+  }
 
   componentDidMount = () => {
     localforage.config({ name: "infomap" });
@@ -662,12 +672,15 @@ export default class Infomap extends React.Component {
   };
 
   run = () => {
-    this.clearInfomap();
-    const args = this.state.args.length === 0 ? [] : this.state.args.split(" ");
+    if (this.runId) {
+      this.infomap.cleanup(this.runId);
+      this.runId = null;
+    }
 
-    let worker;
+    console.log('run...');
     try {
-      worker = this.worker = new Worker('Infomap-worker.js');
+      this.runId = this.infomap.run(this.state.network, this.state.args);
+      console.log(' -> runId:', this.runId);
     } catch (e) {
       this.setState({
         running: false,
@@ -676,63 +689,38 @@ export default class Infomap extends React.Component {
       return;
     }
 
-    worker.onmessage = this.onInfomapMessage;
-    worker.onerror = err => err.preventDefault();
-
-    const message = {
-      target: "Infomap",
-      inputFilename: "network.txt",
-      inputData: this.state.network,
-      arguments: args,
-    };
-
-    window.setTimeout(() => {
-      worker.postMessage(message);
-    }, 20);
-
     this.setState({
       running: true,
       infomapError: "",
     });
   };
 
-  onInfomapMessage = event => {
-    const data = event.data;
-    switch (data.target) {
-      case "stdout": {
-        this.setState({
-          output: [...this.state.output, data.content],
-        });
-        break;
-      }
-      case "stderr": {
-        this.setState({
-          infomapError: data.content,
-          output: [...this.state.output, data.content],
-          running: false,
-        });
-        this.worker = null;
-        break;
-      }
-      case "finished": {
-        const { clu, tree, ftree } = data.output;
-        this.store(ftree);
-        this.setState({
-          clu,
-          tree,
-          ftree,
-          activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
-          running: false,
-          completed: true,
-        });
-        this.worker.terminate();
-        delete this.worker;
-        break;
-      }
-      default:
-        throw new Error(`Unknown target on message from worker: ${data}`);
-    }
-  };
+  onInfomapData = content => {
+    this.setState({
+      output: [...this.state.output, content],
+    });
+  }
+
+  onInfomapError = content => {
+    this.setState({
+      infomapError: content,
+      output: [...this.state.output, content],
+      running: false,
+    });
+  }
+
+  onInfomapFinished = content => {
+    const { clu, tree, ftree } = content;
+    this.store(ftree);
+    this.setState({
+      clu,
+      tree,
+      ftree,
+      activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
+      running: false,
+      completed: true,
+    });
+  }
 
   store = async ftree => {
     await localforage.setItem("ftree", ftree);
