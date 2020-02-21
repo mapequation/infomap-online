@@ -677,10 +677,8 @@ export default class InfomapOnline extends React.Component {
       this.runId = null;
     }
 
-    console.log('run...');
     try {
       this.runId = this.infomap.run(this.state.network, this.state.args);
-      console.log(' -> runId:', this.runId);
     } catch (e) {
       this.setState({
         running: false,
@@ -924,7 +922,7 @@ export default class InfomapOnline extends React.Component {
                 </Table.Row>
               </Table.Body>
             </Table>
-            <Form onSubmit={this.onClickRun}>
+            <Form>
               <Form.Group widths="equal">
                 <Form.Input
                   fluid

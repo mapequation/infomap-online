@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/infomap",
   "dependencies": {
-    "@mapequation/infomap": "0.0.1",
+    "@mapequation/infomap": "0.0.6",
     "@sentry/browser": "^5.6.3",
     "arg": "^4.1.0",
     "file-saver": "^2.0.2",
