@@ -1,5 +1,5 @@
 import React from 'react';
-import Infomap from './Infomap';
+import InfomapOnline from './InfomapOnline';
 import Header from "./Header";
 import Documentation from "./Documentation";
 import Footer from "./Footer";
@@ -8,7 +8,7 @@ function App() {
   return (
     <React.Fragment>
       <Header />
-      <Infomap />
+      <InfomapOnline />
       <Documentation />
       <Footer />
     </React.Fragment>

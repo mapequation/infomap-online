@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 
 Sentry.init({
-  dsn: "https://2527f14880aa45c8acbac7a5acffe71e@sentry.io/1763436",
+  dsn: process.env.NODE_ENV === "production" ? "https://2527f14880aa45c8acbac7a5acffe71e@sentry.io/1763436" : undefined,
   beforeSend(event) {
     // Check if it is an exception, and if so, show the report dialog
     if (event.exception) {
