@@ -114,6 +114,8 @@ export default class InfomapOnline extends React.Component {
     const args = urlParams.get('args');
     if (args) {
       this.onChangeArgs(null, { value: args });
+    } else if (this.state.args) {
+      this.onChangeArgs(null, { value: this.state.args });
     }
   }
 
