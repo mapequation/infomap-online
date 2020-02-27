@@ -5,6 +5,7 @@ import { List } from "semantic-ui-react";
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
   const Scope = scope ? <strong>{scope} </strong> : null;
+  const Subject = <span style={{ whiteSpace: 'pre' }}>{subject.replace(/ \(#\d+\)$/, "").replace(/\.\s/g, ".\n")}</span>;
   const Reference =
     (references || []).length > 0 ? (
       <a
@@ -18,7 +19,7 @@ const Change = ({ change }) => {
     <List.Item>
       <span>
         {Scope}
-        {subject.replace(/ \(#\d+\)$/, "")}
+        {Subject}
         {Reference}
       </span>
     </List.Item>
