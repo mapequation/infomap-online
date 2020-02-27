@@ -18,7 +18,7 @@ import { saveAs } from "file-saver";
 import arg from "arg";
 import produce from "immer";
 import Console from "./Console";
-import Infomap,  {infomapChangelog, infomapParameters} from "@mapequation/infomap";
+import Infomap,  { infomapParameters } from "@mapequation/infomap";
 
 export const SAMPLE_NETWORK = `#source target [weight]
 1 2
