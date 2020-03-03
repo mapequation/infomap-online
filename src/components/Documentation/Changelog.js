@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { List } from "semantic-ui-react";
+import { infomapChangelog } from "@mapequation/infomap";
+import { Heading } from './TOC';
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -16,7 +18,7 @@ const Change = ({ change }) => {
       </a>
     ) : null;
   return (
-    <List.Item>
+    <List.Item className="changelogItem">
       <span>
         {Scope}
         {Subject}
@@ -62,18 +64,23 @@ const Release = ({ changes }) => {
   const releaseChange = changes[0];
 
   return (
-    <div>
-      <h3>{releaseChange.subject}</h3>
-
-      {breaking.length > 0 ? (
-        <Changes heading="BREAKING CHANGES" changes={breaking} />
-      ) : null}
-
-      {features.length > 0 ? (
-        <Changes heading="Features" changes={features} />
-      ) : null}
-
-      {fixes.length > 0 ? <Changes heading="Fixes" changes={fixes} /> : null}
+    <div style={{ marginBottom: 2 }}>
+      <h3 style={{ marginBottom: 2 }}>
+        {releaseChange.subject}
+        <span style={{ color: '#999', fontWeight: 300, marginLeft: 6, fontSize: '0.8em' }}>({releaseChange.date.slice(0,10)})</span>
+      </h3>
+    
+      <div style={{ marginBottom: 0, marginLeft: 19, padding: '10px 0 10px 10px', borderLeft: '1px solid #ccc' }}>
+        {breaking.length > 0 ? (
+          <Changes heading="BREAKING CHANGES" changes={breaking} />
+        ) : null}
+  
+        {features.length > 0 ? (
+          <Changes heading="Features" changes={features} />
+        ) : null}
+  
+        {fixes.length > 0 ? <Changes heading="Fixes" changes={fixes} /> : null}
+      </div>
     </div>
   );
 };
@@ -98,11 +105,12 @@ const Changelog = ({ changes }) => {
   });
 
   return (
-    <div>
+    <>
+      <Heading id="Changelog" />
       {releases.map((changes, i) => (
         <Release key={i} changes={changes} />
       ))}
-    </div>
+    </>
   );
 };
 
@@ -110,4 +118,4 @@ Changelog.propTypes = {
   changes: PropTypes.array.isRequired,
 };
 
-export default Changelog;
+export default () => <Changelog changes={infomapChangelog} />;

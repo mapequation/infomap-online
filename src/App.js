@@ -1,7 +1,7 @@
 import React from 'react';
-import InfomapOnline from './InfomapOnline';
+import InfomapOnline from './components/Infomap';
 import Header from "./Header";
-import Documentation from "./Documentation";
+import Documentation from "./components/Documentation";
 import Footer from "./Footer";
 
 function App() {

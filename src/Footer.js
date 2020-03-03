@@ -1,7 +1,5 @@
 import React from "react";
 
-const Footer = () => (
+export default () => (
   <footer style={{ paddingTop: '4em' }}></footer>
 );
-
-export default Footer;

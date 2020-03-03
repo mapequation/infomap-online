@@ -31,8 +31,9 @@
 .code {
   /* font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; */
   font-size: 12px;
-  /* line-height: 1; */
-  /* height: 100%; */
   overflow-wrap: break-word;
   white-space: pre-wrap;
+  background-color: transparent;
+  outline: none;
+  padding: 0;
 }

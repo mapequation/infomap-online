@@ -22,13 +22,38 @@ a:active, a:hover {
 }
 
 .ui.header {
-  font-weight: 300;
   color: #128BC2;
 }
 
-code {
-  font-family: Menlo, Consolas, Monaco, monospace, sans-serif;
+h3.ui.header {
+  font-weight: 500;
+}
+
+h4.ui.header {
+  font-weight: 400;
+}
+
+h5.ui.header {
+  font-weight: 400;
+}
+
+.ui.header.light {
   font-weight: 300;
+}
+
+code {
+  /* font-family: Menlo, Consolas, Monaco, monospace, sans-serif;
+  font-weight: 300; */
+  font-family: Monaco, Consolas, Inconsolata, 'Deja Vu Sans Mono', 'Droid Sans Mono', 'Andale Mono', 'Lucida Console', monospace;
+  font-size: 0.8em;
+  color: #666;
+  padding: 0 3px;
+  border: none;
+  outline: 1px solid #ccc;
+  background-color: #f9f9f9;
+  display: inline-block;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 figure {
@@ -37,4 +62,55 @@ figure {
 
 .documentation {
   text-shadow: rgba(255, 255, 255, 0.746094) 0 1px 0;
+}
+
+.liHeader {
+  display: inline-block;
+  margin: 0;
+}
+
+.tocList {
+  /* list-style-position: inside !important; */
+  /* position: relative; */
+  /* display: block; */
+  /* list-style-type: disc !important; */
+  counter-reset: item;
+  list-style: none;
+  padding-left: 20px;
+  list-style-type: none !important;
+}
+
+.tocList1 {
+  list-style-type: none !important;
+  padding-left: 0 !important;
+}
+
+.tocItem:before {
+  /* font-weight: 300; */
+  color: #128BC2 !important;
+  /* content: counters(item, ".") " "; */
+  /* content: attr(id) " "; */
+  content: "";
+  counter-increment: item;
+  /* font-size: 1em; */
+  /* margin-left: 0 !important; */
+  /* padding: 0, marginLeft: 0, fontWeight: 300 */
+  /* margin-right: 0 !important; */
+  /* left: 0; */
+  /* right: 0 !important; */
+  /* position: static !important; */
+  /* display: inline-block !important; */
+  /* vertical-align: bottom; */
+}
+
+.tocItem {
+  /* list-style-type: disc !important; */
+  /* display: flex !important; */
+  /* flex-direction: column; */
+  /* position: static !important; */
+  /* align-items: center; */
+}
+
+.changelogItem:before {
+  color: #ccc !important;
 }

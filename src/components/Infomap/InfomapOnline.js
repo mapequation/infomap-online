@@ -20,6 +20,7 @@ import produce from "immer";
 import Console from "./Console";
 import Infomap,  { infomapParameters } from "@mapequation/infomap";
 
+console.log(infomapParameters)
 export const SAMPLE_NETWORK = `#source target [weight]
 1 2
 1 3
@@ -36,52 +37,64 @@ export const SAMPLE_NETWORK = `#source target [weight]
 6 5
 6 4`;
 
-
-const cli = infomapParameters.map(opt => {
-  const { shortName, longName, argumentName, incrementalArgument } = opt;
-  return {
-    short: shortName ? `-${shortName}` : null,
-    long: `--${longName}`,
-    incrementalArgument,
-    argumentName,
-  };
-});
+// const argValidator = infomapParameters
+//   .map(({ long, required, longType, description }) => {
+//     const param = {
+//       long,
+//       required,
+//       longType,
+//     };
+//     if (longType === 'list' || longType === 'option') {
+//       param.options = description.match(/Options: (.*)\.$/)[1].split(', ')
+//     }
+//     switch (longType) {
+//       case 'integer':
+//         param.validate = (arg) => 
+//     }
+//   })
+//   .reduce((validator, param) => {
+//     validator[param.long] = param;
+//     return validator;
+//   }, {});
 
 const argSpec = getArgSpec();
 
 function getArgSpec() {
   const spec = {};
-  cli.forEach(param => {
-    const { short, long, argumentName, incrementalArgument } = param;
+  infomapParameters.forEach(param => {
+    const { short, long, shortType, incremental } = param;
     if (short) {
       spec[short] = long;
     }
-    switch (argumentName) {
+    switch (shortType || "") {
       case "f": // float
       case "n": // integer
+      case "P": // probability
         spec[long] = Number;
         break;
       case "s": // string
       case "p": // path
+      case "o": // option
+      case "l": // list
         spec[long] = String;
         break;
       case "": // no argument flag
       default:
-        spec[long] = incrementalArgument ? arg.COUNT : Boolean;
+        spec[long] = incremental ? arg.COUNT : Boolean;
     }
   });
   return spec;
 }
 
 const getShortOptionIfExist = longOpt => {
-  const opt = cli.find(opt => opt.long === longOpt);
+  const opt = infomapParameters.find(opt => opt.long === longOpt);
   return opt.short || opt.long;
 };
 
 export default class InfomapOnline extends React.Component {
   state = {
     network: SAMPLE_NETWORK,
-    args: "--ftree",
+    args: "--ftree --clu",
     argsError: "",
     output: [],
     name: "network",
@@ -160,6 +173,9 @@ export default class InfomapOnline extends React.Component {
       options = arg(argSpec, { argv, permissive: false });
     } catch (err) {
       argsError = err.message;
+    }
+    if (!argsError) {
+      // TODO: Check if required arguments are valid
     }
 
     this.setState({ args: data.value, argsError, options });
@@ -359,7 +375,7 @@ export default class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3} style={{ minHeight: 500 }}>
-          <Header as="h2">Input</Header>
+          <Header as="h2" className="light">Input</Header>
           <Segment
             basic
             style={{ borderRadius: 5, padding: "10px 0 0 0" }}
@@ -386,7 +402,7 @@ export default class InfomapOnline extends React.Component {
           </Segment>
         </Grid.Column>
         <Grid.Column width={9} floated="left">
-          <Header as="h2">Options</Header>
+          <Header as="h2" className="light">Infomap</Header>
           <Segment
             basic
             style={{ borderRadius: 5, padding: "10px 0 0 0" }}
@@ -452,9 +468,8 @@ export default class InfomapOnline extends React.Component {
                             --ftree
                           </Item.Header>
                           <Item.Meta>
-                            Print the modular hierarchy including aggregated
-                            links between (nested) modules. Used by Network
-                            Navigator.
+                            Write a ftree file with the modular hierarchy including aggregated links between (nested) modules.
+                            (Used by Network Navigator)
                           </Item.Meta>
                         </Item.Content>
                       </Item>
@@ -469,8 +484,35 @@ export default class InfomapOnline extends React.Component {
                     />
                   </Table.Cell>
                 </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Item.Group>
+                      <Item>
+                        <Item.Content>
+                          <Item.Header as="h4" className="ui">
+                            --clu
+                          </Item.Header>
+                          <Item.Meta>
+                            Write a clu file with the top cluster ids for each node.
+                          </Item.Meta>
+                        </Item.Content>
+                      </Item>
+                    </Item.Group>
+                  </Table.Cell>
+                  <Table.Cell collapsing>
+                    <Checkbox
+                      toggle
+                      id="--clu"
+                      checked={!!options["--clu"]}
+                      onChange={this.onChangeOption}
+                    />
+                  </Table.Cell>
+                </Table.Row>
               </Table.Body>
             </Table>
+            <div style={{ marginTop: -20, marginBottom: 10 }}>
+              <a href="#Parameters">More parameters</a>
+            </div>
             <Form>
               <Form.Group widths="equal">
                 <Form.Input
@@ -548,7 +590,7 @@ export default class InfomapOnline extends React.Component {
           </Segment>
         </Grid.Column>
         <Grid.Column width={4}>
-          <Header as="h2">Output</Header>
+          <Header as="h2" className="light">Output</Header>
           <Segment
             basic
             style={{ borderRadius: 5, padding: "10px 0 0 0" }}
