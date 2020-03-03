@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
 import { Container, Menu, Header as H, Icon } from "semantic-ui-react";
+import Infomap from "@mapequation/infomap";
 
 const Header = () => (
   <header>
@@ -28,11 +29,10 @@ const Header = () => (
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
-            <H as="h1">
-              <a href="#Install">
-                <Icon className="Github" name="download"></Icon>
-              </a>
-            </H>
+            <a href="#Install">
+              Infomap { Infomap.__version__ }
+              <Icon className="Github" name="download" size="big"></Icon>
+            </a>
           </Menu.Item>
           <Menu.Item fitted>
             <H as="h1">

@@ -60,7 +60,7 @@ export default () => (
     <p>
       <a href={`//github.com/mapequation/infomap/archive/v${Infomap.__version__}.zip`}>
         <Icon name="download" />
-        Download latest release
+        Download Infomap {Infomap.__version__}
       </a>{" "}
       or check the{" "}
       <a href="//github.com/mapequation/infomap/releases">releases page</a> for
@@ -70,16 +70,12 @@ export default () => (
     <p>Unzip the file and compile Infomap by running</p>
 
     <Code>
-      unzip infomap-[version].zip
+      unzip infomap-{Infomap.__version__}.zip
       <br />
-      cd infomap-[version]
+      cd infomap-{Infomap.__version__}
       <br />
       make
     </Code>
-
-    <p>
-      Substitute <code>[version]</code> with the version of the downloaded file.
-    </p>
 
     <Heading id="Git" />
 
