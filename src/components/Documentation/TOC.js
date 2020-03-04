@@ -40,12 +40,24 @@ const tocSource = {
   Windows: {
     heading: "Windows",
   },
-  Running: {
-    heading: "Running",
-    children: ["Parameters", "Input", "Output"],
-  },
   Input: {
-    heading: "Input",
+    heading: "Input formats",
+    children: ["InputLinkList", "InputPajek", "InputBipartite", "InputMultilayer", "InputStates"],
+  },
+  InputLinkList: {
+    heading: "Link-list",
+  },
+  InputPajek: {
+    heading: "Pajek",
+  },
+  InputBipartite: {
+    heading: "Bipartite",
+  },
+  InputMultilayer: {
+    heading: "Multilayer",
+  },
+  InputStates: {
+    heading: "States",
   },
   Output: {
     heading: "Output",

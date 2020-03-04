@@ -4,6 +4,7 @@ import TOC, { Heading } from "./TOC";
 import Prerequisites from "./Prerequisites";
 import Install from "./Install";
 import Running from "./Running";
+import Input from "./Input";
 import Parameters from "./Parameters";
 import Changelog from "./Changelog";
 import Features from "./Features";
@@ -44,6 +45,9 @@ function Documentation() {
           The code for running Infomap as a web worker in the browser is available
           as a <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
         </p>
+
+        <Input />
+
       </Grid.Column>
       <Grid.Column>
         <Running />
