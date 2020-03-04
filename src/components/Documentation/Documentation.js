@@ -18,10 +18,10 @@ function Documentation() {
         <Header as="h1" id="Documentation">
           <a href="#Documentation">Table of contents</a>
         </Header>
-        
+
         <TOC />
 
-        
+
         <Heading id="Infomap" />
         <p>
           Infomap is a network clustering algorithm based on the <a href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">Map equation</a>.
@@ -39,6 +39,10 @@ function Documentation() {
           this solution by compiling Infomap from C++ to JavaScript with{" "}
           <a href="//emscripten.org/">Emscripten</a>, which gives a performance
           penalty compared to the stand-alone version of Infomap.
+        </p>
+        <p>
+          The code for running Infomap as a web worker in the browser is available
+          as a <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
         </p>
       </Grid.Column>
       <Grid.Column>
