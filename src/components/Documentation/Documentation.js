@@ -13,7 +13,7 @@ import References from "./References";
 
 function Documentation() {
   return (
-    <Grid container columns={2} className="documentation">
+    <Grid container stackable columns={2} className="documentation">
       <Grid.Column>
         <Header as="h1" id="Documentation">
           <a href="#Documentation">Table of contents</a>
