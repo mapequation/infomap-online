@@ -1,4 +1,5 @@
 import React from "react";
+import { observer } from "mobx-react"
 import localforage from "localforage";
 import {
   Button,
@@ -19,6 +20,8 @@ import arg from "arg";
 import produce from "immer";
 import Console from "./Console";
 import Infomap,  { infomapParameters } from "@mapequation/infomap";
+import store from "../../store";
+
 
 console.log(infomapParameters)
 export const SAMPLE_NETWORK = `#source target [weight]
@@ -91,7 +94,7 @@ const getShortOptionIfExist = longOpt => {
   return opt.short || opt.long;
 };
 
-export default class InfomapOnline extends React.Component {
+export default observer(class InfomapOnline extends React.Component {
   state = {
     network: SAMPLE_NETWORK,
     args: "--ftree --clu",
@@ -133,6 +136,7 @@ export default class InfomapOnline extends React.Component {
   }
 
   onChangeNetwork = (event, data) => {
+    store.setNetwork(data.value);
     this.setState({
       network: data.value,
       completed: false,
@@ -243,7 +247,7 @@ export default class InfomapOnline extends React.Component {
     }
 
     try {
-      this.runId = this.infomap.run(this.state.network, this.state.args);
+      this.runId = this.infomap.run(store.network, this.state.args);
     } catch (e) {
       this.setState({
         running: false,
@@ -338,7 +342,7 @@ export default class InfomapOnline extends React.Component {
         </Grid.Column>
         <Grid.Column width={16} textAlign="center">
           <Step.Group ordered>
-            <Step completed={!!this.state.network} active={!this.state.network}>
+            <Step completed={!!store.network} active={!store.network}>
               <Step.Content>
                 <Step.Title>Load network</Step.Title>
                 <Step.Description>
@@ -349,7 +353,7 @@ export default class InfomapOnline extends React.Component {
 
             <Step
               completed={this.state.completed || this.state.running}
-              active={this.state.network && !this.state.completed}
+              active={store.network && !this.state.completed}
             >
               <Step.Content>
                 <Step.Title>Run Infomap</Step.Title>
@@ -384,7 +388,7 @@ export default class InfomapOnline extends React.Component {
           >
             <Form>
               <Form.TextArea
-                value={this.state.network}
+                value={store.network}
                 onChange={this.onChangeNetwork}
                 placeholder="# Paste your network here"
                 style={{ minHeight: 500 }}
@@ -654,4 +658,4 @@ export default class InfomapOnline extends React.Component {
       </Grid>
     );
   }
-}
+});
