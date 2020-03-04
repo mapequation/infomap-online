@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Item, Checkbox } from "semantic-ui-react";
 import { infomapParameters } from "@mapequation/infomap";
+import React, { useState } from "react";
+import { Checkbox, Item } from "semantic-ui-react";
 import { Heading } from "./TOC";
+
 
 const getParamsForGroup = (params => group =>
   Object.values(params).filter(param => param.group === group))(
-  infomapParameters
+  infomapParameters,
 );
 
 const paramHeader = param => {
@@ -24,23 +25,27 @@ const paramHeader = param => {
 
 const paramDefault = param => {
   if (param.default) {
-    return `Default: ${param.default}`;
+    return (
+      <Item.Extra style={{ fontWeight: 400 }}>
+        {`Default: ${param.default}`}
+      </Item.Extra>
+    );
   }
 };
 
 const ParameterGroup = ({ id, advanced }) => {
-  const params = getParamsForGroup(id).filter(
-    param => !param.advanced || advanced
-  ).sort((a, b) => {
-    if (a.advanced === b.advanced) {
-      return 0;
-    }
-    return a.advanced ? 1 : -1;
-  });
+  // Param headings are prepended with "Prams" as a namespace
+  // Remove that part
+  const match = id.match(/^Params(.*)$/);
+  const group = match && match[1] ? match[1] : id;
+
+  const params = getParamsForGroup(group)
+    .filter(param => !param.advanced || advanced)
+    .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 
   return (
     <>
-      <Heading id={id} />
+      <Heading id={id}/>
       <Item.Group>
         {params.map((param, key) => (
           <Item key={key}>
@@ -49,11 +54,7 @@ const ParameterGroup = ({ id, advanced }) => {
                 {paramHeader(param)}
               </Item.Header>
               <Item.Description>{param.description}</Item.Description>
-              {param.default && (
-                <Item.Extra style={{ fontWeight: 400 }}>
-                  {paramDefault(param)}
-                </Item.Extra>
-              )}
+              {paramDefault(param)}
             </Item.Content>
           </Item>
         ))}
@@ -69,18 +70,16 @@ export default () => {
 
   return (
     <>
-      <Heading id="Parameters" advanced={advanced} />
+      <Heading id="Parameters" advanced={advanced}/>
       <Checkbox
         toggle
         checked={advanced}
         onChange={toggle}
         label="Show advanced parameters"
       />
-      <ParameterGroup id="ParamsAbout" advanced={advanced} />
-      <ParameterGroup id="ParamsInput" advanced={advanced} />
-      <ParameterGroup id="ParamsOutput" advanced={advanced} />
-      <ParameterGroup id="ParamsAlgorithm" advanced={advanced} />
-      <ParameterGroup id="ParamsAccuracy" advanced={advanced} />
+      {["ParamsAbout", "ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy"].map((id) =>
+        <ParameterGroup id={id} key={id} advanced={advanced}/>
+      )}
     </>
   );
 };
