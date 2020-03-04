@@ -40,6 +40,10 @@ const tocSource = {
   Windows: {
     heading: "Windows",
   },
+  Running: {
+    heading: "Running",
+    children: ["Input", "Output", "Parameters"],
+  },
   Input: {
     heading: "Input formats",
     children: ["InputLinkList", "InputPajek", "InputBipartite", "InputMultilayer", "InputStates"],
@@ -60,7 +64,17 @@ const tocSource = {
     heading: "States",
   },
   Output: {
-    heading: "Output",
+    heading: "Output formats",
+    children: ["OutputTree", "OutputFtree", "OutputClu"]
+  },
+  OutputTree: {
+    heading: "Tree"
+  },
+  OutputFtree: {
+    heading: "FTree"
+  },
+  OutputClu: {
+    heading: "Clu",
   },
   Parameters: {
     heading: "Parameters",

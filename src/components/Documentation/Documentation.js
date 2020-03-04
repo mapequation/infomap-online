@@ -5,6 +5,7 @@ import Prerequisites from "./Prerequisites";
 import Install from "./Install";
 import Running from "./Running";
 import Input from "./Input";
+import Output from "./Output";
 import Parameters from "./Parameters";
 import Changelog from "./Changelog";
 import Features from "./Features";
@@ -46,11 +47,12 @@ function Documentation() {
           as a <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
         </p>
 
+        <Running />
         <Input />
+        <Output />
 
       </Grid.Column>
       <Grid.Column>
-        <Running />
         <Parameters />
         <Changelog />
         <Features />

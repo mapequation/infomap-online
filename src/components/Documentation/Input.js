@@ -1,5 +1,4 @@
 import React from "react";
-import { Header } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./TOC";
 
@@ -19,10 +18,6 @@ export default () => {
         but the format can be explicitly specified with the
         flags <code>-i</code> or <code>--input-format</code> followed
         by a format specifier.
-      </p>
-
-      <p>
-        The following input formats can be used
       </p>
 
       <Heading id="InputLinkList"/>
