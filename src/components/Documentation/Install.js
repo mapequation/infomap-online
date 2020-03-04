@@ -116,7 +116,7 @@ export default () => (
       <Icon name="exclamation circle" />
       <Message.Content>
       <Message.Header>Looking for Infomap 0.x?</Message.Header>
-      <a href="//www.mapequation.org/code.html">Please read the old documentation.</a>
+      <a href="//www.mapequation.org/code_old.html">Please read the old documentation.</a>
       </Message.Content>
     </Message>
   </>
