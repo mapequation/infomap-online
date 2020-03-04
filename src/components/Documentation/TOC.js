@@ -41,14 +41,7 @@ const tocSource = {
   },
   Running: {
     heading: "Running",
-    children: ["Parameters"],
-  },
-  Parameters: {
-    heading: "Parameters",
-    children: ["About", "Input", "Output", "Algorithm", "Accuracy"],
-  },
-  About: {
-    heading: "About",
+    children: ["Parameters", "Input", "Output"],
   },
   Input: {
     heading: "Input",
@@ -56,10 +49,23 @@ const tocSource = {
   Output: {
     heading: "Output",
   },
-  Algorithm: {
+  Parameters: {
+    heading: "Parameters",
+    children: ["ParamsAbout", "ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy"],
+  },
+  ParamsAbout: {
+    heading: "About",
+  },
+  ParamsInput: {
+    heading: "Input",
+  },
+  ParamsOutput: {
+    heading: "Output",
+  },
+  ParamsAlgorithm: {
     heading: "Algorithm",
   },
-  Accuracy: {
+  ParamsAccuracy: {
     heading: "Accuracy",
   },
   Changelog: {
@@ -68,7 +74,7 @@ const tocSource = {
   Features: {
     heading: "Features",
   },
-  TheAlgorithm: {
+  Algorithm: {
     heading: "Algorithm",
     children: ["TwolevelAlgorithm", "MultilevelAlgorithm"],
   },
@@ -91,7 +97,7 @@ const toc = enhanceToc(tocSource);
 function enhanceToc(toc) {
   const ids = Object.keys(toc);
   const tree = toc;
-  
+
   // set parents and child id
   ids.forEach(id => {
     const item = tree[id];

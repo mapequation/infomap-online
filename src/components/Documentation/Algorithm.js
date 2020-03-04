@@ -3,7 +3,7 @@ import { Heading } from "./TOC";
 
 export default () => (
   <>
-    <Heading id="TheAlgorithm" />
+    <Heading id="Algorithm" />
 
     <p>
       The hierarchical map equation measures the per-step average code length

@@ -76,11 +76,11 @@ export default () => {
         onChange={toggle}
         label="Show advanced parameters"
       />
-      <ParameterGroup id="About" advanced={advanced} />
-      <ParameterGroup id="Input" advanced={advanced} />
-      <ParameterGroup id="Output" advanced={advanced} />
-      <ParameterGroup id="Algorithm" advanced={advanced} />
-      <ParameterGroup id="Accuracy" advanced={advanced} />
+      <ParameterGroup id="ParamsAbout" advanced={advanced} />
+      <ParameterGroup id="ParamsInput" advanced={advanced} />
+      <ParameterGroup id="ParamsOutput" advanced={advanced} />
+      <ParameterGroup id="ParamsAlgorithm" advanced={advanced} />
+      <ParameterGroup id="ParamsAccuracy" advanced={advanced} />
     </>
   );
 };
