@@ -78,7 +78,7 @@ const tocSource = {
   },
   Parameters: {
     heading: "Parameters",
-    children: ["ParamsAbout", "ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy"],
+    children: ["ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy", "ParamsAbout"],
   },
   ParamsAbout: {
     heading: "About",

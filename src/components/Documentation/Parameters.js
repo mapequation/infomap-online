@@ -77,7 +77,7 @@ export default () => {
         onChange={toggle}
         label="Show advanced parameters"
       />
-      {["ParamsAbout", "ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy"].map((id) =>
+      {["ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy", "ParamsAbout"].map((id) =>
         <ParameterGroup id={id} key={id} advanced={advanced}/>
       )}
     </>
