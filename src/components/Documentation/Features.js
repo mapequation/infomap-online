@@ -8,7 +8,7 @@ export default () => (
 
     <p>
       Infomap optimizes{" "}
-      <a href="/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
+      <a href="//mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
         The Map equation
       </a>
       , which exploits the <em>information-theoretic</em> duality between the
@@ -30,11 +30,11 @@ export default () => (
     <Header as="h3">Two-level and multi-level solutions</Header>
     <p>
       Infomap clusters tightly interconnected nodes into modules (
-      <a href="/publications.html#Rosvall-Bergstrom-2008-Maps-of-information-flow">
+      <a href="//mapequation.org/publications.html#Rosvall-Bergstrom-2008-Maps-of-information-flow">
         two-level clustering
       </a>
       ) or the optimal number of nested modules (
-      <a href="/publications.html#Rosvall-Bergstrom-2011-Multilevel">
+      <a href="//mapequation.org/publications.html#Rosvall-Bergstrom-2011-Multilevel">
         multi-level clustering
       </a>
       ).
@@ -48,12 +48,12 @@ export default () => (
       on the network both depends on where it currently is and where it just
       came from). Infomap captures second-order dynamics by performing
       first-order dynamics on <em>memory nodes</em>, see{" "}
-      <a href="/publications.html#Rosvall-Etal-2014-Memory">
+      <a href="//mapequation.org/publications.html#Rosvall-Etal-2014-Memory">
         Memory in network flows and its effects on spreading dynamics and
         community detection
       </a>{" "}
       and{" "}
-      <a href="/apps/sparse-memory-network/index.html">
+      <a href="//mapequation.org/apps/sparse-memory-network/index.html">
         this interactive storyboard
       </a>
       .
@@ -73,12 +73,12 @@ export default () => (
       Infomap can identify (overlapping) modules in{" "}
       <em>multilayer (multiplex) networks</em> that may not be identified in a
       single aggregated network or by analyzing the layers separately. See{" "}
-      <a href="/publications.html#Domenico-Etal-2015-Multiplex">
+      <a href="//mapequation.org/publications.html#Domenico-Etal-2015-Multiplex">
         Identifying modular flows on multilayer networks reveals highly
         overlapping organization in interconnected systems
       </a>{" "}
       and{" "}
-      <a href="/apps/multilayer-network/index.html">
+      <a href="//mapequation.org/apps/multilayer-network/index.html">
         this interactive storyboard
       </a>
       .
