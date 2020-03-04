@@ -1,5 +1,6 @@
 import React from "react";
-import { Header, List } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
+
 
 const tocSource = {
   Infomap: {
@@ -69,7 +70,7 @@ const tocSource = {
     heading: "Accuracy",
   },
   Changelog: {
-    heading: "Changelog"
+    heading: "Changelog",
   },
   Features: {
     heading: "Features",
@@ -92,11 +93,9 @@ const tocSource = {
   },
 };
 
-const toc = enhanceToc(tocSource);
-
-function enhanceToc(toc) {
-  const ids = Object.keys(toc);
-  const tree = toc;
+const toc = (function (tocSource) {
+  const ids = Object.keys(tocSource);
+  const tree = tocSource;
 
   // set parents and child id
   ids.forEach(id => {
@@ -105,8 +104,9 @@ function enhanceToc(toc) {
       const child = tree[childId];
       child.parent = id;
       child.childId = i + 1;
-    })
+    });
   });
+
   // set levels
   ids.forEach(id => {
     const item = tree[id];
@@ -117,10 +117,11 @@ function enhanceToc(toc) {
       item.level += 1;
     }
   });
+
   // set child ids of top nodes
-  ids.filter(id => tree[id].level === 1).forEach((id, i) => {
-    tree[id].childId = i + 1;
-  });
+  ids.filter(id => tree[id].level === 1)
+    .forEach((id, i) => tree[id].childId = i + 1);
+
   // set tree ids
   ids.forEach(id => {
     const item = tree[id];
@@ -133,8 +134,9 @@ function enhanceToc(toc) {
     }
     item.treeId = childIds.join(".");
   });
+
   return tree;
-}
+})(tocSource);
 
 export const Heading = ({ id }) => {
   const { level, heading } = toc[id];
@@ -143,65 +145,40 @@ export const Heading = ({ id }) => {
       <a href={`#${id}`}>{heading}</a>
     </Header>
   );
-}
+};
 
 const Item = ({ id, toc, level, maxLevel }) => {
   const item = toc[id];
   if (item.hideInToc || (maxLevel && item.level > maxLevel)) {
     return null;
   }
-  // const { level } = item;
+
   return (
     <li className="tocItem" id={item.treeId} style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}>
       <Header as={`h${level + 2}`} className="liHeader" style={{ marginBottom: 0 }}>
-        <span style={{ fontWeight: 300, marginRight: '0.25em' }}>{item.treeId}</span>
+        <span style={{ fontWeight: 300, marginRight: "0.25em" }}>{item.treeId}</span>
         <a href={`#${id}`}>{item.heading}</a>
       </Header>
       <Items ids={item.children} toc={toc} level={level + 1} maxLevel={maxLevel}/>
     </li>
   );
-  // return (
-  //   <List.Item as="li" className="tocItem" style={{ marginTop: level * 2, marginBottom: level * 2 }}>
-  //     <Header as={`h${level + 2}`}>
-  //       <a href={`#${item.id}`}>{item.heading}</a>
-  //     </Header>
-  //     <Items ids={item.children} toc={toc}/>
-  //   </List.Item>
-  // );
-  // return (
-  //   <List.Item as={`h${level + 2}`} className="tocItem" style={{ marginTop: level * 2, marginBottom: level * 2, padding: 0, marginLeft: 0, fontWeight: 300 }}>
-  //     <a href={`#${item.id}`}>{item.heading}</a>
-  //     <Items ids={item.children} toc={toc}/>
-  //   </List.Item>
-  // );
 };
 
-function Items({ ids, toc, level=1, maxLevel }) {
-  if (!ids) { return null; }
-  // const level = toc[ids[0]].level;
-  // return (
-  //   <List ordered as="ol" className={`tocList tocList${level}`} >
-  //     {ids.map(id => (
-  //       <Item key={id} id={id} toc={toc} />
-  //     ))}
-  //   </List>
-  // );
+const Items = ({ ids, toc, level = 1, maxLevel }) => {
+  if (!ids) return null;
   return (
-    <ol className={`tocList tocList${level}`} >
+    <ol className={`tocList tocList${level}`}>
       {ids.map(id => (
-        <Item key={id} id={id} toc={toc} level={level} maxLevel={maxLevel} />
+        <Item key={id} id={id} toc={toc} level={level} maxLevel={maxLevel}/>
       ))}
     </ol>
   );
-}
+};
 
 export default () => {
   const topLevelIds = Object.keys(toc)
     .filter(id => toc[id].level === 1);
-    // <Header as="h2">Table of contents</Header>
   return (
-    <>
-      <Items ids={topLevelIds} toc={toc} maxLevel={3} />
-    </>
+    <Items ids={topLevelIds} toc={toc} maxLevel={3}/>
   );
 };
