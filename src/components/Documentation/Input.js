@@ -1,4 +1,5 @@
 import React from "react";
+import { Message } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./TOC";
 
@@ -85,9 +86,9 @@ export default () => {
       </p>
 
       <p>
-        The bipartite network format uses prefixes <code>f</code> and
-        <code>n</code> for features and nodes, respectively. The bipartite
-        network can be provided both with node names:
+        The bipartite format uses the heading <code>*Bipartite N</code> where <code>N</code> is
+        the first node id of the second node type.
+        The bipartite network can be provided both with node names:
       </p>
 
       <Code># A bipartite network with node names<br/>
@@ -95,28 +96,27 @@ export default () => {
         1 "Node 1"<br/>
         2 "Node 2"<br/>
         3 "Node 3"<br/>
-        4 "Node 4"<br/>
-        5 "Node 5"<br/>
-        *Edges 6<br/>
-        #feature node [weight]<br/>
-        f1 n1 2<br/>
-        f1 n2 2<br/>
-        f1 n3 1<br/>
-        f2 n3 1<br/>
-        f2 n4 2<br/>
-        f2 n5 2
+        4 "Feature 1"<br/>
+        5 "Feature 2"<br/>
+        # set bipartite start id to 4<br/>
+        *Bipartite 4<br/>
+        1 4 1<br/>
+        1 5 1<br/>
+        2 4 1<br/>
+        2 5 1<br/>
+        3 5 1
       </Code>
 
       <p>and in the link list format:</p>
 
       <Code># A bipartite network in link list format<br/>
-        #feature node [weight]<br/>
-        f1 n1 2<br/>
-        f1 n2 2<br/>
-        f1 n3 1<br/>
-        f2 n3 1<br/>
-        f2 n4 2<br/>
-        f2 n5 2
+        # set bipartite start id to 4<br/>
+        *Bipartite 4<br/>
+        1 4 1<br/>
+        1 5 1<br/>
+        2 4 1<br/>
+        2 5 1<br/>
+        3 5 1
       </Code>
 
       <Heading id="InputMultilayer" />
@@ -150,27 +150,14 @@ export default () => {
         2 4 1 2 1
       </Code>
 
+      <Message info>
+        The <code>*Multilayer</code> heading no longer optional in Infomap v1.
+      </Message>
+
       <p>
         The <code>weight</code> column is optional. Links without the last
         column will get weight <code>1.0</code> by default.
       </p>
-
-      <p>
-        If no heading (beginning with <code>*</code>) is given, the
-        multilayer format assumes <code>*Multilayer</code> link format:
-      </p>
-
-      <Code># A network in a general multilayer format<br/>
-        #layer node layer node [weight]<br/>
-        1 1 1 2 2<br/>
-        1 1 2 2 1<br/>
-        1 2 1 1 1<br/>
-        1 3 2 2 1<br/>
-        2 2 1 3 1<br/>
-        2 3 2 2 1<br/>
-        2 4 2 1 2<br/>
-        2 4 1 2 1
-      </Code>
 
       <p>
         The multilayer format above gives full control of the dynamics, and
