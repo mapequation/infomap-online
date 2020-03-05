@@ -41,8 +41,10 @@ const parseLine = line => {
   return buff;
 }
 
-export default ({ children }) => {
-  const lines = children.split("\n");
+export default ({ network }) => {
+  if (!network) return null;
+
+  const lines = network.split("\n");
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];

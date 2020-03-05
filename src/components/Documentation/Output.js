@@ -24,14 +24,14 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight>
-          {`# v1.0.6
+        <Highlight
+          network={`# v1.0.6
 # ./Infomap network.net . --ftree --clu
 # started at 2020-03-04 15:38:35
 # completed in 0.114 s
 # codelength 2.32073 bits
 # relative codelength savings 9.22792%`}
-        </Highlight>
+        />
       </Code>
 
       <p>
@@ -64,9 +64,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight>
-          {store.outputFormat('tree')}
-        </Highlight>
+        <Highlight network={store.outputFormat('tree')} />
       </Code>
 
       <p>
@@ -98,9 +96,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight>
-          {store.outputFormat('ftreeLinks')}
-        </Highlight>
+        <Highlight network={store.outputFormat('ftreeLinks')} />
       </Code>
 
       <p>
@@ -135,9 +131,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight>
-          {store.outputFormat('clu')}
-        </Highlight>
+        <Highlight network={store.outputFormat('clu')} />
       </Code>
 
       <p>
