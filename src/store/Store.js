@@ -1,5 +1,6 @@
 import { decorate, observable, action } from "mobx";
 import * as networks from "./networks";
+import * as outputFormats from "./outputFormats";
 
 // export default class Store {
 //   @observable network = networks.initial;
@@ -17,13 +18,12 @@ import * as networks from "./networks";
 
 class Store {
   network = networks.initial;
-  setNetwork = (data) => {
-    this.network = data;
-  }
 
-  exampleNetwork = (name) => {
-    return networks[name];
-  }
+  setNetwork = (data) => this.network = data;
+
+  exampleNetwork = (name) =>networks[name];
+
+  outputFormat = (name) => outputFormats[name];
 
   runExample = (name) => {
     console.log(`Run ${name}...`);
