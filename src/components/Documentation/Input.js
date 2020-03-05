@@ -1,5 +1,5 @@
 import React from "react";
-import { Message, Label, Segment } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./TOC";
 import store from "../../store";
@@ -31,10 +31,8 @@ export default () => {
         specifying a set of links:
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("linkList")} />
-      }>
-        { store.exampleNetwork("linkList") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("linkList") }}>
+        {store.exampleNetwork("linkList")}
       </Code>
 
       <p>
@@ -55,10 +53,8 @@ export default () => {
         the file:
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("pajek")} />
-      }>
-      { store.exampleNetwork("pajek") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("pajek") }}>
+        {store.exampleNetwork("pajek")}
       </Code>
 
       <p>
@@ -82,18 +78,14 @@ export default () => {
         The bipartite network can be provided both with node names:
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("bipartite")} />
-      }>
-      { store.exampleNetwork("bipartite") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartite") }}>
+        {store.exampleNetwork("bipartite")}
       </Code>
 
       <p>and in the link list format:</p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("bipartiteLinkList")} />
-      }>
-      { store.exampleNetwork("bipartiteLinkList") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartiteLinkList") }}>
+        {store.exampleNetwork("bipartiteLinkList")}
       </Code>
 
       <Heading id="InputMultilayer" />
@@ -109,10 +101,8 @@ export default () => {
         between nodes for each layer:
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("multilayer")} />
-      }>
-      { store.exampleNetwork("multilayer") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayer") }}>
+        {store.exampleNetwork("multilayer")}
       </Code>
 
       <Message info>
@@ -158,10 +148,8 @@ export default () => {
         To define links like this, use the <code>*Intra</code> and <code>*Inter</code> headings:
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("multilayerIntraInter")} />
-      }>
-      { store.exampleNetwork("multilayerIntraInter") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayerIntraInter") }}>
+        {store.exampleNetwork("multilayerIntraInter")}
       </Code>
 
       <p>
@@ -181,10 +169,8 @@ export default () => {
         variable order.
       </p>
 
-      <Code label={
-        <Label as="a" attached="top" content="Run example" onClick={() => store.runExample("states")} />
-      }>
-      { store.exampleNetwork("states") }
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("states") }}>
+        {store.exampleNetwork("states")}
       </Code>
 
       <p>

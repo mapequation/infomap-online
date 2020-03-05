@@ -1,9 +1,9 @@
 import React from "react";
-import { Segment } from "semantic-ui-react";
+import { Label, Segment } from "semantic-ui-react";
 
 export default ({ children, label }) => (
   <Segment as="pre" style={{ boxShadow: 'none' }}>
-    { label }
+    {label != null ? <Label {...label} /> : null}
     <code style={{ fontSize: "1em" }}>
       {children}
     </code>
