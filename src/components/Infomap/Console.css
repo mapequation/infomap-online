@@ -1,39 +1,9 @@
-
-/* .stdoutContainer {
-  overflow-y: auto;
-  min-height: 200px;
-
-  color: white;
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 10px;
-  height: 100%;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-} */
-
-
-.Console {
-  /* border: 1px solid #999; */
-  padding: 0 14px;
-  background-color: white;
-}
-
-.console-placeholder {
+.console .placeholder {
   margin-top: 11px;
   color: #ccc;
 }
 
-.stdoutContainer {
+.console .container {
   overflow-y: auto;
   height: 350px;
-}
-
-.code {
-  /* font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; */
-  font-size: 12px;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  background-color: transparent;
-  outline: none;
-  padding: 0;
 }
