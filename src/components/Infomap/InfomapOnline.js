@@ -11,7 +11,6 @@ import {
   Form,
   Message,
   Menu,
-  Image,
 } from "semantic-ui-react";
 import Infomap, { infomapParameters } from "@mapequation/infomap";
 import store from "../../store";
@@ -231,14 +230,6 @@ export default observer(class InfomapOnline extends React.Component {
 
     return (
       <Grid container stackable>
-        <Grid.Column width={16} textAlign="center">
-          <Image
-            src="https://www.mapequation.org/assets/img/schematic-mapgenerator.svg"
-            alt="schematic-mapgenerator"
-            centered
-            style={{ maxWidth: 900 }}
-          />
-        </Grid.Column>
         <Grid.Column width={16} textAlign="center">
           <Steps
             firstCompleted={!!store.network}
