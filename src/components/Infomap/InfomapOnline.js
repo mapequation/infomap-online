@@ -1,8 +1,7 @@
 import React from "react";
-import { observer } from "mobx-react"
+import { observer } from "mobx-react";
 import { saveAs } from "file-saver";
 import localforage from "localforage";
-import arg from "arg";
 import {
   Button,
   Header,
@@ -12,57 +11,25 @@ import {
   Message,
   Menu,
 } from "semantic-ui-react";
-import Infomap, { infomapParameters } from "@mapequation/infomap";
+import Infomap from "@mapequation/infomap";
 import store from "../../store";
 import Steps from "./Steps";
 import Console from "./Console";
 import NavigatorButton from "./NavigatorButton";
 
-const argSpec = getArgSpec();
-
-function getArgSpec() {
-  const spec = {};
-  infomapParameters.forEach(param => {
-    const { short, long, shortType, incremental } = param;
-    if (short) {
-      spec[short] = long;
-    }
-    switch (shortType || "") {
-      case "f": // float
-      case "n": // integer
-      case "P": // probability
-        spec[long] = Number;
-        break;
-      case "s": // string
-      case "p": // path
-      case "o": // option
-      case "l": // list
-        spec[long] = String;
-        break;
-      case "": // no argument flag
-      default:
-        spec[long] = incremental ? arg.COUNT : Boolean;
-    }
-  });
-  return spec;
-}
 
 export default observer(class InfomapOnline extends React.Component {
   state = {
-    network: store.network,
-    args: "--ftree --clu",
-    argsError: "",
-    output: [],
     name: "network",
-    running: false,
-    completed: false,
+    output: [],
     clu: "",
     tree: "",
     ftree: "",
-    activeOutput: "tree",
-    downloaded: false,
+    running: false,
+    completed: false,
     loading: false, // True while loading input network
-    options: {},
+    downloaded: false,
+    activeOutput: "tree", // Current output tab
     infomapError: "",
   };
 
@@ -100,28 +67,25 @@ export default observer(class InfomapOnline extends React.Component {
 
     const urlSearchParams = URLSearchParams || window.URLSearchParams;
     const urlParams = new urlSearchParams(window.location.search);
-    const args = urlParams.get('args');
+    const args = urlParams.get("args");
 
     if (args) {
       this.onChangeArgs(null, { value: args });
-    } else if (this.state.args) {
-      this.onChangeArgs(null, { value: this.state.args });
     }
-  }
-
-  onChangeNetwork = (event, data) => {
-    store.setNetwork(data.value);
-    this.setState({
-      network: data.value,
-      completed: false,
-      downloaded: false,
-      name: data.name || this.state.name,
-      loading: false,
-      infomapError: "",
-    });
   };
 
-  onLoadNetwork = (event, data) => {
+  onChangeNetwork = (event, { value, name }) => {
+    store.setNetwork(value);
+    this.setState(prev => ({
+      name: name || prev.name,
+      completed: false,
+      downloaded: false,
+      loading: false,
+      infomapError: "",
+    }));
+  };
+
+  onLoadNetwork = (event) => {
     this.setState({ loading: true });
 
     const { files } = event.target;
@@ -130,9 +94,9 @@ export default observer(class InfomapOnline extends React.Component {
     let name = "";
 
     if (file && file.name) {
-      const nameParts = file.name.split('.');
+      const nameParts = file.name.split(".");
       if (nameParts.length > 1) nameParts.pop();
-      name = nameParts.join('.');
+      name = nameParts.join(".");
     }
 
     const reader = new FileReader();
@@ -143,23 +107,7 @@ export default observer(class InfomapOnline extends React.Component {
     reader.readAsText(file, "utf-8");
   };
 
-  onChangeArgs = (event, data) => {
-    const argv = data.value.split(/\s/);
-    let argsError = "";
-    let options = this.state.options;
-
-    try {
-      options = arg(argSpec, { argv, permissive: false });
-    } catch (err) {
-      argsError = err.message;
-    }
-
-    if (!argsError) {
-      // TODO: Check if required arguments are valid
-    }
-
-    this.setState({ args: data.value, argsError, options });
-  };
+  onChangeArgs = (event, { value }) => store.setArgs(value);
 
   run = () => {
     this.setState({ output: [] });
@@ -170,7 +118,7 @@ export default observer(class InfomapOnline extends React.Component {
     }
 
     try {
-      this.runId = this.infomap.run(store.network, this.state.args);
+      this.runId = this.infomap.run(store.network, store.args);
     } catch (e) {
       this.setState({
         running: false,
@@ -198,7 +146,21 @@ export default observer(class InfomapOnline extends React.Component {
   onCopyClusters = () => this.setState({ downloaded: true });
 
   render() {
-    const { clu, ftree, tree } = this.state;
+    const {
+      name,
+      clu,
+      ftree,
+      tree,
+      completed,
+      running,
+      loading,
+      downloaded,
+      infomapError,
+      activeOutput,
+      output
+    } = this.state;
+
+    const { args, argsError, network } = store;
 
     const styles = {
       segment: { borderRadius: 5, padding: "10px 0 0 0" },
@@ -207,12 +169,12 @@ export default observer(class InfomapOnline extends React.Component {
 
     const childProps = {
       header: { as: "h2", className: "light" }
-    }
+    };
 
-    const consoleContent = this.state.output.join("\n");
-    const hasInfomapError = !!this.state.infomapError;
-    const hasArgsError = !!this.state.argsError;
-    const outputValue = this.state[this.state.activeOutput];
+    const consoleContent = output.join("\n");
+    const hasInfomapError = !!infomapError;
+    const hasArgsError = !!argsError;
+    const outputValue = this.state[activeOutput];
     const haveOutput = clu || tree || ftree;
 
     const outputMenuItems = ["clu", "tree", "ftree"]
@@ -220,11 +182,11 @@ export default observer(class InfomapOnline extends React.Component {
       .map(name => ({
         key: name,
         name,
-        active: this.state.activeOutput === name,
+        active: activeOutput === name,
       }));
 
     const argsFormError = hasArgsError ? {
-      content: this.state.argsError,
+      content: argsError,
       pointing: "above"
     } : false;
 
@@ -232,12 +194,12 @@ export default observer(class InfomapOnline extends React.Component {
       <Grid container stackable>
         <Grid.Column width={16} textAlign="center">
           <Steps
-            firstCompleted={!!store.network}
-            firstActive={!store.network}
-            secondCompleted={this.state.completed || this.state.running}
-            secondActive={store.network && !this.state.completed}
-            thirdCompleted={this.state.downloaded}
-            thirdActive={this.state.completed}
+            firstCompleted={!!network}
+            firstActive={!network}
+            secondCompleted={completed || running}
+            secondActive={network && !completed}
+            thirdCompleted={downloaded}
+            thirdActive={completed}
           />
         </Grid.Column>
 
@@ -246,11 +208,11 @@ export default observer(class InfomapOnline extends React.Component {
           <Segment
             basic
             style={styles.segment}
-            loading={this.state.loading}
+            loading={loading}
           >
             <Form>
               <Form.TextArea
-                value={store.network}
+                value={network}
                 onChange={this.onChangeNetwork}
                 placeholder="# Paste your network here"
                 style={styles.textArea}
@@ -279,7 +241,7 @@ export default observer(class InfomapOnline extends React.Component {
               <Message
                 error
                 header="Infomap error"
-                content={this.state.infomapError}
+                content={infomapError}
               />
             </Form>
 
@@ -287,14 +249,14 @@ export default observer(class InfomapOnline extends React.Component {
               <Form.Group widths="equal">
                 <Form.Input
                   placeholder="Optional command line arguments"
-                  value={this.state.args}
+                  value={args}
                   onChange={this.onChangeArgs}
                   error={argsFormError}
                   action={
                     <Form.Button
                       primary
-                      disabled={hasArgsError || this.state.running}
-                      loading={this.state.running}
+                      disabled={hasArgsError || running}
+                      loading={running}
                       onClick={this.run}
                       content="Run"
                     />
@@ -327,11 +289,11 @@ export default observer(class InfomapOnline extends React.Component {
             <Button
               disabled={!haveOutput}
               onClick={this.onDownloadOutputClick}
-              content={`Download .${this.state.activeOutput}`}
+              content={`Download .${activeOutput}`}
             />
             <NavigatorButton
-              href={`//www.mapequation.org/navigator?infomap=${this.state.name}.ftree`}
-              disabled={!this.state.ftree}
+              href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
+              disabled={!ftree}
             />
           </Segment>
         </Grid.Column>
