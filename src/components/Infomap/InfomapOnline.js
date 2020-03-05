@@ -3,27 +3,24 @@ import { observer } from "mobx-react"
 import localforage from "localforage";
 import {
   Button,
-  Step,
   Header,
   Grid,
   Segment,
   Form,
-  Checkbox,
   Message,
   Menu,
   Image,
-  Item,
-  Table,
 } from "semantic-ui-react";
 import { saveAs } from "file-saver";
 import arg from "arg";
 import produce from "immer";
-import Console from "./Console";
-import Infomap,  { infomapParameters } from "@mapequation/infomap";
+import Infomap, { infomapParameters } from "@mapequation/infomap";
 import store from "../../store";
+import Steps from "./Steps";
+import Console from "./Console";
+import NavigatorButton from "./NavigatorButton";
 
 
-console.log(infomapParameters)
 export const SAMPLE_NETWORK = `#source target [weight]
 1 2
 1 3
@@ -52,7 +49,7 @@ export const SAMPLE_NETWORK = `#source target [weight]
 //     }
 //     switch (longType) {
 //       case 'integer':
-//         param.validate = (arg) => 
+//         param.validate = (arg) =>
 //     }
 //   })
 //   .reduce((validator, param) => {
@@ -217,17 +214,11 @@ export default observer(class InfomapOnline extends React.Component {
     this.setState({ options, args, argsError: "" });
   };
 
-  onClickRun = () => {
-    this.run();
-  };
+  onClickRun = () => this.run();
 
-  onClickCancelRun = () => {
-    this.clearInfomap(false);
-  };
+  onClickCancelRun = () => this.clearInfomap(false);
 
-  onClickClearConsole = () => {
-    this.setState({ output: [] });
-  };
+  onClickClearConsole = () => this.setState({ output: [] });
 
   clearInfomap = (clearOutput = true) => {
     if (this.worker && this.worker.terminate) {
@@ -262,19 +253,13 @@ export default observer(class InfomapOnline extends React.Component {
     });
   };
 
-  onInfomapData = content => {
-    this.setState({
-      output: [...this.state.output, content],
-    });
-  }
+  onInfomapData = content => this.setState({ output: [...this.state.output, content] });
 
-  onInfomapError = content => {
-    this.setState({
-      infomapError: content,
-      output: [...this.state.output, content],
-      running: false,
-    });
-  }
+  onInfomapError = content => this.setState({
+    infomapError: content,
+    output: [...this.state.output, content],
+    running: false,
+  });
 
   onInfomapFinished = content => {
     const { clu, tree, ftree } = content;
@@ -289,9 +274,7 @@ export default observer(class InfomapOnline extends React.Component {
     });
   }
 
-  store = async ftree => {
-    await localforage.setItem("ftree", ftree);
-  };
+  store = async ftree => await localforage.setItem("ftree", ftree);
 
   haveOutput = () => {
     const { clu, tree, ftree } = this.state;
@@ -312,9 +295,7 @@ export default observer(class InfomapOnline extends React.Component {
     return items;
   };
 
-  onOutputMenuClick = (e, { name }) => {
-    this.setState({ activeOutput: name });
-  };
+  onOutputMenuClick = (e, { name }) => this.setState({ activeOutput: name });
 
   onClickDownloadOutput = () => {
     const { activeOutput } = this.state;
@@ -324,12 +305,11 @@ export default observer(class InfomapOnline extends React.Component {
     this.setState({ downloaded: true });
   };
 
-  onCopyClusters = () => {
-    this.setState({ downloaded: true });
-  };
+  onCopyClusters = () => this.setState({ downloaded: true });
 
   render() {
     const { options } = this.state;
+
     return (
       <Grid container>
         <Grid.Column width={16} textAlign="center">
@@ -341,41 +321,14 @@ export default observer(class InfomapOnline extends React.Component {
           />
         </Grid.Column>
         <Grid.Column width={16} textAlign="center">
-          <Step.Group ordered>
-            <Step completed={!!store.network} active={!store.network}>
-              <Step.Content>
-                <Step.Title>Load network</Step.Title>
-                <Step.Description>
-                  Edit input field or upload file
-                </Step.Description>
-              </Step.Content>
-            </Step>
-
-            <Step
-              completed={this.state.completed || this.state.running}
-              active={store.network && !this.state.completed}
-            >
-              <Step.Content>
-                <Step.Title>Run Infomap</Step.Title>
-                <Step.Description>
-                  Toggle options or add command line arguments
-                </Step.Description>
-              </Step.Content>
-            </Step>
-
-            <Step
-              completed={this.state.downloaded}
-              active={this.state.completed}
-            >
-              <Step.Content>
-                <Step.Title>Explore map!</Step.Title>
-                <Step.Description>
-                  Save result or open in{" "}
-                  <span className="brand brand-nn">Network Navigator</span>
-                </Step.Description>
-              </Step.Content>
-            </Step>
-          </Step.Group>
+          <Steps
+            firstCompleted={!!store.network}
+            firstActive={!store.network}
+            secondCompleted={this.state.completed || this.state.running}
+            secondActive={store.network && !this.state.completed}
+            thirdCompleted={this.state.downloaded}
+            thirdActive={this.state.completed}
+          />
         </Grid.Column>
 
         <Grid.Column width={3} style={{ minHeight: 500 }}>
@@ -412,109 +365,7 @@ export default observer(class InfomapOnline extends React.Component {
             style={{ borderRadius: 5, padding: "10px 0 0 0" }}
             color="red"
           >
-            <Table basic="very">
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>
-                    <Item.Group>
-                      <Item>
-                        <Item.Content>
-                          <Item.Header as="h4" className="ui">
-                            -2, --two-level
-                          </Item.Header>
-                          <Item.Meta>
-                            Optimize for a two-level instead of a multi-level
-                            solution
-                          </Item.Meta>
-                        </Item.Content>
-                      </Item>
-                    </Item.Group>
-                  </Table.Cell>
-                  <Table.Cell collapsing>
-                    <Checkbox
-                      toggle
-                      id="--two-level"
-                      checked={!!options["--two-level"]}
-                      onChange={this.onChangeOption}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Item.Group>
-                      <Item>
-                        <Item.Content>
-                          <Item.Header as="h4" className="ui">
-                            --directed
-                          </Item.Header>
-                          <Item.Meta>
-                            Treat links as directed (default: undirected)
-                          </Item.Meta>
-                        </Item.Content>
-                      </Item>
-                    </Item.Group>
-                  </Table.Cell>
-                  <Table.Cell collapsing>
-                    <Checkbox
-                      toggle
-                      id="--directed"
-                      checked={!!options["--directed"]}
-                      onChange={this.onChangeOption}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Item.Group>
-                      <Item>
-                        <Item.Content>
-                          <Item.Header as="h4" className="ui">
-                            --ftree
-                          </Item.Header>
-                          <Item.Meta>
-                            Write a ftree file with the modular hierarchy including aggregated links between (nested) modules.
-                            (Used by Network Navigator)
-                          </Item.Meta>
-                        </Item.Content>
-                      </Item>
-                    </Item.Group>
-                  </Table.Cell>
-                  <Table.Cell collapsing>
-                    <Checkbox
-                      toggle
-                      id="--ftree"
-                      checked={!!options["--ftree"]}
-                      onChange={this.onChangeOption}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Item.Group>
-                      <Item>
-                        <Item.Content>
-                          <Item.Header as="h4" className="ui">
-                            --clu
-                          </Item.Header>
-                          <Item.Meta>
-                            Write a clu file with the top cluster ids for each node.
-                          </Item.Meta>
-                        </Item.Content>
-                      </Item>
-                    </Item.Group>
-                  </Table.Cell>
-                  <Table.Cell collapsing>
-                    <Checkbox
-                      toggle
-                      id="--clu"
-                      checked={!!options["--clu"]}
-                      onChange={this.onChangeOption}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <div style={{ marginTop: -20, marginBottom: 10 }}>
+            <div style={{ marginBottom: 10 }}>
               <a href="#Parameters">More parameters</a>
             </div>
             <Form>
@@ -622,37 +473,10 @@ export default observer(class InfomapOnline extends React.Component {
                 </React.Fragment>
               ) : null}
             </Form>
-            <Button
-              disabled={!this.state.ftree}
-              as="a"
+            <NavigatorButton
               href={`//www.mapequation.org/navigator?infomap=${this.state.name}.ftree`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ padding: 10, marginTop: 20 }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: 300, marginBottom: 5 }}>
-                  Explore in
-                </div>
-                <Image
-                  size="tiny"
-                  src="https://www.mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
-                />
-                <div
-                  className="brand"
-                  style={{ fontSize: 18, lineHeight: 1.1, marginTop: 5 }}
-                >
-                  <span className="brand-infomap">Infomap</span>{" "}
-                  <span className="brand-nn">Network Navigator</span>
-                </div>
-              </div>
-            </Button>
+              disabled={!this.state.ftree}
+            />
           </Segment>
         </Grid.Column>
       </Grid>
