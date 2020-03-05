@@ -9,10 +9,27 @@ const argSpec = getArgSpec(infomapParameters);
 
 class Store {
   network = networks.initial;
+  params = infomapParameters;
 
-  args = "--ftree --clu";
+  args = "";
   argsError = "";
   hasArgsError = false;
+
+  getParamsForGroup = (group) =>
+    Object.values(this.params).filter(param => param.group === group);
+
+  toggle = param => {
+    if (!param) return;
+    param.active = param.active === undefined ? true : !param.active;
+    this.rebuildArgs();
+  };
+
+  rebuildArgs = () => {
+    this.args = this.params
+      .filter(param => param.active)
+      .map(param => param.short || param.long)
+      .join(" ");
+  };
 
   setArgs = (args) => {
     const argv = args.split(/\s/);
@@ -22,6 +39,13 @@ class Store {
 
     try {
       arg(argSpec, { argv, permissive: false });
+
+      this.params.forEach(param => {
+        const index = argv
+          .filter(a => a !== "")
+          .findIndex(a => a === param.short || a === param.long);
+        param.active = index > -1;
+      });
     } catch (e) {
       this.argsError = e.message;
       this.hasArgsError = true;
@@ -40,6 +64,8 @@ class Store {
 }
 
 export default decorate(Store, {
+  params: observable,
+  toggle: action,
   args: observable,
   argsError: observable,
   hasArgsError: observable,

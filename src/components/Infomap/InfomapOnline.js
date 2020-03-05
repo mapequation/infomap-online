@@ -63,6 +63,8 @@ export default observer(class InfomapOnline extends React.Component {
 
     if (args) {
       store.setArgs(args);
+    } else {
+      store.setArgs("--clu --ftree");
     }
   };
 

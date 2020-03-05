@@ -1,20 +1,15 @@
-import { infomapParameters } from "@mapequation/infomap";
 import React, { useState } from "react";
-import { Button, Checkbox, Dropdown, Icon, Input, Item } from "semantic-ui-react";
+import { observer } from "mobx-react";
+import { Button, Checkbox, Dropdown, Input, Item } from "semantic-ui-react";
 import { Heading } from "./TOC";
+import store from "../../store";
 
-
-const getParamsForGroup = (params => group =>
-  Object.values(params).filter(param => param.group === group))(
-    infomapParameters,
-  );
 
 const DropdownParameter = ({ param }) => {
   const match = param.description.match(/Options: (.*)\.$/);
   if (!(match && match[1])) return null;
 
-  const options = match[1]
-    .split(',')
+  const options = match[1].split(",")
     .map((value, key) => ({
       key,
       text: value,
@@ -28,7 +23,7 @@ const DropdownParameter = ({ param }) => {
       multiple={param.longType === "list"}
       placeholder={param.longType}
       clearable={param.default === ""}
-      defaultValue={param.default}
+      value={param.default}
     />
   );
 };
@@ -53,19 +48,17 @@ const FileInputParameter = ({ param }) => {
       />
     </Button>
   );
-}
+};
 
-const ToggleParameter = ({ param }) => {
-  const [checked, setChecked] = useState(param.default);
-
+const ToggleParameter = observer(({ param }) => {
   return (
     <Checkbox
       toggle
-      checked={checked}
-      onChange={() => setChecked(!checked)}
+      checked={param.active}
+      onChange={() => store.toggle(param)}
     />
   );
-}
+});
 
 const IncrementalParameter = ({ param }) => {
   const [value, setValue] = useState(0);
@@ -77,60 +70,52 @@ const IncrementalParameter = ({ param }) => {
   const decrement = () => {
     if (value === 0) return;
     setValue(value - 1);
-  }
+  };
 
   const increment = () => {
     if (value === maxValue) return;
     setValue(value + 1);
-  }
+  };
 
   return (
     <Button.Group>
-      <Button icon basic onClick={decrement} disabled={value === 0}>
-        <Icon name="minus" />
-      </Button>
+      <Button icon="minus" basic onClick={decrement} disabled={value === 0}/>
       <Button icon basic disabled={value === 0}>
         {value > 0 ? string.repeat(value) : string}
       </Button>
-      <Button icon basic onClick={increment} disabled={value === maxValue}>
-        <Icon name="plus" />
-      </Button>
+      <Button icon="plus" basic onClick={increment} disabled={value === maxValue}/>
     </Button.Group>
-  )
-}
+  );
+};
 
 const ParameterControl = ({ param }) => {
   if (param.longType) {
     switch (param.longType) {
       case "option":
       case "list":
-        return <DropdownParameter param={param} />;
+        //return <DropdownParameter param={param}/>;
       case "string":
       case "probability":
       case "number":
       case "integer":
-        return <InputParameter param={param} />;
+        //return <InputParameter param={param}/>;
       case "path":
-        return <FileInputParameter param={param} />;
+        //return <FileInputParameter param={param}/>;
       default:
         return null;
     }
   }
 
   if (param.incremental) {
-    return <IncrementalParameter param={param} />
+    //return <IncrementalParameter param={param}/>;
+    return null;
   }
 
-  return <ToggleParameter param={param} />;
+  return <ToggleParameter param={param}/>;
 };
 
-const ParameterGroup = ({ id, advanced }) => {
-  // Param headings are prepended with "Prams" as a namespace
-  // Remove that part
-  const match = id.match(/^Params(.*)$/);
-  const group = match && match[1] ? match[1] : id;
-
-  const params = getParamsForGroup(group)
+const ParameterGroup = ({ group, advanced }) => {
+  const params = store.getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 
@@ -139,6 +124,8 @@ const ParameterGroup = ({ id, advanced }) => {
     extra: { fontWeight: 400 },
     meta: { float: "right", marginLeft: 20 },
   };
+
+  const id = `Params${group}`;
 
   return (
     <>
@@ -168,20 +155,20 @@ const ParameterGroup = ({ id, advanced }) => {
 export default () => {
   const [advanced, setAdvanced] = useState(false);
 
-  const toggle = () => setAdvanced(!advanced);
-
   return (
     <>
-      <Heading id="Parameters" advanced={advanced} />
+      <Heading id="Parameters" advanced={advanced}/>
       <Checkbox
         toggle
         checked={advanced}
-        onChange={toggle}
+        onChange={() => setAdvanced(!advanced)}
         label="Show advanced parameters"
       />
-      {["ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy", "ParamsAbout"].map((id) =>
-        <ParameterGroup id={id} key={id} advanced={advanced} />
-      )}
+      <ParameterGroup group="Input" advanced={advanced}/>
+      <ParameterGroup group="Output" advanced={advanced}/>
+      <ParameterGroup group="Algorithm" advanced={advanced}/>
+      <ParameterGroup group="Accuracy" advanced={advanced}/>
+      <ParameterGroup group="About" advanced={advanced}/>
     </>
   );
 };
