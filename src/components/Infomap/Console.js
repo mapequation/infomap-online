@@ -1,66 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Segment } from "semantic-ui-react";
 import './Console.css';
 
 class Console extends React.Component {
-
   keepScrolling = true;
 
-  onMountStdoutContainer = el => {
-    this.stdoutContainer = el;
-  };
+  onMountContainer = el => this.container = el;
 
   componentDidUpdate() {
     if (this.props.autoScroll && this.keepScrolling) {
-      this.scrollConsoleToBottom();
+      this.scrollToBottom();
     }
   }
 
-  onScroll = () => {
-    this.keepScrolling = this.isAtBottom();
-  }
-
-  isAtBottom = () => {
-    const { scrollTop, scrollHeight, clientHeight } = this.stdoutContainer;
-    const diff = scrollHeight - clientHeight;
-    const scrollIsAtBottom = scrollTop === diff;
-    return scrollIsAtBottom;
+  scrollToBottom = () => {
+    const { scrollHeight, clientHeight } = this.container;
+    this.container.scrollTop = scrollHeight - clientHeight;
   };
 
-  scrollConsoleToBottom = () => {
-    const { scrollHeight, clientHeight } = this.stdoutContainer;
+  onScroll = () => this.keepScrolling = this.isAtBottom();
+
+  isAtBottom = () => {
+    const { scrollTop, scrollHeight, clientHeight } = this.container;
     const diff = scrollHeight - clientHeight;
-    this.stdoutContainer.scrollTop = diff;
+    return scrollTop === diff;
   };
 
   render() {
-    const { value } = this.props;
+    const { content } = this.props;
+
     return (
-      <div
-        className="Console stdoutContainer"
-        ref={this.onMountStdoutContainer}
-        onScroll={this.onScroll}
-      >
-        <div>
-          { !value ? <div className="console-placeholder">{this.props.placeholder}</div> : null }
-          <code className="code">{value}</code>
+      <Segment padded style={{ boxShadow: "none" }} className="console">
+        <div
+          className="container"
+          ref={this.onMountContainer}
+          onScroll={this.onScroll}
+        >
+          <div>
+            {!content ? <div className="placeholder">{this.props.placeholder}</div> : null}
+            <code>{content}</code>
+          </div>
         </div>
-      </div>
+      </Segment>
     );
   }
 }
 
 Console.propTypes = {
-  value: PropTypes.string,
-  className: PropTypes.string,
+  content: PropTypes.string,
   placeholder: PropTypes.string,
-  style: PropTypes.object,
   autoScroll: PropTypes.bool.isRequired,
 };
 
 Console.defaultProps = {
-  className: "",
-  style: {},
   autoScroll: true,
 }
 

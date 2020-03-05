@@ -419,9 +419,8 @@ export default observer(class InfomapOnline extends React.Component {
                 ) : null}
               </Form.Group>
               <Console
-                value={this.state.output.join("\n")}
+                content={this.state.output.join("\n")}
                 placeholder="Infomap command line output will be printed here"
-                style={{ minHeight: 400 }}
               />
               <div
                 style={{
