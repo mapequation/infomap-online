@@ -1,13 +1,14 @@
 import React from "react";
 import { Message } from "semantic-ui-react";
 import Code from "../Code";
+import Highlight from "../Highlight";
 import { Heading } from "./TOC";
 
 
 export default () => {
   return (
     <>
-      <Heading id="Output"/>
+      <Heading id="Output" />
 
       <p>
         By default, Infomap outputs a <a href="OutputTree">.tree</a>-file if no other output
@@ -21,19 +22,26 @@ export default () => {
         and resulting codelength:
       </p>
 
-      <Code># v1.0.6<br/>
-        # ./Infomap network.net . --ftree --clu<br/>
-        # started at 2020-03-04 15:38:35<br/>
-        # completed in 0.114 s<br/>
-        # codelength 2.32073 bits<br/>
-        # relative codelength savings 9.22792%
+      <Code>
+        <Highlight>
+          {`# v1.0.6
+# ./Infomap network.net . --ftree --clu
+# started at 2020-03-04 15:38:35
+# completed in 0.114 s
+# codelength 2.32073 bits
+# relative codelength savings 9.22792%`}
+        </Highlight>
       </Code>
 
       <p>
         The relative codelength savings <i>S<sub>L</sub></i> is calculated as
-        <p style={{ margin: "0.2em 0 0.2em 2em" }}>
-          <i>S<sub>L</sub></i> = 100 &middot; (1 &minus; <i>L</i>/<i>L<sub>1</sub></i>)
-        </p>
+      </p>
+
+      <p style={{ margin: "-0.8em 0 0.2em 2em" }}>
+        <i>S<sub>L</sub></i> = 100 &middot; (1 &minus; <i>L</i>/<i>L<sub>1</sub></i>)
+      </p>
+
+      <p>
         where <i>L</i> is the codelength and <i>L<sub>1</sub></i> is the one-level codelength.
       </p>
 
@@ -41,7 +49,7 @@ export default () => {
         The Map format used by the old flash Network Navigator is deprecated and not available in Infomap 1.0.
       </Message>
 
-      <Heading id="OutputTree"/>
+      <Heading id="OutputTree" />
       <p>
         <code>--tree</code>, <code>-o tree</code>
       </p>
@@ -54,13 +62,15 @@ export default () => {
         attempts. The output format has the pattern:
       </p>
 
-      <Code># path flow name node_id<br/>
-        1:1 0.214286 "1" 1<br/>
-        1:2 0.142857 "2" 2<br/>
-        1:3 0.142857 "3" 3<br/>
-        2:1 0.214286 "4" 4<br/>
-        2:2 0.142857 "5" 5<br/>
-        2:3 0.142857 "6" 6
+      <Code>
+        <Highlight>{`# path flow name node_id
+1:1 0.214286 "1" 1
+1:2 0.142857 "2" 2
+1:3 0.142857 "3" 3
+2:1 0.214286 "4" 4
+2:2 0.142857 "5" 5
+2:3 0.142857 "6" 6`}
+        </Highlight>
       </Code>
 
       <p>
@@ -78,7 +88,7 @@ export default () => {
         original network file.
       </p>
 
-      <Heading id="OutputFtree"/>
+      <Heading id="OutputFtree" />
       <p>
         <code>--ftree</code>, <code>-o ftree</code>
       </p>
@@ -91,25 +101,28 @@ export default () => {
         formatted as:
       </p>
 
-      <Code>*Links undirected<br/>
-        #*Links path enterFlow exitFlow numEdges numChildren<br/>
-        *Links root 0 0 2 2<br/>
-        1 2 0.0714286<br/>
-        2 1 0.0714286<br/>
-        *Links 1 0.0714286 0.0714286 6 3<br/>
-        1 2 0.0714286<br/>
-        1 3 0.0714286<br/>
-        2 1 0.0714286<br/>
-        2 3 0.0714286<br/>
-        3 1 0.0714286<br/>
-        3 2 0.0714286<br/>
-        *Links 2 0.0714286 0.0714286 6 3<br/>
-        1 2 0.0714286<br/>
-        1 3 0.0714286<br/>
-        2 1 0.0714286<br/>
-        2 3 0.0714286<br/>
-        3 1 0.0714286<br/>
-        3 2 0.0714286
+      <Code>
+        <Highlight>
+          {`*Links undirected
+#*Links path enterFlow exitFlow numEdges numChildren
+*Links root 0 0 2 2
+1 2 0.0714286
+2 1 0.0714286
+*Links 1 0.0714286 0.0714286 6 3
+1 2 0.0714286
+1 3 0.0714286
+2 1 0.0714286
+2 3 0.0714286
+3 1 0.0714286
+3 2 0.0714286
+*Links 2 0.0714286 0.0714286 6 3
+1 2 0.0714286
+1 3 0.0714286
+2 1 0.0714286
+2 3 0.0714286
+3 1 0.0714286
+3 2 0.0714286`}
+        </Highlight>
       </Code>
 
       <p>
@@ -128,7 +141,7 @@ export default () => {
         in the module header line, as defined in the commented line above.
       </p>
 
-      <Heading id="OutputClu"/>
+      <Heading id="OutputClu" />
       <p>
         <code>--clu</code>, <code>-o clu</code>
       </p>
@@ -143,14 +156,16 @@ export default () => {
         The format has the pattern:
       </p>
 
-      <Code># module level: 1<br/>
-        # id module flow<br/>
-        1 1 0.214286<br/>
-        2 1 0.142857<br/>
-        3 1 0.142857<br/>
-        4 2 0.214286<br/>
-        5 2 0.142857<br/>
-        6 2 0.142857
+      <Code>
+        <Highlight>{`# module level: 1
+# id module flow
+1 1 0.214286
+2 1 0.142857
+3 1 0.142857
+4 2 0.214286
+5 2 0.142857
+6 2 0.142857`}
+        </Highlight>
       </Code>
 
       <p>

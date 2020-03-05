@@ -1,6 +1,7 @@
 import React from "react";
 import { Message } from "semantic-ui-react";
 import Code from "../Code";
+import Highlight from "../Highlight";
 import { Heading } from "./TOC";
 import store from "../../store";
 
@@ -32,7 +33,9 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("linkList") }}>
-        {store.exampleNetwork("linkList")}
+        <Highlight>
+          {store.exampleNetwork("linkList")}
+        </Highlight>
       </Code>
 
       <p>
@@ -54,7 +57,9 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("pajek") }}>
-        {store.exampleNetwork("pajek")}
+        <Highlight>
+          {store.exampleNetwork("pajek")}
+        </Highlight>
       </Code>
 
       <p>
@@ -79,13 +84,17 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartite") }}>
-        {store.exampleNetwork("bipartite")}
+        <Highlight>
+          {store.exampleNetwork("bipartite")}
+        </Highlight>
       </Code>
 
       <p>and in the link list format:</p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartiteLinkList") }}>
-        {store.exampleNetwork("bipartiteLinkList")}
+        <Highlight>
+          {store.exampleNetwork("bipartiteLinkList")}
+        </Highlight>
       </Code>
 
       <Heading id="InputMultilayer" />
@@ -102,7 +111,9 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayer") }}>
-        {store.exampleNetwork("multilayer")}
+        <Highlight>
+          {store.exampleNetwork("multilayer")}
+        </Highlight>
       </Code>
 
       <Message info>
@@ -149,7 +160,9 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayerIntraInter") }}>
-        {store.exampleNetwork("multilayerIntraInter")}
+        <Highlight>
+          {store.exampleNetwork("multilayerIntraInter")}
+        </Highlight>
       </Code>
 
       <p>
@@ -170,7 +183,9 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("states") }}>
-        {store.exampleNetwork("states")}
+        <Highlight>
+          {store.exampleNetwork("states")}
+        </Highlight>
       </Code>
 
       <p>

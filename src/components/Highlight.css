@@ -1,0 +1,15 @@
+.highlight-comment {
+    color: rgb(106, 115, 125);
+}
+
+.highlight-heading {
+    color: rgb(215, 58, 73);
+}
+
+.highlight-number {
+    color: rgb(4, 93, 197);
+}
+
+.highlight-string {
+    color: rgb(24, 111, 36);
+}
