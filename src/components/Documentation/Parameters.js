@@ -23,19 +23,6 @@ const paramHeader = param => {
   return header;
 };
 
-const paramDescription = param => {
-  if (param.longType) {
-    if (param.longType === "option" || param.longType === "list") {
-      const idx = param.description.indexOf("Options");
-      if (idx > -1) {
-        return param.description.slice(0, idx);
-      }
-    }
-  }
-
-  return param.description;
-}
-
 const ParameterDefault = ({ param }) => {
   if (param.default) {
     return (
@@ -186,7 +173,7 @@ const ParameterGroup = ({ id, advanced }) => {
                       <Item.Header as="h6" style={{ fontWeight: 500, fontSize: "1em" }}>
                         {paramHeader(param)}
                       </Item.Header>
-                      <Item.Description>{paramDescription(param)}</Item.Description>
+                      <Item.Description>{param.description}</Item.Description>
                       <ParameterDefault param={param} />
                     </Item.Content>
                   </Item>

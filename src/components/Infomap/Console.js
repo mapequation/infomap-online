@@ -28,17 +28,17 @@ class Console extends React.Component {
   };
 
   render() {
-    const { content } = this.props;
+    const { content, placeholder } = this.props;
 
     return (
-      <Segment padded style={{ boxShadow: "none" }} className="console">
+      <Segment padded style={{ boxShadow: "none", height: "500px" }} className="console">
         <div
           className="container"
           ref={this.onMountContainer}
           onScroll={this.onScroll}
         >
           <div>
-            {!content ? <div className="placeholder">{this.props.placeholder}</div> : null}
+            {!content ? <div className="placeholder">{placeholder}</div> : null}
             <code>{content}</code>
           </div>
         </div>
