@@ -24,7 +24,7 @@ function Documentation() {
         <Grid.Column>
           <Responsive maxWidth={breakpoint - 1}>
             <Header as="h1">
-              Table of contents
+              Contents
             </Header>
             <TOC/>
           </Responsive>
@@ -61,7 +61,7 @@ function Documentation() {
           <Responsive as={Rail} minWidth={breakpoint} position="left" dividing close style={{ width: 280 }}>
             <Sticky context={contextRef} offset={50}>
               <Header as="h2" style={{ marginTop: "0.5em" }}>
-                Table of contents
+                Contents
               </Header>
               <TOC/>
             </Sticky>
