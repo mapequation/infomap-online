@@ -5,7 +5,7 @@ import "./TOC.css";
 const tocSource = {
   Infomap: {
     heading: "Infomap",
-    children: ["Install", "Prerequisites"],
+    children: ["InfomapOnline", "Install", "Prerequisites"],
   },
   InfomapOnline: {
     heading: "Infomap Online",

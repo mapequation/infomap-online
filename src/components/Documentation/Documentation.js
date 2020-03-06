@@ -30,9 +30,6 @@ function Documentation() {
             For more info, see <a href="#Features">features</a>.
           </p>
 
-          <Install/>
-          <Prerequisites/>
-
           <Heading id="InfomapOnline"/>
           <p>
             Infomap Online is a client-side web application that makes it possible
@@ -46,6 +43,9 @@ function Documentation() {
             The code for running Infomap as a web worker in the browser is available
             as a <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
           </p>
+
+          <Install/>
+          <Prerequisites/>
 
           <Running/>
           <Input/>
