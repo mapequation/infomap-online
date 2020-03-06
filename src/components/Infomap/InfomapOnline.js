@@ -3,7 +3,7 @@ import { saveAs } from "file-saver";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Popup, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import Steps from "./Steps";
@@ -170,6 +170,15 @@ export default observer(class InfomapOnline extends React.Component {
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
       },
+      popup: {
+        boxShadow: "none",
+        color: "#9f3a38",
+        lineHeight: 1,
+        padding: "0.5em 0.8em 0.7em calc(0.3em - 10px)",
+        marginBottom: "-0.5em",
+        fontSize: ".85714286rem",
+        fontWeight: 700,
+      },
     };
 
     const consoleContent = output.join("\n");
@@ -187,11 +196,6 @@ export default observer(class InfomapOnline extends React.Component {
         name,
         active: activeOutput === name,
       }));
-
-    const argsFormError = hasArgsError ? {
-      content: argsError,
-      pointing: "above",
-    } : false;
 
     return (
       <Grid container stackable>
@@ -237,13 +241,20 @@ export default observer(class InfomapOnline extends React.Component {
 
         <Grid.Column width={9} floated="left">
           <Segment basic style={styles.segment}>
-            <Form error={hasArgsError}>
+            <Form>
+              <Popup
+                flowing
+                position="top left"
+                style={styles.popup}
+                open={hasArgsError}
+                content={argsError}
+                trigger={<span/>}
+              />
               <Form.Group widths="equal" style={styles.formGroup}>
                 <Form.Input
                   placeholder="Parameters"
                   value={args}
                   onChange={this.onChangeArgs}
-                  error={argsFormError}
                   action={<Form.Button
                     primary
                     style={styles.runButton}
@@ -291,8 +302,9 @@ export default observer(class InfomapOnline extends React.Component {
                 trigger={<React.Fragment/>}
               >
                 <Dropdown.Menu>
-                  {outputOptions.map((format, i) =>
+                  {outputOptions.map((format, key) =>
                     <Dropdown.Item
+                      key={key}
                       icon="download"
                       onClick={this.onDownloadClick(format)}
                       content={`Download .${format}`}
