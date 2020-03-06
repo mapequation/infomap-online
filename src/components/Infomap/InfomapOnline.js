@@ -264,9 +264,8 @@ export default observer(class InfomapOnline extends React.Component {
                 attached={hasInfomapError}
               />
               <Message
-                attached="bottom"
                 error
-                header="Infomap error"
+                attached="bottom"
                 content={infomapError}
               />
             </Form>
