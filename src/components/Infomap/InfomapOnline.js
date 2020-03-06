@@ -176,7 +176,7 @@ export default observer(class InfomapOnline extends React.Component {
         color: "#9f3a38",
         lineHeight: 1,
         padding: "0.5em 0.8em 0.7em calc(0.3em - 10px)",
-        marginBottom: "-0.5em",
+        marginBottom: "-0.75em",
         fontSize: ".85714286rem",
         fontWeight: 700,
       },
