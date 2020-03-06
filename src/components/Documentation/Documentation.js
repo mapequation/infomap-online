@@ -1,21 +1,22 @@
 import React, { createRef } from "react";
-import { Grid, Header, Rail, Sticky, Ref, Responsive } from "semantic-ui-react";
-import TOC, { Heading } from "./TOC";
-import Prerequisites from "./Prerequisites";
-import Install from "./Install";
-import Running from "./Running";
-import Input from "./Input";
-import Output from "./Output";
-import Parameters from "./Parameters";
+import { Grid, Header, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
+import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Features from "./Features";
-import Algorithm from "./Algorithm";
 import Feedback from "./Feedback";
+import Input from "./Input";
+import Install from "./Install";
+import Output from "./Output";
+import Parameters from "./Parameters";
+import Prerequisites from "./Prerequisites";
 import References from "./References";
+import Running from "./Running";
+import TOC, { Heading } from "./TOC";
+
 
 function Documentation() {
   const contextRef = createRef();
-  const breakpoint = 1850;
+  const breakpoint = 1800;
 
   return (
     <Grid container stackable columns={2} className="documentation">
@@ -57,7 +58,7 @@ function Documentation() {
           <Input/>
           <Output/>
 
-          <Responsive as={Rail} minWidth={breakpoint} position="left" dividing close="very">
+          <Responsive as={Rail} minWidth={breakpoint} position="left" dividing close style={{ width: 280 }}>
             <Sticky context={contextRef} offset={50}>
               <Header as="h2" style={{ marginTop: "0.5em" }}>
                 Table of contents
