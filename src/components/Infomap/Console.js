@@ -1,45 +1,48 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
 import { Segment } from "semantic-ui-react";
-import './Console.css';
+import "./Console.css";
+
 
 class Console extends React.Component {
   keepScrolling = true;
 
-  onMountContainer = el => this.container = el;
-
   componentDidUpdate() {
-    if (this.props.autoScroll && this.keepScrolling) {
-      this.scrollToBottom();
+    if (this.keepScrolling) {
+      const { scrollHeight, clientHeight } = this.container;
+      this.container.scrollTop = scrollHeight - clientHeight;
     }
   }
 
-  scrollToBottom = () => {
-    const { scrollHeight, clientHeight } = this.container;
-    this.container.scrollTop = scrollHeight - clientHeight;
-  };
-
-  onScroll = () => this.keepScrolling = this.isAtBottom();
-
-  isAtBottom = () => {
+  onScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = this.container;
     const diff = scrollHeight - clientHeight;
-    return scrollTop === diff;
+    const isAtBottom = scrollTop === diff;
+    return this.keepScrolling = isAtBottom;
   };
 
   render() {
     const { content, placeholder } = this.props;
 
+    const styles = {
+      segment: {
+        boxShadow: "none",
+        height: "500px",
+        padding: "0 0 0 0.8em",
+      },
+    };
+
     return (
-      <Segment padded style={{ boxShadow: "none", height: "500px" }} className="console">
+      <Segment style={styles.segment} className="console">
         <div
           className="container"
-          ref={this.onMountContainer}
+          ref={el => this.container = el}
           onScroll={this.onScroll}
         >
           <div>
-            {!content ? <div className="placeholder">{placeholder}</div> : null}
-            <code>{content}</code>
+            {content
+              ? <code>{content}</code>
+              : <div className="placeholder">{placeholder}</div>
+            }
           </div>
         </div>
       </Segment>
@@ -47,14 +50,5 @@ class Console extends React.Component {
   }
 }
 
-Console.propTypes = {
-  content: PropTypes.string,
-  placeholder: PropTypes.string,
-  autoScroll: PropTypes.bool.isRequired,
-};
-
-Console.defaultProps = {
-  autoScroll: true,
-}
 
 export default Console;

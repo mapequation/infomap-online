@@ -259,7 +259,7 @@ export default observer(class InfomapOnline extends React.Component {
             <Form error={hasInfomapError}>
               <Console
                 content={consoleContent}
-                placeholder="Infomap command line output will be printed here"
+                placeholder="Infomap output will be printed here"
               />
               <Message
                 error
