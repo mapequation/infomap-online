@@ -9,31 +9,6 @@ const getParamsForGroup = (params => group =>
     infomapParameters,
   );
 
-const paramHeader = param => {
-  let header = "";
-  if (param.short) {
-    header += param.short;
-    if (param.shortType) header += `<${param.shortType}>`;
-    header += ", ";
-  }
-  header += param.long;
-  if (param.longType) {
-    header += ` <${param.longType}>`;
-  }
-  return header;
-};
-
-const ParameterDefault = ({ param }) => {
-  if (param.default) {
-    return (
-      <Item.Extra style={{ fontWeight: 400 }}>
-        {`Default: ${param.default}`}
-      </Item.Extra>
-    );
-  }
-  return null;
-};
-
 const DropdownParameter = ({ param }) => {
   const match = param.description.match(/Options: (.*)\.$/);
   if (!(match && match[1])) return null;
@@ -159,33 +134,44 @@ const ParameterGroup = ({ id, advanced }) => {
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 
+  const styles = {
+    header: { fontWeight: 500, fontSize: "1em" },
+    extra: { fontWeight: 400 },
+    meta: { float: "right", marginLeft: 20 },
+  };
+
+  const paramHeader = ({ long, longType, short, shortType }) => {
+    let header = "";
+    if (short) {
+      header += short;
+      if (shortType) header += `<${shortType}>`;
+      header += ", ";
+    }
+    header += long;
+    if (longType) {
+      header += ` <${longType}>`;
+    }
+    return header;
+  };
+
   return (
     <>
-      <Heading id={id} />
-      <Table basic="very">
-        <Table.Body>
-          {params.map((param, key) => (
-            <Table.Row key={key}>
-              <Table.Cell>
-                <Item.Group>
-                  <Item>
-                    <Item.Content>
-                      <Item.Header as="h6" style={{ fontWeight: 500, fontSize: "1em" }}>
-                        {paramHeader(param)}
-                      </Item.Header>
-                      <Item.Description>{param.description}</Item.Description>
-                      <ParameterDefault param={param} />
-                    </Item.Content>
-                  </Item>
-                </Item.Group>
-              </Table.Cell>
-              <Table.Cell collapsing textAlign="right" verticalAlign="top">
-                <ParameterControl param={param} />
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <Heading id={id}/>
+      <Item.Group>
+        {params.map((param, key) => (
+          <Item key={key}>
+            <Item.Content verticalAlign="top">
+              <Item.Header as="h6" style={styles.header} content={paramHeader(param)}/>
+              <Item.Meta style={styles.meta}>
+                <ParameterControl param={param}/>
+              </Item.Meta>
+              <Item.Description content={param.description}/>
+              {param.default !== "" &&
+              <Item.Extra style={styles.extra} content={`Default: ${param.default}`}/>}
+            </Item.Content>
+          </Item>
+        ))}
+      </Item.Group>
     </>
   );
 };
