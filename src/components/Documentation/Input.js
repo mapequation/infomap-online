@@ -107,7 +107,7 @@ export default () => {
       </Code>
 
       <Message info>
-        The <code>*Multilayer</code> heading no longer optional in Infomap v1.
+        The <code>*Multilayer</code> heading no longer optional.
       </Message>
 
       <p>
