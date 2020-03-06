@@ -13,13 +13,13 @@ export default (props) => {
   } = props;
 
   return (
-    <Step.Group>
+    <Step.Group stackable="tablet" fluid>
       <Step completed={firstCompleted} active={firstActive}>
         <Image size="tiny" src={Step1}/>
         <Step.Content>
           <Step.Title>Load network</Step.Title>
           <Step.Description>
-            Edit input field or upload file
+            Edit input or load file
         </Step.Description>
         </Step.Content>
       </Step>
@@ -29,7 +29,7 @@ export default (props) => {
         <Step.Content>
           <Step.Title>Run Infomap</Step.Title>
           <Step.Description>
-            Toggle options or add command line arguments
+            Toggle parameters or add arguments
         </Step.Description>
         </Step.Content>
       </Step>
