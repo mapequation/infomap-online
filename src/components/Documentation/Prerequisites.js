@@ -35,7 +35,7 @@ export default () => (
       While the Makefile automatically skips the <code>-fopenmap</code> compiler
       flag if the standard compiler is clang, to get support for OpenMP you can
       manually install a gcc-based compiler. A simple way is to install{" "}
-      <a href="//brew.sh">Homebrew</a> and type, for example,
+      <a href="//brew.sh">Homebrew</a> and type, for example,{" "}
       <code>brew install gcc</code> in the terminal.
     </p>
 
