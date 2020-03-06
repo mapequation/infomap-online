@@ -42,8 +42,6 @@ h5.ui.header {
 }
 
 code {
-  /* font-family: Menlo, Consolas, Monaco, monospace, sans-serif;
-  font-weight: 300; */
   font-family: Monaco, Consolas, Inconsolata, 'Deja Vu Sans Mono', 'Droid Sans Mono', 'Andale Mono', 'Lucida Console', monospace;
   font-size: 0.8em;
   color: #666;
@@ -54,11 +52,6 @@ code {
   display: inline-block;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-}
-
-.segment code {
-  background-color: transparent;
-  outline: none;
 }
 
 figure {
