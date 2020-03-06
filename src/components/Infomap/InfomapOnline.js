@@ -261,7 +261,7 @@ export default observer(class InfomapOnline extends React.Component {
               <Console
                 content={consoleContent}
                 placeholder="Infomap output will be printed here"
-                attached={hasInfomapError}
+                attached={hasInfomapError ? "top" : false}
               />
               <Message
                 error
