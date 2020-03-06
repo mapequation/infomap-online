@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { Grid, Header, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
+import { Grid, Header, Rail, Ref, Responsive, Sticky, Divider } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Features from "./Features";
@@ -47,6 +47,7 @@ function Documentation() {
           <Install/>
           <Prerequisites/>
 
+          <Divider/>
           <Running/>
           <Input/>
           <Output/>
@@ -63,10 +64,14 @@ function Documentation() {
       </Ref>
       <Grid.Column>
         <Parameters/>
+        <Divider/>
         <Changelog/>
         <Features/>
+        <Divider/>
         <Algorithm/>
+        <Divider/>
         <Feedback/>
+        <Divider/>
         <References/>
       </Grid.Column>
     </Grid>
