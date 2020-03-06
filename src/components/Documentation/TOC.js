@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
-
+import "./TOC.css";
 
 const tocSource = {
   Infomap: {
@@ -180,9 +180,8 @@ const Item = ({ id, toc, level, maxLevel }) => {
   }
 
   return (
-    <li className="tocItem" id={item.treeId} style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}>
+    <li id={item.treeId} style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}>
       <Header as={`h${level + 2}`} className="liHeader" style={{ marginBottom: 0 }}>
-        <span style={{ fontWeight: 300, marginRight: "0.25em" }}>{item.treeId}</span>
         <a href={`#${id}`}>{item.heading}</a>
       </Header>
       <Items ids={item.children} toc={toc} level={level + 1} maxLevel={maxLevel}/>
