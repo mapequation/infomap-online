@@ -1,21 +1,13 @@
-import React from "react";
-import { observer } from "mobx-react";
+import Infomap from "@mapequation/infomap";
 import { saveAs } from "file-saver";
 import localforage from "localforage";
-import {
-  Button,
-  Header,
-  Grid,
-  Segment,
-  Form,
-  Message,
-  Menu,
-} from "semantic-ui-react";
-import Infomap from "@mapequation/infomap";
+import { observer } from "mobx-react";
+import React from "react";
+import { Button, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
-import Steps from "./Steps";
 import Console from "./Console";
 import NavigatorButton from "./NavigatorButton";
+import Steps from "./Steps";
 
 
 export default observer(class InfomapOnline extends React.Component {
@@ -37,7 +29,7 @@ export default observer(class InfomapOnline extends React.Component {
     super(props);
 
     const onData = content => this.setState({
-      output: [...this.state.output, content]
+      output: [...this.state.output, content],
     });
 
     const onError = content => this.setState({
@@ -54,7 +46,6 @@ export default observer(class InfomapOnline extends React.Component {
       running: false,
       completed: true,
     }, () => localforage.setItem("ftree", ftree));
-
 
     this.infomap = new Infomap()
       .on("data", onData)
@@ -122,7 +113,7 @@ export default observer(class InfomapOnline extends React.Component {
     } catch (e) {
       this.setState({
         running: false,
-        infomapError: e.message
+        infomapError: e.message,
       });
       return;
     }
@@ -157,18 +148,29 @@ export default observer(class InfomapOnline extends React.Component {
       downloaded,
       infomapError,
       activeOutput,
-      output
+      output,
     } = this.state;
 
     const { args, argsError, network } = store;
 
     const styles = {
       segment: { borderRadius: 5, padding: "10px 0 0 0" },
-      textArea: { minHeight: 500 }
-    };
-
-    const childProps = {
-      header: { as: "h2", className: "light" }
+      textArea: { minHeight: 500, resize: "none" },
+      button: { marginBottom: "1em" },
+      formGroup: { marginBottom: "calc(1em - 2px)" },
+      attachedSegment: { padding: 0, border: "none" },
+      attachedTextArea: {
+        resize: "none",
+        height: "calc(500px - 37.15px)",
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderTop: 0,
+      },
+      runButton: {
+        marginRight: 0,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+      },
     };
 
     const consoleContent = output.join("\n");
@@ -187,7 +189,7 @@ export default observer(class InfomapOnline extends React.Component {
 
     const argsFormError = hasArgsError ? {
       content: argsError,
-      pointing: "above"
+      pointing: "below",
     } : false;
 
     return (
@@ -204,35 +206,56 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3}>
-          <Header {...childProps.header}>Input</Header>
-          <Segment
-            basic
-            style={styles.segment}
-            loading={loading}
-          >
-            <Form>
+          <Segment basic style={styles.segment}>
+            <Button
+              as="label"
+              fluid
+              primary
+              htmlFor="fileInput"
+              style={styles.button}
+            >
+              <Icon name="file"/>
+              Load network
+              <input
+                style={{ display: "none" }}
+                type="file"
+                id="fileInput"
+                onChange={this.onLoadNetwork}
+              />
+            </Button>
+            <Form loading={loading}>
               <Form.TextArea
                 value={network}
                 onChange={this.onChangeNetwork}
                 placeholder="# Paste your network here"
                 style={styles.textArea}
               />
-              <Button as="label" fluid htmlFor="fileInput">
-                Load from file...
-                <input
-                  style={{ display: "none" }}
-                  type="file"
-                  id="fileInput"
-                  onChange={this.onLoadNetwork}
-                />
-              </Button>
             </Form>
           </Segment>
         </Grid.Column>
 
         <Grid.Column width={9} floated="left">
-          <Header {...childProps.header}>Infomap</Header>
           <Segment basic style={styles.segment}>
+            <Form error={hasArgsError}>
+              <Form.Group widths="equal" style={styles.formGroup}>
+                <Form.Input
+                  placeholder="Parameters"
+                  value={args}
+                  onChange={this.onChangeArgs}
+                  error={argsFormError}
+                  action={<Form.Button
+                    primary
+                    style={styles.runButton}
+                    disabled={hasArgsError || running}
+                    loading={running}
+                    onClick={this.run}
+                    content="Run Infomap"
+                  />
+                  }
+                />
+              </Form.Group>
+            </Form>
+
             <Form error={hasInfomapError}>
               <Console
                 content={consoleContent}
@@ -244,56 +267,43 @@ export default observer(class InfomapOnline extends React.Component {
                 content={infomapError}
               />
             </Form>
-
-            <Form error={hasArgsError}>
-              <Form.Group widths="equal">
-                <Form.Input
-                  placeholder="Optional command line arguments"
-                  value={args}
-                  onChange={this.onChangeArgs}
-                  error={argsFormError}
-                  action={
-                    <Form.Button
-                      primary
-                      disabled={hasArgsError || running}
-                      loading={running}
-                      onClick={this.run}
-                      content="Run"
-                    />
-                  }
-                />
-              </Form.Group>
-            </Form>
           </Segment>
         </Grid.Column>
 
         <Grid.Column width={4}>
-          <Header {...childProps.header}>Output</Header>
           <Segment basic style={styles.segment}>
-            <Form style={{ marginBottom: "14px" }}>
-              <Segment attached basic style={{ padding: 0, border: "none" }}>
-                <Form.TextArea
-                  value={outputValue}
-                  placeholder="Infomap cluster output will be printed here"
-                  style={{ height: "461px" }}
-                  onCopy={this.onCopyClusters}
-                />
-              </Segment>
+            <Button
+              style={styles.button}
+              fluid
+              primary
+              disabled={!haveOutput || running}
+              onClick={this.onDownloadOutputClick}
+              content="Download clusters"
+              icon="download"
+            />
+            <Form loading={running}>
               <Menu
-                attached="bottom"
+                pointing
+                borderless
+                size="small"
+                attached="top"
                 disabled={!haveOutput}
                 onItemClick={this.onOutputMenuClick}
                 items={outputMenuItems}
               />
+              <Segment attached basic style={styles.attachedSegment}>
+                <Form.TextArea
+                  value={outputValue}
+                  placeholder="Infomap cluster output will be printed here"
+                  style={styles.attachedTextArea}
+                  onCopy={this.onCopyClusters}
+                />
+              </Segment>
             </Form>
-            <Button
-              disabled={!haveOutput}
-              onClick={this.onDownloadOutputClick}
-              content={`Download .${activeOutput}`}
-            />
             <NavigatorButton
+              fluid
               href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
-              disabled={!ftree}
+              disabled={!ftree || running}
             />
           </Segment>
         </Grid.Column>
