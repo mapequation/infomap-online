@@ -39,11 +39,11 @@ h5.ui.header {
 
 code {
   font-family: Monaco, Consolas, Inconsolata, 'Deja Vu Sans Mono', 'Droid Sans Mono', 'Andale Mono', 'Lucida Console', monospace;
-  font-size: 0.8em;
-  color: #666;
+  font-size: 0.85em;
+  color: #555;
   padding: 0 3px;
-  border: none;
-  outline: 1px solid #ccc;
+  border-radius: 3px;
+  border: 1px solid #BCBEC0;;
   background-color: #f9f9f9;
   display: inline-block;
   white-space: pre-wrap;
