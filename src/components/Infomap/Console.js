@@ -21,7 +21,7 @@ class Console extends React.Component {
   };
 
   render() {
-    const { content, placeholder } = this.props;
+    const { content, placeholder, ...props } = this.props;
 
     const styles = {
       segment: {
@@ -32,7 +32,7 @@ class Console extends React.Component {
     };
 
     return (
-      <Segment style={styles.segment} className="console">
+      <Segment style={styles.segment} className="console" {...props}>
         <div
           className="container"
           ref={el => this.container = el}
