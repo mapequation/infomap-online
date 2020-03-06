@@ -13,9 +13,9 @@ export default (props) => {
   } = props;
 
   return (
-    <Step.Group stackable="tablet" fluid>
+    <Step.Group stackable="tablet" fluid widths={3}>
       <Step completed={firstCompleted} active={firstActive}>
-        <Image size="tiny" src={Step1}/>
+        <Image size="mini" src={Step1}/>
         <Step.Content>
           <Step.Title>Load network</Step.Title>
           <Step.Description>
@@ -25,7 +25,7 @@ export default (props) => {
       </Step>
 
       <Step completed={secondCompleted} active={secondActive}>
-        <Image size="tiny" src={Step2}/>
+        <Image size="mini" src={Step2}/>
         <Step.Content>
           <Step.Title>Run Infomap</Step.Title>
           <Step.Description>
@@ -35,7 +35,7 @@ export default (props) => {
       </Step>
 
       <Step completed={thirdCompleted} active={thirdActive}>
-        <Image size="tiny" src={Step3}/>
+        <Image size="mini" src={Step3}/>
         <Step.Content>
           <Step.Title>Explore map!</Step.Title>
           <Step.Description>
