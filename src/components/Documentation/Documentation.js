@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { Grid, Header, Rail, Ref, Responsive, Sticky, Divider } from "semantic-ui-react";
+import { Grid, Header, Rail, Ref, Responsive, Sticky, Divider, Message, Icon } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Features from "./Features";
@@ -29,6 +29,13 @@ function Documentation() {
             equation</a>.
             For more info, see <a href="#Features">features</a>.
           </p>
+
+          <Message info>
+            <Message.Content>
+              <Message.Header>Looking for Infomap 0.x?</Message.Header>
+              <a href="//www.mapequation.org/code_old.html">Please read the old documentation.</a>
+            </Message.Content>
+          </Message>
 
           <Heading id="InfomapOnline"/>
           <p>

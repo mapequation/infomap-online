@@ -111,13 +111,5 @@ export default () => (
         git checkout master
       </Code>
     </Message>
-
-    <Message info icon>
-      <Icon name="exclamation circle" />
-      <Message.Content>
-      <Message.Header>Looking for Infomap 0.x?</Message.Header>
-      <a href="//www.mapequation.org/code_old.html">Please read the old documentation.</a>
-      </Message.Content>
-    </Message>
   </>
 );
