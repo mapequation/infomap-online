@@ -140,20 +140,6 @@ const ParameterGroup = ({ id, advanced }) => {
     meta: { float: "right", marginLeft: 20 },
   };
 
-  const paramHeader = ({ long, longType, short, shortType }) => {
-    let header = "";
-    if (short) {
-      header += short;
-      if (shortType) header += `<${shortType}>`;
-      header += ", ";
-    }
-    header += long;
-    if (longType) {
-      header += ` <${longType}>`;
-    }
-    return header;
-  };
-
   return (
     <>
       <Heading id={id}/>
@@ -161,7 +147,10 @@ const ParameterGroup = ({ id, advanced }) => {
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">
-              <Item.Header as="h6" style={styles.header} content={paramHeader(param)}/>
+              <Item.Header as="h6" style={styles.header}>
+                {param.short && <><code>{param.short}{param.shortType && `<${(param.shortType)}>`}</code>{", "}</>}
+                <code>{param.long}{param.longType && ` <${(param.longType)}>`}</code>
+              </Item.Header>
               <Item.Meta style={styles.meta}>
                 <ParameterControl param={param}/>
               </Item.Meta>
