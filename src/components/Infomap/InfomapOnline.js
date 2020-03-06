@@ -156,6 +156,7 @@ export default observer(class InfomapOnline extends React.Component {
       segment: { borderRadius: 5, padding: "10px 0 0 0" },
       textArea: { minHeight: 500, resize: "none" },
       button: { marginBottom: "1em" },
+      dropdown: { marginBottom: "1em", textAlign: "center" },
       formGroup: { marginBottom: "calc(1em - 2px)" },
       attachedSegment: { padding: 0, border: "none" },
       attachedTextArea: {
@@ -297,8 +298,8 @@ export default observer(class InfomapOnline extends React.Component {
               />
               <Dropdown
                 disabled={!haveOutput || running}
-                style={styles.button}
-                className="button icon"
+                style={styles.dropdown}
+                className="button icon active"
                 trigger={<React.Fragment/>}
               >
                 <Dropdown.Menu>
