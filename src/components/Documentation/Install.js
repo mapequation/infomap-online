@@ -94,9 +94,9 @@ export default () => (
     </Code>
 
     <Message warning>
-      <Message.Header>Migrating from v0.x to v1.0</Message.Header>
+      <Message.Header>Migrating from 0.x to 1.0</Message.Header>
 
-      <p>In v1.0 we have moved the old master branch to v0.x.</p>
+      <p>We have moved the old master branch to <code>v0.x</code>.</p>
 
       <p>
         If you have cloned Infomap before v1.0, get the master branch up-to-date
