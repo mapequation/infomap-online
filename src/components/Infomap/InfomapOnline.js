@@ -3,10 +3,9 @@ import { saveAs } from "file-saver";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
-import NavigatorButton from "./NavigatorButton";
 import Steps from "./Steps";
 
 
@@ -126,11 +125,11 @@ export default observer(class InfomapOnline extends React.Component {
 
   onOutputMenuClick = (e, { name }) => this.setState({ activeOutput: name });
 
-  onDownloadOutputClick = () => {
-    const { activeOutput } = this.state;
-    const output = this.state[activeOutput];
+  onDownloadClick = (format) => () => {
+    const { name } = this.state;
+    const output = this.state[format];
     const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${this.state.name}.${activeOutput}`);
+    saveAs(blob, `${name}.${format}`);
     this.setState({ downloaded: true });
   };
 
@@ -179,8 +178,10 @@ export default observer(class InfomapOnline extends React.Component {
     const outputValue = this.state[activeOutput];
     const haveOutput = clu || tree || ftree;
 
-    const outputMenuItems = ["clu", "tree", "ftree"]
-      .filter(name => this.state[name])
+    let outputOptions = ["clu", "tree", "ftree"]
+      .filter(name => this.state[name]);
+
+    const outputMenuItems = outputOptions
       .map(name => ({
         key: name,
         name,
@@ -189,7 +190,7 @@ export default observer(class InfomapOnline extends React.Component {
 
     const argsFormError = hasArgsError ? {
       content: argsError,
-      pointing: "below",
+      pointing: "above",
     } : false;
 
     return (
@@ -272,15 +273,33 @@ export default observer(class InfomapOnline extends React.Component {
 
         <Grid.Column width={4}>
           <Segment basic style={styles.segment}>
-            <Button
-              style={styles.button}
-              fluid
-              primary
-              disabled={!haveOutput || running}
-              onClick={this.onDownloadOutputClick}
-              content="Download clusters"
-              icon="download"
-            />
+            <Button.Group primary fluid>
+              <Button
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
+                disabled={!ftree || running}
+                style={styles.button}
+                content="Open in Network Navigator"
+              />
+              <Dropdown
+                disabled={!haveOutput || running}
+                style={styles.button}
+                className="button icon"
+                trigger={<React.Fragment/>}
+              >
+                <Dropdown.Menu>
+                  {outputOptions.map((format, i) =>
+                    <Dropdown.Item
+                      icon="download"
+                      onClick={this.onDownloadClick(format)}
+                      content={`Download .${format}`}
+                    />,
+                  )}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Button.Group>
             <Form loading={running}>
               <Menu
                 pointing
@@ -300,11 +319,6 @@ export default observer(class InfomapOnline extends React.Component {
                 />
               </Segment>
             </Form>
-            <NavigatorButton
-              fluid
-              href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
-              disabled={!ftree || running}
-            />
           </Segment>
         </Grid.Column>
       </Grid>
