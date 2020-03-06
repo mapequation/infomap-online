@@ -22,13 +22,6 @@ function Documentation() {
     <Grid container stackable columns={2} className="documentation">
       <Ref innerRef={contextRef}>
         <Grid.Column>
-          <Responsive maxWidth={breakpoint - 1}>
-            <Header as="h1">
-              Contents
-            </Header>
-            <TOC/>
-          </Responsive>
-
           <Heading id="Infomap"/>
           <p>
             Infomap is a network clustering algorithm based on the <a
