@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { Grid, Header, Rail, Ref, Responsive, Sticky, Divider, Message, Icon } from "semantic-ui-react";
+import { Grid, Header, Rail, Ref, Responsive, Sticky, Divider, Message } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Features from "./Features";
@@ -53,7 +53,6 @@ function Documentation() {
 
           <Install/>
           <Prerequisites/>
-
           <Divider/>
           <Running/>
           <Input/>

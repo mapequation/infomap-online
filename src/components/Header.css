@@ -1,10 +1,5 @@
 header {
   padding: 10px;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(100, 80, 50, 0.35)), color-stop(100%, rgba(0, 0, 0, 0)));
-  background: -webkit-linear-gradient(top, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -moz-linear-gradient(top, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -ms-linear-gradient(top, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -o-linear-gradient(top, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
   background: linear-gradient(to bottom, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
   margin-bottom: 30px;
 }
@@ -24,7 +19,6 @@ header {
 .brand {
   font-family: Philosopher;
   font-weight: 700;
-  /*font-size: 24px;*/
 }
 
 .brand .logo-icon {
@@ -33,7 +27,6 @@ header {
   width: 30px;
   height: 30px;
   background-size: 100%;
-  /*-webkit-filter: drop-shadow(1px 1px 0px white);*/
 }
 
 .brand-infomap {

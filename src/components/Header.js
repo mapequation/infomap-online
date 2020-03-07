@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import { Container, Menu, Header as H, Icon } from "semantic-ui-react";
+import { Container, Menu, Header as Heading, Icon } from "semantic-ui-react";
 import Infomap from "@mapequation/infomap";
 
 const Header = () => (
@@ -8,7 +8,7 @@ const Header = () => (
     <Container>
       <Menu borderless className="header-menu documentation">
         <Menu.Item fitted>
-          <H as="h1">
+          <Heading as="h1">
             <a href="https://www.mapequation.org">
               <img
                 className="mapequation-logo"
@@ -25,21 +25,21 @@ const Header = () => (
                 Network community detection using the Map Equation framework
               </div>
             </div>
-          </H>
+          </Heading>
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
             <a href="#Install">
-              Infomap { Infomap.__version__ }
+              Infomap {Infomap.__version__}
               <Icon className="Github" name="download" size="big"></Icon>
             </a>
           </Menu.Item>
           <Menu.Item fitted>
-            <H as="h1">
+            <Heading as="h1">
               <a href="https://github.com/mapequation/infomap">
                 <Icon className="Github" name="github"></Icon>
               </a>
-            </H>
+            </Heading>
           </Menu.Item>
         </Menu.Menu>
       </Menu>
