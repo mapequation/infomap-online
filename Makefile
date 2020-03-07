@@ -1,7 +1,4 @@
-.PHONY: build push
+.PHONY: push
 
-build:
-	yarn build
-
-push: build
+push:
 	scp -r build/* icelab-mapequation:/var/www/infomap
