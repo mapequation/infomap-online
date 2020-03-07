@@ -1,6 +1,5 @@
 import React from "react";
 import { Step, Image } from "semantic-ui-react";
-import './Steps.css';
 import Step1 from "../../images/step1.png";
 import Step2 from "../../images/step2.png";
 import Step3 from "../../images/step3.png";

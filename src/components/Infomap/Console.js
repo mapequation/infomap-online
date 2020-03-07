@@ -1,6 +1,5 @@
 import React from "react";
 import { Segment } from "semantic-ui-react";
-import "./Console.css";
 
 
 class Console extends React.Component {
@@ -23,16 +22,8 @@ class Console extends React.Component {
   render() {
     const { content, placeholder, ...props } = this.props;
 
-    const styles = {
-      segment: {
-        boxShadow: "none",
-        height: "500px",
-        padding: "0 0 0 0.8em",
-      },
-    };
-
     return (
-      <Segment style={styles.segment} className="console" {...props}>
+      <Segment className="console" {...props}>
         <div
           className="container"
           ref={el => this.container = el}

@@ -54,10 +54,6 @@ figure {
   text-align: center;
 }
 
-.documentation {
-  text-shadow: rgba(255, 255, 255, 0.746094) 0 1px 0;
-}
-
-.changelogItem:before {
-  color: #ccc !important;
+.segment {
+  box-shadow: none !important;
 }

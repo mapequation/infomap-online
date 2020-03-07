@@ -1,0 +1,76 @@
+.ui.steps .step .title {
+    color: rgba(0, 0, 0, .87) !important;
+}
+
+.ui.steps {
+    margin-bottom: 1em !important;
+}
+
+.infomap textarea {
+    resize: none !important;
+}
+
+.infomap .topButton {
+    margin-bottom: 1em !important;
+}
+
+.topDropdown {
+    margin-bottom: 1em !important;
+    text-align: center;
+}
+
+.argsErrorPopup {
+    box-shadow: none !important;
+    color: #9f3a38 !important;
+    line-height: 1em !important;
+    padding: 0.5em 0.8em 0.7em calc(0.3em - 10px) !important;
+    margin-bottom: -0.5em !important;
+    font-size: .85714286rem !important;
+    font-weight: 700 !important;
+}
+
+.output {
+    padding: 0 !important;
+    border: none !important;
+}
+
+.output textarea {
+    height: calc(500px - 37.15px);
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top: 0 !important;
+}
+
+.network textarea {
+    min-height: 500px;
+}
+
+.inputParameters {
+    margin-bottom: calc(1em - 2px) !important;
+}
+
+.inputParameters button {
+    margin-right: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.console {
+    height: 500px;
+    padding: 0.1em 0 0.1em 0.8em !important;
+}
+
+.console .placeholder {
+    margin-top: 11px;
+    color: #ccc;
+}
+
+.console .container {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.console code {
+    background: transparent;
+    border: none;
+}

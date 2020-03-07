@@ -16,9 +16,9 @@ export default observer(class InfomapOnline extends React.Component {
     clu: "",
     tree: "",
     ftree: "",
+    loading: false, // True while loading input network
     running: false,
     completed: false,
-    loading: false, // True while loading input network
     downloaded: false,
     activeOutput: "tree", // Current output tab
     infomapError: "",
@@ -68,9 +68,9 @@ export default observer(class InfomapOnline extends React.Component {
     store.setNetwork(value);
     this.setState(prev => ({
       name: name || prev.name,
+      loading: false,
       completed: false,
       downloaded: false,
-      loading: false,
       infomapError: "",
     }));
   };
@@ -97,7 +97,7 @@ export default observer(class InfomapOnline extends React.Component {
     reader.readAsText(file, "utf-8");
   };
 
-  onChangeArgs = (event, { value }) => store.setArgs(value);
+  onChangeArgs = (e, { value }) => store.setArgs(value);
 
   run = () => {
     this.setState({ output: [] });
@@ -152,36 +152,6 @@ export default observer(class InfomapOnline extends React.Component {
 
     const { args, argsError, network } = store;
 
-    const styles = {
-      segment: { borderRadius: 5, padding: "10px 0 0 0" },
-      textArea: { minHeight: 500, resize: "none" },
-      button: { marginBottom: "1em" },
-      dropdown: { marginBottom: "1em", textAlign: "center" },
-      formGroup: { marginBottom: "calc(1em - 2px)" },
-      attachedSegment: { padding: 0, border: "none" },
-      attachedTextArea: {
-        resize: "none",
-        height: "calc(500px - 37.15px)",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        borderTop: 0,
-      },
-      runButton: {
-        marginRight: 0,
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
-      },
-      popup: {
-        boxShadow: "none",
-        color: "#9f3a38",
-        lineHeight: 1,
-        padding: "0.5em 0.8em 0.7em calc(0.3em - 10px)",
-        marginBottom: "-0.75em",
-        fontSize: ".85714286rem",
-        fontWeight: 700,
-      },
-    };
-
     const consoleContent = output.join("\n");
     const hasInfomapError = !!infomapError;
     const hasArgsError = !!argsError;
@@ -199,7 +169,7 @@ export default observer(class InfomapOnline extends React.Component {
       }));
 
     return (
-      <Grid container stackable>
+      <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
           <Steps
             firstCompleted={!!network}
@@ -212,128 +182,120 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3}>
-          <Segment basic style={styles.segment}>
-            <Button
-              as="label"
-              fluid
-              primary
-              htmlFor="fileInput"
-              style={styles.button}
-            >
-              <Icon name="file"/>
-              Load network
-              <input
-                style={{ display: "none" }}
-                type="file"
-                id="fileInput"
-                onChange={this.onLoadNetwork}
-              />
-            </Button>
-            <Form loading={loading}>
-              <Form.TextArea
-                value={network}
-                onChange={this.onChangeNetwork}
-                placeholder="# Paste your network here"
-                style={styles.textArea}
-              />
-            </Form>
-          </Segment>
+          <Button
+            as="label"
+            fluid
+            primary
+            htmlFor="fileInput"
+            className="topButton"
+          >
+            <Icon name="file"/>
+            Load network
+            <input
+              style={{ display: "none" }}
+              type="file"
+              id="fileInput"
+              onChange={this.onLoadNetwork}
+            />
+          </Button>
+          <Form loading={loading}>
+            <Form.TextArea
+              value={network}
+              onChange={this.onChangeNetwork}
+              placeholder="# Paste your network here"
+              className="network"
+            />
+          </Form>
         </Grid.Column>
 
         <Grid.Column width={9} floated="left">
-          <Segment basic style={styles.segment}>
-            <Form>
-              <Popup
-                flowing
-                position="top left"
-                style={styles.popup}
-                open={hasArgsError}
-                content={argsError}
-                trigger={<span/>}
-              />
-              <Form.Group widths="equal" style={styles.formGroup}>
-                <Form.Input
-                  placeholder="Parameters"
-                  value={args}
-                  onChange={this.onChangeArgs}
-                  action={<Form.Button
-                    primary
-                    style={styles.runButton}
-                    disabled={hasArgsError || running}
-                    loading={running}
-                    onClick={this.run}
-                    content="Run Infomap"
-                  />
-                  }
+          <Form>
+            <Popup
+              flowing
+              position="top left"
+              className="argsErrorPopup"
+              open={hasArgsError}
+              content={argsError}
+              trigger={<span/>}
+            />
+            <Form.Group widths="equal" className="inputParameters">
+              <Form.Input
+                placeholder="Parameters"
+                value={args}
+                onChange={this.onChangeArgs}
+                action={<Form.Button
+                  primary
+                  disabled={hasArgsError || running}
+                  loading={running}
+                  onClick={this.run}
+                  content="Run Infomap"
                 />
-              </Form.Group>
-            </Form>
+                }
+              />
+            </Form.Group>
+          </Form>
 
-            <Form error={hasInfomapError}>
-              <Console
-                content={consoleContent}
-                placeholder="Infomap output will be printed here"
-                attached={hasInfomapError ? "top" : false}
-              />
-              <Message
-                error
-                attached="bottom"
-                content={infomapError}
-              />
-            </Form>
-          </Segment>
+          <Form error={hasInfomapError}>
+            <Console
+              content={consoleContent}
+              placeholder="Infomap output will be printed here"
+              attached={hasInfomapError ? "top" : false}
+            />
+            <Message
+              error
+              attached="bottom"
+              content={infomapError}
+            />
+          </Form>
         </Grid.Column>
 
         <Grid.Column width={4}>
-          <Segment basic style={styles.segment}>
-            <Button.Group primary fluid>
-              <Button
-                as="a"
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
-                disabled={!ftree || running}
-                style={styles.button}
-                content="Open in Network Navigator"
+          <Button.Group primary fluid>
+            <Button
+              as="a"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
+              disabled={!ftree || running}
+              className="topButton"
+              content="Open in Network Navigator"
+            />
+            <Dropdown
+              disabled={!haveOutput || running}
+              className="button icon active topDropdown"
+              trigger={<React.Fragment/>}
+            >
+              <Dropdown.Menu>
+                {outputOptions.map((format, key) =>
+                  <Dropdown.Item
+                    key={key}
+                    icon="download"
+                    onClick={this.onDownloadClick(format)}
+                    content={`Download .${format}`}
+                  />,
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Button.Group>
+
+          <Form loading={running}>
+            <Menu
+              pointing
+              borderless
+              size="small"
+              attached="top"
+              disabled={!haveOutput}
+              onItemClick={this.onOutputMenuClick}
+              items={outputMenuItems}
+            />
+            <Segment attached basic className="output">
+              <Form.TextArea
+                value={outputValue}
+                placeholder="Infomap cluster output will be printed here"
+                onCopy={this.onCopyClusters}
               />
-              <Dropdown
-                disabled={!haveOutput || running}
-                style={styles.dropdown}
-                className="button icon active"
-                trigger={<React.Fragment/>}
-              >
-                <Dropdown.Menu>
-                  {outputOptions.map((format, key) =>
-                    <Dropdown.Item
-                      key={key}
-                      icon="download"
-                      onClick={this.onDownloadClick(format)}
-                      content={`Download .${format}`}
-                    />,
-                  )}
-                </Dropdown.Menu>
-              </Dropdown>
-            </Button.Group>
-            <Form loading={running}>
-              <Menu
-                pointing
-                borderless
-                size="small"
-                attached="top"
-                disabled={!haveOutput}
-                onItemClick={this.onOutputMenuClick}
-                items={outputMenuItems}
-              />
-              <Segment attached basic style={styles.attachedSegment}>
-                <Form.TextArea
-                  value={outputValue}
-                  placeholder="Infomap cluster output will be printed here"
-                  style={styles.attachedTextArea}
-                  onCopy={this.onCopyClusters}
-                />
-              </Segment>
-            </Form>
-          </Segment>
+            </Segment>
+          </Form>
         </Grid.Column>
       </Grid>
     );

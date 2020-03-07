@@ -4,7 +4,6 @@ import { Heading } from "./TOC";
 export default () => (
   <>
     <Heading id="Algorithm" />
-
     <p>
       The hierarchical map equation measures the per-step average code length
       necessary to describe a random walker&apos;s movements on a network, given
@@ -21,7 +20,6 @@ export default () => (
     </p>
 
     <Heading id="TwolevelAlgorithm" />
-
     <p>
       The core of the algorithm follows closely the{" "}
       <a href="https://sites.google.com/site/findcommunities/">
@@ -53,7 +51,7 @@ export default () => (
     </p>
 
     <p style={{ paddingLeft: 20 }}>
-      <span style={{ fontStyle: 'italic' }}>Submodule movements: </span>
+      <em>Submodule movements: </em>
       First, each cluster is treated as a network on its own and the main
       algorithm is applied to this network. This procedure generates one or
       more submodules for each module. Then all submodules are moved back to
@@ -64,7 +62,7 @@ export default () => (
     </p>
 
     <p style={{ paddingLeft: 20 }}>
-      <span style={{ fontStyle: 'italic' }}>Single-node movements: </span>
+      <em>Single-node movements: </em>
       First, each node is re-assigned to be the sole member of its own
       module, in order to allow for single-node movements. Then all nodes
       are moved back to their respective modules of the previous step. At
@@ -89,7 +87,6 @@ export default () => (
     </p>
 
     <Heading id="MultilevelAlgorithm" />
-
     <p>
       We have generalized our search algorithm for the two-level map equation to
       recursively search for multilevel solutions. The recursive search operates
