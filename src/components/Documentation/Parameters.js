@@ -18,7 +18,7 @@ const DropdownParameter = observer(({ param }) => {
       options={options}
       multiple={param.longType === "list"}
       placeholder={param.longType}
-      clearable={param.longType === "list"}
+      clearable={param.default === ""}
       value={param.value}
       onChange={(e, { value }) => store.setOption(param, value)}
     />
