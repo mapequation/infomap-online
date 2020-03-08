@@ -45,7 +45,7 @@ export default observer(class InfomapOnline extends React.Component {
       ftree,
       activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
       running: false,
-      completed: clu || tree || ftree,
+      completed: !!clu || !!tree || !!ftree,
     }, () => localforage.setItem("ftree", ftree));
 
     this.infomap = new Infomap()
@@ -180,7 +180,7 @@ export default observer(class InfomapOnline extends React.Component {
             firstCompleted={!!network}
             firstActive={!network}
             secondCompleted={completed || running}
-            secondActive={network && !completed}
+            secondActive={!!network && !completed}
             thirdCompleted={downloaded}
             thirdActive={completed}
           />
