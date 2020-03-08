@@ -4,25 +4,24 @@ export default function getArgSpec(params) {
   const spec = {};
 
   params.forEach(param => {
-    const { short, long, shortType, incremental } = param;
+    const { short, long, longType, incremental } = param;
 
     if (short) {
       spec[short] = long;
     }
 
-    switch (shortType || "") {
-      case "f": // float
-      case "n": // integer
-      case "P": // probability
+    switch (longType || "") {
+      case "number":
+      case "integer":
+      case "probability":
         spec[long] = Number;
         break;
-      case "s": // string
-      case "p": // path
-      case "o": // option
-      case "l": // list
+      case "string":
+      case "path":
+      case "option":
+      case "list":
         spec[long] = String;
         break;
-      case "": // no argument flag
       default:
         spec[long] = incremental ? arg.COUNT : Boolean;
     }
