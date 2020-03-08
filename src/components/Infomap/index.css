@@ -19,16 +19,6 @@
     text-align: center;
 }
 
-.argsErrorPopup {
-    box-shadow: none !important;
-    color: #9f3a38 !important;
-    line-height: 1em !important;
-    padding: 0.5em 0.8em 0.7em calc(0.3em - 10px) !important;
-    margin-bottom: -0.5em !important;
-    font-size: .85714286rem !important;
-    font-weight: 700 !important;
-}
-
 .output {
     padding: 0 !important;
     border: none !important;
@@ -53,6 +43,11 @@
     margin-right: 0 !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
+}
+
+.inputParameters .prompt {
+    top: -3em;
+    position: absolute !important;
 }
 
 .console {
