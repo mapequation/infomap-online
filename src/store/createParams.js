@@ -27,7 +27,6 @@ export default (params) =>
           break;
         case "path":
           param.value = null;
-          param.default = null;
           break;
         default:
           break;
