@@ -4,12 +4,13 @@ import arg from "arg";
 import * as networks from "./networks";
 import * as outputFormats from "./outputFormats";
 import getArgSpec from "./argSpec";
+import createParams from "./createParams";
 
 const argSpec = getArgSpec(infomapParameters);
 
 class Store {
   network = networks.initial;
-  params = infomapParameters;
+  params = createParams(infomapParameters);
 
   args = "";
   argsError = "";
@@ -20,7 +21,7 @@ class Store {
 
   toggle = param => {
     if (!param) return;
-    param.active = param.active === undefined ? true : !param.active;
+    param.active = !param.active;
     this.rebuildArgs();
   };
 
@@ -32,7 +33,7 @@ class Store {
   };
 
   setArgs = (args) => {
-    const argv = args.split(/\s/);
+    const argv = args.trim().split(/\s+/);
 
     this.argsError = "";
     this.hasArgsError = false;
