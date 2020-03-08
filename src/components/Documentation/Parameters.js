@@ -60,33 +60,34 @@ const ToggleParameter = observer(({ param }) => {
   );
 });
 
-const IncrementalParameter = ({ param }) => {
-  const [value, setValue] = useState(0);
+const IncrementalParameter = observer(({ param }) => {
+  const { value, maxValue, stringValue } = param;
 
-  const string = param.short.slice(1);
-
-  const maxValue = string === "h" ? 2 : 3;
-
-  const decrement = () => {
-    if (value === 0) return;
-    setValue(value - 1);
-  };
-
-  const increment = () => {
-    if (value === maxValue) return;
-    setValue(value + 1);
-  };
+  const setValue = (value) => store.setIncremental(param, value);
 
   return (
     <Button.Group>
-      <Button icon="minus" basic onClick={decrement} disabled={value === 0}/>
-      <Button icon basic disabled={value === 0}>
-        {value > 0 ? string.repeat(value) : string}
-      </Button>
-      <Button icon="plus" basic onClick={increment} disabled={value === maxValue}/>
+      <Button
+        basic
+        icon="minus"
+        disabled={value === 0}
+        onClick={() => setValue(value - 1)}
+      />
+      <Button
+        basic
+        icon
+        disabled={value === 0}
+        content={stringValue(value)}
+      />
+      <Button
+        basic
+        icon="plus"
+        disabled={value === maxValue}
+        onClick={() => setValue(value + 1)}
+      />
     </Button.Group>
   );
-};
+});
 
 const ParameterControl = ({ param }) => {
   if (param.longType) {
@@ -107,8 +108,7 @@ const ParameterControl = ({ param }) => {
   }
 
   if (param.incremental) {
-    //return <IncrementalParameter param={param}/>;
-    return null;
+    return <IncrementalParameter param={param}/>;
   }
 
   return <ToggleParameter param={param}/>;

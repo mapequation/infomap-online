@@ -5,6 +5,8 @@ import * as networks from "./networks";
 import * as outputFormats from "./outputFormats";
 import getArgSpec from "./argSpec";
 import createParams from "./createParams";
+import paramToString from "./paramToString";
+import updateParam from "./updateParam";
 
 const argSpec = getArgSpec(infomapParameters);
 
@@ -19,16 +21,24 @@ class Store {
   getParamsForGroup = (group) =>
     Object.values(this.params).filter(param => param.group === group);
 
-  toggle = param => {
+  toggle = (param) => {
     if (!param) return;
     param.active = !param.active;
+    this.rebuildArgs();
+  };
+
+  setIncremental = (param, value) => {
+    if (!param) return;
+    if (value < 0 || value > param.maxValue) return;
+    param.active = value > 0;
+    param.value = value;
     this.rebuildArgs();
   };
 
   rebuildArgs = () => {
     this.args = this.params
       .filter(param => param.active)
-      .map(param => param.short || param.long)
+      .map(paramToString)
       .join(" ");
   };
 
@@ -40,13 +50,7 @@ class Store {
 
     try {
       arg(argSpec, { argv, permissive: false });
-
-      this.params.forEach(param => {
-        const index = argv
-          .filter(a => a !== "")
-          .findIndex(a => a === param.short || a === param.long);
-        param.active = index > -1;
-      });
+      this.params.forEach(updateParam(argv))
     } catch (e) {
       this.argsError = e.message;
       this.hasArgsError = true;
@@ -67,6 +71,7 @@ class Store {
 export default decorate(Store, {
   params: observable,
   toggle: action,
+  setIncremental: action,
   args: observable,
   argsError: observable,
   hasArgsError: observable,

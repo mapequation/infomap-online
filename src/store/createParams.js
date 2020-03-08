@@ -24,6 +24,10 @@ export default (params) =>
       }
     } else if (param.incremental) {
       param.value = 0;
+      param.active = false;
+      const short = param.short.slice(1);
+      param.maxValue = short === "h" ? 2 : 3;
+      param.stringValue = (value) => value > 0 ? short.repeat(value) : short;
     } else {
       param.value = param.default || false;
       param.active = !!param.value;
