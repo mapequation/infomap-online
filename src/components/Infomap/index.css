@@ -16,7 +16,7 @@
 
 .topDropdown {
     margin-bottom: 1em !important;
-    text-align: center;
+    text-align: center !important;
 }
 
 .output {
@@ -47,6 +47,14 @@
 
 .inputParameters .prompt {
     top: -3em;
+    position: absolute !important;
+}
+
+.infomap .four.wide.column .label.small {
+    font-weight: 500;
+    border-color: rgba(34, 36, 38, .15) !important;
+    background: #f0edeb !important;
+    top: -2em;
     position: absolute !important;
 }
 

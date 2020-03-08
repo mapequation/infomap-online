@@ -3,7 +3,7 @@ import { saveAs } from "file-saver";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import Steps from "./Steps";
@@ -36,6 +36,7 @@ export default observer(class InfomapOnline extends React.Component {
       infomapError: content,
       output: [...this.state.output, content],
       running: false,
+      completed: false,
     });
 
     const onFinished = ({ clu, tree, ftree }) => this.setState({
@@ -44,7 +45,7 @@ export default observer(class InfomapOnline extends React.Component {
       ftree,
       activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
       running: false,
-      completed: true,
+      completed: clu || tree || ftree,
     }, () => localforage.setItem("ftree", ftree));
 
     this.infomap = new Infomap()
@@ -99,7 +100,11 @@ export default observer(class InfomapOnline extends React.Component {
   };
 
   run = () => {
-    this.setState({ output: [] });
+    this.setState({
+      completed: false,
+      downloaded: false,
+      output: [],
+    });
 
     if (this.runId) {
       this.infomap.cleanup(this.runId);
@@ -224,6 +229,12 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4}>
+          {completed && !ftree && <Label
+            basic
+            size="small"
+            pointing="below"
+            content="Network Navigator requires ftree output"
+          />}
           <Button.Group primary fluid>
             <Button
               as="a"
