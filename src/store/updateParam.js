@@ -9,12 +9,14 @@ export default function updateParam(argv) {
         param.value = param.default;
       } else if (param.longType === "list") {
         param.value = [];
+      } else if (param.longType !== "path") {
+        param.value = "";
       }
 
       const index = args.findIndex(a => a === param.short || a === param.long);
       if (index < 0 || index === args.length - 1) return;
       const value = args[index + 1];
-      if (value.startsWith("-")) return;
+      if (value.startsWith("-") && value !== "-1") return;
 
       switch (param.longType) {
         case "list":
