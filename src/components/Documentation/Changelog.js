@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { List, Divider, Icon, Header } from "semantic-ui-react";
+import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { infomapChangelog } from "@mapequation/infomap";
 import { Heading } from "./TOC";
 

@@ -3,10 +3,11 @@ import { saveAs } from "file-saver";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Popup, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import Steps from "./Steps";
+import InputParameters from "./InputParameters";
 
 
 export default observer(class InfomapOnline extends React.Component {
@@ -60,7 +61,7 @@ export default observer(class InfomapOnline extends React.Component {
     const args = urlParams.get("args");
 
     if (args) {
-      this.onChangeArgs(null, { value: args });
+      store.setArgs(args);
     }
   };
 
@@ -96,8 +97,6 @@ export default observer(class InfomapOnline extends React.Component {
 
     reader.readAsText(file, "utf-8");
   };
-
-  onChangeArgs = (e, { value }) => store.setArgs(value);
 
   run = () => {
     this.setState({ output: [] });
@@ -139,22 +138,21 @@ export default observer(class InfomapOnline extends React.Component {
     const {
       name,
       clu,
-      ftree,
       tree,
-      completed,
-      running,
+      ftree,
       loading,
+      running,
+      completed,
       downloaded,
       infomapError,
       activeOutput,
       output,
     } = this.state;
 
-    const { args, argsError, network } = store;
+    const { network } = store;
 
     const consoleContent = output.join("\n");
     const hasInfomapError = !!infomapError;
-    const hasArgsError = !!argsError;
     const outputValue = this.state[activeOutput];
     const haveOutput = clu || tree || ftree;
 
@@ -209,31 +207,7 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={9} floated="left">
-          <Form>
-            <Popup
-              flowing
-              position="top left"
-              className="argsErrorPopup"
-              open={hasArgsError}
-              content={argsError}
-              trigger={<span/>}
-            />
-            <Form.Group widths="equal" className="inputParameters">
-              <Form.Input
-                placeholder="Parameters"
-                value={args}
-                onChange={this.onChangeArgs}
-                action={<Form.Button
-                  primary
-                  disabled={hasArgsError || running}
-                  loading={running}
-                  onClick={this.run}
-                  content="Run Infomap"
-                />
-                }
-              />
-            </Form.Group>
-          </Form>
+          <InputParameters loading={running} onClick={this.run}/>
 
           <Form error={hasInfomapError}>
             <Console

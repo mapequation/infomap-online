@@ -1,5 +1,5 @@
 import React from "react";
-import { Message, Icon } from "semantic-ui-react";
+import { Icon, Message } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./TOC";
 import Infomap from "@mapequation/infomap";

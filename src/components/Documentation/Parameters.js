@@ -1,6 +1,6 @@
 import { infomapParameters } from "@mapequation/infomap";
 import React, { useState } from "react";
-import { Checkbox, Item, Dropdown, Input, Button, Icon } from "semantic-ui-react";
+import { Button, Checkbox, Dropdown, Icon, Input, Item } from "semantic-ui-react";
 import { Heading } from "./TOC";
 
 

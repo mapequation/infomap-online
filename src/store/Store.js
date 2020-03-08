@@ -1,4 +1,4 @@
-import { decorate, observable, action } from "mobx";
+import { action, decorate, observable } from "mobx";
 import { infomapParameters } from "@mapequation/infomap";
 import arg from "arg";
 import * as networks from "./networks";
@@ -12,20 +12,22 @@ class Store {
 
   args = "--ftree --clu";
   argsError = "";
+  hasArgsError = false;
 
   setArgs = (args) => {
     const argv = args.split(/\s/);
 
-    let err = "";
+    this.argsError = "";
+    this.hasArgsError = false;
 
     try {
       arg(argSpec, { argv, permissive: false });
     } catch (e) {
-      err = e.message;
+      this.argsError = e.message;
+      this.hasArgsError = true;
     }
 
     this.args = args;
-    this.argsError = err;
   };
 
   setNetwork = (data) => this.network = data;
@@ -40,6 +42,7 @@ class Store {
 export default decorate(Store, {
   args: observable,
   argsError: observable,
+  hasArgsError: observable,
   setArgs: action,
   network: observable,
   runExample: action,

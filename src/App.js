@@ -1,5 +1,5 @@
-import React from 'react';
-import InfomapOnline from './components/Infomap';
+import React from "react";
+import InfomapOnline from "./components/Infomap";
 import Header from "./components/Header";
 import Documentation from "./components/Documentation";
 import Footer from "./components/Footer";

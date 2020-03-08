@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import { Container, Menu, Header as Heading, Icon } from "semantic-ui-react";
+import { Container, Header as Heading, Icon, Menu } from "semantic-ui-react";
 import Infomap from "@mapequation/infomap";
 
 const Header = () => (
