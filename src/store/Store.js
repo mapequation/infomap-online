@@ -35,6 +35,25 @@ class Store {
     this.rebuildArgs();
   };
 
+  setInput = (param, value) => {
+    if (!param) return;
+    param.active = value !== "";
+    param.value = value;
+    this.rebuildArgs();
+  };
+
+  setOption = (param, value) => {
+    if (!param) return;
+    if (param.longType === "list") {
+      param.active = value.length > 0;
+      param.value = value;
+    } else if (param.longType === "option") {
+      param.active = value !== param.default;
+      param.value = value;
+    }
+    this.rebuildArgs();
+  };
+
   rebuildArgs = () => {
     this.args = this.params
       .filter(param => param.active)
@@ -50,7 +69,7 @@ class Store {
 
     try {
       arg(argSpec, { argv, permissive: false });
-      this.params.forEach(updateParam(argv))
+      this.params.forEach(updateParam(argv));
     } catch (e) {
       this.argsError = e.message;
       this.hasArgsError = true;
@@ -72,6 +91,8 @@ export default decorate(Store, {
   params: observable,
   toggle: action,
   setIncremental: action,
+  setInput: action,
+  setOption: action,
   args: observable,
   argsError: observable,
   hasArgsError: observable,

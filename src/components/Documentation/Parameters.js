@@ -5,12 +5,8 @@ import { Heading } from "./TOC";
 import store from "../../store";
 
 
-const DropdownParameter = ({ param }) => {
-  const match = param.description.match(/Options: (.*)\.$/);
-  if (!(match && match[1])) return null;
-
-  const options = match[1].split(",")
-    .map((value, key) => ({
+const DropdownParameter = observer(({ param }) => {
+  const options = param.options.map((value, key) => ({
       key,
       text: value,
       value
@@ -22,22 +18,25 @@ const DropdownParameter = ({ param }) => {
       options={options}
       multiple={param.longType === "list"}
       placeholder={param.longType}
-      clearable={param.default === ""}
-      value={param.default}
+      clearable={param.longType === "list"}
+      value={param.value}
+      onChange={(e, { value }) => store.setOption(param, value)}
     />
   );
-};
+});
 
-const InputParameter = ({ param }) => {
+const InputParameter = observer(({ param }) => {
   return (
     <Input
       style={{ width: "100px" }}
       placeholder={param.default}
+      value={param.value}
+      onChange={(e, { value }) => store.setInput(param, value)}
     />
   );
-};
+});
 
-const FileInputParameter = ({ param }) => {
+const FileInputParameter = observer(({ param }) => {
   return (
     <Button basic as="label" htmlFor="fileInput">
       Load file
@@ -48,7 +47,7 @@ const FileInputParameter = ({ param }) => {
       />
     </Button>
   );
-};
+});
 
 const ToggleParameter = observer(({ param }) => {
   return (
@@ -94,12 +93,12 @@ const ParameterControl = ({ param }) => {
     switch (param.longType) {
       case "option":
       case "list":
-        //return <DropdownParameter param={param}/>;
+        return <DropdownParameter param={param}/>;
       case "string":
       case "probability":
       case "number":
       case "integer":
-        //return <InputParameter param={param}/>;
+        return <InputParameter param={param}/>;
       case "path":
         //return <FileInputParameter param={param}/>;
       default:

@@ -1,3 +1,10 @@
+const getOptions = (description) => {
+  const match = description.match(/Options: (.*)\.$/);
+  if (!(match && match[1])) return [];
+
+  return match[1].split(",").map(option => option.trim());
+};
+
 export default (params) =>
   params.map((param) => {
     if (param.longType) {
@@ -6,14 +13,17 @@ export default (params) =>
       switch (param.longType) {
         case "list":
           param.value = [];
-          param.default = [];
+          param.options = getOptions(param.description);
           break;
         case "option":
+          param.value = param.default;
+          param.options = getOptions(param.description);
+          break;
         case "string":
         case "probability":
         case "number":
         case "integer":
-          param.value = param.default || "";
+          param.value = "";
           break;
         case "path":
           param.value = null;

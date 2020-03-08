@@ -20,7 +20,7 @@ export const linkList = `#source target [weight]
 2 3 2
 3 5 0.5`;
 
-export const pajek =`# A network in Pajek format
+export const pajek = `# A network in Pajek format
 *Vertices 4
 1 "1"
 2 "2"
