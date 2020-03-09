@@ -5,3 +5,16 @@
 .changelogItem:before {
     color: #ccc !important;
 }
+.paramGroup .header {
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+}
+
+.paramGroup .meta {
+    float: right;
+    margin-left: 20px !important;
+}
+
+.paramGroup .extra {
+    font-weight: 400;
+}

@@ -118,31 +118,25 @@ const ParameterGroup = ({ group, advanced }) => {
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 
-  const styles = {
-    header: { fontWeight: 500, fontSize: "1em" },
-    extra: { fontWeight: 400 },
-    meta: { float: "right", marginLeft: 20 },
-  };
-
   const id = `Params${group}`;
 
   return (
     <>
       <Heading id={id}/>
-      <Item.Group>
+      <Item.Group className="paramGroup">
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">
-              <Item.Header as="h6" style={styles.header}>
+              <Item.Header>
                 {param.short && <><code>{param.short}{param.shortType && `<${(param.shortType)}>`}</code>{", "}</>}
                 <code>{param.long}{param.longType && ` <${(param.longType)}>`}</code>
               </Item.Header>
-              <Item.Meta style={styles.meta}>
+              <Item.Meta>
                 <ParameterControl param={param}/>
               </Item.Meta>
               <Item.Description content={param.description}/>
               {param.default !== "" &&
-              <Item.Extra style={styles.extra} content={`Default: ${param.default}`}/>}
+              <Item.Extra content={`Default: ${param.default}`}/>}
             </Item.Content>
           </Item>
         ))}
