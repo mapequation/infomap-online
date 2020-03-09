@@ -10,6 +10,10 @@
     resize: none !important;
 }
 
+.infomap textArea:focus {
+    border: 1px solid hsl(206, 73%, 47%) !important;
+}
+
 .infomap .topButton {
     margin-bottom: 1em !important;
 }
@@ -28,7 +32,10 @@
     height: calc(500px - 37.15px);
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
-    border-top: 0 !important;
+}
+
+.infomap .four.wide.column .attached.menu {
+    border-bottom-width: 0 !important;
 }
 
 .network textarea {
@@ -36,7 +43,16 @@
 }
 
 .inputParameters {
-    margin-bottom: calc(1em - 2px) !important;
+    margin-bottom: 1em !important;
+}
+
+.inputParameters input {
+    height: 36px !important;
+    border: 1px solid hsl(206, 63%, 77%) !important;
+}
+
+.inputParameters input:focus {
+    border: 1px solid hsl(206, 73%, 47%) !important;
 }
 
 .inputParameters button {
