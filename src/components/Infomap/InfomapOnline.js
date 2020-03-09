@@ -81,8 +81,6 @@ export default observer(class InfomapOnline extends React.Component {
   };
 
   onLoadNetwork = (event) => {
-    this.setState({ loading: true });
-
     const { files } = event.target;
     const file = files[0];
 
@@ -99,7 +97,8 @@ export default observer(class InfomapOnline extends React.Component {
     reader.onloadend = event =>
       this.onChangeNetwork(event, { value: reader.result, name });
 
-    reader.readAsText(file, "utf-8");
+    this.setState({ loading: true },
+      () => reader.readAsText(file, "utf-8"));
   };
 
   run = () => {
