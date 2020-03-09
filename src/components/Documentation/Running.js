@@ -7,9 +7,26 @@ export default () => (
   <>
     <Heading id="Running" />
 
-    <p>Usage:</p>
+    <p>If you installed Infomap using <code>pip</code>, usage is</p>
+
+    <Code>infomap [parameters] network_data out_directory</Code>
+
+    <p>
+      If you compiled Infomap from source by running <code>make</code>, usage is
+    </p>
 
     <Code>./Infomap [parameters] network_data out_directory</Code>
+
+    <p>
+      To make the compiled from source version of Infomap available in any directory, add an alias
+      to e.g. your <code>.profile</code> by running the following in the source directory
+    </p>
+
+    <Code>
+      echo "alias Infomap=$PWD/Infomap" >> ~/.test
+    </Code>
+
+    <p>and restarting your shell.</p>
 
     <p>
       The optional <a href="#Parameters">parameters</a> can be put anywhere.

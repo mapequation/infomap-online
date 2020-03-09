@@ -60,6 +60,11 @@ export default () => (
       <a href="#Git">clone the git repository</a>.
     </p>
 
+    <p>
+      After downloading the source and running <code>make</code>, an executable called{" "}
+      <code>Infomap</code> will be available in the source directory.
+    </p>
+
     <Heading id="Download" />
 
     <p>
