@@ -1,13 +1,14 @@
 import Infomap from "@mapequation/infomap";
 import { saveAs } from "file-saver";
+import JSZip from "jszip";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
 import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
-import Steps from "./Steps";
 import InputParameters from "./InputParameters";
+import Steps from "./Steps";
 
 
 export default observer(class InfomapOnline extends React.Component {
@@ -133,10 +134,21 @@ export default observer(class InfomapOnline extends React.Component {
 
   onDownloadClick = (format) => () => {
     const { name } = this.state;
-    const output = this.state[format];
-    const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
+    const content = this.state[format];
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     saveAs(blob, `${name}.${format}`);
     this.setState({ downloaded: true });
+  };
+
+  onDownloadZipClick = (outputOptions) => () => {
+    const { name } = this.state;
+    const zip = new JSZip();
+    for (let format of outputOptions) {
+      const content = this.state[format];
+      zip.file(`${name}.${format}`, content);
+    }
+    zip.generateAsync({ type: "blob" })
+      .then(blob => saveAs(blob, `${name}.zip`));
   };
 
   onCopyClusters = () => this.setState({ downloaded: true });
@@ -163,7 +175,7 @@ export default observer(class InfomapOnline extends React.Component {
     const outputValue = this.state[activeOutput];
     const haveOutput = clu || tree || ftree;
 
-    let outputOptions = ["clu", "tree", "ftree"]
+    const outputOptions = ["clu", "tree", "ftree"]
       .filter(name => this.state[name]);
 
     const outputMenuItems = outputOptions
@@ -261,6 +273,12 @@ export default observer(class InfomapOnline extends React.Component {
                     content={`Download .${format}`}
                   />,
                 )}
+                {outputOptions.length > 1 &&
+                <Dropdown.Item
+                  icon="download"
+                  onClick={this.onDownloadZipClick(outputOptions)}
+                  content="Download all"
+                />}
               </Dropdown.Menu>
             </Dropdown>
           </Button.Group>
