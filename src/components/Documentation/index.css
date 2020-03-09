@@ -5,6 +5,17 @@
 .changelogItem:before {
     color: #ccc !important;
 }
+
+.paramGroup .item {
+    padding-bottom: 1em !important;
+    border-bottom: 1px solid rgba(34,36,38,.1) !important;
+}
+
+.paramGroup .item:last-child {
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
 .paramGroup .header {
     font-weight: 500 !important;
     font-size: 1rem !important;
@@ -13,8 +24,4 @@
 .paramGroup .meta {
     float: right;
     margin-left: 20px !important;
-}
-
-.paramGroup .extra {
-    font-weight: 400;
 }

@@ -135,8 +135,6 @@ const ParameterGroup = ({ group, advanced }) => {
                 <ParameterControl param={param}/>
               </Item.Meta>
               <Item.Description content={param.description}/>
-              {param.default !== "" &&
-              <Item.Extra content={`Default: ${param.default}`}/>}
             </Item.Content>
           </Item>
         ))}
