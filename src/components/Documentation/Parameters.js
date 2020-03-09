@@ -113,7 +113,7 @@ const ParameterControl = ({ param }) => {
   return <ToggleParameter param={param}/>;
 };
 
-const ParameterGroup = ({ group, advanced }) => {
+const ParameterGroup = observer(({ group, advanced }) => {
   const params = store.getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
@@ -127,7 +127,7 @@ const ParameterGroup = ({ group, advanced }) => {
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">
-              <Item.Header>
+              <Item.Header className={param.active ? "active" : ""}>
                 {param.short && <><code>{param.short}{param.shortType && `<${(param.shortType)}>`}</code>{", "}</>}
                 <code>{param.long}{param.longType && ` <${(param.longType)}>`}</code>
               </Item.Header>
@@ -141,7 +141,7 @@ const ParameterGroup = ({ group, advanced }) => {
       </Item.Group>
     </>
   );
-};
+});
 
 export default () => {
   const [advanced, setAdvanced] = useState(false);
