@@ -31,3 +31,8 @@
     float: right;
     margin-left: 20px !important;
 }
+
+.paramGroup label.header code {
+    cursor: pointer;
+    user-select: none;
+}

@@ -28,6 +28,7 @@ const DropdownParameter = observer(({ param }) => {
 const InputParameter = observer(({ param }) => {
   return (
     <Input
+      id={param.long}
       style={{ width: "100px" }}
       placeholder={param.default}
       value={param.value}
@@ -52,6 +53,7 @@ const FileInputParameter = observer(({ param }) => {
 const ToggleParameter = observer(({ param }) => {
   return (
     <Checkbox
+      id={param.long}
       toggle
       checked={param.active}
       onChange={() => store.toggle(param)}
@@ -120,6 +122,17 @@ const ParameterGroup = observer(({ group, advanced }) => {
 
   const id = `Params${group}`;
 
+  const getHeaderProps = (param) => {
+    const { active, long, longType, incremental, value } = param;
+    const props = { className: active ? "active" : "" };
+    if (longType === "option" || longType === "list" || longType === "path") return props;
+    const labelProps = { as: "label", htmlFor: long, ...props };
+    return incremental ? {
+      onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
+      ...labelProps
+    } : labelProps;
+  };
+
   return (
     <>
       <Heading id={id}/>
@@ -127,7 +140,7 @@ const ParameterGroup = observer(({ group, advanced }) => {
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">
-              <Item.Header className={param.active ? "active" : ""}>
+              <Item.Header {...getHeaderProps(param)}>
                 {param.short && <><code>{param.short}{param.shortType && `<${(param.shortType)}>`}</code>{", "}</>}
                 <code>{param.long}{param.longType && ` <${(param.longType)}>`}</code>
               </Item.Header>
