@@ -108,6 +108,9 @@ export default observer(class InfomapOnline extends React.Component {
       completed: false,
       downloaded: false,
       output: [],
+      clu: "",
+      tree: "",
+      ftree: "",
     });
 
     if (this.runId) {
