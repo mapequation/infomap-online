@@ -47,6 +47,11 @@ export default () => (
       <a href="//mapequation.github.io/infomap/python">the API documentation</a>.
     </p>
 
+    <Message warning>
+      <Message.Header>Python 2 support</Message.Header>
+      <p>Since Python 2 has reached End of Life, Infomap now only supports Python 3.</p>
+    </Message>
+
     <Heading id="CompilingFromSource" />
 
     <p>
