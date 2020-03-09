@@ -36,7 +36,7 @@ export default () => (
     </p>
 
     <Message info>
-      If no <code>parameters</code> are provided, Infomap will assume an <strong>undirected</strong>{" "}
+      If no <strong>parameters</strong> are provided, Infomap will assume an <strong>undirected</strong>{" "}
       network and try to partition it <strong>hierarchically</strong>.
     </Message>
   </>

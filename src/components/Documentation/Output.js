@@ -47,7 +47,7 @@ export default () => {
       </p>
 
       <Message info>
-        The Map format used by the old flash Network Navigator is deprecated and not available in Infomap 1.0.
+        The <strong>Map format</strong> used by the old flash Network Navigator is deprecated.
       </Message>
 
       <Heading id="OutputTree" />
