@@ -4,10 +4,12 @@ import JSZip from "jszip";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Label, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import InputParameters from "./InputParameters";
+import InputTextarea from "./InputTextarea";
+import LoadNetworkButton from "./LoadNetworkButton";
 import Steps from "./Steps";
 
 
@@ -79,9 +81,9 @@ export default observer(class InfomapOnline extends React.Component {
       infomapError: "",
     }));
   };
+  onLoadNetwork = (files) => {
+    if (files.length < 1) return;
 
-  onLoadNetwork = (event) => {
-    const { files } = event.target;
     const file = files[0];
 
     let name = "";
@@ -198,30 +200,14 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3}>
-          <Button
-            as="label"
-            fluid
-            primary
-            htmlFor="fileInput"
-            className="topButton"
-          >
-            <Icon name="file"/>
-            Load network
-            <input
-              style={{ display: "none" }}
-              type="file"
-              id="fileInput"
-              onChange={this.onLoadNetwork}
-            />
-          </Button>
-          <Form loading={loading}>
-            <Form.TextArea
-              value={network}
-              onChange={this.onChangeNetwork}
-              placeholder="# Paste your network here"
-              className="network"
-            />
-          </Form>
+          <LoadNetworkButton onDrop={this.onLoadNetwork}/>
+          <InputTextarea
+            loading={loading}
+            value={network}
+            onChange={this.onChangeNetwork}
+            placeholder="# Paste your network here"
+            onDrop={this.onLoadNetwork}
+          />
         </Grid.Column>
 
         <Grid.Column width={9} floated="left">

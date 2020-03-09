@@ -19,7 +19,7 @@ export default (props) => {
           <Step.Title>Load network</Step.Title>
           <Step.Description>
             Edit input or load file
-        </Step.Description>
+          </Step.Description>
         </Step.Content>
       </Step>
 
@@ -29,7 +29,7 @@ export default (props) => {
           <Step.Title>Run Infomap</Step.Title>
           <Step.Description>
             Toggle parameters or add arguments
-        </Step.Description>
+          </Step.Description>
         </Step.Content>
       </Step>
 
