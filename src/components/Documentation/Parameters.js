@@ -1,16 +1,16 @@
-import React, { useState } from "react";
 import { observer } from "mobx-react";
+import React, { useState } from "react";
 import { Button, Checkbox, Dropdown, Input, Item } from "semantic-ui-react";
-import { Heading } from "./TOC";
 import store from "../../store";
+import { Heading } from "./TOC";
 
 
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({
-      key,
-      text: value,
-      value
-    }));
+    key,
+    text: value,
+    value,
+  }));
 
   return (
     <Dropdown
@@ -18,9 +18,9 @@ const DropdownParameter = observer(({ param }) => {
       options={options}
       multiple={param.longType === "list"}
       placeholder={param.longType}
-      clearable={param.default === ""}
+      clearable={param.clearable}
       value={param.value}
-      onChange={(e, { value }) => store.setOption(param, value)}
+      onChange={(e, { value }) => store.setOption(param, value)}
     />
   );
 });
@@ -141,8 +141,8 @@ const ParameterGroup = observer(({ group, advanced }) => {
           <Item key={key}>
             <Item.Content verticalAlign="top">
               <Item.Header {...getHeaderProps(param)}>
-                {param.short && <><code>{param.short}{param.shortType && `<${(param.shortType)}>`}</code>{", "}</>}
-                <code>{param.long}{param.longType && ` <${(param.longType)}>`}</code>
+                {param.short && <><code>{param.shortString}</code>{", "}</>}
+                <code>{param.longString}</code>
               </Item.Header>
               <Item.Meta>
                 <ParameterControl param={param}/>

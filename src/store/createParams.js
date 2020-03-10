@@ -7,15 +7,23 @@ const getOptions = (description) => {
 
 export default (params) =>
   params.map((param) => {
+    if (param.short) {
+      param.shortString = `${param.short}${param.shortType ? `<${(param.shortType)}>` : ""}`;
+    }
+
+    param.longString = `${param.long}${param.longType ? ` <${(param.longType)}>` : ""}`;
+
     if (param.longType) {
       param.active = false;
 
       switch (param.longType) {
         case "list":
+          param.clearable = true;
           param.value = [];
           param.options = getOptions(param.description);
           break;
         case "option":
+          param.clearable = param.default === "";
           param.value = param.default;
           param.options = getOptions(param.description);
           break;
