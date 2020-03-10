@@ -103,49 +103,49 @@ const ParameterControl = ({ param }) => {
   return <ToggleParameter param={param}/>;
 };
 
+const getHeaderProps = (param) => {
+  const { active, long, longType, dropdown, input, incremental, value } = param;
+
+  const props = { className: active ? "active" : "", as: "label" };
+
+  if (longType === "path") return; // TODO
+
+  if (dropdown) {
+    const ref = store.getRef(long);
+    if (!ref) return props;
+    return {
+      onClick: () => active ? store.setOption(param, param.default) : ref.open(),
+      ...props,
+    };
+  }
+
+  const labelProps = { htmlFor: long, ...props };
+
+  if (incremental) {
+    return {
+      onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
+      ...labelProps,
+    };
+  }
+
+  if (input) {
+    const ref = store.getRef(long);
+    if (!ref) return labelProps;
+    return {
+      onClick: () => active ? store.setInput(param, "") : null,
+      ...labelProps,
+    };
+  }
+
+  return labelProps;
+};
+
 const ParameterGroup = observer(({ group, advanced }) => {
   const params = store.getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 
   const id = `Params${group}`;
-
-  const getHeaderProps = (param) => {
-    const { active, long, longType, dropdown, input, incremental, value } = param;
-
-    const props = { className: active ? "active" : "", as: "label" };
-
-    if (longType === "path") return; // TODO
-
-    if (dropdown) {
-      const ref = store.getRef(long);
-      if (!ref) return props;
-      return {
-        onClick: () => active ? store.setOption(param, param.default) : ref.open(),
-        ...props,
-      };
-    }
-
-    const labelProps = { htmlFor: long, ...props };
-
-    if (incremental) {
-      return {
-        onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
-        ...labelProps,
-      };
-    }
-
-    if (input) {
-      const ref = store.getRef(long);
-      if (!ref) return labelProps;
-      return {
-        onClick: () => active ? store.setInput(param, "") : null,
-        ...labelProps,
-      }
-    }
-
-    return labelProps;
-  };
 
   return (
     <>
