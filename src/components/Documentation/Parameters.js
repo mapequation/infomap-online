@@ -93,26 +93,12 @@ const IncrementalParameter = observer(({ param }) => {
 });
 
 const ParameterControl = ({ param }) => {
-  if (param.longType) {
-    switch (param.longType) {
-      case "option":
-      case "list":
-        return <DropdownParameter param={param}/>;
-      case "string":
-      case "probability":
-      case "number":
-      case "integer":
-        return <InputParameter param={param}/>;
-      case "path":
-        //return <FileInputParameter param={param}/>;
-      default:
-        return null;
-    }
-  }
-
-  if (param.incremental) {
+  if (param.dropdown)
+    return <DropdownParameter param={param}/>;
+  if (param.input)
+    return <InputParameter param={param}/>;
+  if (param.incremental)
     return <IncrementalParameter param={param}/>;
-  }
 
   return <ToggleParameter param={param}/>;
 };
