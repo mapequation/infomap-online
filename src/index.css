@@ -66,3 +66,7 @@ figure {
   font-weight: 500 !important;
   margin-bottom: 0.7rem !important;
 }
+
+.message.info {
+  background-color: hsl(206, 80%, 97%) !important;
+}
