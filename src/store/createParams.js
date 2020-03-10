@@ -18,11 +18,14 @@ export default (params) =>
 
       switch (param.longType) {
         case "list":
+          param.dropdown = true;
           param.clearable = true;
+          param.default = [];
           param.value = [];
           param.options = getOptions(param.description);
           break;
         case "option":
+          param.dropdown = true;
           param.clearable = param.default === "";
           param.value = param.default;
           param.options = getOptions(param.description);
@@ -32,6 +35,7 @@ export default (params) =>
         case "number":
         case "integer":
           param.value = "";
+          param.input = true;
           break;
         case "path":
           param.value = null;

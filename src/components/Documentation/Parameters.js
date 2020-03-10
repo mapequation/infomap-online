@@ -14,6 +14,7 @@ const DropdownParameter = observer(({ param }) => {
 
   return (
     <Dropdown
+      ref={ref => store.setRef(param.long, ref)}
       selection
       options={options}
       multiple={param.longType === "list"}
@@ -28,6 +29,7 @@ const DropdownParameter = observer(({ param }) => {
 const InputParameter = observer(({ param }) => {
   return (
     <Input
+      ref={ref => store.setRef(param.long, ref)}
       id={param.long}
       style={{ width: "100px" }}
       placeholder={param.default}
@@ -123,14 +125,40 @@ const ParameterGroup = observer(({ group, advanced }) => {
   const id = `Params${group}`;
 
   const getHeaderProps = (param) => {
-    const { active, long, longType, incremental, value } = param;
-    const props = { className: active ? "active" : "" };
-    if (longType === "option" || longType === "list" || longType === "path") return props;
-    const labelProps = { as: "label", htmlFor: long, ...props };
-    return incremental ? {
-      onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
-      ...labelProps
-    } : labelProps;
+    const { active, long, longType, dropdown, input, incremental, value } = param;
+
+    const props = { className: active ? "active" : "", as: "label" };
+
+    if (longType === "path") return; // TODO
+
+    if (dropdown) {
+      const ref = store.getRef(long);
+      if (!ref) return props;
+      return {
+        onClick: () => active ? store.setOption(param, param.default) : ref.open(),
+        ...props,
+      };
+    }
+
+    const labelProps = { htmlFor: long, ...props };
+
+    if (incremental) {
+      return {
+        onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
+        ...labelProps,
+      };
+    }
+
+    if (input) {
+      const ref = store.getRef(long);
+      if (!ref) return labelProps;
+      return {
+        onClick: () => active ? store.setInput(param, "") : null,
+        ...labelProps,
+      }
+    }
+
+    return labelProps;
   };
 
   return (

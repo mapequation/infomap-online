@@ -14,6 +14,12 @@ class Store {
   network = networks.initial;
   params = createParams(infomapParameters);
 
+  refs = {};
+
+  setRef = (name, ref) => this.refs[name] = ref;
+
+  getRef = (name) => this.refs[name];
+
   args = "";
   argsError = "";
   hasArgsError = false;
@@ -89,6 +95,8 @@ class Store {
 
 export default decorate(Store, {
   params: observable,
+  refs: observable,
+  setRef: action,
   toggle: action,
   setIncremental: action,
   setInput: action,
