@@ -1,9 +1,10 @@
 import React from "react";
+import Infomap from "@mapequation/infomap";
 import { Message } from "semantic-ui-react";
+import store from "../../store";
 import Code from "../Code";
 import Highlight from "../Highlight";
 import { Heading } from "./TOC";
-import store from "../../store";
 
 
 export default () => {
@@ -25,7 +26,7 @@ export default () => {
 
       <Code>
         <Highlight
-          network={`# v1.0.6
+          network={`# v${Infomap.__version__}
 # ./Infomap network.net . --ftree --clu
 # started at 2020-03-04 15:38:35
 # completed in 0.114 s
