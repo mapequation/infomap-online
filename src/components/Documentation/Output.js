@@ -40,7 +40,7 @@ export default () => {
       </p>
 
       <p style={{ margin: "-0.8em 0 0.2em 2em" }}>
-        <i>S<sub>L</sub></i> = 100 &middot; (1 &minus; <i>L</i>/<i>L<sub>1</sub></i>)
+        <i>S<sub>L</sub></i> = 1 &minus; <i>L</i>/<i>L<sub>1</sub></i>
       </p>
 
       <p>
