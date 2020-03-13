@@ -104,7 +104,7 @@ const Changelog = ({ changes }) => {
   let visible = 0;
   let lastVisibleIndex = 0;
 
-  for (let i = 0; i < changes.length && visible < maxVisible; ++i) {
+  for (let i = 0; i < changes.length && visible <= maxVisible; ++i) {
     const change = changes[i];
     if (change.type === "feat" || change.type === "fix") {
       lastVisibleIndex = i;
@@ -120,7 +120,7 @@ const Changelog = ({ changes }) => {
       ? releaseIndices[i + 1]
       : changes.length - 1;
     nextReleaseIndexOrEnd = Math.min(nextReleaseIndexOrEnd, lastIndex);
-    if (releaseIndex < lastIndex)
+    if (releaseIndex < lastIndex - 2)
       releases.push(changes.slice(releaseIndex, nextReleaseIndexOrEnd));
   });
 
