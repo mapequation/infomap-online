@@ -18,15 +18,16 @@ export default () => (
     <Code>./Infomap [parameters] network_data out_directory</Code>
 
     <p>
-      To make the compiled from source version of Infomap available in any directory, add an alias
-      to e.g. your <code>.profile</code> by running the following in the source directory
+      To make the compiled from source version of Infomap available in any directory,
+      either add the source directory to your <code>$PATH</code>, or add an alias
+      to your <code>.profile</code> by running
     </p>
 
     <Code>
-      echo "alias Infomap=$PWD/Infomap" >> ~/.test
+      echo "alias Infomap=$PWD/Infomap" >> ~/.profile
     </Code>
 
-    <p>and restarting your shell.</p>
+    <p>in the source directory and restarting your shell.</p>
 
     <p>
       The optional <a href="#Parameters">parameters</a> can be put anywhere.
