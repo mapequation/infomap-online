@@ -1,21 +1,19 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { Button, Icon, Ref } from "semantic-ui-react";
+import { Button, Ref } from "semantic-ui-react";
 
 
-export default ({ onDrop }) => {
+export default ({ onDrop, children, ...props }) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false });
   const { ref, ...rootProps } = getRootProps();
 
   return (
     <Ref innerRef={ref}>
       <Button
-        fluid
-        primary
-        className="topButton"
         {...rootProps}
+        {...props}
       >
-        <Icon name="file"/>Load network
+        {children}
         <input {...getInputProps()} style={{ display: "none" }}/>
       </Button>
     </Ref>

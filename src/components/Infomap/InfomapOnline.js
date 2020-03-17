@@ -4,7 +4,7 @@ import JSZip from "jszip";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Label, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message, Segment } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import InputParameters from "./InputParameters";
@@ -203,7 +203,14 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={3}>
-          <LoadNetworkButton onDrop={this.onLoadNetwork}/>
+          <LoadNetworkButton
+            fluid
+            primary
+            className="topButton"
+            onDrop={this.onLoadNetwork}
+          >
+            <Icon name="file"/>Load network
+          </LoadNetworkButton>
           <InputTextarea
             loading={loading}
             value={network}
