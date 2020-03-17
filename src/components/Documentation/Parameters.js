@@ -14,14 +14,14 @@ const DropdownParameter = observer(({ param }) => {
 
   return (
     <Dropdown
-      ref={ref => store.setRef(param.long, ref)}
+      ref={ref => store.params.setRef(param.long, ref)}
       selection
       options={options}
       multiple={param.longType === "list"}
       placeholder={param.longType}
       clearable={param.clearable}
       value={param.value}
-      onChange={(e, { value }) => store.setOption(param, value)}
+      onChange={(e, { value }) => store.params.setOption(param, value)}
     />
   );
 });
@@ -29,12 +29,12 @@ const DropdownParameter = observer(({ param }) => {
 const InputParameter = observer(({ param }) => {
   return (
     <Input
-      ref={ref => store.setRef(param.long, ref)}
+      ref={ref => store.params.setRef(param.long, ref)}
       id={param.long}
       style={{ width: "100px" }}
       placeholder={param.default}
       value={param.value}
-      onChange={(e, { value }) => store.setInput(param, value)}
+      onChange={(e, { value }) => store.params.setInput(param, value)}
     />
   );
 });
@@ -58,7 +58,7 @@ const ToggleParameter = observer(({ param }) => {
       id={param.long}
       toggle
       checked={param.active}
-      onChange={() => store.toggle(param)}
+      onChange={() => store.params.toggle(param)}
     />
   );
 });
@@ -66,7 +66,7 @@ const ToggleParameter = observer(({ param }) => {
 const IncrementalParameter = observer(({ param }) => {
   const { value, maxValue, stringValue } = param;
 
-  const setValue = (value) => store.setIncremental(param, value);
+  const setValue = (value) => store.params.setIncremental(param, value);
 
   return (
     <Button.Group>
@@ -105,16 +105,17 @@ const ParameterControl = ({ param }) => {
 
 const getHeaderProps = (param) => {
   const { active, long, longType, dropdown, input, incremental, value } = param;
+  const { params } = store;
 
   const props = { className: active ? "active" : "", as: "label" };
 
   if (longType === "path") return; // TODO
 
   if (dropdown) {
-    const ref = store.getRef(long);
+    const ref = params.getRef(long);
     if (!ref) return props;
     return {
-      onClick: () => active ? store.setOption(param, param.default) : ref.open(),
+      onClick: () => active ? params.setOption(param, param.default) : ref.open(),
       ...props,
     };
   }
@@ -123,16 +124,16 @@ const getHeaderProps = (param) => {
 
   if (incremental) {
     return {
-      onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
+      onClick: () => params.setIncremental(param, value > 0 ? 0 : 1),
       ...labelProps,
     };
   }
 
   if (input) {
-    const ref = store.getRef(long);
+    const ref = params.getRef(long);
     if (!ref) return labelProps;
     return {
-      onClick: () => active ? store.setInput(param, "") : null,
+      onClick: () => active ? params.setInput(param, "") : null,
       ...labelProps,
     };
   }
@@ -141,7 +142,7 @@ const getHeaderProps = (param) => {
 };
 
 const ParameterGroup = observer(({ group, advanced }) => {
-  const params = store.getParamsForGroup(group)
+  const params = store.params.getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 

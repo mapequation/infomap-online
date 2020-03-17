@@ -24,6 +24,7 @@ export default observer(class InfomapOnline extends React.Component {
     running: false,
     completed: false,
     downloaded: false,
+    activeInput: "net",
     activeOutput: "tree", // Current output tab
     infomapError: "",
   };
@@ -42,14 +43,27 @@ export default observer(class InfomapOnline extends React.Component {
       completed: false,
     });
 
-    const onFinished = ({ clu, tree, ftree }) => this.setState({
-      clu,
-      tree,
-      ftree,
-      activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
-      running: false,
-      completed: !!clu || !!tree || !!ftree,
-    }, () => localforage.setItem("ftree", ftree));
+    const onFinished = content => {
+      console.log('Finished with content:', content);
+      const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = content;
+      const isHigherOrder = clu_states || tree_states || ftree_states || states_as_physical;
+      const completed = isHigherOrder || clu || tree || ftree || net || states;
+      this.setState({
+        isHigherOrder,
+        clu,
+        tree,
+        ftree,
+        clu_states,
+        tree_states,
+        ftree_states,
+        net,
+        states,
+        states_as_physical,
+        activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
+        running: false,
+        completed,
+      }, () => localforage.setItem("ftree", ftree));
+    }
 
     this.infomap = new Infomap()
       .on("data", onData)
@@ -65,9 +79,9 @@ export default observer(class InfomapOnline extends React.Component {
     const args = urlParams.get("args");
 
     if (args) {
-      store.setArgs(args);
+      store.params.setArgs(args);
     } else {
-      store.setArgs("--clu --ftree");
+      store.params.setArgs("--clu --ftree");
     }
   };
 
@@ -134,6 +148,8 @@ export default observer(class InfomapOnline extends React.Component {
     });
   };
 
+  onInputMenuClick = (e, { name }) => this.setState({ activeInput: name });
+
   onOutputMenuClick = (e, { name }) => this.setState({ activeOutput: name });
 
   onDownloadClick = (format) => () => {
@@ -168,6 +184,7 @@ export default observer(class InfomapOnline extends React.Component {
       completed,
       downloaded,
       infomapError,
+      activeInput,
       activeOutput,
       output,
     } = this.state;
@@ -176,11 +193,25 @@ export default observer(class InfomapOnline extends React.Component {
 
     const consoleContent = output.join("\n");
     const hasInfomapError = !!infomapError;
+    const inputValue = this.state[activeInput];
     const outputValue = this.state[activeOutput];
     const haveOutput = clu || tree || ftree;
 
-    const outputOptions = ["clu", "tree", "ftree"]
+    // const outputOptions = ["clu", "tree", "ftree"]
+    //   .filter(name => this.state[name]);
+
+    const outputOptions = ["clu", "tree", "ftree", "net"] // "states_as_physical"
       .filter(name => this.state[name]);
+
+    // const outputOptionsHigherOrder = ["clu_states", "tree_states", "ftree_states", "states"]
+    //   .filter(name => this.state[name]);
+
+    const inputMenuItems = ["net", "clu", "meta"]
+      .map(name => ({
+        key: name,
+        name,
+        active: activeInput === name,
+      }))
 
     const outputMenuItems = outputOptions
       .map(name => ({
@@ -202,22 +233,27 @@ export default observer(class InfomapOnline extends React.Component {
           />
         </Grid.Column>
 
-        <Grid.Column width={3} className="network">
-          <LoadNetworkButton
-            fluid
-            primary
-            onDrop={this.onLoadNetwork}
-          >
-            <Icon name="file"/>Load network
-          </LoadNetworkButton>
-          <InputTextarea
-            loading={loading}
-            value={network}
-            onChange={this.onChangeNetwork}
-            placeholder="Input network here"
-            onDrop={this.onLoadNetwork}
-            wrap="off"
-          />
+        <Grid.Column width={3}>
+          <LoadNetworkButton onDrop={this.onLoadNetwork}/>
+          <Form loading={running}>
+            <Menu
+              pointing
+              borderless
+              size="small"
+              attached="top"
+              onItemClick={this.onInputMenuClick}
+              items={inputMenuItems}
+            />
+            <Segment attached basic className="input">
+              <InputTextarea
+                loading={loading}
+                value={network}
+                onChange={this.onChangeNetwork}
+                placeholder="# Paste your network here"
+                onDrop={this.onLoadNetwork}
+              />
+            </Segment>
+          </Form>
         </Grid.Column>
 
         <Grid.Column width={9} floated="left" className="run">

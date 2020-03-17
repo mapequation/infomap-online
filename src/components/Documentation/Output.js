@@ -65,7 +65,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.outputFormat('tree')} />
+        <Highlight network={store.getOutputFormat('tree')} />
       </Code>
 
       <p>
@@ -97,7 +97,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.outputFormat('ftreeLinks')} />
+        <Highlight network={store.getOutputFormat('ftreeLinks')} />
       </Code>
 
       <p>
@@ -132,7 +132,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.outputFormat('clu')} />
+        <Highlight network={store.getOutputFormat('clu')} />
       </Code>
 
       <p>

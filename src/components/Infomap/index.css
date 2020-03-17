@@ -42,30 +42,28 @@
     text-align: center !important;
 }
 
-.output .segment {
+.segment.input, .segment.output {
     padding: 0 !important;
     border: none !important;
 }
 
-.output textarea {
-    height: calc(500px - 2.7em) !important;
+/* Dropzone div */
+.segment.input div {
+    width: 100%;
+}
+
+.segment.input textarea, .segment.output textarea {
+    width: 100% !important;
+    height: calc(500px - 37.15px);
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 }
 
-.output .attached.menu {
+.infomap .attached.menu {
     border-bottom-width: 0 !important;
 }
 
-.output .label.small {
-    font-weight: 500;
-    border-color: rgba(34, 36, 38, .15) !important;
-    background: #f0edeb !important;
-    top: -2em;
-    position: absolute !important;
-}
-
-.run .fields {
+.inputParameters {
     margin-bottom: 1em !important;
 }
 

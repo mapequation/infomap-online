@@ -33,7 +33,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("linkList") }}>
-        <Highlight network={store.exampleNetwork("linkList")} />
+        <Highlight network={store.getExampleNetwork("linkList")} />
       </Code>
 
       <p>
@@ -55,7 +55,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("pajek") }}>
-        <Highlight network={store.exampleNetwork("pajek")} />
+        <Highlight network={store.getExampleNetwork("pajek")} />
       </Code>
 
       <p>
@@ -80,13 +80,13 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartite") }}>
-        <Highlight network={store.exampleNetwork("bipartite")} />
+        <Highlight network={store.getExampleNetwork("bipartite")} />
       </Code>
 
       <p>and in the link list format:</p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartiteLinkList") }}>
-        <Highlight network={store.exampleNetwork("bipartiteLinkList")} />
+        <Highlight network={store.getExampleNetwork("bipartiteLinkList")} />
       </Code>
 
       <Heading id="InputMultilayer" />
@@ -103,7 +103,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayer") }}>
-        <Highlight network={store.exampleNetwork("multilayer")} />
+        <Highlight network={store.getExampleNetwork("multilayer")} />
       </Code>
 
       <Message info>
@@ -150,7 +150,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayerIntraInter") }}>
-        <Highlight network={store.exampleNetwork("multilayerIntraInter")} />
+        <Highlight network={store.getExampleNetwork("multilayerIntraInter")} />
       </Code>
 
       <p>
@@ -171,7 +171,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("states") }}>
-        <Highlight network={store.exampleNetwork("states")} />
+        <Highlight network={store.getExampleNetwork("states")} />
       </Code>
 
       <p>
