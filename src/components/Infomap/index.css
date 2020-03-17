@@ -8,6 +8,8 @@
 
 .infomap textarea {
     resize: none !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
 }
 
 .infomap textArea:focus {

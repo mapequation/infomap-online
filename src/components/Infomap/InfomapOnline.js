@@ -210,6 +210,8 @@ export default observer(class InfomapOnline extends React.Component {
             onChange={this.onChangeNetwork}
             placeholder="# Paste your network here"
             onDrop={this.onLoadNetwork}
+            className="network"
+            wrap="off"
           />
         </Grid.Column>
 
@@ -286,6 +288,7 @@ export default observer(class InfomapOnline extends React.Component {
                 value={outputValue}
                 placeholder="Infomap cluster output will be printed here"
                 onCopy={this.onCopyClusters}
+                wrap="off"
               />
             </Segment>
           </Form>
