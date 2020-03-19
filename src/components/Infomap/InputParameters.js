@@ -9,7 +9,7 @@ export default observer(({ loading, onClick }) => {
 
   return (
     <Form error={hasArgsError}>
-      <Form.Group widths="equal" className="inputParameters">
+      <Form.Group widths="equal">
         <Form.Input
           placeholder="Parameters"
           value={args}

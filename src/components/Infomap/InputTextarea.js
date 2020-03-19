@@ -1,6 +1,6 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { Form, Ref } from "semantic-ui-react";
+import { Form, Message, Ref } from "semantic-ui-react";
 
 
 export default ({ loading, onDrop, ...props }) => {
@@ -13,6 +13,11 @@ export default ({ loading, onDrop, ...props }) => {
         <Form.TextArea
           {...getInputProps}
           {...props}
+        />
+        <Message
+          attached="bottom"
+          size="mini"
+          content="Load network by dragging & dropping"
         />
       </Form>
     </Ref>

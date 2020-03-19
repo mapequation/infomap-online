@@ -36,7 +36,7 @@ export default observer(class InfomapOnline extends React.Component {
     });
 
     const onError = content => this.setState({
-      infomapError: content,
+      infomapError: content.replace(/^Error:\s+/i, ""),
       output: [...this.state.output, content],
       running: false,
       completed: false,
@@ -202,11 +202,10 @@ export default observer(class InfomapOnline extends React.Component {
           />
         </Grid.Column>
 
-        <Grid.Column width={3}>
+        <Grid.Column width={3} className="network">
           <LoadNetworkButton
             fluid
             primary
-            className="topButton"
             onDrop={this.onLoadNetwork}
           >
             <Icon name="file"/>Load network
@@ -215,14 +214,13 @@ export default observer(class InfomapOnline extends React.Component {
             loading={loading}
             value={network}
             onChange={this.onChangeNetwork}
-            placeholder="# Paste your network here"
+            placeholder="Input network here"
             onDrop={this.onLoadNetwork}
-            className="network"
             wrap="off"
           />
         </Grid.Column>
 
-        <Grid.Column width={9} floated="left">
+        <Grid.Column width={9} floated="left" className="run">
           <InputParameters loading={running} onClick={this.run}/>
 
           <Form error={hasInfomapError}>
@@ -233,13 +231,14 @@ export default observer(class InfomapOnline extends React.Component {
             />
             <Message
               error
+              size="tiny"
               attached="bottom"
               content={infomapError}
             />
           </Form>
         </Grid.Column>
 
-        <Grid.Column width={4}>
+        <Grid.Column width={4} className="output">
           {completed && !ftree && <Label
             basic
             size="small"
@@ -253,12 +252,11 @@ export default observer(class InfomapOnline extends React.Component {
               rel="noopener noreferrer"
               href={`//www.mapequation.org/navigator?infomap=${name}.ftree`}
               disabled={!ftree || running}
-              className="topButton"
               content="Open in Network Navigator"
             />
             <Dropdown
               disabled={!haveOutput || running}
-              className="button icon active topDropdown"
+              className="button icon active"
               trigger={<React.Fragment/>}
             >
               <Dropdown.Menu>
@@ -290,10 +288,10 @@ export default observer(class InfomapOnline extends React.Component {
               onItemClick={this.onOutputMenuClick}
               items={outputMenuItems}
             />
-            <Segment attached basic className="output">
+            <Segment attached basic>
               <Form.TextArea
                 value={outputValue}
-                placeholder="Infomap cluster output will be printed here"
+                placeholder="Cluster output will be printed here"
                 onCopy={this.onCopyClusters}
                 wrap="off"
               />

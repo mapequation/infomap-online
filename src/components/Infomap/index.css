@@ -1,8 +1,8 @@
-.ui.steps .step .title {
+.infomap .ui.steps .step .title {
     color: rgba(0, 0, 0, .87) !important;
 }
 
-.ui.steps {
+.infomap .ui.steps {
     margin-bottom: 1em !important;
 }
 
@@ -12,63 +12,52 @@
     padding-right: 0 !important;
 }
 
-.infomap textArea:focus {
-    border: 1px solid hsl(206, 73%, 47%) !important;
-}
-
-.infomap .topButton {
+.network .button, .output .button {
     margin-bottom: 1em !important;
 }
 
-.topDropdown {
+.network .field {
+    margin-bottom: 0 !important;
+}
+
+.network textarea {
+    min-height: calc(500px - 3.25em);
+    //min-height: calc(500px);
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: 2px dashed rgba(34,36,38,.15) !important;
+}
+
+.network .message {
+    box-shadow: none !important;
+    margin: 0 !important;
+    border: 1px solid rgba(34,36,38,.15) !important;
+    border-top: none !important;
+    padding: 0.6em 0.5em !important;
+    background: white;
+}
+
+.output .dropdown {
     margin-bottom: 1em !important;
     text-align: center !important;
 }
 
-.output {
+.output .segment {
     padding: 0 !important;
     border: none !important;
 }
 
 .output textarea {
-    height: calc(500px - 37.15px);
+    height: calc(500px - 2.7em) !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 }
 
-.infomap .four.wide.column .attached.menu {
+.output .attached.menu {
     border-bottom-width: 0 !important;
 }
 
-.network textarea {
-    min-height: 500px;
-}
-
-.inputParameters {
-    margin-bottom: 1em !important;
-}
-
-.inputParameters input {
-    height: 36px !important;
-    border: 1px solid hsl(206, 63%, 77%) !important;
-}
-
-.inputParameters input:focus {
-    border: 1px solid hsl(206, 73%, 47%) !important;
-}
-
-.inputParameters button {
-    margin-right: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-}
-
-.inputParameters .prompt {
-    top: -3em;
-    position: absolute !important;
-}
-
-.infomap .four.wide.column .label.small {
+.output .label.small {
     font-weight: 500;
     border-color: rgba(34, 36, 38, .15) !important;
     background: #f0edeb !important;
@@ -76,22 +65,41 @@
     position: absolute !important;
 }
 
-.console {
+.run .fields {
+    margin-bottom: 1em !important;
+}
+
+.run .fields input {
+    height: 36px !important;
+}
+
+.run .fields button {
+    margin-right: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.run .fields .prompt {
+    position: absolute !important;
+    top: -3em;
+}
+
+.run .segment {
     height: 500px;
     padding: 0.1em 0 0.1em 0.8em !important;
 }
 
-.console .placeholder {
-    margin-top: 11px;
-    color: #ccc;
-}
-
-.console .container {
+.run .segment > div {
     overflow-y: auto;
     height: 100%;
 }
 
-.console code {
+.run .segment div div {
+    margin-top: 0.5em;
+    color: #ccc;
+}
+
+.run .segment code {
     background: transparent;
     border: none;
 }

@@ -23,18 +23,12 @@ class Console extends React.Component {
     const { content, placeholder, ...props } = this.props;
 
     return (
-      <Segment className="console" {...props}>
+      <Segment {...props}>
         <div
-          className="container"
           ref={el => this.container = el}
           onScroll={this.onScroll}
         >
-          <div>
-            {content
-              ? <code>{content}</code>
-              : <div className="placeholder">{placeholder}</div>
-            }
-          </div>
+          {content ? <code>{content}</code> : <div>{placeholder}</div>}
         </div>
       </Segment>
     );
