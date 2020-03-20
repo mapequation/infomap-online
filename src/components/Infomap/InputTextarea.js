@@ -5,15 +5,21 @@ import { Form } from "semantic-ui-react";
 
 export default ({ value, placeholder, onChange, onDrop }) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false });
+  const { ref, ...rootProps } = getRootProps();
 
   return (
-    <div {...getRootProps()}>
-      <Form.TextArea
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        {...getInputProps}
-      />
-    </div>
+    <Ref innerRef={ref}>
+      <Form loading={loading} {...rootProps}>
+        <Form.TextArea
+          {...getInputProps()}
+          {...props}
+        />
+        <Message
+          attached="bottom"
+          size="mini"
+          content="Load network by dragging & dropping"
+        />
+      </Form>
+    </Ref>
   );
 }

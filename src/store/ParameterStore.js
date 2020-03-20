@@ -1,12 +1,14 @@
-import { action, decorate, observable } from "mobx";
 import { infomapParameters } from "@mapequation/infomap";
 import arg from "arg";
+import { action, decorate, observable } from "mobx";
 import getArgSpec from "./argSpec";
-import createParams from './createParams';
-import paramToString from './paramToString';
-import updateParam from './updateParam';
+import createParams from "./createParams";
+import paramToString from "./paramToString";
+import updateParam from "./updateParam";
+
 
 const argSpec = getArgSpec(infomapParameters);
+
 
 class ParameterStore {
   params = createParams(infomapParameters);
@@ -20,6 +22,10 @@ class ParameterStore {
   args = "";
   argsError = "";
   hasArgsError = false;
+
+  getParam = (name) => {
+    return this.params.find(param => param.long === name);
+  };
 
   getParamsForGroup = (group) =>
     Object.values(this.params).filter(param => param.group === group);
@@ -81,6 +87,7 @@ class ParameterStore {
     this.args = args;
   };
 }
+
 
 export default decorate(ParameterStore, {
   params: observable,

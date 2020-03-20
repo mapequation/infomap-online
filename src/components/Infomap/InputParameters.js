@@ -5,7 +5,7 @@ import store from "../../store";
 
 
 export default observer(({ loading, onClick }) => {
-  const { args, setArgs, argsError, hasArgsError } = store;
+  const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (
     <Form error={hasArgsError}>

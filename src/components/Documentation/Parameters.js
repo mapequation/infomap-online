@@ -99,6 +99,8 @@ const ParameterControl = ({ param }) => {
     return <InputParameter param={param}/>;
   if (param.incremental)
     return <IncrementalParameter param={param}/>;
+  if (param.file)
+    return <FileInputParameter param={param}/>;
 
   return <ToggleParameter param={param}/>;
 };

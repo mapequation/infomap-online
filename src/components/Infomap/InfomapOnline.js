@@ -4,12 +4,10 @@ import JSZip from "jszip";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import InputParameters from "./InputParameters";
-import InputTextarea from "./InputTextarea";
-import LoadNetworkButton from "./LoadNetworkButton";
 import Steps from "./Steps";
 
 
@@ -24,9 +22,11 @@ export default observer(class InfomapOnline extends React.Component {
     running: false,
     completed: false,
     downloaded: false,
-    activeInput: "net",
+    activeInput: "network", // Current input tab
     activeOutput: "tree", // Current output tab
     infomapError: "",
+    clusterData: "",
+    metaData: "",
   };
 
   constructor(props) {
@@ -44,26 +44,15 @@ export default observer(class InfomapOnline extends React.Component {
     });
 
     const onFinished = content => {
-      console.log('Finished with content:', content);
       const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = content;
-      const isHigherOrder = clu_states || tree_states || ftree_states || states_as_physical;
-      const completed = isHigherOrder || clu || tree || ftree || net || states;
+      const completed = clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
       this.setState({
-        isHigherOrder,
-        clu,
-        tree,
-        ftree,
-        clu_states,
-        tree_states,
-        ftree_states,
-        net,
-        states,
-        states_as_physical,
+        ...content,
         activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
         running: false,
-        completed,
+        completed: !!completed,
       }, () => localforage.setItem("ftree", ftree));
-    }
+    };
 
     this.infomap = new Infomap()
       .on("data", onData)
@@ -86,6 +75,7 @@ export default observer(class InfomapOnline extends React.Component {
   };
 
   onChangeNetwork = (event, { value, name }) => {
+    if (value === "") name = "network";
     store.setNetwork(value);
     this.setState(prev => ({
       name: name || prev.name,
@@ -95,7 +85,8 @@ export default observer(class InfomapOnline extends React.Component {
       infomapError: "",
     }));
   };
-  onLoadNetwork = (files) => {
+
+  onLoad = (activeInput) => (files) => {
     if (files.length < 1) return;
 
     const file = files[0];
@@ -110,8 +101,14 @@ export default observer(class InfomapOnline extends React.Component {
 
     const reader = new FileReader();
 
-    reader.onloadend = event =>
-      this.onChangeNetwork(event, { value: reader.result, name });
+    reader.onloadend = event => {
+      if (activeInput === "network")
+        return this.onChangeNetwork(event, { value: reader.result, name });
+      if (activeInput === "clusterData")
+        return;
+      if (activeInput === "metaData")
+        return;
+    };
 
     this.setState({ loading: true },
       () => reader.readAsText(file, "utf-8"));
@@ -133,7 +130,7 @@ export default observer(class InfomapOnline extends React.Component {
     }
 
     try {
-      this.runId = this.infomap.run(store.network, store.args);
+      this.runId = this.infomap.run(store.network, store.params.args);
     } catch (e) {
       this.setState({
         running: false,
@@ -189,36 +186,36 @@ export default observer(class InfomapOnline extends React.Component {
       output,
     } = this.state;
 
-    const { network } = store;
+    const { network, params } = store;
 
-    const consoleContent = output.join("\n");
-    const hasInfomapError = !!infomapError;
-    const inputValue = this.state[activeInput];
-    const outputValue = this.state[activeOutput];
-    const haveOutput = clu || tree || ftree;
+    const inputOptions = {
+      network,
+      "cluster": this.state.clusterData,
+      "meta data": this.state.metaData,
+    };
 
-    // const outputOptions = ["clu", "tree", "ftree"]
-    //   .filter(name => this.state[name]);
+    const inputValue = inputOptions[activeInput];
 
-    const outputOptions = ["clu", "tree", "ftree", "net"] // "states_as_physical"
-      .filter(name => this.state[name]);
-
-    // const outputOptionsHigherOrder = ["clu_states", "tree_states", "ftree_states", "states"]
-    //   .filter(name => this.state[name]);
-
-    const inputMenuItems = ["net", "clu", "meta"]
+    const inputMenuOptions = ["network", "cluster", "meta data"]
       .map(name => ({
         key: name,
         name,
         active: activeInput === name,
-      }))
+        className: inputOptions[name] ? "finished" : undefined,
+      }));
+
+    const consoleContent = output.join("\n");
+    const hasInfomapError = !!infomapError;
+
+    const outputValue = this.state[activeOutput];
+
+    const haveOutput = clu || tree || ftree;
+
+    const outputOptions = ["clu", "tree", "ftree"]
+      .filter(name => this.state[name]);
 
     const outputMenuItems = outputOptions
-      .map(name => ({
-        key: name,
-        name,
-        active: activeOutput === name,
-      }));
+      .map(name => ({ key: name, name, active: activeOutput === name }));
 
     return (
       <Grid container stackable className="infomap">
@@ -233,30 +230,36 @@ export default observer(class InfomapOnline extends React.Component {
           />
         </Grid.Column>
 
-        <Grid.Column width={3}>
-          <LoadNetworkButton onDrop={this.onLoadNetwork}/>
-          <Form loading={running}>
-            <Menu
-              pointing
-              borderless
-              size="small"
-              attached="top"
-              onItemClick={this.onInputMenuClick}
-              items={inputMenuItems}
+        <Grid.Column width={4} className="network">
+          <Button fluid primary>
+            <Icon name="file"/>Load {activeInput}
+            <input style={{ display: "none" }}/>
+          </Button>
+
+          <Form loading={loading}>
+            <Form.TextArea
+              value={inputValue}
+              onChange={this.onChangeNetwork}
+              placeholder={`Input ${activeInput} here`}
+              wrap="off"
             />
-            <Segment attached basic className="input">
-              <InputTextarea
-                loading={loading}
-                value={network}
-                onChange={this.onChangeNetwork}
-                placeholder="# Paste your network here"
-                onDrop={this.onLoadNetwork}
-              />
-            </Segment>
+            <Message
+              attached="bottom"
+              size="mini"
+              content={`Load ${activeInput} by dragging & dropping`}
+            />
           </Form>
+          <Menu
+            vertical
+            tabular
+            className="left"
+            size="small"
+            onItemClick={this.onInputMenuClick}
+            items={inputMenuOptions}
+          />
         </Grid.Column>
 
-        <Grid.Column width={9} floated="left" className="run">
+        <Grid.Column width={8} floated="left" className="run">
           <InputParameters loading={running} onClick={this.run}/>
 
           <Form error={hasInfomapError}>
@@ -275,12 +278,17 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4} className="output">
-          {completed && !ftree && <Label
+          {completed && !ftree &&  <Label
             basic
             size="small"
             pointing="below"
-            content="Network Navigator requires ftree output"
-          />}
+          >
+            Network Navigator requires ftree output.{" "}
+            {!params.getParam("--ftree").active &&
+            <a onClick={() => params.setArgs(params.args + " --ftree")}>
+              Enable.
+            </a>}
+          </Label>}
           <Button.Group primary fluid>
             <Button
               as="a"
@@ -315,24 +323,22 @@ export default observer(class InfomapOnline extends React.Component {
           </Button.Group>
 
           <Form loading={running}>
-            <Menu
-              pointing
-              borderless
-              size="small"
-              attached="top"
-              disabled={!haveOutput}
-              onItemClick={this.onOutputMenuClick}
-              items={outputMenuItems}
+            <Form.TextArea
+              value={outputValue}
+              placeholder="Cluster output will be printed here"
+              onCopy={this.onCopyClusters}
+              wrap="off"
             />
-            <Segment attached basic>
-              <Form.TextArea
-                value={outputValue}
-                placeholder="Cluster output will be printed here"
-                onCopy={this.onCopyClusters}
-                wrap="off"
-              />
-            </Segment>
           </Form>
+          <Menu
+            vertical
+            tabular="right"
+            size="small"
+            disabled={!haveOutput}
+            onItemClick={this.onOutputMenuClick}
+            items={outputMenuItems}
+          >
+          </Menu>
         </Grid.Column>
       </Grid>
     );
