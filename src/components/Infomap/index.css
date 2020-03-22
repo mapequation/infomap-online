@@ -50,13 +50,17 @@
     border: none !important;
 }
 
+.infomap .menu.tabular .item:not(.active) {
+    color: rgba(0, 0, 0, .5) !important;
+}
+
 .network .menu {
     right: 150px;
     text-align: right;
 }
 
 .network .menu .item.finished:not(.active) {
-    color: #379c52 !important;
+    color: hsla(136, 48%, 41%, 0.8) !important;
 }
 
 .output .menu.tabular {
