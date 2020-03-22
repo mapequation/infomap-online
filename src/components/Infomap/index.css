@@ -7,9 +7,10 @@
 }
 
 .infomap textarea {
+    height: 500px !important;
     resize: none !important;
     padding-bottom: 0 !important;
-    padding-right: 0 !important;
+    padding-right: 0.4rem !important;
 }
 
 .network .button, .output .button {
@@ -21,40 +22,49 @@
 }
 
 .network textarea {
-    min-height: calc(500px - 3.25em);
-    //min-height: calc(500px);
+    height: calc(500px - 3.25em) !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    border-bottom: 2px dashed rgba(34,36,38,.15) !important;
+    border-bottom: 2px dashed rgba(34, 36, 38, .15) !important;
 }
 
 .network .message {
     box-shadow: none !important;
     margin: 0 !important;
-    border: 1px solid rgba(34,36,38,.15) !important;
+    border: 1px solid rgba(34, 36, 38, .15) !important;
     border-top: none !important;
-    padding: 0.6em 0.5em !important;
+    padding: 0.6em 0.9em !important;
     background: white;
 }
 
-.output .dropdown {
-    margin-bottom: 1em !important;
-    text-align: center !important;
-}
-
-.output .segment {
-    padding: 0 !important;
+.infomap .menu.tabular {
+    width: 150px !important;
+    position: relative;
+    top: -500px;
+    margin: 0 !important;
     border: none !important;
 }
 
-.output textarea {
-    height: calc(500px - 2.7em) !important;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
+.infomap .menu.tabular .item {
+    background: none !important;
+    border: none !important;
 }
 
-.output .attached.menu {
-    border-bottom-width: 0 !important;
+.infomap .menu.tabular .item:not(.active) {
+    color: rgba(0, 0, 0, .5) !important;
+}
+
+.network .menu {
+    right: 150px;
+    text-align: right;
+}
+
+.network .menu .item.finished:not(.active) {
+    color: hsla(136, 48%, 41%, 0.8) !important;
+}
+
+.output .menu.tabular {
+    left: 260px;
 }
 
 .output .label.small {
@@ -63,6 +73,11 @@
     background: #f0edeb !important;
     top: -2em;
     position: absolute !important;
+}
+
+.output .dropdown {
+    margin-bottom: 1em !important;
+    text-align: center !important;
 }
 
 .run .fields {
@@ -102,4 +117,5 @@
 .run .segment code {
     background: transparent;
     border: none;
+    font-size: 0.7rem;
 }

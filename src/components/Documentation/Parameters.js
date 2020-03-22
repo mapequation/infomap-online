@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import { Button, Checkbox, Dropdown, Input, Item } from "semantic-ui-react";
+import { useDropzone } from "react-dropzone";
+import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
 import { Heading } from "./TOC";
 
@@ -14,14 +15,14 @@ const DropdownParameter = observer(({ param }) => {
 
   return (
     <Dropdown
-      ref={ref => store.setRef(param.long, ref)}
+      ref={ref => store.params.setRef(param.long, ref)}
       selection
       options={options}
       multiple={param.longType === "list"}
       placeholder={param.longType}
       clearable={param.clearable}
       value={param.value}
-      onChange={(e, { value }) => store.setOption(param, value)}
+      onChange={(e, { value }) => store.params.setOption(param, value)}
     />
   );
 });
@@ -29,26 +30,55 @@ const DropdownParameter = observer(({ param }) => {
 const InputParameter = observer(({ param }) => {
   return (
     <Input
-      ref={ref => store.setRef(param.long, ref)}
       id={param.long}
       style={{ width: "100px" }}
       placeholder={param.default}
       value={param.value}
-      onChange={(e, { value }) => store.setInput(param, value)}
+      onChange={(e, { value }) => store.params.setInput(param, value)}
     />
   );
 });
 
 const FileInputParameter = observer(({ param }) => {
+  const onDrop = (files) => {
+    if (files.length < 1) return;
+
+    const file = files[0];
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      if (!reader.result.length) return;
+      store.params.setInput(param, file.name || store.DEFAULT_NAME[param.long]);
+      store.setFileParam(param, { name: file.name, value: reader.result });
+    };
+
+    reader.readAsText(file, "utf-8");
+  };
+
+  const accept = {
+    "--cluster-data": ".clu,.tree",
+    "--meta-data": ".clu",
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept: accept[param.long] });
+  const { ref, ...rootProps } = getRootProps();
+
   return (
-    <Button basic as="label" htmlFor="fileInput">
-      Load file
-      <input
-        style={{ display: "none" }}
-        type="file"
-        id="fileInput"
-      />
-    </Button>
+    <Ref innerRef={ref}>
+      <Button
+        basic
+        as="label"
+        htmlFor={param.long}
+        {...rootProps}
+      >
+        Load file
+        <input
+          id={param.long}
+          {...getInputProps()}
+        />
+      </Button>
+    </Ref>
   );
 });
 
@@ -58,7 +88,7 @@ const ToggleParameter = observer(({ param }) => {
       id={param.long}
       toggle
       checked={param.active}
-      onChange={() => store.toggle(param)}
+      onChange={() => store.params.toggle(param)}
     />
   );
 });
@@ -66,7 +96,7 @@ const ToggleParameter = observer(({ param }) => {
 const IncrementalParameter = observer(({ param }) => {
   const { value, maxValue, stringValue } = param;
 
-  const setValue = (value) => store.setIncremental(param, value);
+  const setValue = (value) => store.params.setIncremental(param, value);
 
   return (
     <Button.Group>
@@ -99,22 +129,23 @@ const ParameterControl = ({ param }) => {
     return <InputParameter param={param}/>;
   if (param.incremental)
     return <IncrementalParameter param={param}/>;
+  if (param.file)
+    return <FileInputParameter param={param}/>;
 
   return <ToggleParameter param={param}/>;
 };
 
 const getHeaderProps = (param) => {
-  const { active, long, longType, dropdown, input, incremental, value } = param;
+  const { active, long, dropdown, input, file, incremental, value } = param;
+  const { params } = store;
 
   const props = { className: active ? "active" : "", as: "label" };
 
-  if (longType === "path") return; // TODO
-
   if (dropdown) {
-    const ref = store.getRef(long);
+    const ref = params.getRef(long);
     if (!ref) return props;
     return {
-      onClick: () => active ? store.setOption(param, param.default) : ref.open(),
+      onClick: () => active ? params.setOption(param, param.default) : ref.open(),
       ...props,
     };
   }
@@ -123,16 +154,19 @@ const getHeaderProps = (param) => {
 
   if (incremental) {
     return {
-      onClick: () => store.setIncremental(param, value > 0 ? 0 : 1),
+      onClick: () => params.setIncremental(param, value > 0 ? 0 : 1),
       ...labelProps,
     };
   }
 
-  if (input) {
-    const ref = store.getRef(long);
-    if (!ref) return labelProps;
+  if (input || file) {
     return {
-      onClick: () => active ? store.setInput(param, "") : null,
+      onClick: (event) => {
+        if (!active) return;
+        event.preventDefault();
+        params.setInput(param, "");
+        if (file) store.resetFileParam(param);
+      },
       ...labelProps,
     };
   }
@@ -141,7 +175,7 @@ const getHeaderProps = (param) => {
 };
 
 const ParameterGroup = observer(({ group, advanced }) => {
-  const params = store.getParamsForGroup(group)
+  const params = store.params.getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
     .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
 

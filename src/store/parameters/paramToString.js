@@ -8,10 +8,8 @@ export default function paramToString(param) {
       case "probability":
       case "number":
       case "integer":
-        return `${param.short || param.long} ${param.value}`;
       case "path":
-        // TODO
-        break;
+        return `${param.short || param.long} ${param.value}`;
       default:
         return "";
     }

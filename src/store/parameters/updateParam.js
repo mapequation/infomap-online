@@ -37,11 +37,9 @@ export default function updateParam(argv) {
         case "probability":
         case "number":
         case "integer":
+        case "path":
           param.active = true;
           param.value = value;
-          break;
-        case "path":
-          // TODO
           break;
         default:
           break;

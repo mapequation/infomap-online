@@ -1,4 +1,4 @@
-export const initial = `#source target [weight]
+export const twoTriangles = `#source target [weight]
 1 2
 1 3
 1 4

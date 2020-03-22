@@ -4,11 +4,12 @@ import Step1 from "../../images/step1.png";
 import Step2 from "../../images/step2.png";
 import Step3 from "../../images/step3.png";
 
+
 export default (props) => {
   const {
     firstCompleted, firstActive,
     secondCompleted, secondActive,
-    thirdCompleted, thirdActive
+    thirdCompleted, thirdActive,
   } = props;
 
   return (
@@ -44,5 +45,5 @@ export default (props) => {
         </Step.Content>
       </Step>
     </Step.Group>
-  )
+  );
 }

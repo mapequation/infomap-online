@@ -1,111 +1,79 @@
 import { action, decorate, observable } from "mobx";
-import { infomapParameters } from "@mapequation/infomap";
-import arg from "arg";
-import * as networks from "./networks";
+import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
-import getArgSpec from "./argSpec";
-import createParams from "./createParams";
-import paramToString from "./paramToString";
-import updateParam from "./updateParam";
+import ParameterStore from "./parameters/ParameterStore";
 
-const argSpec = getArgSpec(infomapParameters);
+const camelToSnake = str => str
+  .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
+  .replace(/([A-Z])/g, ([letter]) => `_${letter.toLowerCase()}`);
 
 class Store {
-  network = networks.initial;
-  params = createParams(infomapParameters);
+  network = { name: "two_triangles", value: exampleNetworks.twoTriangles };
+  clusterData = { name: "", value: "" };
+  metaData = { name: "", value: "" };
 
-  refs = {};
+  DEFAULT_NET_NAME = "network";
+  DEFAULT_CLU_NAME = "clusters.clu";
+  DEFAULT_META_NAME = "metadata.clu";
 
-  setRef = (name, ref) => this.refs[name] = ref;
-
-  getRef = (name) => this.refs[name];
-
-  args = "";
-  argsError = "";
-  hasArgsError = false;
-
-  getParamsForGroup = (group) =>
-    Object.values(this.params).filter(param => param.group === group);
-
-  toggle = (param) => {
-    if (!param) return;
-    param.active = !param.active;
-    this.rebuildArgs();
+  DEFAULT_NAME = {
+    "--cluster-data": this.DEFAULT_CLU_NAME,
+    "--meta-data": this.DEFAULT_META_NAME,
   };
 
-  setIncremental = (param, value) => {
-    if (!param) return;
-    if (value < 0 || value > param.maxValue) return;
-    param.active = value > 0;
-    param.value = value;
-    this.rebuildArgs();
-  };
+  params = new ParameterStore();
 
-  setInput = (param, value) => {
-    if (!param) return;
-    param.active = value !== "";
-    param.value = value;
-    this.rebuildArgs();
-  };
+  setNetwork = ({ name, value }) => this.network = { name: name || this.DEFAULT_NET_NAME, value };
 
-  setOption = (param, value) => {
-    if (!param) return;
-    if (param.longType === "list") {
-      param.active = value.length > 0;
-      param.value = value;
-    } else if (param.longType === "option") {
-      param.active = value !== param.default;
-      param.value = value;
+  setClusterData = ({ name, value }) => this.clusterData = { name: name || this.DEFAULT_CLU_NAME, value };
+
+  setMetaData = ({ name, value }) => this.metaData = { name: name || this.DEFAULT_META_NAME, value };
+
+  setFileParam = ({ long }, { name, value }) => {
+    if (long === "--cluster-data") {
+      this.setClusterData({ name, value });
+    } else if (long === "--meta-data") {
+      this.setMetaData({ name, value });
     }
-    this.rebuildArgs();
   };
 
-  rebuildArgs = () => {
-    this.args = this.params
-      .filter(param => param.active)
-      .map(paramToString)
-      .join(" ");
-  };
-
-  setArgs = (args) => {
-    const argv = args.trim().split(/\s+/);
-
-    this.argsError = "";
-    this.hasArgsError = false;
-
-    try {
-      arg(argSpec, { argv, permissive: false });
-      this.params.forEach(updateParam(argv));
-    } catch (e) {
-      this.argsError = e.message;
-      this.hasArgsError = true;
+  resetFileParam = ({ long }) => {
+    if (long === "--cluster-data") {
+      this.setClusterData({ value: "" });
+    } else if (long === "--meta-data") {
+      this.setMetaData({ value: "" });
     }
-
-    this.args = args;
   };
 
-  setNetwork = (data) => this.network = data;
+  getNetworkForInfomap = () => ({
+    filename: this.network.name,
+    content: this.network.value,
+  });
 
-  exampleNetwork = (name) => networks[name];
+  getFilesForInfomap = () => {
+    const { clusterData, metaData } = this;
+    const files = {};
+    if (clusterData.name && clusterData.value) files[clusterData.name] = clusterData.value;
+    if (metaData.name && metaData.value) files[metaData.name] = metaData.value;
+    return files;
+  };
 
-  outputFormat = (name) => outputFormats[name];
+  getExampleNetwork = (name) => exampleNetworks[name];
 
-  runExample = (name) => this.setNetwork(networks[name]);
+  runExample = (name) => this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
+
+  getOutputFormat = (name) => outputFormats[name];
 }
 
+
 export default decorate(Store, {
-  params: observable,
-  refs: observable,
-  setRef: action,
-  toggle: action,
-  setIncremental: action,
-  setInput: action,
-  setOption: action,
-  args: observable,
-  argsError: observable,
-  hasArgsError: observable,
-  setArgs: action,
   network: observable,
-  runExample: action,
+  clusterData: observable,
+  metaData: observable,
   setNetwork: action,
+  setClusterData: action,
+  setMetaData: action,
+  setFileParam: action,
+  resetFileParam: action,
+  runExample: action,
 });

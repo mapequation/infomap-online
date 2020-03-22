@@ -38,7 +38,8 @@ export default (params) =>
           param.input = true;
           break;
         case "path":
-          param.value = null;
+          param.value = "";
+          param.file = true;
           break;
         default:
           break;
