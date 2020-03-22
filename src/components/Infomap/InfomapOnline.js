@@ -252,9 +252,13 @@ export default observer(class InfomapOnline extends React.Component {
           >
             <Message
               attached="bottom"
-              size="mini"
-              content={`Load ${activeInput} by dragging & dropping`}
-            />
+              size="mini">
+              Load {activeInput} by dragging & dropping.<br/>
+              <a href="#Input">Supported formats.</a>{" "}
+              {inputAccept[activeInput] &&
+              `(Extensions: ${inputAccept[activeInput].join(", ")})`
+              }
+            </Message>
           </InputTextarea>
           <Menu
             vertical

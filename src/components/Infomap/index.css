@@ -22,7 +22,7 @@
 }
 
 .network textarea {
-    height: calc(500px - 2.1em) !important;
+    height: calc(500px - 3.25em) !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border-bottom: 2px dashed rgba(34, 36, 38, .15) !important;
@@ -33,7 +33,7 @@
     margin: 0 !important;
     border: 1px solid rgba(34, 36, 38, .15) !important;
     border-top: none !important;
-    padding: 0.6em 0.5em !important;
+    padding: 0.6em 0.9em !important;
     background: white;
 }
 
