@@ -218,6 +218,15 @@ export default observer(class InfomapOnline extends React.Component {
     const outputMenuItems = outputOptions
       .map(name => ({ key: name, name, active: activeOutput === name }));
 
+    const SupportedExtensions = inputAccept[activeInput] ? (
+      <span>
+        Extensions: { inputAccept[activeInput].map(extension => (
+          <a key={extension} href={`#${extension.substring(1)}`}>{extension}</a>
+        )).reduce((prev, curr) => [prev, ', ', curr])
+      }
+      </span>
+    ) : null;
+
     return (
       <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
@@ -256,9 +265,7 @@ export default observer(class InfomapOnline extends React.Component {
               size="mini">
               Load {activeInput} by dragging & dropping.<br/>
               <a href="#Input">Supported formats.</a>{" "}
-              {inputAccept[activeInput] &&
-              `(Extensions: ${inputAccept[activeInput].join(", ")})`
-              }
+              { SupportedExtensions }
             </Message>
           </InputTextarea>
           <Menu

@@ -51,6 +51,7 @@ export default () => {
         The <strong>Map format</strong> used by the old flash Network Navigator is deprecated.
       </Message>
 
+      <div id="tree"></div>
       <Heading id="OutputTree" />
       <p>
         <code>--tree</code>, <code>-o tree</code>
@@ -116,6 +117,7 @@ export default () => {
         in the module header line, as defined in the commented line above.
       </p>
 
+      <div id="clu" />
       <Heading id="OutputClu" />
       <p>
         <code>--clu</code>, <code>-o clu</code>
