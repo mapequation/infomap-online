@@ -23,8 +23,6 @@ export default observer(class InfomapOnline extends React.Component {
     running: false,
     completed: false,
     downloaded: false,
-    activeInput: "network", // Current input tab
-    activeOutput: "tree", // Current output tab
     infomapError: "",
   };
 
@@ -47,10 +45,10 @@ export default observer(class InfomapOnline extends React.Component {
       const completed = clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
       this.setState({
         ...content,
-        activeOutput: clu ? "clu" : tree ? "tree" : "ftree",
         running: false,
         completed: !!completed,
       }, () => localforage.setItem("ftree", ftree));
+      store.setActiveOutput(clu ? "clu" : tree ? "tree" : "ftree");
     };
 
     this.infomap = new Infomap()
@@ -141,9 +139,9 @@ export default observer(class InfomapOnline extends React.Component {
     });
   };
 
-  onInputMenuClick = (e, { name }) => this.setState({ activeInput: name });
+  onInputMenuClick = (e, { name }) => store.setActiveInput(name);
 
-  onOutputMenuClick = (e, { name }) => this.setState({ activeOutput: name });
+  onOutputMenuClick = (e, { name }) => store.setActiveOutput(name);
 
   onDownloadClick = (format) => () => {
     const { name } = store.network;
@@ -176,12 +174,10 @@ export default observer(class InfomapOnline extends React.Component {
       completed,
       downloaded,
       infomapError,
-      activeInput,
-      activeOutput,
       output,
     } = this.state;
 
-    const { network, clusterData, metaData, params } = store;
+    const { activeInput, activeOutput, network, clusterData, metaData, params } = store;
 
     const inputOptions = {
       "network": network,

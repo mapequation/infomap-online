@@ -12,6 +12,8 @@ class Store {
   network = { name: "two_triangles", value: exampleNetworks.twoTriangles };
   clusterData = { name: "", value: "" };
   metaData = { name: "", value: "" };
+  activeInput = "network";
+  activeOutput = "tree";
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
@@ -23,6 +25,10 @@ class Store {
   };
 
   params = new ParameterStore();
+
+  setActiveInput = (name) => this.activeInput = name;
+
+  setActiveOutput = (name) => this.activeOutput = name;
 
   setNetwork = ({ name, value }) => this.network = { name: name || this.DEFAULT_NET_NAME, value };
 
@@ -77,6 +83,10 @@ export default decorate(Store, {
   network: observable,
   clusterData: observable,
   metaData: observable,
+  activeInput: observable,
+  activeOutput: observable,
+  setActiveInput: action,
+  setActiveOutput: action,
   setNetwork: action,
   setClusterData: action,
   setMetaData: action,
