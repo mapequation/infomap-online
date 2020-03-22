@@ -1,4 +1,5 @@
 import { action, decorate, observable } from "mobx";
+import React from 'react';
 import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
 import ParameterStore from "./parameters/ParameterStore";
@@ -60,7 +61,13 @@ class Store {
 
   getExampleNetwork = (name) => exampleNetworks[name];
 
-  runExample = (name) => this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
+  refScrollIntoViewOnRunExample = React.createRef();
+
+  runExample = (name) => {
+    this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
+    this.refScrollIntoViewOnRunExample.current.scrollIntoView();
+  }
+
 
   getOutputFormat = (name) => outputFormats[name];
 }

@@ -229,6 +229,7 @@ export default observer(class InfomapOnline extends React.Component {
             thirdActive={completed}
             thirdCompleted={downloaded}
           />
+          <div ref={store.refScrollIntoViewOnRunExample}></div>
         </Grid.Column>
 
         <Grid.Column width={4} className="network">
