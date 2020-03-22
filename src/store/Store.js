@@ -3,6 +3,9 @@ import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
 import ParameterStore from "./parameters/ParameterStore";
 
+const camelToSnake = str => str
+  .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
+  .replace(/([A-Z])/g, ([letter]) => `_${letter.toLowerCase()}`);
 
 class Store {
   network = { name: "two_triangles", value: exampleNetworks.twoTriangles };
@@ -57,7 +60,7 @@ class Store {
 
   getExampleNetwork = (name) => exampleNetworks[name];
 
-  runExample = (name) => this.setNetwork(exampleNetworks[name]);
+  runExample = (name) => this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
 
   getOutputFormat = (name) => outputFormats[name];
 }
