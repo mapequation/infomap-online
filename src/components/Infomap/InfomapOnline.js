@@ -75,8 +75,14 @@ export default observer(class InfomapOnline extends React.Component {
     if (activeInput === "network") {
       store.setNetwork({ name, value });
     } else if (activeInput === "cluster") {
+      const param = store.params.getParam("--cluster-data");
+      if (!param) return;
+      store.params.setInput(param, value ? name || store.DEFAULT_CLU_NAME : "");
       store.setClusterData({ name, value });
     } else if (activeInput === "meta data") {
+      const param = store.params.getParam("--meta-data");
+      if (!param) return;
+      store.params.setInput(param, value ? name || store.DEFAULT_META_NAME : "");
       store.setMetaData({ name, value });
     }
     this.setState({
@@ -92,19 +98,13 @@ export default observer(class InfomapOnline extends React.Component {
 
     const file = files[0];
 
-    let name = "";
-
-    if (file && file.name) {
-      const nameParts = file.name.split(".");
-      if (nameParts.length > 1) nameParts.pop();
-      name = nameParts.join(".");
-    }
+    const name = file.name ? file.name : undefined;
 
     const reader = new FileReader();
 
-    const onLoadEnd = this.onInputChange(activeInput);
+    const onInputChange = this.onInputChange(activeInput);
 
-    reader.onloadend = event => onLoadEnd(event, { name, value: reader.result });
+    reader.onloadend = event => onInputChange(event, { name, value: reader.result });
 
     this.setState({ loading: true },
       () => reader.readAsText(file, "utf-8"));
@@ -125,13 +125,8 @@ export default observer(class InfomapOnline extends React.Component {
       this.runId = null;
     }
 
-    const network = {
-      filename: store.network.name,
-      content: store.network.value,
-    };
-
     try {
-      this.runId = this.infomap.run(network, store.params.args);
+      this.runId = this.infomap.run(store.getNetworkForInfomap(), store.params.args, store.getFilesForInfomap());
     } catch (e) {
       this.setState({
         running: false,

@@ -9,13 +9,30 @@ class Store {
   clusterData = { name: "", value: "" };
   metaData = { name: "", value: "" };
 
+  DEFAULT_NET_NAME = "network";
+  DEFAULT_CLU_NAME = "clusters.clu";
+  DEFAULT_META_NAME = "metadata.clu";
+
   params = new ParameterStore();
 
-  setNetwork = ({ name, value }) => this.network = { name: name || "network", value };
+  setNetwork = ({ name, value }) => this.network = { name: name || this.DEFAULT_NET_NAME, value };
 
-  setClusterData = ({ name, value }) => this.clusterData = { name: name || "cluster_data", value };
+  setClusterData = ({ name, value }) => this.clusterData = { name: name || this.DEFAULT_CLU_NAME, value };
 
-  setMetaData = ({ name, value }) => this.metaData = { name: name || "meta_data", value };
+  setMetaData = ({ name, value }) => this.metaData = { name: name || this.DEFAULT_META_NAME, value };
+
+  getNetworkForInfomap = () => ({
+    filename: this.network.name,
+    content: this.network.value,
+  });
+
+  getFilesForInfomap = () => {
+    const { clusterData, metaData } = this;
+    const files = {};
+    if (clusterData.name && clusterData.value) files[clusterData.name] = clusterData.value;
+    if (metaData.name && metaData.value) files[metaData.name] = metaData.value;
+    return files;
+  };
 
   getExampleNetwork = (name) => exampleNetworks[name];
 
