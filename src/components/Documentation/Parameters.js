@@ -61,7 +61,12 @@ const FileInputParameter = observer(({ param }) => {
     "--meta-data": ".clu",
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept: accept[param.long] });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: accept[param.long],
+    noClick: true, // Turn off default click trigger to prevent double file requests
+  });
   const { ref, ...rootProps } = getRootProps();
 
   return (
