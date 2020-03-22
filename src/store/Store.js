@@ -71,6 +71,7 @@ class Store {
 
   runExample = (name) => {
     this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
+    this.setActiveInput("network");
     this.refScrollIntoViewOnRunExample.current.scrollIntoView();
   }
 
