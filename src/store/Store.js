@@ -5,11 +5,17 @@ import ParameterStore from "./parameters/ParameterStore";
 
 
 class Store {
-  network = exampleNetworks.twoTriangles;
+  network = { name: "two_triangles", value: exampleNetworks.twoTriangles };
+  clusterData = { name: "", value: "" };
+  metaData = { name: "", value: "" };
 
   params = new ParameterStore();
 
-  setNetwork = (data) => this.network = data;
+  setNetwork = ({ name, value }) => this.network = { name: name || "network", value };
+
+  setClusterData = ({ name, value }) => this.clusterData = { name: name || "cluster_data", value };
+
+  setMetaData = ({ name, value }) => this.metaData = { name: name || "meta_data", value };
 
   getExampleNetwork = (name) => exampleNetworks[name];
 
@@ -21,6 +27,10 @@ class Store {
 
 export default decorate(Store, {
   network: observable,
-  runExample: action,
+  clusterData: observable,
+  metaData: observable,
   setNetwork: action,
+  setClusterData: action,
+  setMetaData: action,
+  runExample: action,
 });

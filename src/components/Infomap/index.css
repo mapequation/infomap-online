@@ -7,6 +7,7 @@
 }
 
 .infomap textarea {
+    height: 500px !important;
     resize: none !important;
     padding-bottom: 0 !important;
     padding-right: 0.4rem !important;
@@ -21,8 +22,7 @@
 }
 
 .network textarea {
-    min-height: calc(500px - 2.1em);
-    border-top-left-radius: 0 !important;
+    height: calc(500px - 2.1em) !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border-bottom: 2px dashed rgba(34, 36, 38, .15) !important;
@@ -37,26 +37,29 @@
     background: white;
 }
 
-.infomap .menu {
+.infomap .menu.tabular {
+    width: 150px !important;
     position: relative;
     top: -500px;
     margin: 0 !important;
     border: none !important;
 }
 
+.infomap .menu.tabular .item {
+    background: none !important;
+    border: none !important;
+}
+
 .network .menu {
-    width: 110px !important;
-    right: 110px;
-    top: calc(-500px - 0.05em);
+    right: 150px;
+    text-align: right;
 }
 
-.network .menu .item.finished:not(.active)::after {
-    content: "\2714️";
-    margin-left: 5px !important;
+.network .menu .item.finished:not(.active) {
+    color: #379c52 !important;
 }
 
-.output .menu {
-    width: 80px !important;
+.output .menu.tabular {
     left: 260px;
 }
 
@@ -71,11 +74,6 @@
 .output .dropdown {
     margin-bottom: 1em !important;
     text-align: center !important;
-}
-
-.output textarea {
-    height: 500px !important;
-    border-top-right-radius: 0 !important;
 }
 
 .run .fields {
