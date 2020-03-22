@@ -19,7 +19,7 @@ export default observer(class InfomapOnline extends React.Component {
     clu: "",
     tree: "",
     ftree: "",
-    loading: false, // True while loading input network
+    loading: false, // Loading input network
     running: false,
     completed: false,
     downloaded: false,
@@ -222,12 +222,12 @@ export default observer(class InfomapOnline extends React.Component {
       <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
           <Steps
-            firstCompleted={!!network}
-            firstActive={!network}
+            firstActive={!network.value}
+            firstCompleted={!!network.value}
+            secondActive={!!network.value && !completed}
             secondCompleted={completed || running}
-            secondActive={!!network && !completed}
-            thirdCompleted={downloaded}
             thirdActive={completed}
+            thirdCompleted={downloaded}
           />
         </Grid.Column>
 
