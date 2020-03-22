@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import { Button, Ref } from "semantic-ui-react";
 
 
-export default ({ onDrop, children, ...props }) => {
-  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false });
+export default ({ onDrop, accept, children, ...props }) => {
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept });
   const { ref, ...rootProps } = getRootProps();
 
   return (
@@ -14,7 +14,7 @@ export default ({ onDrop, children, ...props }) => {
         {...props}
       >
         {children}
-        <input {...getInputProps()} style={{ display: "none" }}/>
+        <input {...getInputProps()}/>
       </Button>
     </Ref>
   );

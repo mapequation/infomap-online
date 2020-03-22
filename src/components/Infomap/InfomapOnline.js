@@ -8,6 +8,8 @@ import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message } from "semant
 import store from "../../store";
 import Console from "./Console";
 import InputParameters from "./InputParameters";
+import InputTextarea from "./InputTextarea";
+import LoadButton from "./LoadButton";
 import Steps from "./Steps";
 
 
@@ -187,6 +189,12 @@ export default observer(class InfomapOnline extends React.Component {
       "meta data": metaData,
     };
 
+    const inputAccept = {
+      "network": undefined, // FIXME
+      "cluster": [".clu", ".tree"],
+      "meta data": [".clu"],
+    };
+
     const inputValue = inputOptions[activeInput].value;
 
     const inputMenuOptions = ["network", "cluster", "meta data"]
@@ -224,24 +232,30 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4} className="network">
-          <Button fluid primary>
+          <LoadButton
+            fluid
+            primary
+            onDrop={this.onLoad(activeInput)}
+            accept={inputAccept[activeInput]}
+          >
             <Icon name="file"/>Load {activeInput}
-            <input style={{ display: "none" }}/>
-          </Button>
+          </LoadButton>
 
-          <Form loading={loading}>
-            <Form.TextArea
-              value={inputValue}
-              onChange={this.onInputChange(activeInput)}
-              placeholder={`Input ${activeInput} here`}
-              wrap="off"
-            />
+          <InputTextarea
+            onDrop={this.onLoad(activeInput)}
+            accept={inputAccept[activeInput]}
+            loading={loading}
+            onChange={this.onInputChange(activeInput)}
+            value={inputValue}
+            placeholder={`Input ${activeInput} here`}
+            wrap="off"
+          >
             <Message
               attached="bottom"
               size="mini"
               content={`Load ${activeInput} by dragging & dropping`}
             />
-          </Form>
+          </InputTextarea>
           <Menu
             vertical
             tabular

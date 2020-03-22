@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
@@ -40,7 +40,7 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
-  const onDrop = useCallback((files) => {
+  const onDrop = (files) => {
     if (files.length < 1) return;
 
     const file = files[0];
@@ -54,9 +54,14 @@ const FileInputParameter = observer(({ param }) => {
     };
 
     reader.readAsText(file, "utf-8");
-  }, []);
+  };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept: ".clu,.tree" });
+  const accept = {
+    "--cluster-data": ".clu,.tree",
+    "--meta-data": ".clu",
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept: accept[param.long] });
   const { ref, ...rootProps } = getRootProps();
 
   return (
