@@ -13,6 +13,11 @@ class Store {
   DEFAULT_CLU_NAME = "clusters.clu";
   DEFAULT_META_NAME = "metadata.clu";
 
+  DEFAULT_NAME = {
+    "--cluster-data": this.DEFAULT_CLU_NAME,
+    "--meta-data": this.DEFAULT_META_NAME,
+  };
+
   params = new ParameterStore();
 
   setNetwork = ({ name, value }) => this.network = { name: name || this.DEFAULT_NET_NAME, value };
@@ -20,6 +25,22 @@ class Store {
   setClusterData = ({ name, value }) => this.clusterData = { name: name || this.DEFAULT_CLU_NAME, value };
 
   setMetaData = ({ name, value }) => this.metaData = { name: name || this.DEFAULT_META_NAME, value };
+
+  setFileParam = ({ long }, { name, value }) => {
+    if (long === "--cluster-data") {
+      this.setClusterData({ name, value });
+    } else if (long === "--meta-data") {
+      this.setMetaData({ name, value });
+    }
+  };
+
+  resetFileParam = ({ long }) => {
+    if (long === "--cluster-data") {
+      this.setClusterData({ value: "" });
+    } else if (long === "--meta-data") {
+      this.setMetaData({ value: "" });
+    }
+  };
 
   getNetworkForInfomap = () => ({
     filename: this.network.name,
@@ -49,5 +70,7 @@ export default decorate(Store, {
   setNetwork: action,
   setClusterData: action,
   setMetaData: action,
+  setFileParam: action,
+  resetFileParam: action,
   runExample: action,
 });

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
-import React, { useState } from "react";
-import { Button, Checkbox, Dropdown, Input, Item } from "semantic-ui-react";
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
 import { Heading } from "./TOC";
 
@@ -29,7 +30,6 @@ const DropdownParameter = observer(({ param }) => {
 const InputParameter = observer(({ param }) => {
   return (
     <Input
-      ref={ref => store.params.setRef(param.long, ref)}
       id={param.long}
       style={{ width: "100px" }}
       placeholder={param.default}
@@ -40,15 +40,40 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
+  const onDrop = useCallback((files) => {
+    if (files.length < 1) return;
+
+    const file = files[0];
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      if (!reader.result.length) return;
+      store.params.setInput(param, file.name || store.DEFAULT_NAME[param.long]);
+      store.setFileParam(param, { name: file.name, value: reader.result });
+    };
+
+    reader.readAsText(file, "utf-8");
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, accept: ".clu,.tree" });
+  const { ref, ...rootProps } = getRootProps();
+
   return (
-    <Button basic as="label" htmlFor="fileInput">
-      Load file
-      <input
-        style={{ display: "none" }}
-        type="file"
-        id="fileInput"
-      />
-    </Button>
+    <Ref innerRef={ref}>
+      <Button
+        basic
+        as="label"
+        htmlFor={param.long}
+        {...rootProps}
+      >
+        Load file
+        <input
+          id={param.long}
+          {...getInputProps()}
+        />
+      </Button>
+    </Ref>
   );
 });
 
@@ -106,12 +131,10 @@ const ParameterControl = ({ param }) => {
 };
 
 const getHeaderProps = (param) => {
-  const { active, long, longType, dropdown, input, incremental, value } = param;
+  const { active, long, dropdown, input, file, incremental, value } = param;
   const { params } = store;
 
   const props = { className: active ? "active" : "", as: "label" };
-
-  if (longType === "path") return; // TODO
 
   if (dropdown) {
     const ref = params.getRef(long);
@@ -131,11 +154,14 @@ const getHeaderProps = (param) => {
     };
   }
 
-  if (input) {
-    const ref = params.getRef(long);
-    if (!ref) return labelProps;
+  if (input || file) {
     return {
-      onClick: () => active ? params.setInput(param, "") : null,
+      onClick: (event) => {
+        if (!active) return;
+        event.preventDefault();
+        params.setInput(param, "");
+        if (file) store.resetFileParam(param);
+      },
       ...labelProps,
     };
   }

@@ -98,13 +98,11 @@ export default observer(class InfomapOnline extends React.Component {
 
     const file = files[0];
 
-    const name = file.name ? file.name : undefined;
-
     const reader = new FileReader();
 
     const onInputChange = this.onInputChange(activeInput);
 
-    reader.onloadend = event => onInputChange(event, { name, value: reader.result });
+    reader.onloadend = event => onInputChange(event, { name: file.name, value: reader.result });
 
     this.setState({ loading: true },
       () => reader.readAsText(file, "utf-8"));
