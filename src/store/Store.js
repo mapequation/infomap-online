@@ -3,6 +3,7 @@ import { createRef } from "react";
 import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
 import ParameterStore from "./parameters/ParameterStore";
+import OutputStore from "./OutputStore";
 
 
 const camelToSnake = str => str
@@ -16,6 +17,7 @@ class Store {
   metaData = { name: "", value: "" };
   activeInput = "network";
   activeOutput = "tree";
+  output = new OutputStore(this);
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
