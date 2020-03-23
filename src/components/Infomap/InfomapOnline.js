@@ -74,7 +74,7 @@ export default observer(class InfomapOnline extends React.Component {
   onInputChange = (activeInput) => (e, { name, value }) => {
     if (activeInput === "network") {
       store.setNetwork({ name, value });
-    } else if (activeInput === "cluster") {
+    } else if (activeInput === "cluster data") {
       const param = store.params.getParam("--cluster-data");
       if (!param) return;
       store.params.setInput(param, value ? name || store.DEFAULT_CLU_NAME : "");
@@ -181,19 +181,19 @@ export default observer(class InfomapOnline extends React.Component {
 
     const inputOptions = {
       "network": network,
-      "cluster": clusterData,
+      "cluster data": clusterData,
       "meta data": metaData,
     };
 
     const inputAccept = {
       "network": undefined, // FIXME
-      "cluster": [".clu", ".tree"],
+      "cluster data": [".clu", ".tree"],
       "meta data": [".clu"],
     };
 
     const inputValue = inputOptions[activeInput].value;
 
-    const inputMenuOptions = ["network", "cluster", "meta data"]
+    const inputMenuOptions = ["network", "cluster data", "meta data"]
       .map(name => ({
         key: name,
         name,
