@@ -16,7 +16,7 @@ import Steps from "./Steps";
 
 export default observer(class InfomapOnline extends React.Component {
   state = {
-    output: [],
+    infomapOutput: [],
     loading: false, // Loading input network
     running: false,
     completed: false,
@@ -28,25 +28,22 @@ export default observer(class InfomapOnline extends React.Component {
     super(props);
 
     const onData = content => this.setState({
-      output: [...this.state.output, content],
+      infomapOutput: [...this.state.infomapOutput, content],
     });
 
     const onError = content => this.setState({
       infomapError: content.replace(/^Error:\s+/i, ""),
-      output: [...this.state.output, content],
+      infomapOutput: [...this.state.infomapOutput, content],
       running: false,
       completed: false,
     });
 
     const onFinished = content => {
-      const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = content;
-      const completed = clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
+      store.output.setContent(content);
       this.setState({
-        ...content,
         running: false,
-        completed: !!completed,
-      }, () => localforage.setItem("ftree", ftree));
-      store.setActiveOutput(clu ? "clu" : tree ? "tree" : "ftree");
+        completed: true,
+      });
     };
 
     this.infomap = new Infomap()
@@ -85,8 +82,8 @@ export default observer(class InfomapOnline extends React.Component {
     }
     this.setState({
       loading: false,
-      completed: false,
       downloaded: false,
+      completed: false,
       infomapError: "",
     });
   };
@@ -107,19 +104,11 @@ export default observer(class InfomapOnline extends React.Component {
   };
 
   run = () => {
+    store.output.resetContent();
     this.setState({
-      completed: false,
       downloaded: false,
-      output: [],
-      clu: "",
-      tree: "",
-      ftree: "",
-      clu_states: "",
-      tree_states: "",
-      ftree_states: "",
-      net: "",
-      states: "",
-      states_as_physical: "",
+      completed: false,
+      infomapOutput: [],
     });
 
     if (this.runId) {
@@ -159,7 +148,7 @@ export default observer(class InfomapOnline extends React.Component {
       return `${name}.${format}`;
     };
     const filename = getFilename(name, format);
-    const content = this.state[format];
+    const content = store.output.activeContent;
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     saveAs(blob, filename);
     this.setState({ downloaded: true });
@@ -169,7 +158,7 @@ export default observer(class InfomapOnline extends React.Component {
     const { name } = store.network;
     const zip = new JSZip();
     for (let format of outputOptions) {
-      const content = this.state[format];
+      const content = store.output[format];
       zip.file(`${name}.${format}`, content);
     }
     zip.generateAsync({ type: "blob" })
@@ -180,16 +169,15 @@ export default observer(class InfomapOnline extends React.Component {
 
   render() {
     const {
-      ftree,
       loading,
       running,
       completed,
       downloaded,
       infomapError,
-      output,
+      infomapOutput,
     } = this.state;
 
-    const { activeInput, activeOutput, network, clusterData, metaData, params } = store;
+    const { activeInput, activeOutput, network, clusterData, metaData, output, params } = store;
 
     const inputOptions = {
       "network": network,
@@ -222,18 +210,13 @@ export default observer(class InfomapOnline extends React.Component {
       </span>
     ) : null;
 
-    const consoleContent = output.join("\n");
+    const consoleContent = infomapOutput.join("\n");
     const hasInfomapError = !!infomapError;
 
-    const outputValue = this.state[activeOutput];
-
-    const outputOptionsPhysical = ["clu", "tree", "ftree", "net", "states_as_physical"]
-      .filter(name => this.state[name]);
-
-    const outputOptionsStates = ["clu_states", "tree_states", "ftree_states", "states"]
-      .filter(name => this.state[name]);
-
-    const outputOptions = [...outputOptionsPhysical, ...outputOptionsStates];
+    const outputOptions = [
+      ...store.output.physicalOptions,
+      ...store.output.statesOptions,
+    ];
 
     return (
       <Grid container stackable className="infomap">
@@ -305,7 +288,7 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4} className="output">
-          {completed && !ftree && <Label
+          {completed && !store.output.ftree && <Label
             basic
             size="small"
             pointing="below"
@@ -322,7 +305,7 @@ export default observer(class InfomapOnline extends React.Component {
               target="_blank"
               rel="noopener noreferrer"
               href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-              disabled={!ftree || running}
+              disabled={!store.output.ftree || running}
               content="Open in Network Navigator"
             />
             <Dropdown
@@ -351,7 +334,7 @@ export default observer(class InfomapOnline extends React.Component {
 
           <Form loading={running}>
             <Form.TextArea
-              value={outputValue}
+              value={store.output.activeContent}
               placeholder="Cluster output will be printed here"
               onCopy={this.onCopyClusters}
               wrap="off"
@@ -361,8 +344,8 @@ export default observer(class InfomapOnline extends React.Component {
             activeItem={activeOutput}
             disabled={!completed}
             onClick={this.onOutputMenuClick}
-            physicalOptions={outputOptionsPhysical}
-            statesOptions={outputOptionsStates}
+            physicalOptions={store.output.physicalOptions}
+            statesOptions={store.output.statesOptions}
           />
         </Grid.Column>
       </Grid>
