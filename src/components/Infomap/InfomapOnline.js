@@ -145,9 +145,19 @@ export default observer(class InfomapOnline extends React.Component {
 
   onDownloadClick = (format) => () => {
     const { name } = store.network;
+    const getFilename = (name, format) => {
+      if (format === "states_as_physical" || format === "states") {
+        return `${name}_${format}.net`;
+      }
+      if (/_states/.test(format)) {
+        return `${name}_states.${format.replace("_states", "")}`;
+      }
+      return `${name}.${format}`;
+    }
+    const filename = getFilename(name, format);
     const content = this.state[format];
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, `${name}.${format}`);
+    saveAs(blob, filename);
     this.setState({ downloaded: true });
   };
 
@@ -201,19 +211,6 @@ export default observer(class InfomapOnline extends React.Component {
         className: inputOptions[name].value ? "finished" : undefined,
       }));
 
-    const consoleContent = output.join("\n");
-    const hasInfomapError = !!infomapError;
-
-    const outputValue = this.state[activeOutput];
-
-    const haveOutput = clu || tree || ftree;
-
-    const outputOptions = ["clu", "tree", "ftree"]
-      .filter(name => this.state[name]);
-
-    const outputMenuItems = outputOptions
-      .map(name => ({ key: name, name, active: activeOutput === name }));
-
     const SupportedExtensions = inputAccept[activeInput] ? (
       <span>
         Extensions: {inputAccept[activeInput].map(extension => (
@@ -222,6 +219,70 @@ export default observer(class InfomapOnline extends React.Component {
       }
       </span>
     ) : null;
+
+    const consoleContent = output.join("\n");
+    const hasInfomapError = !!infomapError;
+
+    const outputValue = this.state[activeOutput];
+
+    const haveOutput = clu || tree || ftree;
+    
+    const outputOptionsPhysical = ["clu", "tree", "ftree", "net", "states_as_physical"]
+      .filter(name => this.state[name]);
+    
+    const outputOptionsStates = ["clu_states", "tree_states", "ftree_states", "states"]
+      .filter(name => this.state[name]);
+
+    const outputOptions = [...outputOptionsPhysical, ...outputOptionsStates];
+
+    const outputMenuItemsPhysical = outputOptionsPhysical
+      .map(name => ({ key: name, name, active: activeOutput === name }));
+
+    const outputMenuItemsStates = outputOptionsStates
+      .map(name => ({ key: name, name, active: activeOutput === name }));
+    
+    const OutputMenu = outputOptionsStates.length === 0 ? (
+      <Menu
+        vertical
+        tabular="right"
+        disabled={!haveOutput}
+        onItemClick={this.onOutputMenuClick}
+        items={outputMenuItemsPhysical}
+      />
+    ) : (
+      <Menu
+        vertical
+        tabular="right"
+        disabled={!haveOutput}
+        >
+        <Menu.Item>
+          <Menu.Header>Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
+          <Menu.Menu>
+          { outputMenuItemsPhysical.map(item => (
+            <Menu.Item
+              key={item.key}
+              active={item.name === activeOutput}
+              name={item.name}
+              onClick={this.onOutputMenuClick}
+            />
+          ))}
+          </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.Header>State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
+          <Menu.Menu>
+            { outputMenuItemsStates.map(item => (
+              <Menu.Item
+                key={item.key}
+                active={item.name === activeOutput}
+                name={item.name.replace("_states", "")}
+                onClick={() => store.setActiveOutput(item.name)}
+              />
+            ))}
+          </Menu.Menu>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <Grid container stackable className="infomap">
@@ -324,7 +385,7 @@ export default observer(class InfomapOnline extends React.Component {
                     key={key}
                     icon="download"
                     onClick={this.onDownloadClick(format)}
-                    content={`Download .${format}`}
+                    content={`Download ${format}`}
                   />,
                 )}
                 {outputOptions.length > 1 &&
@@ -345,15 +406,7 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          <Menu
-            vertical
-            tabular="right"
-            size="small"
-            disabled={!haveOutput}
-            onItemClick={this.onOutputMenuClick}
-            items={outputMenuItems}
-          >
-          </Menu>
+          { OutputMenu }
         </Grid.Column>
       </Grid>
     );

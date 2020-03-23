@@ -70,3 +70,7 @@ figure {
 .message.info {
   background-color: hsl(206, 80%, 97%) !important;
 }
+
+figcaption {
+  text-align: justify;
+}
