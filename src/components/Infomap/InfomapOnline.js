@@ -16,9 +16,6 @@ import Steps from "./Steps";
 export default observer(class InfomapOnline extends React.Component {
   state = {
     output: [],
-    clu: "",
-    tree: "",
-    ftree: "",
     loading: false, // Loading input network
     running: false,
     completed: false,
@@ -116,6 +113,12 @@ export default observer(class InfomapOnline extends React.Component {
       clu: "",
       tree: "",
       ftree: "",
+      clu_states: "",
+      tree_states: "",
+      ftree_states: "",
+      net: "",
+      states: "",
+      states_as_physical: "",
     });
 
     if (this.runId) {
@@ -153,7 +156,7 @@ export default observer(class InfomapOnline extends React.Component {
         return `${name}_states.${format.replace("_states", "")}`;
       }
       return `${name}.${format}`;
-    }
+    };
     const filename = getFilename(name, format);
     const content = this.state[format];
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
@@ -176,8 +179,6 @@ export default observer(class InfomapOnline extends React.Component {
 
   render() {
     const {
-      clu,
-      tree,
       ftree,
       loading,
       running,
@@ -225,11 +226,9 @@ export default observer(class InfomapOnline extends React.Component {
 
     const outputValue = this.state[activeOutput];
 
-    const haveOutput = clu || tree || ftree;
-    
     const outputOptionsPhysical = ["clu", "tree", "ftree", "net", "states_as_physical"]
       .filter(name => this.state[name]);
-    
+
     const outputOptionsStates = ["clu_states", "tree_states", "ftree_states", "states"]
       .filter(name => this.state[name]);
 
@@ -240,12 +239,12 @@ export default observer(class InfomapOnline extends React.Component {
 
     const outputMenuItemsStates = outputOptionsStates
       .map(name => ({ key: name, name, active: activeOutput === name }));
-    
+
     const OutputMenu = outputOptionsStates.length === 0 ? (
       <Menu
         vertical
         tabular="right"
-        disabled={!haveOutput}
+        disabled={!completed}
         onItemClick={this.onOutputMenuClick}
         items={outputMenuItemsPhysical}
       />
@@ -253,25 +252,25 @@ export default observer(class InfomapOnline extends React.Component {
       <Menu
         vertical
         tabular="right"
-        disabled={!haveOutput}
-        >
+        disabled={!completed}
+      >
         <Menu.Item>
           <Menu.Header>Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
           <Menu.Menu>
-          { outputMenuItemsPhysical.map(item => (
-            <Menu.Item
-              key={item.key}
-              active={item.name === activeOutput}
-              name={item.name}
-              onClick={this.onOutputMenuClick}
-            />
-          ))}
+            {outputMenuItemsPhysical.map(item => (
+              <Menu.Item
+                key={item.key}
+                active={item.name === activeOutput}
+                name={item.name}
+                onClick={this.onOutputMenuClick}
+              />
+            ))}
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
           <Menu.Menu>
-            { outputMenuItemsStates.map(item => (
+            {outputMenuItemsStates.map(item => (
               <Menu.Item
                 key={item.key}
                 active={item.name === activeOutput}
@@ -375,7 +374,7 @@ export default observer(class InfomapOnline extends React.Component {
               content="Open in Network Navigator"
             />
             <Dropdown
-              disabled={!haveOutput || running}
+              disabled={!completed || running}
               className="button icon active"
               trigger={<React.Fragment/>}
             >
@@ -406,7 +405,7 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          { OutputMenu }
+          {OutputMenu}
         </Grid.Column>
       </Grid>
     );
