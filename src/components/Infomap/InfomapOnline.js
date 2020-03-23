@@ -10,6 +10,7 @@ import Console from "./Console";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
+import OutputMenu from "./OutputMenu";
 import Steps from "./Steps";
 
 
@@ -234,55 +235,6 @@ export default observer(class InfomapOnline extends React.Component {
 
     const outputOptions = [...outputOptionsPhysical, ...outputOptionsStates];
 
-    const outputMenuItemsPhysical = outputOptionsPhysical
-      .map(name => ({ key: name, name, active: activeOutput === name }));
-
-    const outputMenuItemsStates = outputOptionsStates
-      .map(name => ({ key: name, name, active: activeOutput === name }));
-
-    const OutputMenu = outputOptionsStates.length === 0 ? (
-      <Menu
-        vertical
-        tabular="right"
-        disabled={!completed}
-        onItemClick={this.onOutputMenuClick}
-        items={outputMenuItemsPhysical}
-      />
-    ) : (
-      <Menu
-        vertical
-        tabular="right"
-        disabled={!completed}
-      >
-        <Menu.Item>
-          <Menu.Header>Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
-          <Menu.Menu>
-            {outputMenuItemsPhysical.map(item => (
-              <Menu.Item
-                key={item.key}
-                active={item.name === activeOutput}
-                name={item.name}
-                onClick={this.onOutputMenuClick}
-              />
-            ))}
-          </Menu.Menu>
-        </Menu.Item>
-        <Menu.Item>
-          <Menu.Header>State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a></Menu.Header>
-          <Menu.Menu>
-            {outputMenuItemsStates.map(item => (
-              <Menu.Item
-                key={item.key}
-                active={item.name === activeOutput}
-                name={item.name.replace("_states", "")}
-                onClick={() => store.setActiveOutput(item.name)}
-              />
-            ))}
-          </Menu.Menu>
-        </Menu.Item>
-      </Menu>
-    );
-
     return (
       <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
@@ -405,7 +357,13 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          {OutputMenu}
+          <OutputMenu
+            activeItem={activeOutput}
+            disabled={!completed}
+            onClick={this.onOutputMenuClick}
+            physicalOptions={outputOptionsPhysical}
+            statesOptions={outputOptionsStates}
+          />
         </Grid.Column>
       </Grid>
     );
