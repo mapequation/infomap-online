@@ -47,7 +47,7 @@ export default ({ activeItem, disabled, onClick, physicalOptions, statesOptions 
             key={item.key}
             active={item.name === activeItem}
             name={item.name.replace("_states", "")}
-            onClick={onClick}
+            onClick={(e) => onClick(e, { name: item.name })}
           />
         ))}
       </Menu.Menu>
