@@ -17,6 +17,28 @@ class OutputStore {
   ftree_states = "";
   states = "";
 
+  downloaded = false;
+  setDownloaded = (value) => { this.downloaded = value; }
+
+  get completed() {
+    const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = this;
+    return clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
+  }
+
+  get activeContent() {
+    return this[this._store.activeOutput];
+  }
+
+  get physicalOptions() {
+    return ["clu", "tree", "ftree", "net", "states_as_physical"]
+      .filter(name => this[name]);
+  }
+
+  get statesOptions() {
+    return ["clu_states", "tree_states", "ftree_states", "states"]
+      .filter(name => this[name]);
+  }
+
   setContent = (content) => {
     const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = content;
     if (clu) { this.clu = clu; }
@@ -43,25 +65,8 @@ class OutputStore {
     this.net = "";
     this.states = "";
     this.states_as_physical = "";
-  }
-
-  get completed() {
-    const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = this;
-    return clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
-  }
-
-  get activeContent() {
-    return this[this._store.activeOutput];
-  }
-
-  get physicalOptions() {
-    return ["clu", "tree", "ftree", "net", "states_as_physical"]
-      .filter(name => this[name]);
-  }
-
-  get statesOptions() {
-    return ["clu_states", "tree_states", "ftree_states", "states"]
-      .filter(name => this[name]);
+    
+    this.downloaded = false;
   }
 }
 
@@ -75,8 +80,12 @@ export default decorate(OutputStore, {
   tree_states: observable,
   ftree_states: observable,
   states: observable,
+  downloaded: observable,
   completed: computed,
   activeContent: computed,
   physicalOptions: computed,
   statesOptions: computed,
+  setContent: action,
+  resetContent: action,
+  setDownloaded: action,
 });

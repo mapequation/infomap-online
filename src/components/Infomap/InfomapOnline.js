@@ -1,16 +1,15 @@
 import Infomap from "@mapequation/infomap";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Dropdown, Form, Grid, Icon, Label, Menu, Message } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Label, Menu, Message } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
+import DownloadMenu from "./DownloadMenu";
 import Steps from "./Steps";
 
 
@@ -20,7 +19,6 @@ export default observer(class InfomapOnline extends React.Component {
     loading: false, // Loading input network
     running: false,
     completed: false,
-    downloaded: false,
     infomapError: "",
   };
 
@@ -80,9 +78,9 @@ export default observer(class InfomapOnline extends React.Component {
       store.params.setInput(param, value ? name || store.DEFAULT_META_NAME : "");
       store.setMetaData({ name, value });
     }
+    store.output.setDownloaded(false);
     this.setState({
       loading: false,
-      downloaded: false,
       completed: false,
       infomapError: "",
     });
@@ -106,7 +104,6 @@ export default observer(class InfomapOnline extends React.Component {
   run = () => {
     store.output.resetContent();
     this.setState({
-      downloaded: false,
       completed: false,
       infomapOutput: [],
     });
@@ -136,43 +133,13 @@ export default observer(class InfomapOnline extends React.Component {
 
   onOutputMenuClick = (e, { name }) => store.setActiveOutput(name);
 
-  onDownloadClick = (format) => () => {
-    const { name } = store.network;
-    const getFilename = (name, format) => {
-      if (format === "states_as_physical" || format === "states") {
-        return `${name}_${format}.net`;
-      }
-      if (/_states/.test(format)) {
-        return `${name}_states.${format.replace("_states", "")}`;
-      }
-      return `${name}.${format}`;
-    };
-    const filename = getFilename(name, format);
-    const content = store.output.activeContent;
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, filename);
-    this.setState({ downloaded: true });
-  };
-
-  onDownloadZipClick = (outputOptions) => () => {
-    const { name } = store.network;
-    const zip = new JSZip();
-    for (let format of outputOptions) {
-      const content = store.output[format];
-      zip.file(`${name}.${format}`, content);
-    }
-    zip.generateAsync({ type: "blob" })
-      .then(blob => saveAs(blob, `${name}.zip`));
-  };
-
-  onCopyClusters = () => this.setState({ downloaded: true });
+  onCopyClusters = () => store.output.setDownloaded(false);
 
   render() {
     const {
       loading,
       running,
       completed,
-      downloaded,
       infomapError,
       infomapOutput,
     } = this.state;
@@ -213,11 +180,6 @@ export default observer(class InfomapOnline extends React.Component {
     const consoleContent = infomapOutput.join("\n");
     const hasInfomapError = !!infomapError;
 
-    const outputOptions = [
-      ...store.output.physicalOptions,
-      ...store.output.statesOptions,
-    ];
-
     return (
       <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
@@ -227,7 +189,7 @@ export default observer(class InfomapOnline extends React.Component {
             secondActive={!!network.value && !completed}
             secondCompleted={completed || running}
             thirdActive={completed}
-            thirdCompleted={downloaded}
+            thirdCompleted={output.downloaded}
           />
           <div ref={store.refScrollIntoViewOnRunExample}/>
         </Grid.Column>
@@ -288,7 +250,7 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4} className="output">
-          {completed && !store.output.ftree && <Label
+          {completed && !output.ftree && <Label
             basic
             size="small"
             pointing="below"
@@ -305,36 +267,15 @@ export default observer(class InfomapOnline extends React.Component {
               target="_blank"
               rel="noopener noreferrer"
               href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-              disabled={!store.output.ftree || running}
+              disabled={!output.ftree || running}
               content="Open in Network Navigator"
             />
-            <Dropdown
-              disabled={!completed || running}
-              className="button icon active"
-              trigger={<React.Fragment/>}
-            >
-              <Dropdown.Menu>
-                {outputOptions.map((format, key) =>
-                  <Dropdown.Item
-                    key={key}
-                    icon="download"
-                    onClick={this.onDownloadClick(format)}
-                    content={`Download ${format}`}
-                  />,
-                )}
-                {outputOptions.length > 1 &&
-                <Dropdown.Item
-                  icon="download"
-                  onClick={this.onDownloadZipClick(outputOptions)}
-                  content="Download all"
-                />}
-              </Dropdown.Menu>
-            </Dropdown>
+            <DownloadMenu disabled={running} />
           </Button.Group>
 
           <Form loading={running}>
             <Form.TextArea
-              value={store.output.activeContent}
+              value={output.activeContent}
               placeholder="Cluster output will be printed here"
               onCopy={this.onCopyClusters}
               wrap="off"
@@ -344,8 +285,8 @@ export default observer(class InfomapOnline extends React.Component {
             activeItem={activeOutput}
             disabled={!completed}
             onClick={this.onOutputMenuClick}
-            physicalOptions={store.output.physicalOptions}
-            statesOptions={store.output.statesOptions}
+            physicalOptions={output.physicalOptions}
+            statesOptions={output.statesOptions}
           />
         </Grid.Column>
       </Grid>
