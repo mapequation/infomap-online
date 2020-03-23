@@ -40,6 +40,13 @@ export default (params) =>
         case "path":
           param.value = "";
           param.file = true;
+          if (param.long === "--cluster-data") {
+            param.accept = [".clu", ".tree"];
+            param.tabName = "cluster data";
+          } else if (param.long === "--meta-data") {
+            param.accept = [".clu"];
+            param.tabName = "meta data";
+          }
           break;
         default:
           break;

@@ -40,11 +40,6 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
-  const tabName = {
-    "--cluster-data": "cluster data",
-    "--meta-data": "meta data",
-  };
-
   const onDrop = (files) => {
     if (files.length < 1) return;
 
@@ -55,24 +50,20 @@ const FileInputParameter = observer(({ param }) => {
     reader.onloadend = () => {
       if (!reader.result.length) return;
       store.params.setInput(param, file.name || store.DEFAULT_NAME[param.long]);
-      store.setActiveInput(tabName[param.long]);
+      store.setActiveInput(param.tabName);
       store.setFileParam(param, { name: file.name, value: reader.result });
     };
 
     reader.readAsText(file, "utf-8");
   };
 
-  const accept = {
-    "--cluster-data": ".clu,.tree",
-    "--meta-data": ".clu",
-  };
-
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
-    accept: accept[param.long],
+    accept: param.accept,
     noClick: true, // Turn off default click trigger to prevent double file requests
   });
+
   const { ref, ...rootProps } = getRootProps();
 
   return (

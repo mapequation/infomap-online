@@ -187,8 +187,8 @@ export default observer(class InfomapOnline extends React.Component {
 
     const inputAccept = {
       "network": undefined, // FIXME
-      "cluster data": [".clu", ".tree"],
-      "meta data": [".clu"],
+      "cluster data": params.getParam("--cluster-data").accept,
+      "meta data": params.getParam("--meta-data").accept,
     };
 
     const inputValue = inputOptions[activeInput].value;
@@ -216,9 +216,9 @@ export default observer(class InfomapOnline extends React.Component {
 
     const SupportedExtensions = inputAccept[activeInput] ? (
       <span>
-        Extensions: { inputAccept[activeInput].map(extension => (
-          <a key={extension} href={`#${extension.substring(1)}`}>{extension}</a>
-        )).reduce((prev, curr) => [prev, ', ', curr])
+        Extensions: {inputAccept[activeInput].map(extension => (
+        <a key={extension} href={`#${extension.substring(1)}`}>{extension}</a>
+      )).reduce((prev, curr) => [prev, ", ", curr])
       }
       </span>
     ) : null;
@@ -234,7 +234,7 @@ export default observer(class InfomapOnline extends React.Component {
             thirdActive={completed}
             thirdCompleted={downloaded}
           />
-          <div ref={store.refScrollIntoViewOnRunExample}></div>
+          <div ref={store.refScrollIntoViewOnRunExample}/>
         </Grid.Column>
 
         <Grid.Column width={4} className="network">
@@ -261,7 +261,7 @@ export default observer(class InfomapOnline extends React.Component {
               size="mini">
               Load {activeInput} by dragging & dropping.<br/>
               <a href="#Input">Supported formats.</a>{" "}
-              { SupportedExtensions }
+              {SupportedExtensions}
             </Message>
           </InputTextarea>
           <Menu
