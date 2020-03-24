@@ -1,9 +1,9 @@
-import { action, decorate, observable } from "mobx";
+import { action, computed, decorate, observable } from "mobx";
 import { createRef } from "react";
 import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
-import ParameterStore from "./parameters/ParameterStore";
 import OutputStore from "./OutputStore";
+import ParameterStore from "./ParameterStore";
 
 
 const camelToSnake = str => str
@@ -17,18 +17,14 @@ class Store {
   metaData = { name: "", value: "" };
   activeInput = "network";
   activeOutput = "tree";
+
   output = new OutputStore(this);
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
   DEFAULT_META_NAME = "metadata.clu";
 
-  DEFAULT_NAME = {
-    "--cluster-data": this.DEFAULT_CLU_NAME,
-    "--meta-data": this.DEFAULT_META_NAME,
-  };
-
-  params = new ParameterStore();
+  params = new ParameterStore(this);
 
   setActiveInput = (name) => this.activeInput = name;
 
@@ -40,28 +36,14 @@ class Store {
 
   setMetaData = ({ name, value }) => this.metaData = { name: name || this.DEFAULT_META_NAME, value };
 
-  setFileParam = ({ long }, { name, value }) => {
-    if (long === "--cluster-data") {
-      this.setClusterData({ name, value });
-    } else if (long === "--meta-data") {
-      this.setMetaData({ name, value });
-    }
+  get infomapNetwork() {
+    return {
+      filename: this.network.name,
+      content: this.network.value,
+    };
   };
 
-  resetFileParam = ({ long }) => {
-    if (long === "--cluster-data") {
-      this.setClusterData({ value: "" });
-    } else if (long === "--meta-data") {
-      this.setMetaData({ value: "" });
-    }
-  };
-
-  getNetworkForInfomap = () => ({
-    filename: this.network.name,
-    content: this.network.value,
-  });
-
-  getFilesForInfomap = () => {
+  get infomapFiles() {
     const { clusterData, metaData } = this;
     const files = {};
     if (clusterData.name && clusterData.value) files[clusterData.name] = clusterData.value;
@@ -71,12 +53,12 @@ class Store {
 
   getExampleNetwork = (name) => exampleNetworks[name];
 
-  refScrollIntoViewOnRunExample = createRef();
+  mainView = createRef();
 
   runExample = (name) => {
     this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
     this.setActiveInput("network");
-    this.refScrollIntoViewOnRunExample.current.scrollIntoView();
+    this.mainView.current.scrollIntoView();
   };
 
   getOutputFormat = (name) => outputFormats[name];
@@ -94,7 +76,7 @@ export default decorate(Store, {
   setNetwork: action,
   setClusterData: action,
   setMetaData: action,
-  setFileParam: action,
-  resetFileParam: action,
   runExample: action,
+  infomapNetwork: computed,
+  infomapFiles: computed,
 });

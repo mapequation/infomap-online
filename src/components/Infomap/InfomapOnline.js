@@ -5,11 +5,11 @@ import React from "react";
 import { Button, Form, Grid, Icon, Label, Menu, Message } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
+import DownloadMenu from "./DownloadMenu";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
-import DownloadMenu from "./DownloadMenu";
 import Steps from "./Steps";
 
 
@@ -65,20 +65,22 @@ export default observer(class InfomapOnline extends React.Component {
   };
 
   onInputChange = (activeInput) => (e, { name, value }) => {
+    const { params } = store;
+
     if (activeInput === "network") {
       store.setNetwork({ name, value });
     } else if (activeInput === "cluster data") {
-      const param = store.params.getParam("--cluster-data");
-      if (!param) return;
-      store.params.setInput(param, value ? name || store.DEFAULT_CLU_NAME : "");
-      store.setClusterData({ name, value });
+      const param = params.getParam("--cluster-data");
+      if (!value) params.resetFileParam(param);
+      params.setFileParam(param, { name, value });
     } else if (activeInput === "meta data") {
-      const param = store.params.getParam("--meta-data");
-      if (!param) return;
-      store.params.setInput(param, value ? name || store.DEFAULT_META_NAME : "");
-      store.setMetaData({ name, value });
+      const param = params.getParam("--meta-data");
+      if (!value) params.resetFileParam(param);
+      params.setFileParam(param, { name, value });
     }
+
     store.output.setDownloaded(false);
+
     this.setState({
       loading: false,
       completed: false,
@@ -103,6 +105,7 @@ export default observer(class InfomapOnline extends React.Component {
 
   run = () => {
     store.output.resetContent();
+
     this.setState({
       completed: false,
       infomapOutput: [],
@@ -114,7 +117,7 @@ export default observer(class InfomapOnline extends React.Component {
     }
 
     try {
-      this.runId = this.infomap.run(store.getNetworkForInfomap(), store.params.args, store.getFilesForInfomap());
+      this.runId = this.infomap.run(store.infomapNetwork, store.params.args, store.infomapFiles);
     } catch (e) {
       this.setState({
         running: false,
@@ -133,7 +136,7 @@ export default observer(class InfomapOnline extends React.Component {
 
   onOutputMenuClick = (e, { name }) => store.setActiveOutput(name);
 
-  onCopyClusters = () => store.output.setDownloaded(false);
+  onCopyClusters = () => store.output.setDownloaded(true);
 
   render() {
     const {
@@ -191,7 +194,7 @@ export default observer(class InfomapOnline extends React.Component {
             thirdActive={completed}
             thirdCompleted={output.downloaded}
           />
-          <div ref={store.refScrollIntoViewOnRunExample}/>
+          <div ref={store.mainView}/>
         </Grid.Column>
 
         <Grid.Column width={4} className="network">
@@ -270,7 +273,7 @@ export default observer(class InfomapOnline extends React.Component {
               disabled={!output.ftree || running}
               content="Open in Network Navigator"
             />
-            <DownloadMenu disabled={running} />
+            <DownloadMenu disabled={running}/>
           </Button.Group>
 
           <Form loading={running}>

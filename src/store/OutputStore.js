@@ -1,10 +1,10 @@
-import { action, decorate, observable, computed } from "mobx";
 import localforage from "localforage";
+import { action, computed, decorate, observable } from "mobx";
+
 
 class OutputStore {
-
   constructor(store) {
-    this._store = store;
+    this._parent = store;
   }
 
   clu = "";
@@ -18,7 +18,7 @@ class OutputStore {
   states = "";
 
   downloaded = false;
-  setDownloaded = (value) => { this.downloaded = value; }
+  setDownloaded = (value) => this.downloaded = value;
 
   get completed() {
     const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = this;
@@ -26,7 +26,7 @@ class OutputStore {
   }
 
   get activeContent() {
-    return this[this._store.activeOutput];
+    return this[this._parent.activeOutput];
   }
 
   get physicalOptions() {
@@ -51,9 +51,9 @@ class OutputStore {
     if (states) { this.states = states; }
     if (states_as_physical) { this.states_as_physical = states_as_physical; }
 
-    this._store.setActiveOutput(clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu");
+    this._parent.setActiveOutput(clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu");
     localforage.setItem("ftree", ftree);
-  }
+  };
 
   resetContent = () => {
     this.clu = "";
@@ -65,10 +65,11 @@ class OutputStore {
     this.net = "";
     this.states = "";
     this.states_as_physical = "";
-    
+
     this.downloaded = false;
-  }
+  };
 }
+
 
 export default decorate(OutputStore, {
   clu: observable,

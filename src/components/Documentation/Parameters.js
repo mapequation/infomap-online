@@ -49,9 +49,8 @@ const FileInputParameter = observer(({ param }) => {
 
     reader.onloadend = () => {
       if (!reader.result.length) return;
-      store.params.setInput(param, file.name || store.DEFAULT_NAME[param.long]);
       store.setActiveInput(param.tabName);
-      store.setFileParam(param, { name: file.name, value: reader.result });
+      store.params.setFileParam(param, { name: file.name, value: reader.result });
     };
 
     reader.readAsText(file, "utf-8");
@@ -165,9 +164,11 @@ const getHeaderProps = (param) => {
     return {
       onClick: (event) => {
         if (!active) return;
-        event.preventDefault();
+        if (file) {
+          event.preventDefault();
+          return params.resetFileParam(param);
+        }
         params.setInput(param, "");
-        if (file) store.resetFileParam(param);
       },
       ...labelProps,
     };

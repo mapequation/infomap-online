@@ -11,6 +11,10 @@ const argSpec = getArgSpec(infomapParameters);
 
 
 class ParameterStore {
+  constructor(parent) {
+    this._parent = parent;
+  }
+
   params = createParams(infomapParameters);
 
   refs = {};
@@ -63,6 +67,25 @@ class ParameterStore {
     this.rebuildArgs();
   };
 
+  setFileParam = (param, { name, value }) => {
+    if (param.long === "--cluster-data") {
+      this._parent.setClusterData({ name, value });
+      this.setInput(param, name || this._parent.DEFAULT_CLU_NAME);
+    } else if (param.long === "--meta-data") {
+      this._parent.setMetaData({ name, value });
+      this.setInput(param, name || this._parent.DEFAULT_META_NAME);
+    }
+  };
+
+  resetFileParam = (param) => {
+    this.setInput(param, "");
+    if (param.long === "--cluster-data") {
+      this._parent.setClusterData({ name: "", value: "" });
+    } else if (param.long === "--meta-data") {
+      this._parent.setMetaData({ name: "", value: "" });
+    }
+  };
+
   rebuildArgs = () => {
     this.args = this.params
       .filter(param => param.active)
@@ -97,6 +120,8 @@ export default decorate(ParameterStore, {
   setIncremental: action,
   setInput: action,
   setOption: action,
+  setFileParam: action,
+  resetFileParam: action,
   args: observable,
   argsError: observable,
   hasArgsError: observable,
