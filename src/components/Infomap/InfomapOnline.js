@@ -224,14 +224,16 @@ export default observer(class InfomapOnline extends React.Component {
               {SupportedExtensions}
             </Message>
           </InputTextarea>
-          <Menu
-            vertical
-            tabular
-            className="left"
-            size="small"
-            onItemClick={this.onInputMenuClick}
-            items={inputMenuOptions}
-          />
+          <div style={{ position: 'absolute' }}>
+            <Menu
+              vertical
+              tabular
+              className="left"
+              size="small"
+              onItemClick={this.onInputMenuClick}
+              items={inputMenuOptions}
+            />
+          </div>
         </Grid.Column>
 
         <Grid.Column width={8} floated="left" className="run">
@@ -284,13 +286,15 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          <OutputMenu
-            activeItem={output.activeKey}
-            disabled={!completed}
-            onClick={this.onOutputMenuClick}
-            physicalFiles={output.physicalFiles}
-            stateFiles={output.stateFiles}
-          />
+          <div style={{ position: 'absolute' }}>
+            <OutputMenu
+              activeItem={output.activeKey}
+              disabled={!completed}
+              onClick={this.onOutputMenuClick}
+              physicalFiles={output.physicalFiles}
+              stateFiles={output.stateFiles}
+            />
+          </div>
         </Grid.Column>
       </Grid>
     );

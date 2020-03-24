@@ -29,7 +29,7 @@ export default ({ activeItem, disabled, onClick, physicalFiles, stateFiles }) =>
     );
   }
 
-  const ExtendedMenu = (
+  return (
     <Menu
       vertical
       tabular="right"
@@ -71,11 +71,4 @@ export default ({ activeItem, disabled, onClick, physicalFiles, stateFiles }) =>
       </Menu.Item>
     </Menu>
   );
-
-  // Workaround css reflow issue, pushing documentation down
-  return (
-    <div style={{ position: 'absolute' }}>
-      { ExtendedMenu }
-    </div>
-  )
 }
