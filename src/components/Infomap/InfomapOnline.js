@@ -134,7 +134,7 @@ export default observer(class InfomapOnline extends React.Component {
 
   onInputMenuClick = (e, { name }) => store.setActiveInput(name);
 
-  onOutputMenuClick = (e, { name }) => store.setActiveOutput(name);
+  onOutputMenuClick = (e, { name }) => store.output.setActiveKey(name);
 
   onCopyClusters = () => store.output.setDownloaded(true);
 
@@ -147,7 +147,7 @@ export default observer(class InfomapOnline extends React.Component {
       infomapOutput,
     } = this.state;
 
-    const { activeInput, activeOutput, network, clusterData, metaData, output, params } = store;
+    const { activeInput, network, clusterData, metaData, output, params } = store;
 
     const inputOptions = {
       "network": network,
@@ -285,11 +285,11 @@ export default observer(class InfomapOnline extends React.Component {
             />
           </Form>
           <OutputMenu
-            activeItem={activeOutput}
+            activeItem={output.activeKey}
             disabled={!completed}
             onClick={this.onOutputMenuClick}
-            physicalOptions={output.physicalOptions}
-            statesOptions={output.statesOptions}
+            physicalFiles={output.physicalFiles}
+            stateFiles={output.stateFiles}
           />
         </Grid.Column>
       </Grid>

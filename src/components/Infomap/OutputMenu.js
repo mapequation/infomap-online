@@ -2,20 +2,29 @@ import React from "react";
 import { Icon, Menu } from "semantic-ui-react";
 
 
-export default ({ activeItem, disabled, onClick, physicalOptions, statesOptions }) => {
-  const physicalMenuItems = physicalOptions
-    .map(name => ({ key: name, name, active: activeItem === name }));
+export default ({ activeItem, disabled, onClick, physicalFiles, stateFiles }) => {
+  const physicalMenuItems = physicalFiles
+    .map(({ key, name }) => ({ key, name, active: activeItem === key }));
 
-  const statesMenuItems = statesOptions
-    .map(name => ({ key: name, name, active: activeItem === name }));
+  const statesMenuItems = stateFiles
+    .map(({ key, name }) => ({ key, name, active: activeItem === key }));
 
   const PhysicalMenu = <Menu
     vertical
     tabular="right"
     disabled={disabled}
-    onItemClick={onClick}
-    items={physicalMenuItems}
-  />;
+  >
+    { physicalFiles.map(({ key, name }) => (
+      <Menu.Item
+        key={key}
+        name={key}
+        active={key === activeItem}
+        onClick={onClick}
+      >
+      { name }
+      </Menu.Item>
+    ))}
+  </Menu>
 
   const ExpandedMenu = <Menu
     vertical
@@ -27,14 +36,16 @@ export default ({ activeItem, disabled, onClick, physicalOptions, statesOptions 
         Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
       </Menu.Header>
       <Menu.Menu>
-        {physicalMenuItems.map(item => (
-          <Menu.Item
-            key={item.key}
-            active={item.name === activeItem}
-            name={item.name}
-            onClick={onClick}
-          />
-        ))}
+      { physicalFiles.map(({ key, name }) => (
+        <Menu.Item
+          key={key}
+          name={key}
+          active={key === activeItem}
+          onClick={onClick}
+        >
+        { name }
+        </Menu.Item>
+      ))}
       </Menu.Menu>
     </Menu.Item>
     <Menu.Item>
@@ -42,17 +53,19 @@ export default ({ activeItem, disabled, onClick, physicalOptions, statesOptions 
         State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
       </Menu.Header>
       <Menu.Menu>
-        {statesMenuItems.map(item => (
-          <Menu.Item
-            key={item.key}
-            active={item.name === activeItem}
-            name={item.name.replace("_states", "")}
-            onClick={(e) => onClick(e, { name: item.name })}
-          />
-        ))}
+      { stateFiles.map(({ key, name }) => (
+        <Menu.Item
+          key={key}
+          name={key}
+          active={key === activeItem}
+          onClick={onClick}
+        >
+        { name }
+        </Menu.Item>
+      ))}
       </Menu.Menu>
     </Menu.Item>
   </Menu>;
 
-  return statesOptions.length ? ExpandedMenu : PhysicalMenu;
+  return stateFiles.length ? ExpandedMenu : PhysicalMenu;
 }

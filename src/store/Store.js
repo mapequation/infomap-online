@@ -16,7 +16,6 @@ class Store {
   clusterData = { name: "", value: "" };
   metaData = { name: "", value: "" };
   activeInput = "network";
-  activeOutput = "tree";
 
   output = new OutputStore(this);
 
@@ -27,8 +26,6 @@ class Store {
   params = new ParameterStore(this);
 
   setActiveInput = (name) => this.activeInput = name;
-
-  setActiveOutput = (name) => this.activeOutput = name;
 
   setNetwork = ({ name, value }) => this.network = { name: name || this.DEFAULT_NET_NAME, value };
 
@@ -70,9 +67,7 @@ export default decorate(Store, {
   clusterData: observable,
   metaData: observable,
   activeInput: observable,
-  activeOutput: observable,
   setActiveInput: action,
-  setActiveOutput: action,
   setNetwork: action,
   setClusterData: action,
   setMetaData: action,

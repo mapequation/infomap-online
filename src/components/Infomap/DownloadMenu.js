@@ -1,69 +1,54 @@
-
-
 import React from "react";
-import { Dropdown } from "semantic-ui-react";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
+import { Dropdown, Icon } from "semantic-ui-react";
 import store from "../../store";
 
-const onDownloadClick = (format) => () => {
-  const { name } = store.network;
-  const getFilename = (name, format) => {
-    if (format === "states_as_physical" || format === "states") {
-      return `${name}_${format}.net`;
-    }
-    if (/_states/.test(format)) {
-      return `${name}_states.${format.replace("_states", "")}`;
-    }
-    return `${name}.${format}`;
-  };
-  const filename = getFilename(name, format);
-  const content = store.output.activeContent;
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-  saveAs(blob, filename);
-  store.output.setDownloaded();
-};
-
-const onDownloadZipClick = (outputOptions) => () => {
-  const { name } = store.network;
-  const zip = new JSZip();
-  for (let format of outputOptions) {
-    const content = store.output[format];
-    zip.file(`${name}.${format}`, content);
-  }
-  zip.generateAsync({ type: "blob" })
-    .then(blob => saveAs(blob, `${name}.zip`));
-};
+const FileItem = ({ file }) => (
+  <Dropdown.Item
+    onClick={() => store.output.downloadFile(file.key)}
+  >
+    <Icon name="download" color="blue" />
+    <span style={{ color: "#555" }}>{ file.filename }</span>
+  </Dropdown.Item>
+)
 
 export default ({ disabled }) => {
 
-  const outputOptions = [
-    ...store.output.physicalOptions,
-    ...store.output.statesOptions,
-  ];
+  const { files, physicalFiles, stateFiles } = store.output;
+
+  const DownloadAll = (
+    <React.Fragment>
+      <Dropdown.Divider />
+      <Dropdown.Item
+        onClick={store.output.downloadAll}
+      >
+        <Icon name="file archive" color="blue" />
+        <span style={{ color: "#555" }}>Download all</span>
+      </Dropdown.Item>
+    </React.Fragment>
+  );
+
+  const DropdownMenu = stateFiles.length === 0 ? (
+    <Dropdown.Menu>
+      { physicalFiles.map(file => <FileItem key={file.key} file={file} />) }
+      { DownloadAll }
+    </Dropdown.Menu>
+  ) : (
+    <Dropdown.Menu>
+      <Dropdown.Header>Physical nodes</Dropdown.Header>
+      { physicalFiles.map(file => <FileItem key={file.key} file={file} />) }
+      <Dropdown.Header>State nodes</Dropdown.Header>
+      { stateFiles.map(file => <FileItem key={file.key} file={file} />) }
+      { DownloadAll }
+    </Dropdown.Menu>
+  )
 
   return (
     <Dropdown
-      disabled={disabled || outputOptions.length === 0}
+      disabled={disabled || files.length === 0}
       className="button icon active"
       trigger={<React.Fragment/>}
     >
-      <Dropdown.Menu>
-        {outputOptions.map((format, key) =>
-          <Dropdown.Item
-            key={key}
-            icon="download"
-            onClick={onDownloadClick(format)}
-            content={`Download ${format}`}
-          />,
-        )}
-        {outputOptions.length > 1 &&
-        <Dropdown.Item
-          icon="download"
-          onClick={onDownloadZipClick(outputOptions)}
-          content="Download all"
-        />}
-      </Dropdown.Menu>
+      { DropdownMenu }
     </Dropdown>
   )
 }
