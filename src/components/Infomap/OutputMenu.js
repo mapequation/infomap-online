@@ -3,69 +3,72 @@ import { Icon, Menu } from "semantic-ui-react";
 
 
 export default ({ activeItem, disabled, onClick, physicalFiles, stateFiles }) => {
-  const physicalMenuItems = physicalFiles
-    .map(({ key, name }) => ({ key, name, active: activeItem === key }));
+  
+  if (stateFiles.length === 0) {
+    if (physicalFiles.length < 2) {
+      return null;
+    }
 
-  const statesMenuItems = stateFiles
-    .map(({ key, name }) => ({ key, name, active: activeItem === key }));
-
-  const PhysicalMenu = <Menu
-    vertical
-    tabular="right"
-    disabled={disabled}
-  >
-    { physicalFiles.map(({ key, name }) => (
-      <Menu.Item
-        key={key}
-        name={key}
-        active={key === activeItem}
-        onClick={onClick}
+    return (
+      <Menu
+        vertical
+        tabular="right"
+        disabled={disabled}
       >
-      { name }
+        { physicalFiles.map(({ key, name }) => (
+          <Menu.Item
+            key={key}
+            name={key}
+            active={key === activeItem}
+            onClick={onClick}
+          >
+          { name }
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  }
+
+  return (
+    <Menu
+      vertical
+      tabular="right"
+      disabled={disabled}
+    >
+      <Menu.Item>
+        <Menu.Header>
+          Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
+        </Menu.Header>
+        <Menu.Menu>
+        { physicalFiles.map(({ key, name }) => (
+          <Menu.Item
+            key={key}
+            name={key}
+            active={key === activeItem}
+            onClick={onClick}
+          >
+          { name }
+          </Menu.Item>
+        ))}
+        </Menu.Menu>
       </Menu.Item>
-    ))}
-  </Menu>
-
-  const ExpandedMenu = <Menu
-    vertical
-    tabular="right"
-    disabled={disabled}
-  >
-    <Menu.Item>
-      <Menu.Header>
-        Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
-      </Menu.Header>
-      <Menu.Menu>
-      { physicalFiles.map(({ key, name }) => (
-        <Menu.Item
-          key={key}
-          name={key}
-          active={key === activeItem}
-          onClick={onClick}
-        >
-        { name }
-        </Menu.Item>
-      ))}
-      </Menu.Menu>
-    </Menu.Item>
-    <Menu.Item>
-      <Menu.Header>
-        State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
-      </Menu.Header>
-      <Menu.Menu>
-      { stateFiles.map(({ key, name }) => (
-        <Menu.Item
-          key={key}
-          name={key}
-          active={key === activeItem}
-          onClick={onClick}
-        >
-        { name }
-        </Menu.Item>
-      ))}
-      </Menu.Menu>
-    </Menu.Item>
-  </Menu>;
-
-  return stateFiles.length ? ExpandedMenu : PhysicalMenu;
+      <Menu.Item>
+        <Menu.Header>
+          State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
+        </Menu.Header>
+        <Menu.Menu>
+        { stateFiles.map(({ key, name }) => (
+          <Menu.Item
+            key={key}
+            name={key}
+            active={key === activeItem}
+            onClick={onClick}
+          >
+          { name }
+          </Menu.Item>
+        ))}
+        </Menu.Menu>
+      </Menu.Item>
+    </Menu>
+  );
 }
