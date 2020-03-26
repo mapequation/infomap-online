@@ -1,12 +1,13 @@
-import React from "react";
-import "./Header.css";
-import { Container, Header as Heading, Icon, Menu } from "semantic-ui-react";
 import Infomap from "@mapequation/infomap";
+import React from "react";
+import { Container, Header as Heading, Icon, Menu } from "semantic-ui-react";
+import "./Header.css";
+
 
 const Header = () => (
   <header>
     <Container>
-      <Menu borderless className="header-menu documentation">
+      <Menu borderless stackable className="header-menu documentation">
         <Menu.Item fitted>
           <Heading as="h1">
             <a href="https://www.mapequation.org">
@@ -18,8 +19,8 @@ const Header = () => (
             </a>
             <div className="content">
               <span className="brand">
-                <span className="brand-infomap">Infomap</span>{" "}
-                <span className="brand-nn">Online</span>
+                <span className="infomap">Infomap</span>{" "}
+                <span className="online">Online</span>
               </span>
               <div className="sub header">
                 Network community detection using the Map Equation framework
@@ -28,18 +29,14 @@ const Header = () => (
           </Heading>
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item>
+          <Menu.Item fitted className="icons">
             <a href="#Install">
               Infomap {Infomap.__version__}
-              <Icon className="Github" name="download" size="big"></Icon>
+              <Icon name="download" size="big"/>
             </a>
-          </Menu.Item>
-          <Menu.Item fitted>
-            <Heading as="h1">
-              <a href="https://github.com/mapequation/infomap">
-                <Icon className="Github" name="github"></Icon>
-              </a>
-            </Heading>
+            <a href="https://github.com/mapequation/infomap">
+              <Icon name="github" size="big"/>
+            </a>
           </Menu.Item>
         </Menu.Menu>
       </Menu>

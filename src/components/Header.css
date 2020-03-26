@@ -1,51 +1,48 @@
 header {
-  padding: 10px;
-  background: linear-gradient(to bottom, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
-  margin-bottom: 30px;
+    padding: 10px;
+    background: linear-gradient(to bottom, rgba(100, 80, 50, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
+    margin-bottom: 20px;
 }
 
 .header-menu.ui.menu {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
 }
 
 .mapequation-logo {
-  padding-top: 6px;
-  width: 57px;
-  height: 57px;
-}
-
-.brand {
-  font-family: Philosopher;
-  font-weight: 700;
-}
-
-.brand .logo-icon {
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  background-size: 100%;
-}
-
-.brand-infomap {
-  color: #555;
-}
-
-.brand-nn {
-  color: #B22222;
-  white-space: nowrap;
+    padding-top: 6px;
+    width: 57px;
+    height: 57px;
 }
 
 .content {
-  padding-left: 10px;
+    margin-left: 10px;
 }
 
-.documentation {
-  text-shadow: rgba(255, 255, 255, 0.746094) 0 1px 0;
+.brand {
+    font-family: Philosopher, serif;
+    font-weight: 700;
 }
 
-.documentation .row {
-  margin: 10px 0;
+.brand .infomap {
+    color: #555;
+}
+
+.brand .online {
+    color: #B22222;
+}
+
+.header-menu .icons a:first-child {
+    margin-right: 1em;
+    margin-left: 10px;
+}
+
+.header-menu .ui.header {
+    margin-bottom: 0.5em;
+    white-space: nowrap;
+}
+
+.header-menu .sub.header {
+    white-space: normal;
 }
