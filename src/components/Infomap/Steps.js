@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Responsive, Step } from "semantic-ui-react";
+import { Image, Step } from "semantic-ui-react";
 import Step1 from "../../images/step1.png";
 import Step2 from "../../images/step2.png";
 import Step3 from "../../images/step3.png";
@@ -13,13 +13,7 @@ export default (props) => {
   } = props;
 
   return (
-    <Responsive
-      as={Step.Group}
-      minWidth={768}
-      unstackable
-      fluid
-      widths={3}
-    >
+    <Step.Group fluid widths={3}>
       <Step completed={firstCompleted} active={firstActive}>
         <Image size="mini" src={Step1}/>
         <Step.Content>
@@ -50,6 +44,6 @@ export default (props) => {
           </Step.Description>
         </Step.Content>
       </Step>
-    </Responsive>
+    </Step.Group>
   );
 }
