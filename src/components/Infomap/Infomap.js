@@ -284,8 +284,12 @@ export default observer(class InfomapOnline extends React.Component {
               rel="noopener noreferrer"
               href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
               disabled={!output.ftree || running}
-              content="Open in Network Navigator"
-            />
+            >
+              <Responsive minWidth={1200} as={React.Fragment}>Open in Network Navigator</Responsive>
+              <Responsive maxWidth={1199} minWidth={992} as={React.Fragment}>Open in Navigator</Responsive>
+              <Responsive maxWidth={991} minWidth={768} as={React.Fragment}>Navigator&#8230;</Responsive>
+              <Responsive maxWidth={767} as={React.Fragment}>Open in Network Navigator</Responsive>
+            </Button>
             <DownloadMenu disabled={running}/>
           </Button.Group>
 
