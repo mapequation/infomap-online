@@ -224,7 +224,7 @@ export default observer(class InfomapOnline extends React.Component {
               {SupportedExtensions}
             </Message>
           </InputTextarea>
-          <div style={{ position: 'absolute' }}>
+          <div style={{ position: "absolute" }}>
             <Menu
               vertical
               tabular
@@ -286,7 +286,7 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          <div style={{ position: 'absolute' }}>
+          <div style={{ position: "absolute" }}>
             <OutputMenu
               activeItem={output.activeKey}
               disabled={!completed}

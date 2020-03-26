@@ -1,4 +1,4 @@
 import "./index.css";
 
 
-export { default } from "./InfomapOnline";
+export { default } from "./Infomap";

@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
 import { hydrate, render } from "react-dom";
-import "./index.css";
 import App from "./App";
+import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 
@@ -13,18 +13,18 @@ Sentry.init({
     if (event.exception) {
       Sentry.showReportDialog({
         eventId: event.event_id,
-        subtitle2: "If you'd like to help, tell us what happened below. Your network data stay on your computer."
+        subtitle2: "If you'd like to help, tell us what happened below. Your network data stay on your computer.",
       });
     }
     return event;
-  }
+  },
 });
 
 const rootElement = document.getElementById("root");
 if (rootElement.hasChildNodes()) {
-  hydrate(<App />, rootElement);
+  hydrate(<App/>, rootElement);
 } else {
-  render(<App />, rootElement);
+  render(<App/>, rootElement);
 }
 
 // If you want your app to work offline and load faster, you can change

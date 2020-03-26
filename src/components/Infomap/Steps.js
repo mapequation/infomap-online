@@ -25,7 +25,7 @@ export default (props) => {
         <Step.Content>
           <Step.Title>Load network</Step.Title>
           <Step.Description>
-            Edit input or load file
+            Edit network or load file
           </Step.Description>
         </Step.Content>
       </Step>
