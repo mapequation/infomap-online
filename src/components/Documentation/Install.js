@@ -1,12 +1,13 @@
+import Infomap from "@mapequation/infomap";
 import React from "react";
 import { Icon, Message } from "semantic-ui-react";
 import Code from "../Code";
-import { Heading } from "./TOC";
-import Infomap from "@mapequation/infomap";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Install" />
+    <Heading id="Install"/>
 
     <p>Infomap can be installed on your computer in several ways.</p>
 
@@ -22,7 +23,7 @@ export default () => (
       <a href="#Prerequisites">Prerequisites</a>.
     </p>
 
-    <Heading id="UsingPip" />
+    <Heading id="UsingPip"/>
 
     <p>
       The easiest way to download Infomap is from the Python Package Index,
@@ -55,7 +56,7 @@ export default () => (
       </p>
     </Message>
 
-    <Heading id="CompilingFromSource" />
+    <Heading id="CompilingFromSource"/>
 
     <p>
       To compile Infomap from source, first{" "}
@@ -68,11 +69,11 @@ export default () => (
       <code>Infomap</code> will be available in the source directory.
     </p>
 
-    <Heading id="Download" />
+    <Heading id="Download"/>
 
     <p>
       <a href={`//github.com/mapequation/infomap/archive/v${Infomap.__version__}.zip`}>
-        <Icon name="download" />
+        <Icon name="download"/>
         Download Infomap {Infomap.__version__}
       </a>{" "}
       or check the{" "}
@@ -84,13 +85,13 @@ export default () => (
 
     <Code>
       unzip infomap-{Infomap.__version__}.zip
-      <br />
+      <br/>
       cd infomap-{Infomap.__version__}
-      <br />
+      <br/>
       make
     </Code>
 
-    <Heading id="Git" />
+    <Heading id="Git"/>
 
     <p>
       To download the development version from{" "}
@@ -100,9 +101,9 @@ export default () => (
 
     <Code>
       git clone git@github.com:mapequation/infomap.git
-      <br />
+      <br/>
       cd infomap
-      <br />
+      <br/>
       make
     </Code>
 
@@ -118,9 +119,9 @@ export default () => (
 
       <Code>
         git checkout v0.x
-        <br />
+        <br/>
         git branch -D master
-        <br />
+        <br/>
         git checkout master
       </Code>
     </Message>

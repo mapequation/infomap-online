@@ -1,10 +1,11 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Features" />
+    <Heading id="Features"/>
 
     <p>
       Infomap optimizes{" "}

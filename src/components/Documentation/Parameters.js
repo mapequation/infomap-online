@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
 
 
 const DropdownParameter = observer(({ param }) => {

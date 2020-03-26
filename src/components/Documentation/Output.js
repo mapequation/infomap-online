@@ -1,17 +1,17 @@
-import React from "react";
 import Infomap from "@mapequation/infomap";
+import React from "react";
 import { Message } from "semantic-ui-react";
+import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
 import store from "../../store";
 import Code from "../Code";
 import Highlight from "../Highlight";
-import { Heading } from "./TOC";
-import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
+import { Heading } from "./Contents";
 
 
 export default () => {
   return (
     <>
-      <Heading id="Output" />
+      <Heading id="Output"/>
 
       <p>
         By default, Infomap outputs a <a href="OutputTree">.tree</a>-file if no other output
@@ -52,42 +52,46 @@ export default () => {
         The <strong>Map format</strong> used by the old flash Network Navigator is deprecated.
       </Message>
 
-      <Heading id="PhysicalAndStateOutput" />
+      <Heading id="PhysicalAndStateOutput"/>
       <p>
         The map equation for first-order network flows measures the description length of a random
         walker stepping between physical nodes within and between modules. This principle remains
         the same also for higher-order network flows, although higher-order models guide the random
         walker between physical nodes with the help of state nodes. Therefore, extending the map equation
         to higher-order network flows, including those described by memory, multilayer, and sparse memory
-        networks, is straightforward. The only difference is at the finest level (<a href="#Figure1">Figure 1b</a>). 
-        State nodes of the same physical node assigned to the same module should share code word, or they 
+        networks, is straightforward. The only difference is at the finest level (<a href="#Figure1">Figure 1b</a>).
+        State nodes of the same physical node assigned to the same module should share code word, or they
         would not represent the same object.
       </p>
 
       <p>
         For higher-order networks, Infomap writes two files for each of the <code>clu</code>,
-        <code>tree</code> and <code>ftree</code> output option. The extra file has <code>_states</code> 
+        <code>tree</code> and <code>ftree</code> output option. The extra file has <code>_states</code>
         appended to the name before the extension and describes the internal state-level network.
 
         In the ordinary output, state nodes within each module are merged if they belong to the same
         physical node, corresponding to how the Map Equation for higher-order networks only encode
-        observable flow. If state nodes of the same physical node exist in different modules, the 
-        node id in the physical output will occur more than once, corresponding to overlapping modules. 
+        observable flow. If state nodes of the same physical node exist in different modules, the
+        node id in the physical output will occur more than once, corresponding to overlapping modules.
         In the state-level output however, each node only exist in one module.
       </p>
 
       <figure id="Figure1">
         <img src={imgPhysicalAndStateNodes} alt="Physical and state nodes in output"/>
         <figcaption>
-          <strong>Figure 1.</strong> Network flows at different modular levels. Large circles represent physical nodes, small
-          circles represent state nodes, and dashed areas represent modules. <strong>(a)</strong> Finest modular level with
-          physical nodes for first-order network flows; <strong>(b)</strong> Finest modular level with physical nodes and state
-          nodes for higher-order network flows; <strong>(c)</strong> Intermediate level; <strong>(d)</strong> Coarsest modular level.
+          <strong>Figure 1.</strong> Network flows at different modular levels. Large circles represent physical nodes,
+          small
+          circles represent state nodes, and dashed areas represent modules. <strong>(a)</strong> Finest modular level
+          with
+          physical nodes for first-order network flows; <strong>(b)</strong> Finest modular level with physical nodes
+          and state
+          nodes for higher-order network flows; <strong>(c)</strong> Intermediate level; <strong>(d)</strong> Coarsest
+          modular level.
         </figcaption>
       </figure>
 
       <div id="tree"></div>
-      <Heading id="OutputTree" />
+      <Heading id="OutputTree"/>
       <p>
         <code>--tree</code>, <code>-o tree</code>
       </p>
@@ -101,7 +105,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.getOutputFormat('tree')} />
+        <Highlight network={store.getOutputFormat("tree")}/>
       </Code>
 
       <p>
@@ -119,7 +123,7 @@ export default () => {
         original network file.
       </p>
 
-      <Heading id="OutputFtree" />
+      <Heading id="OutputFtree"/>
       <p>
         <code>--ftree</code>, <code>-o ftree</code>
       </p>
@@ -133,7 +137,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.getOutputFormat('ftreeLinks')} />
+        <Highlight network={store.getOutputFormat("ftreeLinks")}/>
       </Code>
 
       <p>
@@ -152,8 +156,8 @@ export default () => {
         in the module header line, as defined in the commented line above.
       </p>
 
-      <div id="clu" />
-      <Heading id="OutputClu" />
+      <div id="clu"/>
+      <Heading id="OutputClu"/>
       <p>
         <code>--clu</code>, <code>-o clu</code>
       </p>
@@ -169,7 +173,7 @@ export default () => {
       </p>
 
       <Code>
-        <Highlight network={store.getOutputFormat('clu')} />
+        <Highlight network={store.getOutputFormat("clu")}/>
       </Code>
 
       <p>

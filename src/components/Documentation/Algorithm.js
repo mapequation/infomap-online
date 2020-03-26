@@ -1,9 +1,10 @@
 import React from "react";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Algorithm" />
+    <Heading id="Algorithm"/>
     <p>
       The hierarchical map equation measures the per-step average code length
       necessary to describe a random walker&apos;s movements on a network, given
@@ -19,7 +20,7 @@ export default () => (
       the original two-level clustering of nodes into modules
     </p>
 
-    <Heading id="TwolevelAlgorithm" />
+    <Heading id="TwolevelAlgorithm"/>
     <p>
       The core of the algorithm follows closely the{" "}
       <a href="https://sites.google.com/site/findcommunities/">
@@ -86,7 +87,7 @@ export default () => (
       than the previously shortest description length.
     </p>
 
-    <Heading id="MultilevelAlgorithm" />
+    <Heading id="MultilevelAlgorithm"/>
     <p>
       We have generalized our search algorithm for the two-level map equation to
       recursively search for multilevel solutions. The recursive search operates

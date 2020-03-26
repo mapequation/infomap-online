@@ -1,9 +1,10 @@
 import React from "react";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="References" />
+    <Heading id="References"/>
     <p>
       If you are using the software at mapequation.org in one of your research
       articles or otherwise want to refer to it, please cite{" "}

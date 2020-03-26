@@ -1,11 +1,12 @@
 import React from "react";
-import { Heading } from "./TOC";
-import Code from "../Code";
 import { Message } from "semantic-ui-react";
+import Code from "../Code";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Running" />
+    <Heading id="Running"/>
 
     <p>If you installed Infomap using <code>pip</code>, usage is</p>
 

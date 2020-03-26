@@ -1,14 +1,15 @@
 import React from "react";
 import { Message } from "semantic-ui-react";
+import store from "../../store";
 import Code from "../Code";
 import Highlight from "../Highlight";
-import { Heading } from "./TOC";
-import store from "../../store";
+import { Heading } from "./Contents";
+
 
 export default () => {
   return (
     <>
-      <Heading id="Input" />
+      <Heading id="Input"/>
 
       <p>
         Infomap understands different file formats for the input network data,
@@ -22,7 +23,7 @@ export default () => {
         by a format specifier.
       </p>
 
-      <Heading id="InputLinkList" />
+      <Heading id="InputLinkList"/>
       <p>
         <code>-i link-list</code>
       </p>
@@ -33,7 +34,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("linkList") }}>
-        <Highlight network={store.getExampleNetwork("linkList")} />
+        <Highlight network={store.getExampleNetwork("linkList")}/>
       </Code>
 
       <p>
@@ -43,7 +44,7 @@ export default () => {
         link weight will default to <code>1</code>.
       </p>
 
-      <Heading id="InputPajek" />
+      <Heading id="InputPajek"/>
       <p>
         <code>-i pajek</code>
       </p>
@@ -55,7 +56,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("pajek") }}>
-        <Highlight network={store.getExampleNetwork("pajek")} />
+        <Highlight network={store.getExampleNetwork("pajek")}/>
       </Code>
 
       <p>
@@ -68,7 +69,7 @@ export default () => {
         links are treated the same as for a link list.
       </p>
 
-      <Heading id="InputBipartite" />
+      <Heading id="InputBipartite"/>
       <p>
         <code>-i bipartite</code>
       </p>
@@ -80,16 +81,21 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartite") }}>
-        <Highlight network={store.getExampleNetwork("bipartite")} />
+        <Highlight network={store.getExampleNetwork("bipartite")}/>
       </Code>
 
       <p>and in the link list format:</p>
 
-      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("bipartiteLinkList") }}>
-        <Highlight network={store.getExampleNetwork("bipartiteLinkList")} />
+      <Code label={{
+        as: "a",
+        attached: "top",
+        content: "Run example",
+        onClick: () => store.runExample("bipartiteLinkList"),
+      }}>
+        <Highlight network={store.getExampleNetwork("bipartiteLinkList")}/>
       </Code>
 
-      <Heading id="InputMultilayer" />
+      <Heading id="InputMultilayer"/>
       <p>
         <code>-i multilayer</code>
       </p>
@@ -103,7 +109,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayer") }}>
-        <Highlight network={store.getExampleNetwork("multilayer")} />
+        <Highlight network={store.getExampleNetwork("multilayer")}/>
       </Code>
 
       <Message info>
@@ -143,14 +149,19 @@ export default () => {
         inter-layer link weight to that layer, and the encoded dynamics
         correspond to relaxed layer constraints (see
         the <a href="//mapequation.org/apps/multilayer-network/index.html"
-        >interactive storyboard</a> for illustration).
+      >interactive storyboard</a> for illustration).
       </p>
       <p>
         To define links like this, use the <code>*Intra</code> and <code>*Inter</code> headings:
       </p>
 
-      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("multilayerIntraInter") }}>
-        <Highlight network={store.getExampleNetwork("multilayerIntraInter")} />
+      <Code label={{
+        as: "a",
+        attached: "top",
+        content: "Run example",
+        onClick: () => store.runExample("multilayerIntraInter"),
+      }}>
+        <Highlight network={store.getExampleNetwork("multilayerIntraInter")}/>
       </Code>
 
       <p>
@@ -159,7 +170,7 @@ export default () => {
         those links.
       </p>
 
-      <Heading id="InputStates" />
+      <Heading id="InputStates"/>
       <p>
         <code>-i states</code>
       </p>
@@ -171,7 +182,7 @@ export default () => {
       </p>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("states") }}>
-        <Highlight network={store.getExampleNetwork("states")} />
+        <Highlight network={store.getExampleNetwork("states")}/>
       </Code>
 
       <p>

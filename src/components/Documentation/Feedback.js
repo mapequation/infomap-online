@@ -1,10 +1,11 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Feedback" />
+    <Heading id="Feedback"/>
     <p>
       If you have any questions, suggestions or issues regarding the
       software, please add them to{" "}

@@ -1,17 +1,18 @@
 import React from "react";
 import Code from "../Code";
-import { Heading } from "./TOC";
+import { Heading } from "./Contents";
+
 
 export default () => (
   <>
-    <Heading id="Prerequisites" />
+    <Heading id="Prerequisites"/>
 
     <p>
       Infomap requires a working <code>gcc</code> or <code>clang</code>{" "}
       compiler.
     </p>
 
-    <Heading id="Linux" />
+    <Heading id="Linux"/>
 
     <p>
       In Ubuntu, for example, the metapackage <code>build-essential</code>{" "}
@@ -21,7 +22,7 @@ export default () => (
 
     <Code>sudo apt-get install build-essential</Code>
 
-    <Heading id="macOS" />
+    <Heading id="macOS"/>
 
     <p>
       Since Mac OS X 10.9, the standard compiler tools are based on{" "}
@@ -39,7 +40,7 @@ export default () => (
       <code>brew install gcc</code> in the terminal.
     </p>
 
-    <Heading id="Windows" />
+    <Heading id="Windows"/>
 
     <p>
       We recommend running Infomap in{" "}

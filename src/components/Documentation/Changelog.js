@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { infomapChangelog } from "@mapequation/infomap";
-import { Heading } from "./TOC";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { Divider, Header, Icon, List } from "semantic-ui-react";
+import { Heading } from "./Contents";
+
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -73,7 +74,7 @@ const Release = ({ changes }) => {
           color: "#999",
           fontWeight: 300,
           marginLeft: 6,
-          fontSize: "0.8em"
+          fontSize: "0.8em",
         }}>({release.date.slice(0, 10)})</span>
       </h3>
 
@@ -132,7 +133,7 @@ const Changelog = ({ changes }) => {
       ))}
       {!expanded &&
       <Icon
-        style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em"}}
+        style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em" }}
         name="ellipsis vertical"
       />
       }
