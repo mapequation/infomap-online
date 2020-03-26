@@ -37,34 +37,21 @@
     background: white;
 }
 
-.infomap .menu.tabular {
-    width: 150px !important;
-    position: relative;
-    top: -500px;
-    margin: 0 !important;
-    border: none !important;
+.infomap .rail {
+    margin-top: 4.7em !important;
 }
 
-.infomap .menu.tabular .item {
-    background: none !important;
-    border: none !important;
-}
-
-.infomap .menu.tabular .item:not(.active) {
+.infomap .rail .menu .item:not(.active) {
     color: rgba(0, 0, 0, .5) !important;
 }
 
-.network .menu {
-    right: 150px;
+.network .rail .menu {
+    float: right;
     text-align: right;
 }
 
 .network .menu .item.finished:not(.active) {
     color: hsla(136, 48%, 41%, 0.8) !important;
-}
-
-.output .menu.tabular {
-    left: 260px;
 }
 
 .output .label.small {

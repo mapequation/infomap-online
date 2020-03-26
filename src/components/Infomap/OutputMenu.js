@@ -1,74 +1,39 @@
 import React from "react";
 import { Icon, Menu } from "semantic-ui-react";
+import store from "../../store";
 
 
-export default ({ activeItem, disabled, onClick, physicalFiles, stateFiles }) => {
+const DocIcon = <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>;
 
-  if (stateFiles.length === 0) {
-    if (physicalFiles.length < 2) {
-      return null;
-    }
+export default (props) => {
+  const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
 
-    return (
-      <Menu
-        vertical
-        tabular="right"
-        disabled={disabled}
-      >
-        {physicalFiles.map(({ key, name }) => (
-          <Menu.Item
-            key={key}
-            name={key}
-            active={key === activeItem}
-            onClick={onClick}
-          >
-            {name}
-          </Menu.Item>
-        ))}
-      </Menu>
-    );
+  const getMenuItem = ({ key, name }) =>
+    <Menu.Item
+      key={key}
+      name={key}
+      active={key === activeKey}
+      onClick={(e, { name }) => setActiveKey(name)}
+      content={name}
+    />;
+
+  if (!stateFiles.length) {
+    return physicalFiles.length < 2 ? null :
+      <Menu {...props} items={physicalFiles.map(getMenuItem)}/>;
   }
 
+  const items = [
+    { header: <>Physical level {DocIcon}</>, files: physicalFiles },
+    { header: <>State level {DocIcon}</>, files: stateFiles },
+  ];
+
   return (
-    <Menu
-      vertical
-      tabular="right"
-      disabled={disabled}
-    >
-      <Menu.Item>
-        <Menu.Header>
-          Physical level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
-        </Menu.Header>
-        <Menu.Menu>
-          {physicalFiles.map(({ key, name }) => (
-            <Menu.Item
-              key={key}
-              name={key}
-              active={key === activeItem}
-              onClick={onClick}
-            >
-              {name}
-            </Menu.Item>
-          ))}
-        </Menu.Menu>
-      </Menu.Item>
-      <Menu.Item>
-        <Menu.Header>
-          State level <a href="#PhysicalAndStateOutput"><Icon name="question circle"/></a>
-        </Menu.Header>
-        <Menu.Menu>
-          {stateFiles.map(({ key, name }) => (
-            <Menu.Item
-              key={key}
-              name={key}
-              active={key === activeItem}
-              onClick={onClick}
-            >
-              {name}
-            </Menu.Item>
-          ))}
-        </Menu.Menu>
-      </Menu.Item>
+    <Menu {...props}>
+      {items.map(({ header, files }, key) =>
+        <Menu.Item key={key}>
+          <Menu.Header content={header}/>
+          <Menu.Menu content={files.map(getMenuItem)}/>
+        </Menu.Item>)}
     </Menu>
   );
 }

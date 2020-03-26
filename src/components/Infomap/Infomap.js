@@ -2,7 +2,7 @@ import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import { Button, Form, Grid, Icon, Label, Menu, Message } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Label, Menu, Message, Rail, Responsive } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -134,8 +134,6 @@ export default observer(class InfomapOnline extends React.Component {
 
   onInputMenuClick = (e, { name }) => store.setActiveInput(name);
 
-  onOutputMenuClick = (e, { name }) => store.output.setActiveKey(name);
-
   onCopyClusters = () => store.output.setDownloaded(true);
 
   render() {
@@ -183,6 +181,15 @@ export default observer(class InfomapOnline extends React.Component {
     const consoleContent = infomapOutput.join("\n");
     const hasInfomapError = !!infomapError;
 
+    const inputMenuProps = {
+      vertical: true,
+      size: "small",
+      onItemClick: this.onInputMenuClick,
+      items: inputMenuOptions,
+    };
+
+    const outputMenuProps = { vertical: true, disabled: !completed };
+
     return (
       <Grid container stackable className="infomap">
         <Grid.Column width={16} textAlign="center">
@@ -224,16 +231,20 @@ export default observer(class InfomapOnline extends React.Component {
               {SupportedExtensions}
             </Message>
           </InputTextarea>
-          <div style={{ position: "absolute" }}>
-            <Menu
-              vertical
-              tabular
-              className="left"
-              size="small"
-              onItemClick={this.onInputMenuClick}
-              items={inputMenuOptions}
-            />
-          </div>
+          <Responsive
+            as={Rail}
+            minWidth={1400}
+            close="very"
+            position="left"
+          >
+            <Menu text{...inputMenuProps}/>
+          </Responsive>
+          <Responsive
+            as={Menu}
+            maxWidth={1399}
+            fluid
+            {...inputMenuProps}
+          />
         </Grid.Column>
 
         <Grid.Column width={8} floated="left" className="run">
@@ -286,15 +297,20 @@ export default observer(class InfomapOnline extends React.Component {
               wrap="off"
             />
           </Form>
-          <div style={{ position: "absolute" }}>
-            <OutputMenu
-              activeItem={output.activeKey}
-              disabled={!completed}
-              onClick={this.onOutputMenuClick}
-              physicalFiles={output.physicalFiles}
-              stateFiles={output.stateFiles}
-            />
-          </div>
+          <Responsive
+            as={Rail}
+            minWidth={1400}
+            close="very"
+            position="right"
+          >
+            <OutputMenu text {...outputMenuProps}/>
+          </Responsive>
+          <Responsive
+            as={OutputMenu}
+            maxWidth={1399}
+            fluid
+            {...outputMenuProps}
+          />
         </Grid.Column>
       </Grid>
     );
