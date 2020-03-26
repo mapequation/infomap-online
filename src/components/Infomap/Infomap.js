@@ -237,7 +237,7 @@ export default observer(class InfomapOnline extends React.Component {
             close="very"
             position="left"
           >
-            <Menu text{...inputMenuProps}/>
+            <Menu compact text {...inputMenuProps}/>
           </Responsive>
           <Responsive
             as={Menu}
@@ -307,7 +307,7 @@ export default observer(class InfomapOnline extends React.Component {
             close="very"
             position="right"
           >
-            <OutputMenu text {...outputMenuProps}/>
+            <OutputMenu compact text {...outputMenuProps}/>
           </Responsive>
           <Responsive
             as={OutputMenu}
