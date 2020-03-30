@@ -29,8 +29,9 @@ export default () => {
         <Highlight
           network={`# v${Infomap.__version__}
 # ./Infomap network.net . --ftree --clu
-# started at 2020-03-04 15:38:35
+# started at 2020-03-30 22:23:35
 # completed in 0.114 s
+# partitioned into 2 levels with 2 top modules
 # codelength 2.32073 bits
 # relative codelength savings 9.22792%`}
         />
