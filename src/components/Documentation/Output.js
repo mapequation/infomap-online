@@ -1,4 +1,4 @@
-import Infomap from "@mapequation/infomap";
+import Infomap, { infomapChangelog } from "@mapequation/infomap";
 import React from "react";
 import { Message } from "semantic-ui-react";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
@@ -7,6 +7,8 @@ import Code from "../Code";
 import Highlight from "../Highlight";
 import { Heading } from "./Contents";
 
+// 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
+const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
 
 export default () => {
   return (
@@ -29,7 +31,7 @@ export default () => {
         <Highlight
           network={`# v${Infomap.__version__}
 # ./Infomap network.net . --ftree --clu
-# started at 2020-03-30 22:23:35
+# started at ${dateOfLastVersion}
 # completed in 0.114 s
 # partitioned into 2 levels with 2 top modules
 # codelength 2.32073 bits
