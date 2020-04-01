@@ -14,7 +14,7 @@ export const twoTriangles = `#source target [weight]
 6 5
 6 4`;
 
-export const nineTriangles = `# A hierarchical network of nine triangles
+export const nineTriangles = `# A hierarchical network of nine triangles (Fig. 1)
 # source target weight
 1 2 1
 1 3 1

@@ -80,7 +80,7 @@ export default () => {
       <figure id="FigurePhysicalAndStateNodes">
         <img src={imgPhysicalAndStateNodes} alt="Physical and state nodes in output"/>
         <figcaption>
-          <strong>Figure 3.</strong> Network flows at different modular levels. Large circles represent physical nodes,
+          <strong>Figure 4.</strong> Network flows at different modular levels. Large circles represent physical nodes,
           small
           circles represent state nodes, and dashed areas represent modules. <strong>(a)</strong> Finest modular level
           with

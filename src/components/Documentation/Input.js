@@ -2,6 +2,7 @@ import React from "react";
 import { Message } from "semantic-ui-react";
 import imgMultilayerNetwork from "../../images/multilayer-network.svg";
 import imgStateNetwork from "../../images/state-network.svg";
+import imgNineTriangles from "../../images/triangle-network-levels_3.svg";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
@@ -31,9 +32,16 @@ export default () => {
 
       <p>
         This is a minimal format to describe a network by only
-        specifying a set of links:
+        specifying a set of links.
       </p>
 
+      <figure id="FigureNineTriangles">
+        <img src={imgNineTriangles} alt="Network of nine triangles"/>
+        <figcaption>
+          <strong>Figure 1.</strong> Triangle network of three levels with nine triangles at the bottom level.
+        </figcaption>
+      </figure>
+      
       <Code highlight lines={10}
             labelProps={{ content: "Run example", onClick: () => store.runExample("nineTriangles") }}>
         {store.getExampleNetwork("nineTriangles")}
@@ -106,7 +114,7 @@ export default () => {
       <figure id="FigureMultilayerNetwork">
         <img src={imgMultilayerNetwork} alt="Multilayer network"/>
         <figcaption>
-          <strong>Figure 1.</strong> A multilayer network with five physical nodes
+          <strong>Figure 2.</strong> A multilayer network with five physical nodes
           in two layers, α and β. Node <i>i</i> exists in both layers, and the
           flow between layers through the common nodes can be modelled with a relax
           rate <i>r</i>, which is the probability to relax the constraint to move only
@@ -195,7 +203,7 @@ export default () => {
       <figure id="FigureStateNetwork">
         <img src={imgStateNetwork} alt="State network"/>
         <figcaption>
-          <strong>Figure 2.</strong> A State network with five physical nodes
+          <strong>Figure 3.</strong> A State network with five physical nodes
           and six state nodes. It corresponds to the multilayer network in
           figure 1 using relax rate <i>r = 0.4</i>.
         </figcaption>
