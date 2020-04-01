@@ -62,7 +62,7 @@ export default () => {
         the same also for higher-order network flows, although higher-order models guide the random
         walker between physical nodes with the help of state nodes. Therefore, extending the map equation
         to higher-order network flows, including those described by memory, multilayer, and sparse memory
-        networks, is straightforward. The only difference is at the finest level (<a href="#Figure1">Figure 1b</a>).
+        networks, is straightforward. The only difference is at the finest level (<a href="#FigurePhysicalAndStateNodes">Figure 1b</a>).
         State nodes of the same physical node assigned to the same module should share code word, or they
         would not represent the same object.
       </p>
@@ -79,10 +79,10 @@ export default () => {
         In the state-level output however, each node only exist in one module.
       </p>
 
-      <figure id="Figure1">
+      <figure id="FigurePhysicalAndStateNodes">
         <img src={imgPhysicalAndStateNodes} alt="Physical and state nodes in output"/>
         <figcaption>
-          <strong>Figure 1.</strong> Network flows at different modular levels. Large circles represent physical nodes,
+          <strong>Figure 3.</strong> Network flows at different modular levels. Large circles represent physical nodes,
           small
           circles represent state nodes, and dashed areas represent modules. <strong>(a)</strong> Finest modular level
           with

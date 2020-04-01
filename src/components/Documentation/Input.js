@@ -4,6 +4,8 @@ import store from "../../store";
 import Code from "../Code";
 import Highlight from "../Highlight";
 import { Heading } from "./Contents";
+import imgMultilayerNetwork from "../../images/multilayer-network.svg";
+import imgStateNetwork from "../../images/state-network.svg";
 
 
 export default () => {
@@ -33,8 +35,8 @@ export default () => {
         specifying a set of links:
       </p>
 
-      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("linkList") }}>
-        <Highlight network={store.getExampleNetwork("linkList")}/>
+      <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("nineTriangles") }}>
+        <Highlight network={store.getExampleNetwork("nineTriangles")}/>
       </Code>
 
       <p>
@@ -102,8 +104,23 @@ export default () => {
 
       <p>
         In a multilayer network, each physical node can exist in a number
-        of <em>layers</em>, with different link structure for each layer. A
-        general multilayer format follows
+        of <em>layers</em>, with different link structure for each layer.
+      </p>
+
+
+      <figure id="FigureMultilayerNetwork">
+        <img src={imgMultilayerNetwork} alt="Multilayer network"/>
+        <figcaption>
+          <strong>Figure 1.</strong> A multilayer network with five physical nodes
+          in two layers, α and β. Node <i>i</i> exists in both layers, and the
+          flow between layers through the common nodes can be modelled with a relax
+          rate <i>r</i>, which is the probability to relax the constraint to move only
+          in the current layer.
+        </figcaption>
+      </figure>
+
+      <p>
+        A general multilayer format follows
         the Pajek layout, but with the links defined
         between nodes for each layer:
       </p>
@@ -163,12 +180,21 @@ export default () => {
       }}>
         <Highlight network={store.getExampleNetwork("multilayerIntraInter")}/>
       </Code>
-
+      
       <p>
-        If no inter links are provided, the inter links will be generated
-        from the intra link structure by relaxing the layer constraints on
-        those links.
+      If no inter links are provided, the inter links will be generated
+      from the intra link structure by relaxing the layer constraints on
+      those links.
       </p>
+
+      <Code label={{
+        as: "a",
+        attached: "top",
+        content: "Run example",
+        onClick: () => store.runExample("multilayerIntra"),
+      }}>
+        <Highlight network={store.getExampleNetwork("multilayerIntra")}/>
+      </Code>
 
       <Heading id="InputStates"/>
       <p>
@@ -180,6 +206,15 @@ export default () => {
         Infomap. It can model both ordinary networks and memory networks of
         variable order.
       </p>
+
+      <figure id="FigureStateNetwork">
+        <img src={imgStateNetwork} alt="State network"/>
+        <figcaption>
+          <strong>Figure 2.</strong> A State network with five physical nodes
+          and six state nodes. It corresponds to the multilayer network in
+          figure 1 using relax rate <i>r = 0.4</i>.
+        </figcaption>
+      </figure>
 
       <Code label={{ as: "a", attached: "top", content: "Run example", onClick: () => store.runExample("states") }}>
         <Highlight network={store.getExampleNetwork("states")}/>
