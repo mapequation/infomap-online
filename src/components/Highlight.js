@@ -1,8 +1,9 @@
 import React from "react";
 import "./Highlight.css";
 
+
 const parseLine = line => {
-  const buff = [{ className: null, content: "" }]
+  const buff = [{ className: null, content: "" }];
   let isString = false;
 
   for (let char of line) {
@@ -39,20 +40,20 @@ const parseLine = line => {
   }
 
   return buff;
-}
+};
 
-export default ({ network }) => {
-  if (!network) return null;
+export default ({ content }) => {
+  if (!content) return null;
 
-  const lines = network.split("\n");
+  const lines = content.split("\n");
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
 
     if (line.startsWith("#")) {
-      lines[i] = <span className="highlight-comment">{line}</span>
+      lines[i] = <span className="highlight-comment">{line}</span>;
     } else if (line.startsWith("*")) {
-      lines[i] = <span className="highlight-heading">{line}</span>
+      lines[i] = <span className="highlight-heading">{line}</span>;
     } else {
       lines[i] = parseLine(line).map(({ className, content }, i) =>
         <React.Fragment key={i}><span className={className}>{content}</span>{" "}</React.Fragment>);
@@ -63,9 +64,8 @@ export default ({ network }) => {
     <>
       {lines.map((line, i) =>
         <React.Fragment key={i}>
-          {line}<br />
-        </React.Fragment>
-      )}
+          {line}<br/>
+        </React.Fragment>)}
     </>
   );
 }

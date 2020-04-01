@@ -4,7 +4,6 @@ import { Message } from "semantic-ui-react";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
 import store from "../../store";
 import Code from "../Code";
-import Highlight from "../Highlight";
 import { Heading } from "./Contents";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
@@ -27,16 +26,14 @@ export default () => {
         and resulting codelength:
       </p>
 
-      <Code>
-        <Highlight
-          network={`# v${Infomap.__version__}
+      <Code highlight>
+        {`# v${Infomap.__version__}
 # ./Infomap network.net . --ftree --clu
 # started at ${dateOfLastVersion}
 # completed in 0.114 s
 # partitioned into 2 levels with 2 top modules
 # codelength 2.32073 bits
 # relative codelength savings 9.22792%`}
-        />
       </Code>
 
       <p>
@@ -62,7 +59,8 @@ export default () => {
         the same also for higher-order network flows, although higher-order models guide the random
         walker between physical nodes with the help of state nodes. Therefore, extending the map equation
         to higher-order network flows, including those described by memory, multilayer, and sparse memory
-        networks, is straightforward. The only difference is at the finest level (<a href="#FigurePhysicalAndStateNodes">Figure 1b</a>).
+        networks, is straightforward. The only difference is at the finest level (<a
+        href="#FigurePhysicalAndStateNodes">Figure 1b</a>).
         State nodes of the same physical node assigned to the same module should share code word, or they
         would not represent the same object.
       </p>
@@ -107,8 +105,8 @@ export default () => {
         attempts. The output format has the pattern:
       </p>
 
-      <Code>
-        <Highlight network={store.getOutputFormat("tree")}/>
+      <Code highlight>
+        {store.getOutputFormat("tree")}
       </Code>
 
       <p>
@@ -139,8 +137,8 @@ export default () => {
         followed by the links formatted as:
       </p>
 
-      <Code>
-        <Highlight network={store.getOutputFormat("ftreeLinks")}/>
+      <Code highlight>
+        {store.getOutputFormat("ftreeLinks")}
       </Code>
 
       <p>
@@ -175,8 +173,8 @@ export default () => {
         The format has the pattern:
       </p>
 
-      <Code>
-        <Highlight network={store.getOutputFormat("clu")}/>
+      <Code highlight>
+        {store.getOutputFormat("clu")}
       </Code>
 
       <p>

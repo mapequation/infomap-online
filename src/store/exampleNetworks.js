@@ -57,14 +57,14 @@ export const nineTriangles = `# A hierarchical network of nine triangles
 18 23 1`;
 
 export const pajek = `# A network in Pajek format
-*Vertices 4
+*Vertices 6
 1 "1"
 2 "2"
 3 "3"
 4 "4"
 5 "5"
 6 "6"
-*Edges 4
+*Edges 14
 # source target [weight]
 1 2
 1 3
