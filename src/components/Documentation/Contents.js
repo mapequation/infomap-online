@@ -114,6 +114,9 @@ const tocSource = {
   Changelog: {
     heading: "Changelog",
   },
+  MapEquation: {
+    heading: "The Map Equation",
+  },
   Features: {
     heading: "Features",
   },

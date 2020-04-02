@@ -5,6 +5,7 @@ import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg"
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
+import { BlockMath, InlineMath } from "react-katex";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
 const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
@@ -37,15 +38,13 @@ export default () => {
       </Code>
 
       <p>
-        The relative codelength savings <i>S<sub>L</sub></i> is calculated as
+        The relative codelength savings <InlineMath>S_L</InlineMath> is calculated as
       </p>
 
-      <p style={{ margin: "-0.8em 0 0.2em 2em" }}>
-        <i>S<sub>L</sub></i> = 1 &minus; <i>L</i>/<i>L<sub>1</sub></i>
-      </p>
+      <BlockMath math="S_L = 1 - \frac{L}{L_1}" />
 
       <p>
-        where <i>L</i> is the codelength and <i>L<sub>1</sub></i> is the one-level codelength.
+        where <InlineMath>L</InlineMath> is the codelength and <InlineMath>L_1</InlineMath> is the one-level codelength.
       </p>
 
       <Message info>
@@ -60,7 +59,7 @@ export default () => {
         walker between physical nodes with the help of state nodes. Therefore, extending the map equation
         to higher-order network flows, including those described by memory, multilayer, and sparse memory
         networks, is straightforward. The only difference is at the finest level (<a
-        href="#FigurePhysicalAndStateNodes">Figure 1b</a>).
+        href="#FigurePhysicalAndStateNodes">Figure 4b</a>).
         State nodes of the same physical node assigned to the same module should share code word, or they
         would not represent the same object.
       </p>

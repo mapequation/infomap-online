@@ -8,18 +8,7 @@ export default () => (
     <Heading id="Features"/>
 
     <p>
-      Infomap optimizes{" "}
-      <a href="//mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
-        The Map equation
-      </a>
-      , which exploits the <em>information-theoretic</em> duality between the
-      problem of compressing data, and the problem of detecting and extracting
-      significant patterns or structures within those data.
-    </p>
-
-    <p>
-      Specifically, the map equation is a flow-based method and operates on
-      dynamics on the network.
+      Infomap is a flow-based method that captures community structures based on the dynamics on the network.
     </p>
 
     <Header as="h3">(Un)weighted (un)directed links</Header>
