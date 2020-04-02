@@ -1,5 +1,5 @@
 import React from "react";
-import imgNineTriangles from "../../images/triangle-network-levels_3.svg";
+import imgNineTriangles from "../../images/nine-triangles.svg";
 import imgMultilayerNetwork from "../../images/multilayer-network.svg";
 import imgStateNetwork from "../../images/state-network.svg";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
@@ -35,7 +35,7 @@ const Figure = ({ id }) => {
       <figure id={id}>
         <img src={imgNineTriangles} alt="Network of nine triangles" />
         <figcaption>
-          <strong>Figure {figNumber(id)}.</strong> Triangle network of three levels with nine
+          <strong>Figure {figNumber(id)}.</strong> Network generated from Sierpinski fractal of three levels with nine
           triangles at the bottom level.
         </figcaption>
       </figure>

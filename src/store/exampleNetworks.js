@@ -1,5 +1,6 @@
 import { figNumber } from "../components/Documentation/Figure";
 
+
 export const twoTriangles = `#source target [weight]
 1 2
 1 3
@@ -19,45 +20,45 @@ export const twoTriangles = `#source target [weight]
 export const nineTriangles = `# A hierarchical network of nine triangles
 # Figure ${figNumber("FigureNineTriangles")}
 # source target weight
-1 2 1
-1 3 1
-1 4 1
-2 3 1
-3 7 1
-4 5 1 
-4 6 1 
-5 6 1 
-6 8 1 
-7 8 1 
-7 9 1 
-8 9 1 
-10 11 1
-10 12 1
-10 13 1
-11 12 1
-12 16 1
-13 14 1 
-13 15 1 
-14 15 1 
-15 17 1 
-16 17 1 
-16 18 1 
-17 18 1
-19 20 1
-19 21 1
-19 22 1
-20 21 1
-21 25 1
-22 23 1 
-22 24 1 
-23 24 1 
-24 26 1 
-25 26 1 
-25 27 1 
-26 27 1
-9 20 1
-5 11 1
-18 23 1`;
+1 2
+1 3
+2 3
+4 5
+4 6
+5 6
+7 8
+7 9
+8 9
+2 4
+3 7
+6 8
+10 11
+10 12
+11 12
+13 14
+13 15
+14 15
+16 17
+16 18
+17 18
+11 13
+12 16
+15 17
+19 20
+19 21
+20 21
+22 23
+22 24
+23 24
+25 26
+25 27
+26 27
+20 22
+21 25
+24 26
+5 10
+9 19
+18 23`;
 
 export const pajek = `# A network in Pajek format
 *Vertices 6

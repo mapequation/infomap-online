@@ -39,7 +39,11 @@ export default () => {
         lines={10}
         labelProps={{
           content: "Run example",
-          onClick: () => store.runExample("nineTriangles"),
+          onClick: () => {
+            const param = store.params.getParam("--num-trials");
+            store.params.setInput(param, 5);
+            store.runExample("nineTriangles");
+          },
         }}
       >
         {store.getExampleNetwork("nineTriangles")}
