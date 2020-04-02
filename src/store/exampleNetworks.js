@@ -1,3 +1,5 @@
+import { figNumber } from "../components/Documentation/Figure";
+
 export const twoTriangles = `#source target [weight]
 1 2
 1 3
@@ -14,7 +16,8 @@ export const twoTriangles = `#source target [weight]
 6 5
 6 4`;
 
-export const nineTriangles = `# A hierarchical network of nine triangles (Fig. 1)
+export const nineTriangles = `# A hierarchical network of nine triangles
+# Figure ${figNumber("FigureNineTriangles")}
 # source target weight
 1 2 1
 1 3 1
@@ -106,7 +109,7 @@ export const bipartiteLinkList = `# A bipartite network in link list format
 3 5 1`;
 
 export const multilayer = `# A multilayer network using explicit format
-# Figure 4a in Algorithms 10, 112 (2017)
+# Figure ${figNumber("FigureMultilayerNetwork")} (relax rate 0.4)
 *Vertices 5
 # node_id name
 1 "i"
@@ -136,7 +139,7 @@ export const multilayer = `# A multilayer network using explicit format
 2 1 1 5 0.2`;
 
 export const multilayerIntraInter = `# A multilayer network using *Inter/*Intra format
-# Figure 4a in Algorithms 10, 112 (2017)
+# Figure ${figNumber("FigureMultilayerNetwork")} (relax rate 0.4)
 *Vertices 5
 # node_id name
 1 "i"
@@ -164,7 +167,7 @@ export const multilayerIntraInter = `# A multilayer network using *Inter/*Intra 
 2 1 1 0.4`;
 
 export const multilayerIntra = `# A multilayer network using *Intra format
-# Figure 4a in Algorithms 10, 112 (2017), assuming --multilayer-relax-rate 0.4
+# Figure ${figNumber("FigureMultilayerNetwork")}
 *Vertices 5
 # node_id name
 1 "i"
@@ -188,7 +191,7 @@ export const multilayerIntra = `# A multilayer network using *Intra format
 2 3 2 1`;
 
 export const states = `# A network in state format
-# Figure 4e in Algorithms 10, 112 (2017)
+# Figure ${figNumber("FigureStateNetwork")}
 *Vertices 5
 #node_id name
 1 "i"

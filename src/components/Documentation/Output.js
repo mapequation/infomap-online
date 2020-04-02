@@ -1,11 +1,11 @@
 import Infomap, { infomapChangelog } from "@mapequation/infomap";
 import React from "react";
 import { Message } from "semantic-ui-react";
-import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
 import { BlockMath, InlineMath } from "react-katex";
+import Figure, { FigLink } from "./Figure";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
 const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
@@ -58,8 +58,8 @@ export default () => {
         the same also for higher-order network flows, although higher-order models guide the random
         walker between physical nodes with the help of state nodes. Therefore, extending the map equation
         to higher-order network flows, including those described by memory, multilayer, and sparse memory
-        networks, is straightforward. The only difference is at the finest level (<a
-        href="#FigurePhysicalAndStateNodes">Figure 4b</a>).
+        networks, is straightforward. The only difference is at the finest level (
+        <FigLink id="FigurePhysicalAndStateNodes"/>b).
         State nodes of the same physical node assigned to the same module should share code word, or they
         would not represent the same object.
       </p>
@@ -76,19 +76,7 @@ export default () => {
         In the state-level output however, each node only exist in one module.
       </p>
 
-      <figure id="FigurePhysicalAndStateNodes">
-        <img src={imgPhysicalAndStateNodes} alt="Physical and state nodes in output"/>
-        <figcaption>
-          <strong>Figure 4.</strong> Network flows at different modular levels. Large circles represent physical nodes,
-          small
-          circles represent state nodes, and dashed areas represent modules. <strong>(a)</strong> Finest modular level
-          with
-          physical nodes for first-order network flows; <strong>(b)</strong> Finest modular level with physical nodes
-          and state
-          nodes for higher-order network flows; <strong>(c)</strong> Intermediate level; <strong>(d)</strong> Coarsest
-          modular level.
-        </figcaption>
-      </figure>
+      <Figure id="FigurePhysicalAndStateNodes" />
 
       <div id="tree"></div>
       <Heading id="OutputTree"/>

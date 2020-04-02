@@ -1,12 +1,9 @@
 import React from "react";
 import { Message } from "semantic-ui-react";
-import imgMultilayerNetwork from "../../images/multilayer-network.svg";
-import imgStateNetwork from "../../images/state-network.svg";
-import imgNineTriangles from "../../images/triangle-network-levels_3.svg";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
-import { InlineMath } from "react-katex";
+import Figure from "./Figure";
 
 
 export default () => {
@@ -35,13 +32,7 @@ export default () => {
         of links.
       </p>
 
-      <figure id="FigureNineTriangles">
-        <img src={imgNineTriangles} alt="Network of nine triangles" />
-        <figcaption>
-          <strong>Figure 1.</strong> Triangle network of three levels with nine
-          triangles at the bottom level.
-        </figcaption>
-      </figure>
+      <Figure id="FigureNineTriangles" />
 
       <Code
         highlight
@@ -135,18 +126,7 @@ export default () => {
         <em>layers</em>, with different link structure for each layer.
       </p>
 
-      <figure id="FigureMultilayerNetwork">
-        <img src={imgMultilayerNetwork} alt="Multilayer network" />
-        <figcaption>
-          <strong>Figure 2.</strong> A multilayer network with five physical
-          nodes <InlineMath>i,\dotsc,m</InlineMath> in two layers,{" "}
-          <InlineMath>\alpha</InlineMath> and <InlineMath>\beta</InlineMath>.
-          Node <InlineMath>i</InlineMath> exists in both layers, and the flow
-          between layers through the common nodes can be modelled with a relax
-          rate <InlineMath>r</InlineMath>, which is the probability to relax the
-          constraint to move only in the current layer.
-        </figcaption>
-      </figure>
+      <Figure id="FigureMultilayerNetwork" />
 
       <p>
         A general multilayer format follows the Pajek layout, but with the links
@@ -244,16 +224,7 @@ export default () => {
         order.
       </p>
 
-      <figure id="FigureStateNetwork">
-        <img src={imgStateNetwork} alt="State network" />
-        <figcaption>
-          <strong>Figure 3.</strong> A State network with five physical
-          nodes <InlineMath>i,\dotsc,m</InlineMath> and six state nodes{" "}
-          <InlineMath math="\tilde{\alpha}_i,\dotsc,\tilde{\zeta}_m"/>. 
-          It corresponds to the multilayer network in
-          figure 2 using relax rate <InlineMath>r = 0.4</InlineMath>.
-        </figcaption>
-      </figure>
+      <Figure id="FigureStateNetwork" />
 
       <Code
         highlight
