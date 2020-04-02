@@ -35,8 +35,9 @@ const Figure = ({ id }) => {
       <figure id={id}>
         <img src={imgNineTriangles} alt="Network of nine triangles" />
         <figcaption>
-          <strong>Figure {figNumber(id)}.</strong> Network generated from Sierpinski fractal of three levels with nine
-          triangles at the bottom level.
+          <strong>Figure {figNumber(id)}.</strong> Network generated from a Sierpinski fractal of three levels with nine
+          triangles at the bottom level. Note that the optimal solution is not the symmetrical case with three modules
+          in each super module.
         </figcaption>
       </figure>
       )
