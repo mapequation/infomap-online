@@ -1,5 +1,6 @@
 import React from "react";
 import imgNineTriangles from "../../images/nine-triangles.svg";
+import imgBipartite from "../../images/bipartite.svg";
 import imgMultilayerNetwork from "../../images/multilayer-network.svg";
 import imgStateNetwork from "../../images/state-network.svg";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
@@ -7,9 +8,10 @@ import { InlineMath } from "react-katex";
 
 const FIGURE_NUMBER = {
   FigureNineTriangles: 1,
-  FigureMultilayerNetwork: 2,
-  FigureStateNetwork: 3,
-  FigurePhysicalAndStateNodes: 4,
+  FigureBipartite: 2,
+  FigureMultilayerNetwork: 3,
+  FigureStateNetwork: 4,
+  FigurePhysicalAndStateNodes: 5,
 }
 
 const ASSERT_FIGURE = (id) => {
@@ -41,6 +43,16 @@ const Figure = ({ id }) => {
         </figcaption>
       </figure>
       )
+    case "FigureBipartite":
+      return (
+      <figure id={id}>
+        <img src={imgBipartite} style={{ width: "40%" }} alt="Bipartite network with three round and two square nodes" />
+        <figcaption>
+          <strong>Figure {figNumber(id)}.</strong> Bipartite network with three
+          nodes <InlineMath>1, 2, 3</InlineMath> and two feature nodes <InlineMath>4, 5</InlineMath>.
+        </figcaption>
+      </figure>
+      )
     case "FigureMultilayerNetwork":
       return (
         <figure id={id}>
@@ -52,8 +64,8 @@ const Figure = ({ id }) => {
             Node <InlineMath>i</InlineMath> exists in both layers, and the flow
             between layers through the common nodes can be modelled with a relax
             rate <InlineMath>r</InlineMath>, which is the probability to relax the
-            constraint to move only in the current layer. This network is represented 
-            as a state network in <FigLink id="FigureStateNetwork" />, using relax 
+            constraint to move only in the current layer. This network is represented
+            as a state network in <FigLink id="FigureStateNetwork" />, using relax
             rate <InlineMath>r = 0.4</InlineMath>.
           </figcaption>
         </figure>

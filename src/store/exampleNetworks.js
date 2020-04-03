@@ -86,6 +86,7 @@ export const pajek = `# A network in Pajek format
 6 4`;
 
 export const bipartite = `# A bipartite network with node names
+# Figure ${figNumber("FigureBipartite")}
 *Vertices 5
 1 "Node 1"
 2 "Node 2"
@@ -101,6 +102,7 @@ export const bipartite = `# A bipartite network with node names
 3 5 1`;
 
 export const bipartiteLinkList = `# A bipartite network in link list format
+# Figure ${figNumber("FigureBipartite")}
 # set bipartite start id to 4
 *Bipartite 4
 # node_id feature weight

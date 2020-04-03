@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 91 113" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-154.5,-213.717)">
+        <g transform="matrix(3.22582,1.20728e-16,-4.71592e-17,-0.875,-121.711,566.375)">
+            <path d="M95,381L105,365" style="fill:none;stroke:rgb(161,161,161);stroke-width:0.85px;"/>
+        </g>
+        <g transform="matrix(3.22582,1.20728e-16,-4.71592e-17,-0.875,-121.711,607.375)">
+            <path d="M95,381L105,365" style="fill:none;stroke:rgb(161,161,161);stroke-width:0.32px;"/>
+        </g>
+        <g transform="matrix(3.58424,3.83365e-17,-9.65128e-18,-0.823529,-234.614,566.765)">
+            <path d="M117,364L126,381" style="fill:none;stroke:rgb(161,161,161);stroke-width:0.77px;"/>
+        </g>
+        <g transform="matrix(3.58424,3.83365e-17,-9.65128e-18,-0.823529,-234.614,607.765)">
+            <path d="M117,364L126,381" style="fill:none;stroke:rgb(161,161,161);stroke-width:0.77px;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,80.217,-161)">
+            <g transform="matrix(2.33137,0,0,2.33137,-106.023,-498.628)">
+                <circle cx="83.987" cy="381.254" r="6.434" style="fill:white;stroke:rgb(161,161,161);stroke-width:0.43px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-2.8282,4.13748)">
+                <text x="89.863px" y="390.134px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:12px;">1</text>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,80.217,-79.868)">
+            <g transform="matrix(2.33137,0,0,2.33137,-106.023,-498.628)">
+                <circle cx="83.987" cy="381.254" r="6.434" style="fill:white;stroke:rgb(161,161,161);stroke-width:0.43px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-2.8282,4.13748)">
+                <text x="89.863px" y="390.134px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:12px;">3</text>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,40.217,-120.434)">
+            <g transform="matrix(2.33137,0,0,2.33137,-66.0229,-498.628)">
+                <circle cx="83.987" cy="381.254" r="6.434" style="fill:white;stroke:rgb(161,161,161);stroke-width:0.43px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,37.1718,3.8658)">
+                <text x="89.863px" y="390.134px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:12px;">2</text>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,140.217,-140.217)">
+            <g transform="matrix(1.47368,0,0,2,-248.901,-71.783)">
+                <rect x="221" y="224" width="19" height="14" style="fill:white;stroke:rgb(161,161,161);stroke-width:0.57px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-2.8282,4.13748)">
+                <text x="89.863px" y="390.134px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:12px;">4</text>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,100.217,-100.217)">
+            <g transform="matrix(1.47368,0,0,2,-208.901,-71.783)">
+                <rect x="221" y="224" width="19" height="14" style="fill:white;stroke:rgb(161,161,161);stroke-width:0.57px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,37.1718,3.8658)">
+                <text x="89.863px" y="390.134px" style="font-family:'Times-Italic', 'Times';font-style:italic;font-size:12px;">5</text>
+            </g>
+        </g>
+    </g>
+</svg>

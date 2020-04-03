@@ -92,6 +92,8 @@ export default () => {
         <code>-i bipartite</code>
       </p>
 
+      <Figure id="FigureBipartite"/>
+
       <p>
         The bipartite format uses the heading <code>*Bipartite N</code> where{" "}
         <code>N</code> is the first node id of the second node type. The
