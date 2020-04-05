@@ -69,8 +69,10 @@ class ParameterStore {
 
   setFileParam = (param, { name, value }) => {
     if (param.long === "--cluster-data") {
-      this._parent.setClusterData({ name, value });
-      this.setInput(param, name || this._parent.DEFAULT_CLU_NAME);
+      const isTree = /^\d+:\d+/m;
+      const defaultName = !name && isTree.test(value) ? this._parent.DEFAULT_TREE_NAME : this._parent.DEFAULT_CLU_NAME;
+      this._parent.setClusterData({ name: name || defaultName, value });
+      this.setInput(param, name || defaultName);
     } else if (param.long === "--meta-data") {
       this._parent.setMetaData({ name, value });
       this.setInput(param, name || this._parent.DEFAULT_META_NAME);

@@ -21,6 +21,7 @@ class Store {
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
+  DEFAULT_TREE_NAME = "clusters.tree";
   DEFAULT_META_NAME = "metadata.clu";
 
   params = new ParameterStore(this);
