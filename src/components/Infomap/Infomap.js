@@ -71,11 +71,11 @@ export default observer(class InfomapOnline extends React.Component {
       store.setNetwork({ name, value });
     } else if (activeInput === "cluster data") {
       const param = params.getParam("--cluster-data");
-      if (!value) params.resetFileParam(param);
+      if (!value) return params.resetFileParam(param);
       params.setFileParam(param, { name, value });
     } else if (activeInput === "meta data") {
       const param = params.getParam("--meta-data");
-      if (!value) params.resetFileParam(param);
+      if (!value) return params.resetFileParam(param);
       params.setFileParam(param, { name, value });
     }
 
