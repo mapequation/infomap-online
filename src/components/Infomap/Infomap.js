@@ -266,7 +266,7 @@ export default observer(class InfomapOnline extends React.Component {
         </Grid.Column>
 
         <Grid.Column width={4} className="output">
-          {completed && !output.ftree && <Label
+          {completed && !hasInfomapError && !output.ftree && <Label
             basic
             size="small"
             pointing="below"
