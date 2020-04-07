@@ -66,6 +66,16 @@ const tocSource = {
   },
   InputMultilayer: {
     heading: "Multilayer",
+    children: ["InputMultilayerFull", "InputMultilayerIntraInter", "InputMultilayerIntra"]
+  },
+  InputMultilayerFull: {
+    heading: "With multilayer links",
+  },
+  InputMultilayerIntraInter: {
+    heading: "With inter-layer links",
+  },
+  InputMultilayerIntra: {
+    heading: "Without inter-layer links",
   },
   InputStates: {
     heading: "States",

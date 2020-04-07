@@ -1,5 +1,5 @@
 import React from "react";
-import { Message } from "semantic-ui-react";
+import { Message, Header } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
@@ -92,7 +92,7 @@ export default () => {
         <code>-i bipartite</code>
       </p>
 
-      <Figure id="FigureBipartite"/>
+      <Figure id="FigureBipartite" />
 
       <p>
         The bipartite format uses the heading <code>*Bipartite N</code> where{" "}
@@ -129,15 +129,38 @@ export default () => {
 
       <p>
         In a multilayer network, each physical node can exist in a number of{" "}
-        <em>layers</em>, with different link structure for each layer.
+        <em>layers</em>, with different link structure for each layer. The
+        physical nodes may be defined optionally as in the <a href="#InputPajek">Pajek format</a>
+        , but for the links there are three different ways to define them, depending on
+        the data you have. With the <code>*Multilayer</code> heading, you have
+        to specify{" "}
+        <a href="#InputMultilayerFull">
+          all intra-layer and inter-layer links explicitly
+        </a>
+        . With the <code>*Intra</code> heading you only specify links <em>within</em> each 
+        layer and the links <em>between</em> layers are{" "}
+        <a href="#InputMultilayerIntra">generated automatically</a> by
+        inter-layer relaxation,{" "}
+        <a href="#InputMultilayerIntraInter">
+          optionally constrained by inter-layer links
+        </a> defined under the <code>*Inter</code> heading. See the{" "}
+        <a href="//mapequation.org/apps/multilayer-network/index.html">
+          interactive storyboard
+        </a>{" "}
+        for an illustration.
       </p>
 
-      <Figure id="FigureMultilayerNetwork" />
+      <Heading id="InputMultilayerFull" />
+      <p>
+        <code>*Multilayer</code>
+      </p>
 
       <p>
-        A general multilayer format follows the Pajek layout, but with the links
-        defined between nodes for each layer:
+        This multilayer format gives full control over the flow within and between 
+        each layer and translates directly to a <a href="InputStates">state network</a>.
       </p>
+
+      <Figure id="FigureMultilayerNetworkFull" />
 
       <Code
         highlight
@@ -150,12 +173,17 @@ export default () => {
       </Code>
 
       <Message info>
-        The <code>*Multilayer</code> heading no longer optional.
+        The <code>*Multilayer</code> heading is no longer optional.
       </Message>
 
       <p>
         The <code>weight</code> column is optional. Links without the last
         column will get weight <code>1.0</code> by default.
+      </p>
+
+      <Heading id="InputMultilayerIntraInter" />
+      <p>
+        <code>*Intra</code> and <code>*Inter</code>
       </p>
 
       <p>
@@ -164,13 +192,13 @@ export default () => {
         dynamics in which a random walker moves within a layer and with a given
         relax rate jumps to another layer without recording this movement, such
         that the constraints from moving in different layers can be gradually
-        relaxed. The format below explicitely divides the links into two groups,
-        links <em>within</em> layers (intra-layer links) and links{" "}
-        <em>between</em> layers (inter-layer links).
+        relaxed. This is achieved by a format that explicitely divides the links
+        into two groups, links <em>within</em> layers under the <code>*Intra</code>{" "}
+        heading and links <em>between</em> layers under the <code>*Inter</code> heading.
       </p>
       <p>
-        For the first group, the second layer column can be omitted. For the
-        second group, the second node can be omitted, as a shorthand for an{" "}
+        For the <code>*Intra</code> links, the second layer column can be omitted. For the
+        <code>*Inter</code> links, the second node can be omitted, as a shorthand for an{" "}
         <em>unrecorded jump between layers</em>. That is, each inter-layer link{" "}
         <code>layer1 node1 layer2</code> is expanded to weighted multilayer
         links <code>layer1 node1 layer2 node2</code>, one for each{" "}
@@ -182,16 +210,10 @@ export default () => {
       <p>
         In this way, the random walker seamlessly switches to a different layer
         at a rate proportional to the inter-layer link weight to that layer, and
-        the encoded dynamics correspond to relaxed layer constraints (see the{" "}
-        <a href="//mapequation.org/apps/multilayer-network/index.html">
-          interactive storyboard
-        </a>{" "}
-        for illustration).
+        the encoded dynamics correspond to relaxed layer constraints.
       </p>
-      <p>
-        To define links like this, use the <code>*Intra</code> and{" "}
-        <code>*Inter</code> headings:
-      </p>
+
+      <Figure id="FigureMultilayerNetworkIntraInter" />
 
       <Code
         highlight
@@ -203,11 +225,23 @@ export default () => {
         {store.getExampleNetwork("multilayerIntraInter")}
       </Code>
 
+      <Heading id="InputMultilayerIntra" />
       <p>
-        If no inter links are provided, the inter links will be generated from
-        the intra link structure by relaxing the layer constraints on those
-        links.
+        <code>*Intra</code>
       </p>
+
+      <p>
+        If no inter-layer links are provided, the inter links will be generated from
+        the intra link structure by relaxing the layer constraints with a global{" "}
+        <code>--multilayer-relax-rate</code> for each node, default 0.15. For each node,
+        Infomap will assume inter-layer links to each layer, expanded as{" "}
+        <a href="InputMultilayerIntraInter">explained</a> for the <code>*Inter</code> links.
+        However, the inter-layer links will be weighted proportionally to the weighted out 
+        degree of the same physical node in the target layer, resulting generally in 
+        non-uniform inter-layer transition probabilities.
+      </p>
+
+      <Figure id="FigureMultilayerNetworkIntra" />
 
       <Code
         highlight

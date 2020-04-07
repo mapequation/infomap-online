@@ -112,7 +112,7 @@ export const bipartiteLinkList = `# A bipartite network in link list format
 3 5 1`;
 
 export const multilayer = `# A multilayer network using explicit format
-# Figure ${figNumber("FigureMultilayerNetwork")} (relax rate 0.4)
+# Figure ${figNumber("FigureMultilayerNetworkFull")}
 *Vertices 5
 # node_id name
 1 "i"
@@ -141,8 +141,8 @@ export const multilayer = `# A multilayer network using explicit format
 2 1 1 4 0.2
 2 1 1 5 0.2`;
 
-export const multilayerIntraInter = `# A multilayer network using *Inter/*Intra format
-# Figure ${figNumber("FigureMultilayerNetwork")} (relax rate 0.4)
+export const multilayerIntraInter = `# A multilayer network using *Intra/*Inter format
+# Figure ${figNumber("FigureMultilayerNetworkIntraInter")}
 *Vertices 5
 # node_id name
 1 "i"
@@ -170,7 +170,7 @@ export const multilayerIntraInter = `# A multilayer network using *Inter/*Intra 
 2 1 1 0.4`;
 
 export const multilayerIntra = `# A multilayer network using *Intra format
-# Figure ${figNumber("FigureMultilayerNetwork")}
+# Figure ${figNumber("FigureMultilayerNetworkIntra")}
 *Vertices 5
 # node_id name
 1 "i"
