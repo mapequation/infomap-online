@@ -1,7 +1,6 @@
 import React from "react";
 import "./Highlight.css";
 
-
 const parseLine = line => {
   const buff = [{ className: null, content: "" }];
   let isString = false;
@@ -55,17 +54,22 @@ export default ({ content }) => {
     } else if (line.startsWith("*")) {
       lines[i] = <span className="highlight-heading">{line}</span>;
     } else {
-      lines[i] = parseLine(line).map(({ className, content }, i) =>
-        <React.Fragment key={i}><span className={className}>{content}</span>{" "}</React.Fragment>);
+      lines[i] = parseLine(line).map(({ className, content }, i) => (
+        <React.Fragment key={i}>
+          <span className={className}>{content}</span>{" "}
+        </React.Fragment>
+      ));
     }
   }
 
   return (
     <>
-      {lines.map((line, i) =>
+      {lines.map((line, i) => (
         <React.Fragment key={i}>
-          {line}<br/>
-        </React.Fragment>)}
+          {line}
+          <br />
+        </React.Fragment>
+      ))}
     </>
   );
-}
+};

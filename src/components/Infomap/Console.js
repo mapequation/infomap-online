@@ -1,7 +1,6 @@
 import React from "react";
 import { Segment } from "semantic-ui-react";
 
-
 class Console extends React.Component {
   keepScrolling = true;
 
@@ -16,7 +15,7 @@ class Console extends React.Component {
     const { scrollTop, scrollHeight, clientHeight } = this.container;
     const diff = scrollHeight - clientHeight;
     const isAtBottom = scrollTop === diff;
-    return this.keepScrolling = isAtBottom;
+    return (this.keepScrolling = isAtBottom);
   };
 
   render() {
@@ -24,16 +23,12 @@ class Console extends React.Component {
 
     return (
       <Segment {...props}>
-        <div
-          ref={el => this.container = el}
-          onScroll={this.onScroll}
-        >
+        <div ref={el => (this.container = el)} onScroll={this.onScroll}>
           {content ? <code>{content}</code> : <div>{placeholder}</div>}
         </div>
       </Segment>
     );
   }
 }
-
 
 export default Console;

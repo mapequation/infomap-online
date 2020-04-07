@@ -5,7 +5,6 @@ import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react"
 import store from "../../store";
 import { Heading } from "./Contents";
 
-
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({
     key,
@@ -40,7 +39,7 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
-  const onDrop = (files) => {
+  const onDrop = files => {
     if (files.length < 1) return;
 
     const file = files[0];
@@ -50,7 +49,10 @@ const FileInputParameter = observer(({ param }) => {
     reader.onloadend = () => {
       if (!reader.result.length) return;
       store.setActiveInput(param.tabName);
-      store.params.setFileParam(param, { name: file.name, value: reader.result });
+      store.params.setFileParam(param, {
+        name: file.name,
+        value: reader.result,
+      });
     };
 
     reader.readAsText(file, "utf-8");
@@ -67,17 +69,9 @@ const FileInputParameter = observer(({ param }) => {
 
   return (
     <Ref innerRef={ref}>
-      <Button
-        basic
-        as="label"
-        htmlFor={param.long}
-        {...rootProps}
-      >
+      <Button basic as="label" htmlFor={param.long} {...rootProps}>
         Load file
-        <input
-          id={param.long}
-          {...getInputProps()}
-        />
+        <input id={param.long} {...getInputProps()} />
       </Button>
     </Ref>
   );
@@ -97,46 +91,27 @@ const ToggleParameter = observer(({ param }) => {
 const IncrementalParameter = observer(({ param }) => {
   const { value, maxValue, stringValue } = param;
 
-  const setValue = (value) => store.params.setIncremental(param, value);
+  const setValue = value => store.params.setIncremental(param, value);
 
   return (
     <Button.Group>
-      <Button
-        basic
-        icon="minus"
-        disabled={value === 0}
-        onClick={() => setValue(value - 1)}
-      />
-      <Button
-        basic
-        icon
-        disabled={value === 0}
-        content={stringValue(value)}
-      />
-      <Button
-        basic
-        icon="plus"
-        disabled={value === maxValue}
-        onClick={() => setValue(value + 1)}
-      />
+      <Button basic icon="minus" disabled={value === 0} onClick={() => setValue(value - 1)} />
+      <Button basic icon disabled={value === 0} content={stringValue(value)} />
+      <Button basic icon="plus" disabled={value === maxValue} onClick={() => setValue(value + 1)} />
     </Button.Group>
   );
 });
 
 const ParameterControl = ({ param }) => {
-  if (param.dropdown)
-    return <DropdownParameter param={param}/>;
-  if (param.input)
-    return <InputParameter param={param}/>;
-  if (param.incremental)
-    return <IncrementalParameter param={param}/>;
-  if (param.file)
-    return <FileInputParameter param={param}/>;
+  if (param.dropdown) return <DropdownParameter param={param} />;
+  if (param.input) return <InputParameter param={param} />;
+  if (param.incremental) return <IncrementalParameter param={param} />;
+  if (param.file) return <FileInputParameter param={param} />;
 
-  return <ToggleParameter param={param}/>;
+  return <ToggleParameter param={param} />;
 };
 
-const getHeaderProps = (param) => {
+const getHeaderProps = param => {
   const { active, long, dropdown, input, file, incremental, value } = param;
   const { params } = store;
 
@@ -146,7 +121,7 @@ const getHeaderProps = (param) => {
     const ref = params.getRef(long);
     if (!ref) return props;
     return {
-      onClick: () => active ? params.setOption(param, param.default) : ref.open(),
+      onClick: () => (active ? params.setOption(param, param.default) : ref.open()),
       ...props,
     };
   }
@@ -162,7 +137,7 @@ const getHeaderProps = (param) => {
 
   if (input || file) {
     return {
-      onClick: (event) => {
+      onClick: event => {
         if (!active) return;
         if (file) {
           event.preventDefault();
@@ -178,27 +153,33 @@ const getHeaderProps = (param) => {
 };
 
 const ParameterGroup = observer(({ group, advanced }) => {
-  const params = store.params.getParamsForGroup(group)
+  const params = store.params
+    .getParamsForGroup(group)
     .filter(param => !param.advanced || advanced)
-    .sort((a, b) => a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1);
+    .sort((a, b) => (a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1));
 
   const id = `Params${group}`;
 
   return (
     <>
-      <Heading id={id}/>
+      <Heading id={id} />
       <Item.Group className="paramGroup">
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">
               <Item.Header {...getHeaderProps(param)}>
-                {param.short && <><code>{param.shortString}</code>{", "}</>}
+                {param.short && (
+                  <>
+                    <code>{param.shortString}</code>
+                    {", "}
+                  </>
+                )}
                 <code>{param.longString}</code>
               </Item.Header>
               <Item.Meta>
-                <ParameterControl param={param}/>
+                <ParameterControl param={param} />
               </Item.Meta>
-              <Item.Description content={param.description}/>
+              <Item.Description content={param.description} />
             </Item.Content>
           </Item>
         ))}
@@ -212,18 +193,18 @@ export default () => {
 
   return (
     <>
-      <Heading id="Parameters" advanced={advanced}/>
+      <Heading id="Parameters" advanced={advanced} />
       <Checkbox
         toggle
         checked={advanced}
         onChange={() => setAdvanced(!advanced)}
         label="Show advanced parameters"
       />
-      <ParameterGroup group="Input" advanced={advanced}/>
-      <ParameterGroup group="Output" advanced={advanced}/>
-      <ParameterGroup group="Algorithm" advanced={advanced}/>
-      <ParameterGroup group="Accuracy" advanced={advanced}/>
-      <ParameterGroup group="About" advanced={advanced}/>
+      <ParameterGroup group="Input" advanced={advanced} />
+      <ParameterGroup group="Output" advanced={advanced} />
+      <ParameterGroup group="Algorithm" advanced={advanced} />
+      <ParameterGroup group="Accuracy" advanced={advanced} />
+      <ParameterGroup group="About" advanced={advanced} />
     </>
   );
 };

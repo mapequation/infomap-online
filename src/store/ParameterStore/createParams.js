@@ -1,17 +1,17 @@
-const getOptions = (description) => {
+const getOptions = description => {
   const match = description.match(/Options: (.*)\.$/);
   if (!(match && match[1])) return [];
 
   return match[1].split(",").map(option => option.trim());
 };
 
-export default (params) =>
-  params.map((param) => {
+export default params =>
+  params.map(param => {
     if (param.short) {
-      param.shortString = `${param.short}${param.shortType ? `<${(param.shortType)}>` : ""}`;
+      param.shortString = `${param.short}${param.shortType ? `<${param.shortType}>` : ""}`;
     }
 
-    param.longString = `${param.long}${param.longType ? ` <${(param.longType)}>` : ""}`;
+    param.longString = `${param.long}${param.longType ? ` <${param.longType}>` : ""}`;
 
     if (param.longType) {
       param.active = false;
@@ -56,7 +56,7 @@ export default (params) =>
       param.active = false;
       const short = param.short.slice(1);
       param.maxValue = short === "h" ? 2 : 3;
-      param.stringValue = (value) => value > 0 ? short.repeat(value) : short;
+      param.stringValue = value => (value > 0 ? short.repeat(value) : short);
     } else {
       param.value = param.default || false;
       param.active = !!param.value;

@@ -1,38 +1,38 @@
 .documentation {
-    text-shadow: rgba(255, 255, 255, 0.746094) 0 1px 0;
+  text-shadow: rgba(255, 255, 255, 0.746094) 0 1px 0;
 }
 
 .changelogItem:before {
-    color: #ccc !important;
+  color: #ccc !important;
 }
 
 .paramGroup .item {
-    padding-bottom: 1em !important;
-    border-bottom: 1px solid rgba(34, 36, 38, .1) !important;
+  padding-bottom: 1em !important;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.1) !important;
 }
 
 .paramGroup .item:last-child {
-    padding-bottom: 0 !important;
-    border-bottom: none !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
 }
 
 .paramGroup .header {
-    font-weight: 500 !important;
-    font-size: 1rem !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
 }
 
 .paramGroup .header.active code {
-    color: hsl(206, 73%, 25%) !important;
-    background-color: hsl(206, 80%, 90%) !important;
-    border-color: hsl(206, 80%, 80%);
+  color: hsl(206, 73%, 25%) !important;
+  background-color: hsl(206, 80%, 90%) !important;
+  border-color: hsl(206, 80%, 80%);
 }
 
 .paramGroup .meta {
-    float: right;
-    margin-left: 20px !important;
+  float: right;
+  margin-left: 20px !important;
 }
 
 .paramGroup label.header code {
-    cursor: pointer;
-    user-select: none;
+  cursor: pointer;
+  user-select: none;
 }

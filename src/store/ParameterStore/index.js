@@ -6,9 +6,7 @@ import createParams from "./createParams";
 import paramToString from "./paramToString";
 import updateParam from "./updateParam";
 
-
 const argSpec = getArgSpec(infomapParameters);
-
 
 class ParameterStore {
   constructor(parent) {
@@ -19,22 +17,21 @@ class ParameterStore {
 
   refs = {};
 
-  setRef = (name, ref) => this.refs[name] = ref;
+  setRef = (name, ref) => (this.refs[name] = ref);
 
-  getRef = (name) => this.refs[name];
+  getRef = name => this.refs[name];
 
   args = "";
   argsError = "";
   hasArgsError = false;
 
-  getParam = (name) => {
+  getParam = name => {
     return this.params.find(param => param.long === name);
   };
 
-  getParamsForGroup = (group) =>
-    Object.values(this.params).filter(param => param.group === group);
+  getParamsForGroup = group => Object.values(this.params).filter(param => param.group === group);
 
-  toggle = (param) => {
+  toggle = param => {
     if (!param) return;
     param.active = !param.active;
     this.rebuildArgs();
@@ -70,7 +67,10 @@ class ParameterStore {
   setFileParam = (param, { name, value }) => {
     if (param.long === "--cluster-data") {
       const isTree = /^\d+:\d+/m;
-      const defaultName = !name && isTree.test(value) ? this._parent.DEFAULT_TREE_NAME : this._parent.DEFAULT_CLU_NAME;
+      const defaultName =
+        !name && isTree.test(value)
+          ? this._parent.DEFAULT_TREE_NAME
+          : this._parent.DEFAULT_CLU_NAME;
       this._parent.setClusterData({ name: name || defaultName, value });
       this.setInput(param, name || defaultName);
     } else if (param.long === "--meta-data") {
@@ -79,7 +79,7 @@ class ParameterStore {
     }
   };
 
-  resetFileParam = (param) => {
+  resetFileParam = param => {
     this.setInput(param, "");
     if (param.long === "--cluster-data") {
       this._parent.setClusterData({ name: "", value: "" });
@@ -95,7 +95,7 @@ class ParameterStore {
       .join(" ");
   };
 
-  setArgs = (args) => {
+  setArgs = args => {
     const argv = args.trim().split(/\s+/);
 
     this.argsError = "";
@@ -112,7 +112,6 @@ class ParameterStore {
     this.args = args;
   };
 }
-
 
 export default decorate(ParameterStore, {
   params: observable,

@@ -1,7 +1,7 @@
 export default function updateParam(argv) {
   const args = argv.filter(a => a !== "");
 
-  return (param) => {
+  return param => {
     param.active = false;
 
     if (param.longType) {

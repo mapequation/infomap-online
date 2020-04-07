@@ -1,108 +1,109 @@
 .infomap .ui.steps .step .title {
-    color: rgba(0, 0, 0, .87) !important;
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .infomap .ui.steps {
-    margin-bottom: 1em !important;
+  margin-bottom: 1em !important;
 }
 
 .infomap textarea {
-    height: 500px !important;
-    resize: none !important;
-    padding-bottom: 0 !important;
-    padding-right: 0.4rem !important;
+  height: 500px !important;
+  resize: none !important;
+  padding-bottom: 0 !important;
+  padding-right: 0.4rem !important;
 }
 
-.network .button, .output .button {
-    margin-bottom: 1em !important;
+.network .button,
+.output .button {
+  margin-bottom: 1em !important;
 }
 
 .network .field {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .network textarea {
-    height: calc(500px - 3.25em) !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-bottom: 2px dashed rgba(34, 36, 38, .15) !important;
+  height: calc(500px - 3.25em) !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom: 2px dashed rgba(34, 36, 38, 0.15) !important;
 }
 
 .network .message {
-    box-shadow: none !important;
-    margin: 0 !important;
-    border: 1px solid rgba(34, 36, 38, .15) !important;
-    border-top: none !important;
-    padding: 0.6em 0.9em !important;
-    background: white;
+  box-shadow: none !important;
+  margin: 0 !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  border-top: none !important;
+  padding: 0.6em 0.9em !important;
+  background: white;
 }
 
 .infomap .rail {
-    margin-top: 4.7em !important;
+  margin-top: 4.7em !important;
 }
 
 .infomap .rail .menu .item:not(.active) {
-    color: rgba(0, 0, 0, .5) !important;
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .network .rail .menu {
-    float: right;
-    text-align: right;
+  float: right;
+  text-align: right;
 }
 
 .network .menu .item.finished:not(.active) {
-    color: hsla(136, 48%, 41%, 0.8) !important;
+  color: hsla(136, 48%, 41%, 0.8) !important;
 }
 
 .output .label.small {
-    font-weight: 500;
-    border-color: rgba(34, 36, 38, .15) !important;
-    background: #f0edeb !important;
-    top: -2em;
-    position: absolute !important;
+  font-weight: 500;
+  border-color: rgba(34, 36, 38, 0.15) !important;
+  background: #f0edeb !important;
+  top: -2em;
+  position: absolute !important;
 }
 
 .output .dropdown {
-    margin-bottom: 1em !important;
-    text-align: center !important;
+  margin-bottom: 1em !important;
+  text-align: center !important;
 }
 
 .run .fields {
-    margin-bottom: 1em !important;
+  margin-bottom: 1em !important;
 }
 
 .run .fields input {
-    height: 36px !important;
+  height: 36px !important;
 }
 
 .run .fields button {
-    margin-right: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+  margin-right: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
 
 .run .fields .prompt {
-    position: absolute !important;
-    top: -3em;
+  position: absolute !important;
+  top: -3em;
 }
 
 .run .segment {
-    height: 500px;
-    padding: 0.1em 0 0.1em 0.8em !important;
+  height: 500px;
+  padding: 0.1em 0 0.1em 0.8em !important;
 }
 
 .run .segment > div {
-    overflow-y: auto;
-    height: 100%;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .run .segment div div {
-    margin-top: 0.5em;
-    color: #ccc;
+  margin-top: 0.5em;
+  color: #ccc;
 }
 
 .run .segment code {
-    background: transparent;
-    border: none;
-    font-size: 0.7rem;
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
 }

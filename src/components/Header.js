@@ -3,7 +3,6 @@ import React from "react";
 import { Container, Header as Heading, Icon, Menu } from "semantic-ui-react";
 import "./Header.css";
 
-
 const Header = () => (
   <header>
     <Container>
@@ -19,8 +18,7 @@ const Header = () => (
             </a>
             <div className="content">
               <span className="brand">
-                <span className="infomap">Infomap</span>{" "}
-                <span className="online">Online</span>
+                <span className="infomap">Infomap</span> <span className="online">Online</span>
               </span>
               <div className="sub header">
                 Network community detection using the Map Equation framework
@@ -32,10 +30,10 @@ const Header = () => (
           <Menu.Item fitted className="icons">
             <a href="#Install">
               Infomap {Infomap.__version__}
-              <Icon name="download" size="big"/>
+              <Icon name="download" size="big" />
             </a>
             <a href="https://github.com/mapequation/infomap">
-              <Icon name="github" size="big"/>
+              <Icon name="github" size="big" />
             </a>
           </Menu.Item>
         </Menu.Menu>

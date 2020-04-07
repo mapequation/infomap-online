@@ -2,7 +2,6 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import { Form, Ref } from "semantic-ui-react";
 
-
 export default ({ onDrop, accept, loading, children, ...props }) => {
   const { getRootProps } = useDropzone({ onDrop, multiple: false, accept });
   const { ref, ...rootProps } = getRootProps();
@@ -10,11 +9,9 @@ export default ({ onDrop, accept, loading, children, ...props }) => {
   return (
     <Ref innerRef={ref}>
       <Form loading={loading} {...rootProps}>
-        <Form.TextArea
-          {...props}
-        />
+        <Form.TextArea {...props} />
         {children}
       </Form>
     </Ref>
   );
-}
+};

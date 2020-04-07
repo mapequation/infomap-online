@@ -3,7 +3,6 @@ import React from "react";
 import { Form } from "semantic-ui-react";
 import store from "../../store";
 
-
 export default observer(({ loading, onClick }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
@@ -15,13 +14,15 @@ export default observer(({ loading, onClick }) => {
           value={args}
           error={hasArgsError ? { content: argsError, pointing: "below" } : false}
           onChange={(e, { value }) => setArgs(value)}
-          action={<Form.Button
-            primary
-            disabled={hasArgsError || loading}
-            loading={loading}
-            onClick={onClick}
-            content="Run Infomap"
-          />}
+          action={
+            <Form.Button
+              primary
+              disabled={hasArgsError || loading}
+              loading={loading}
+              onClick={onClick}
+              content="Run Infomap"
+            />
+          }
         />
       </Form.Group>
     </Form>

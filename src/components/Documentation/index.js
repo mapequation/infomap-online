@@ -14,8 +14,7 @@ import Parameters from "./Parameters";
 import Prerequisites from "./Prerequisites";
 import References from "./References";
 import Running from "./Running";
-import { BlockMath } from 'react-katex';
-
+import { BlockMath } from "react-katex";
 
 function Documentation() {
   const contextRef = createRef();
@@ -25,16 +24,19 @@ function Documentation() {
     <Grid container stackable columns={2} className="documentation">
       <Ref innerRef={contextRef}>
         <Grid.Column>
-          <Heading id="Infomap"/>
+          <Heading id="Infomap" />
           <p>
-            Infomap is a network clustering algorithm based on the <a
-            href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">Map
-            equation</a>:
+            Infomap is a network clustering algorithm based on the{" "}
+            <a href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
+              Map equation
+            </a>
+            :
           </p>
-          <BlockMath math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"/>
+          <BlockMath math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}" />
 
           <p>
-            For more info, see <a href="#MapEquation">The Map Equation</a> and <a href="#Features">Features</a>.
+            For more info, see <a href="#MapEquation">The Map Equation</a> and{" "}
+            <a href="#Features">Features</a>.
           </p>
 
           <Message info>
@@ -44,49 +46,55 @@ function Documentation() {
             </Message.Content>
           </Message>
 
-          <Heading id="InfomapOnline"/>
+          <Heading id="InfomapOnline" />
           <p>
-            Infomap Online is a client-side web application that makes it possible
-            for users to run Infomap without any installation. Infomap runs
-            locally on your computer and uploads no data to any server. We support
-            this solution by compiling Infomap from C++ to JavaScript with{" "}
-            <a href="//emscripten.org/">Emscripten</a>, which gives a performance
-            penalty compared to the stand-alone version of Infomap.
+            Infomap Online is a client-side web application that makes it possible for users to run
+            Infomap without any installation. Infomap runs locally on your computer and uploads no
+            data to any server. We support this solution by compiling Infomap from C++ to JavaScript
+            with <a href="//emscripten.org/">Emscripten</a>, which gives a performance penalty
+            compared to the stand-alone version of Infomap.
           </p>
           <p>
-            The code for running Infomap as a web worker in the browser is available
-            as a <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
+            The code for running Infomap as a web worker in the browser is available as a{" "}
+            <a href="//www.npmjs.com/package/@mapequation/infomap">package on NPM</a>.
           </p>
 
-          <Install/>
-          <Prerequisites/>
-          <Divider/>
-          <Running/>
-          <Input/>
-          <Output/>
+          <Install />
+          <Prerequisites />
+          <Divider />
+          <Running />
+          <Input />
+          <Output />
 
-          <Responsive as={Rail} minWidth={breakpoint} position="left" dividing close style={{ width: 280 }}>
+          <Responsive
+            as={Rail}
+            minWidth={breakpoint}
+            position="left"
+            dividing
+            close
+            style={{ width: 280 }}
+          >
             <Sticky context={contextRef} offset={50}>
               <Header as="h2" style={{ marginTop: "0.5em" }}>
                 Contents
               </Header>
-              <Contents/>
+              <Contents />
             </Sticky>
           </Responsive>
         </Grid.Column>
       </Ref>
       <Grid.Column>
-        <Parameters/>
-        <Divider/>
-        <Changelog/>
-        <MapEquation/>
-        <Features/>
-        <Divider/>
-        <Algorithm/>
-        <Divider/>
-        <Feedback/>
-        <Divider/>
-        <References/>
+        <Parameters />
+        <Divider />
+        <Changelog />
+        <MapEquation />
+        <Features />
+        <Divider />
+        <Algorithm />
+        <Divider />
+        <Feedback />
+        <Divider />
+        <References />
       </Grid.Column>
     </Grid>
   );

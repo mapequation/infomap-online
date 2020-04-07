@@ -89,8 +89,28 @@ class OutputStore {
   downloaded = false;
 
   get completed() {
-    const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = this;
-    return clu || tree || ftree || net || states || clu_states || tree_states || ftree_states || states_as_physical;
+    const {
+      clu,
+      tree,
+      ftree,
+      clu_states,
+      tree_states,
+      ftree_states,
+      net,
+      states,
+      states_as_physical,
+    } = this;
+    return (
+      clu ||
+      tree ||
+      ftree ||
+      net ||
+      states ||
+      clu_states ||
+      tree_states ||
+      ftree_states ||
+      states_as_physical
+    );
   }
 
   get activeContent() {
@@ -102,12 +122,10 @@ class OutputStore {
   }
 
   get files() {
-    return FORMATS
-      .filter(({ key }) => this[key])
-      .map(format => ({
-        ...format,
-        filename: `${this.name}${format.suffix}.${format.extension}`,
-      }));
+    return FORMATS.filter(({ key }) => this[key]).map(format => ({
+      ...format,
+      filename: `${this.name}${format.suffix}.${format.extension}`,
+    }));
   }
 
   get physicalFiles() {
@@ -122,19 +140,49 @@ class OutputStore {
     return this.files.find(({ key }) => key === this.activeKey);
   }
 
-  setContent = (content) => {
-    const { clu, tree, ftree, clu_states, tree_states, ftree_states, net, states, states_as_physical } = content;
-    if (clu) { this.clu = clu; }
-    if (tree) { this.tree = tree; }
-    if (ftree) { this.ftree = ftree; }
-    if (clu_states) { this.clu_states = clu_states; }
-    if (tree_states) { this.tree_states = tree_states; }
-    if (ftree_states) { this.ftree_states = ftree_states; }
-    if (net) { this.net = net; }
-    if (states) { this.states = states; }
-    if (states_as_physical) { this.states_as_physical = states_as_physical; }
+  setContent = content => {
+    const {
+      clu,
+      tree,
+      ftree,
+      clu_states,
+      tree_states,
+      ftree_states,
+      net,
+      states,
+      states_as_physical,
+    } = content;
+    if (clu) {
+      this.clu = clu;
+    }
+    if (tree) {
+      this.tree = tree;
+    }
+    if (ftree) {
+      this.ftree = ftree;
+    }
+    if (clu_states) {
+      this.clu_states = clu_states;
+    }
+    if (tree_states) {
+      this.tree_states = tree_states;
+    }
+    if (ftree_states) {
+      this.ftree_states = ftree_states;
+    }
+    if (net) {
+      this.net = net;
+    }
+    if (states) {
+      this.states = states;
+    }
+    if (states_as_physical) {
+      this.states_as_physical = states_as_physical;
+    }
 
-    this.setActiveKey(clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu");
+    this.setActiveKey(
+      clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu"
+    );
     localforage.setItem("ftree", ftree);
   };
 
@@ -152,11 +200,11 @@ class OutputStore {
     this.downloaded = false;
   };
 
-  setActiveKey = (key) => this.activeKey = key;
+  setActiveKey = key => (this.activeKey = key);
 
-  setDownloaded = (value) => this.downloaded = value;
+  setDownloaded = value => (this.downloaded = value);
 
-  downloadFile = (formatKey) => {
+  downloadFile = formatKey => {
     const file = this.files.find(({ key }) => key === formatKey);
     const content = this[formatKey];
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
@@ -174,11 +222,9 @@ class OutputStore {
       const content = this[file.key];
       zip.file(file.filename, content);
     }
-    zip.generateAsync({ type: "blob" })
-      .then(blob => saveAs(blob, `${this.name}.zip`));
+    zip.generateAsync({ type: "blob" }).then(blob => saveAs(blob, `${this.name}.zip`));
   };
 }
-
 
 export default decorate(OutputStore, {
   clu: observable,

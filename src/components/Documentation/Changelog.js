@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { Heading } from "./Contents";
 
-
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
   const Scope = scope ? <strong>{scope} </strong> : null;
-  const Subject = <span
-    style={{ whiteSpace: "pre" }}>{subject.replace(/ \(#\d+\)$/, "").replace(/\.\s/g, ".\n")}</span>;
+  const Subject = (
+    <span style={{ whiteSpace: "pre" }}>
+      {subject.replace(/ \(#\d+\)$/, "").replace(/\.\s/g, ".\n")}
+    </span>
+  );
   const Reference =
     (references || []).length > 0 ? (
       <a href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}>
@@ -34,15 +36,17 @@ const Changes = ({ heading, changes }) => {
     <React.Fragment>
       <h4>{heading}</h4>
       <List bulleted>
-        {changes.map((change, i) => <Change key={i} change={change}/>)}
+        {changes.map((change, i) => (
+          <Change key={i} change={change} />
+        ))}
       </List>
     </React.Fragment>
   );
 };
 
-const Breaking = (props) => <Changes heading="BREAKING CHANGES" {...props} />;
-const Features = (props) => <Changes heading="Features" {...props} />;
-const Fixes = (props) => <Changes heading="Fixes" {...props} />;
+const Breaking = props => <Changes heading="BREAKING CHANGES" {...props} />;
+const Features = props => <Changes heading="Features" {...props} />;
+const Fixes = props => <Changes heading="Fixes" {...props} />;
 
 const Release = ({ changes }) => {
   const features = [];
@@ -70,18 +74,29 @@ const Release = ({ changes }) => {
     <div style={{ marginBottom: 2 }}>
       <h3 style={{ marginBottom: 2 }}>
         {release.subject}
-        <span style={{
-          color: "#999",
-          fontWeight: 300,
-          marginLeft: 6,
-          fontSize: "0.8em",
-        }}>({release.date.slice(0, 10)})</span>
+        <span
+          style={{
+            color: "#999",
+            fontWeight: 300,
+            marginLeft: 6,
+            fontSize: "0.8em",
+          }}
+        >
+          ({release.date.slice(0, 10)})
+        </span>
       </h3>
 
-      <div style={{ marginBottom: 0, marginLeft: 19, padding: "10px 0 10px 10px", borderLeft: "1px solid #ccc" }}>
-        {breaking.length > 0 && <Breaking changes={breaking}/>}
-        {features.length > 0 && <Features changes={features}/>}
-        {fixes.length > 0 && <Fixes changes={fixes}/>}
+      <div
+        style={{
+          marginBottom: 0,
+          marginLeft: 19,
+          padding: "10px 0 10px 10px",
+          borderLeft: "1px solid #ccc",
+        }}
+      >
+        {breaking.length > 0 && <Breaking changes={breaking} />}
+        {features.length > 0 && <Features changes={features} />}
+        {fixes.length > 0 && <Fixes changes={fixes} />}
       </div>
     </div>
   );
@@ -117,9 +132,8 @@ const Changelog = ({ changes }) => {
 
   const releases = [];
   releaseIndices.forEach((releaseIndex, i) => {
-    let nextReleaseIndexOrEnd = i < releaseIndices.length - 1
-      ? releaseIndices[i + 1]
-      : changes.length - 1;
+    let nextReleaseIndexOrEnd =
+      i < releaseIndices.length - 1 ? releaseIndices[i + 1] : changes.length - 1;
     nextReleaseIndexOrEnd = Math.min(nextReleaseIndexOrEnd, lastIndex);
     if (releaseIndex < lastIndex - 2)
       releases.push(changes.slice(releaseIndex, nextReleaseIndexOrEnd));
@@ -127,19 +141,19 @@ const Changelog = ({ changes }) => {
 
   return (
     <>
-      <Heading id="Changelog"/>
+      <Heading id="Changelog" />
       {releases.map((changes, i) => (
-        <Release key={i} changes={changes}/>
+        <Release key={i} changes={changes} />
       ))}
-      {!expanded &&
-      <Icon
-        style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em" }}
-        name="ellipsis vertical"
-      />
-      }
+      {!expanded && (
+        <Icon
+          style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em" }}
+          name="ellipsis vertical"
+        />
+      )}
       <Divider horizontal onClick={() => setExpanded(!expanded)}>
         <Header as="h5">
-          <Icon name={expanded ? "angle up" : "angle down"}/>
+          <Icon name={expanded ? "angle up" : "angle down"} />
           {expanded ? "Show less" : "Show more"}
         </Header>
       </Divider>
@@ -151,4 +165,4 @@ Changelog.propTypes = {
   changes: PropTypes.array.isRequired,
 };
 
-export default () => <Changelog changes={infomapChangelog}/>;
+export default () => <Changelog changes={infomapChangelog} />;
