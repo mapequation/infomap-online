@@ -55,7 +55,7 @@ const Figure = ({ id }) => {
       <figure id={id}>
         <img src={imgBipartite} style={{ width: "40%" }} alt="Bipartite network with three round and two square nodes" />
         <figcaption>
-          <strong>Figure {figNumber(id)}.</strong> Bipartite network with three
+          <strong>Figure {figNumber(id)}.</strong> Bipartite network with three primary
           nodes <InlineMath>1, 2, 3</InlineMath> and two feature nodes <InlineMath>4, 5</InlineMath>.
         </figcaption>
       </figure>

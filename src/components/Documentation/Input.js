@@ -92,11 +92,41 @@ export default () => {
         <code>-i bipartite</code>
       </p>
 
+      <p>
+        A bipartite network is a network with two types of nodes, where the
+        links only connect nodes of different types with each other. If we call
+        them <em>primary</em> nodes and <em>feature</em> nodes, we can interpret
+        shared feature nodes as indirect relations between primary nodes. If
+        only the relations between primary nodes are of interest, for example
+        the collaboration network between authors in a bipartite author-paper
+        network, a unipartite network of primary nodes can be constructed by by
+        doing a <em>projection</em> of the bipartite network. In this
+        projection, each pair of links connecting primary nodes through a shared
+        feature node is projected to a unipartite link between the connected
+        primary nodes. However, such a projection to primary nodes gives an
+        overload of links already for moderately dense networks. With the map
+        equation for varying Markov times, we can avoid this projection because{" "}
+        <a href="https://www.mapequation.org/publications.html#Kheirkhahzadeh-Etal-2016-Markovtimes">
+          a bipartate to unipartite projection corresponds to doubling the
+          Markov time
+        </a>. This approximates a two-step random walker. By shifting the flow 
+        from the feature nodes to primary nodes, we only encode steps on the 
+        primary nodes while avoiding the drawback of a projection.
+      </p>
+
+      <Message info>
+        The bipartite dynamics described above is the default for the bipartite format, 
+        and makes sense for a sparse bipartite network (for which the two-step dynamics 
+        helps) where only the primary nodes are of interest. Otherwise, add the flag{" "}
+        <code>--skip-adjust-bipartite-flow</code> or change the <code>*Bipartite</code>{" "}
+        heading to <code>*Edges</code> to treat the network as unipartite.
+      </Message>
+
       <Figure id="FigureBipartite" />
 
       <p>
         The bipartite format uses the heading <code>*Bipartite N</code> where{" "}
-        <code>N</code> is the first node id of the second node type. The
+        <code>N</code> is the first node id of the feature node type. The
         bipartite network can be provided both with node names:
       </p>
 
@@ -130,20 +160,21 @@ export default () => {
       <p>
         In a multilayer network, each physical node can exist in a number of{" "}
         <em>layers</em>, with different link structure for each layer. The
-        physical nodes may be defined optionally as in the <a href="#InputPajek">Pajek format</a>
-        , but for the links there are three different ways to define them, depending on
-        the data you have. With the <code>*Multilayer</code> heading, you have
-        to specify{" "}
+        physical nodes may be defined optionally as in the{" "}
+        <a href="#InputPajek">Pajek format</a>, but for the links there are
+        three different ways to define them, depending on the data you have.
+        With the <code>*Multilayer</code> heading, you have to specify{" "}
         <a href="#InputMultilayerFull">
           all intra-layer and inter-layer links explicitly
         </a>
-        . With the <code>*Intra</code> heading you only specify links <em>within</em> each 
-        layer and the links <em>between</em> layers are{" "}
+        . With the <code>*Intra</code> heading you only specify links{" "}
+        <em>within</em> each layer and the links <em>between</em> layers are{" "}
         <a href="#InputMultilayerIntra">generated automatically</a> by
         inter-layer relaxation,{" "}
         <a href="#InputMultilayerIntraInter">
           optionally constrained by inter-layer links
-        </a> defined under the <code>*Inter</code> heading. See the{" "}
+        </a>{" "}
+        defined under the <code>*Inter</code> heading. See the{" "}
         <a href="//mapequation.org/apps/multilayer-network/index.html">
           interactive storyboard
         </a>{" "}
@@ -156,8 +187,9 @@ export default () => {
       </p>
 
       <p>
-        This multilayer format gives full control over the flow within and between 
-        each layer and translates directly to a <a href="InputStates">state network</a>.
+        This multilayer format gives full control over the flow within and
+        between each layer and translates directly to a{" "}
+        <a href="InputStates">state network</a>.
       </p>
 
       <Figure id="FigureMultilayerNetworkFull" />
@@ -193,16 +225,18 @@ export default () => {
         relax rate jumps to another layer without recording this movement, such
         that the constraints from moving in different layers can be gradually
         relaxed. This is achieved by a format that explicitely divides the links
-        into two groups, links <em>within</em> layers under the <code>*Intra</code>{" "}
-        heading and links <em>between</em> layers under the <code>*Inter</code> heading.
+        into two groups, links <em>within</em> layers under the{" "}
+        <code>*Intra</code> heading and links <em>between</em> layers under the{" "}
+        <code>*Inter</code> heading.
       </p>
       <p>
-        For the <code>*Intra</code> links, the second layer column can be omitted. For the
-        <code>*Inter</code> links, the second node can be omitted, as a shorthand for an{" "}
-        <em>unrecorded jump between layers</em>. That is, each inter-layer link{" "}
-        <code>layer1 node1 layer2</code> is expanded to weighted multilayer
-        links <code>layer1 node1 layer2 node2</code>, one for each{" "}
-        <code>node2</code> that <code>node1</code> is connected to in{" "}
+        For the <code>*Intra</code> links, the second layer column can be
+        omitted. For the
+        <code>*Inter</code> links, the second node can be omitted, as a
+        shorthand for an <em>unrecorded jump between layers</em>. That is, each
+        inter-layer link <code>layer1 node1 layer2</code> is expanded to
+        weighted multilayer links <code>layer1 node1 layer2 node2</code>, one
+        for each <code>node2</code> that <code>node1</code> is connected to in{" "}
         <code>layer2</code> with weight proportional to the weight of the link
         between <code>node1</code> and <code>node2</code> in
         <code>layer2</code>.
@@ -231,14 +265,15 @@ export default () => {
       </p>
 
       <p>
-        If no inter-layer links are provided, the inter links will be generated from
-        the intra link structure by relaxing the layer constraints with a global{" "}
-        <code>--multilayer-relax-rate</code> for each node, default 0.15. For each node,
-        Infomap will assume inter-layer links to each layer, expanded as{" "}
-        <a href="InputMultilayerIntraInter">explained</a> for the <code>*Inter</code> links.
-        However, the inter-layer links will be weighted proportionally to the weighted out 
-        degree of the same physical node in the target layer, resulting generally in 
-        non-uniform inter-layer transition probabilities.
+        If no inter-layer links are provided, the inter links will be generated
+        from the intra link structure by relaxing the layer constraints with a
+        global <code>--multilayer-relax-rate</code> for each node, default 0.15.
+        For each node, Infomap will assume inter-layer links to each layer,
+        expanded as <a href="InputMultilayerIntraInter">explained</a> for the{" "}
+        <code>*Inter</code> links. However, the inter-layer links will be
+        weighted proportionally to the weighted out degree of the same physical
+        node in the target layer, resulting generally in non-uniform inter-layer
+        transition probabilities.
       </p>
 
       <Figure id="FigureMultilayerNetworkIntra" />
