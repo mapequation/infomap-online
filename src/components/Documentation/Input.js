@@ -87,23 +87,21 @@ export default () => {
       </p>
 
       <p>
-        A bipartite network is a network with two types of nodes, where the links only connect nodes
-        of different types with each other. If we call them <em>primary</em> nodes and{" "}
-        <em>feature</em> nodes, we can interpret shared feature nodes as indirect relations between
-        primary nodes. If only the relations between primary nodes are of interest, for example the
-        collaboration network between authors in a bipartite author-paper network, a unipartite
-        network of primary nodes can be constructed by by doing a <em>projection</em> of the
-        bipartite network. In this projection, each pair of links connecting primary nodes through a
-        shared feature node is projected to a unipartite link between the connected primary nodes.
-        However, such a projection to primary nodes gives an overload of links already for
-        moderately dense networks. With the map equation for varying Markov times, we can avoid this
-        projection because{" "}
+        A bipartite network has two types of nodes with links only between different node types. If
+        we call them <em>primary</em> nodes and <em>feature</em> nodes, we can interpret shared
+        feature nodes as indirect relations between primary nodes. When only relations between
+        primary nodes are of interest, the bipartite network can be projected into a unipartite
+        network of primary nodes. In this projection, each pair of links connecting primary nodes
+        through a shared feature node is projected into a unipartite link between the connected
+        primary nodes. However, such a projection to primary nodes gives an overload of links
+        already for moderately dense networks. With the map equation for varying Markov times, we
+        avoid this projection because{" "}
         <a href="https://www.mapequation.org/publications.html#Kheirkhahzadeh-Etal-2016-Markovtimes">
-          a bipartate to unipartite projection corresponds to doubling the Markov time
+          a bipartite-to-unipartite projection corresponds to doubling the Markov time
         </a>
-        . This approximates a two-step random walker. By shifting the flow from the feature nodes to
-        primary nodes, we only encode steps on the primary nodes while avoiding the drawback of a
-        projection.
+        . This approach approximates a two-step random walker. By shifting the flow from the feature
+        nodes to primary nodes, the map equation encodes steps on the primary nodes while avoiding
+        the drawback of a unipartite network projection.
       </p>
 
       <Message info>
