@@ -1,5 +1,5 @@
 import React from "react";
-import { Message, Header } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
