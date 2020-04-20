@@ -1,20 +1,21 @@
+import "katex/dist/katex.min.css";
 import React, { createRef } from "react";
+import { BlockMath } from "react-katex";
 import { Divider, Grid, Header, Message, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Contents, { Heading } from "./Contents";
-import MapEquation from "./MapEquation";
 import Features from "./Features";
 import Feedback from "./Feedback";
 import "./index.css";
 import Input from "./Input";
 import Install from "./Install";
+import MapEquation from "./MapEquation";
 import Output from "./Output";
 import Parameters from "./Parameters";
 import Prerequisites from "./Prerequisites";
 import References from "./References";
 import Running from "./Running";
-import { BlockMath } from "react-katex";
 
 function Documentation() {
   const contextRef = createRef();

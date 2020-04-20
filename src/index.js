@@ -3,7 +3,6 @@ import React from "react";
 import { hydrate, render } from "react-dom";
 import App from "./App";
 import "./index.css";
-import "katex/dist/katex.min.css";
 
 Sentry.init({
   dsn:
