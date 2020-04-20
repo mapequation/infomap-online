@@ -4,7 +4,6 @@ import { hydrate, render } from "react-dom";
 import App from "./App";
 import "./index.css";
 import "katex/dist/katex.min.css";
-import * as serviceWorker from "./serviceWorker";
 
 Sentry.init({
   dsn:
@@ -30,8 +29,3 @@ if (rootElement.hasChildNodes()) {
 } else {
   render(<App />, rootElement);
 }
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
