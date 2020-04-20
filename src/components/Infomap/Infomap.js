@@ -13,6 +13,7 @@ import {
   Rail,
   Responsive,
 } from "semantic-ui-react";
+import "url-search-params-polyfill";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";

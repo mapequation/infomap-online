@@ -38,7 +38,8 @@
     "react-dropzone": "^10.2.2",
     "react-katex": "^2.0.2",
     "react-scripts": "3.4.1",
-    "semantic-ui-react": "^0.88.2"
+    "semantic-ui-react": "^0.88.2",
+    "url-search-params-polyfill": "^8.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
