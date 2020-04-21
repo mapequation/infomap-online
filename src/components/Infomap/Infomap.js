@@ -31,6 +31,7 @@ export default observer(
       running: false,
       completed: false,
       infomapError: "",
+      hasLocalforageError: false,
     };
 
     constructor(props) {
@@ -51,6 +52,10 @@ export default observer(
 
       const onFinished = content => {
         store.output.setContent(content);
+        localforage
+          .setItem("ftree", store.output.ftree)
+          .then(() => this.setState({ hasLocalforageError: false }))
+          .catch(() => this.setState({ hasLocalforageError: true }));
         this.setState({
           running: false,
           completed: true,
@@ -120,6 +125,7 @@ export default observer(
 
       this.setState({
         completed: false,
+        hasLocalforageError: false,
         infomapOutput: [],
       });
 
@@ -149,7 +155,14 @@ export default observer(
     onCopyClusters = () => store.output.setDownloaded(true);
 
     render() {
-      const { loading, running, completed, infomapError, infomapOutput } = this.state;
+      const {
+        loading,
+        running,
+        completed,
+        infomapError,
+        infomapOutput,
+        hasLocalforageError,
+      } = this.state;
 
       const { activeInput, network, clusterData, metaData, output, params } = store;
 
@@ -198,6 +211,27 @@ export default observer(
       };
 
       const outputMenuProps = { vertical: true, disabled: !completed };
+
+      let navigatorLabel = null;
+
+      if (completed && !hasInfomapError) {
+        if (!output.ftree) {
+          navigatorLabel = (
+            <Label basic size="small" pointing="below">
+              Network Navigator requires ftree output.{" "}
+              {!params.getParam("--ftree").active && (
+                <a onClick={() => params.setArgs(params.args + " --ftree")}>Enable.</a>
+              )}
+            </Label>
+          );
+        } else if (output.ftree && hasLocalforageError) {
+          navigatorLabel = (
+            <Label basic size="small" pointing="below">
+              Could not store network. Please download ftree and load manually.
+            </Label>
+          )
+        }
+      }
 
       return (
         <Grid container stackable className="infomap">
@@ -259,21 +293,14 @@ export default observer(
           </Grid.Column>
 
           <Grid.Column width={4} className="output">
-            {completed && !hasInfomapError && !output.ftree && (
-              <Label basic size="small" pointing="below">
-                Network Navigator requires ftree output.{" "}
-                {!params.getParam("--ftree").active && (
-                  <a onClick={() => params.setArgs(params.args + " --ftree")}>Enable.</a>
-                )}
-              </Label>
-            )}
+            {navigatorLabel}
             <Button.Group primary fluid>
               <Button
                 as="a"
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-                disabled={!output.ftree || running}
+                disabled={!output.ftree || running || hasLocalforageError}
               >
                 <Responsive minWidth={1200} as={React.Fragment}>
                   Open in Network Navigator
@@ -307,5 +334,5 @@ export default observer(
         </Grid>
       );
     }
-  }
+  },
 );

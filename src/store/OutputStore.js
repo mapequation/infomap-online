@@ -1,7 +1,6 @@
-import localforage from "localforage";
-import { action, computed, decorate, observable } from "mobx";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
+import { action, computed, decorate, observable } from "mobx";
 
 const FORMATS = [
   {
@@ -70,8 +69,8 @@ const FORMATS = [
 ];
 
 class OutputStore {
-  constructor(store) {
-    this._parent = store;
+  constructor(parent) {
+    this._parent = parent;
   }
 
   clu = "";
@@ -100,7 +99,7 @@ class OutputStore {
       states,
       states_as_physical,
     } = this;
-    return (
+    return !!(
       clu ||
       tree ||
       ftree ||
@@ -181,9 +180,8 @@ class OutputStore {
     }
 
     this.setActiveKey(
-      clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu"
+      clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu",
     );
-    localforage.setItem("ftree", ftree);
   };
 
   resetContent = () => {
