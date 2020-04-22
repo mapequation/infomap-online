@@ -14,6 +14,7 @@ const DropdownParameter = observer(({ param }) => {
 
   return (
     <Dropdown
+      id={param.long}
       ref={ref => store.params.setRef(param.long, ref)}
       selection
       options={options}
@@ -94,7 +95,7 @@ const IncrementalParameter = observer(({ param }) => {
   const setValue = value => store.params.setIncremental(param, value);
 
   return (
-    <Button.Group>
+    <Button.Group id={param.long}>
       <Button basic icon="minus" disabled={value === 0} onClick={() => setValue(value - 1)} />
       <Button basic icon disabled={value === 0} content={stringValue(value)} />
       <Button basic icon="plus" disabled={value === maxValue} onClick={() => setValue(value + 1)} />
@@ -190,6 +191,14 @@ const ParameterGroup = observer(({ group, advanced }) => {
 
 export default () => {
   const [advanced, setAdvanced] = useState(false);
+
+  if (!advanced && window.location && window.location.hash) {
+    const hash = window.location.hash.slice(1);
+    const param = store.params.getParam(hash);
+    if (param && param.advanced) {
+      setAdvanced(true);
+    }
+  }
 
   return (
     <>

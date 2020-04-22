@@ -17,13 +17,22 @@ export default () => {
 
       <p>
         Infomap will try to recognize the file format, but the format can be explicitly specified
-        with the flags <code>-i</code> or <code>--input-format</code> followed by a format
-        specifier.
+        with the flags{" "}
+        <a href="#--input-format">
+          <code>-i</code>
+        </a>{" "}
+        or{" "}
+        <a href="#--input-format">
+          <code>--input-format</code>
+        </a>{" "}
+        followed by a format specifier.
       </p>
 
       <Heading id="InputLinkList" />
       <p>
-        <code>-i link-list</code>
+        <a href="#--input-format">
+          <code>-i link-list</code>
+        </a>
       </p>
 
       <p>This is a minimal format to describe a network by only specifying a set of links.</p>
@@ -53,7 +62,9 @@ export default () => {
 
       <Heading id="InputPajek" />
       <p>
-        <code>-i pajek</code>
+        <a href="#--input-format">
+          <code>-i pajek</code>
+        </a>
       </p>
 
       <p>
@@ -83,7 +94,9 @@ export default () => {
 
       <Heading id="InputBipartite" />
       <p>
-        <code>-i bipartite</code>
+        <a href="#--input-format">
+          <code>-i bipartite</code>
+        </a>
       </p>
 
       <p>
@@ -108,8 +121,11 @@ export default () => {
         The bipartite dynamics described above is the default for the bipartite format, and makes
         sense for a sparse bipartite network (for which the two-step dynamics helps) where only the
         primary nodes are of interest. Otherwise, add the flag{" "}
-        <code>--skip-adjust-bipartite-flow</code> or change the <code>*Bipartite</code> heading to{" "}
-        <code>*Edges</code> to treat the network as unipartite.
+        <a href="#--skip-adjust-bipartite-flow">
+          <code>--skip-adjust-bipartite-flow</code>
+        </a>{" "}
+        or change the <code>*Bipartite</code> heading to <code>*Edges</code> to treat the network as
+        unipartite.
       </Message>
 
       <Figure id="FigureBipartite" />
@@ -144,7 +160,9 @@ export default () => {
 
       <Heading id="InputMultilayer" />
       <p>
-        <code>-i multilayer</code>
+        <a href="#--input-format">
+          <code>-i multilayer</code>
+        </a>
       </p>
 
       <p>
@@ -244,12 +262,14 @@ export default () => {
       <p>
         If no inter-layer links are provided, the inter links will be generated from the intra link
         structure by relaxing the layer constraints with a global{" "}
-        <code>--multilayer-relax-rate</code> for each node, default 0.15. For each node, Infomap
-        will assume inter-layer links to each layer, expanded as{" "}
-        <a href="InputMultilayerIntraInter">explained</a> for the <code>*Inter</code> links.
-        However, the inter-layer links will be weighted proportionally to the weighted out degree of
-        the same physical node in the target layer, resulting generally in non-uniform inter-layer
-        transition probabilities.
+        <a href="#--multilayer-relax-rate">
+          <code>--multilayer-relax-rate</code>
+        </a>{" "}
+        for each node, default 0.15. For each node, Infomap will assume inter-layer links to each
+        layer, expanded as <a href="InputMultilayerIntraInter">explained</a> for the{" "}
+        <code>*Inter</code> links. However, the inter-layer links will be weighted proportionally to
+        the weighted out degree of the same physical node in the target layer, resulting generally
+        in non-uniform inter-layer transition probabilities.
       </p>
 
       <Figure id="FigureMultilayerNetworkIntra" />
@@ -266,7 +286,9 @@ export default () => {
 
       <Heading id="InputStates" />
       <p>
-        <code>-i states</code>
+        <a href="#--input-format">
+          <code>-i states</code>
+        </a>
       </p>
 
       <p>
