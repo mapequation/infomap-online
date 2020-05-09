@@ -16,7 +16,7 @@ export default () => {
       <Heading id="Output" />
 
       <p>
-        By default, Infomap outputs a <a href="OutputTree">.tree</a>-file if no other output formats
+        By default, Infomap outputs a <a href="#OutputTree">.tree</a>-file if no other output formats
         is specified. To output several outputs in a single run, use <code>-o tree,ftree,clu</code>{" "}
         (see <a href="#ParamsOutput">Output parameters</a>).
       </p>
