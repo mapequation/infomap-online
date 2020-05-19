@@ -1,3 +1,4 @@
+import "core-js/features/object/values";
 import * as Sentry from "@sentry/browser";
 import "mobx-react-lite/batchingForReactDom";
 import React from "react";
