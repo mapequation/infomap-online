@@ -188,7 +188,7 @@ export default () => {
 
       <p>
         This multilayer format gives full control over the flow within and between each layer and
-        translates directly to a <a href="InputStates">state network</a>.
+        translates directly to a <a href="#InputStates">state network</a>.
       </p>
 
       <Figure id="FigureMultilayerNetworkFull" />
