@@ -16,9 +16,9 @@ export default () => {
       <Heading id="Output" />
 
       <p>
-        By default, Infomap outputs a <a href="#OutputTree">.tree</a>-file if no other output formats
-        is specified. To output several outputs in a single run, use <code>-o tree,ftree,clu</code>{" "}
-        (see <a href="#ParamsOutput">Output parameters</a>).
+        By default, Infomap outputs a <a href="#OutputTree">.tree</a>-file if no other output
+        formats is specified. To output several outputs in a single run, use{" "}
+        <code>-o tree,ftree,clu</code> (see <a href="#ParamsOutput">Output parameters</a>).
       </p>
 
       <p>
@@ -152,6 +152,26 @@ export default () => {
         If the <code>.clu</code> file is used as an input clustering to Infomap, the{" "}
         <code>flow</code> column will not be used and may be omitted.
       </p>
+
+      <div id="newick" />
+      <Heading id="OutputNewick" />
+      <p>
+        <code>-o newick</code>
+      </p>
+
+      <p>The format has the pattern:</p>
+
+      <Code highlight>{store.getOutputFormat("newick")}</Code>
+
+      <div id="json" />
+      <Heading id="OutputJson" />
+      <p>
+        <code>-o json</code>
+      </p>
+
+      <p>The format has the pattern:</p>
+
+      <Code highlight>{store.getOutputFormat("json")}</Code>
     </>
   );
 };

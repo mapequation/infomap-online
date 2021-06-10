@@ -75,7 +75,14 @@ const tocSource = {
   },
   Output: {
     heading: "Output formats",
-    children: ["PhysicalAndStateOutput", "OutputTree", "OutputFtree", "OutputClu"],
+    children: [
+      "PhysicalAndStateOutput",
+      "OutputTree",
+      "OutputFtree",
+      "OutputClu",
+      "OutputNewick",
+      "OutputJson",
+    ],
   },
   PhysicalAndStateOutput: {
     heading: "Physical and state-level output",
@@ -88,6 +95,12 @@ const tocSource = {
   },
   OutputClu: {
     heading: "Clu",
+  },
+  OutputNewick: {
+    heading: "Newick",
+  },
+  OutputJson: {
+    heading: "JSON",
   },
   Parameters: {
     heading: "Parameters",

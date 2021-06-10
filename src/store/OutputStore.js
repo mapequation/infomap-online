@@ -66,6 +66,34 @@ const FORMATS = [
     suffix: "_states",
     extension: "net",
   },
+  {
+    key: "newick",
+    name: "Newick",
+    isStates: false,
+    suffix: "",
+    extension: "nwk",
+  },
+  {
+    key: "newick_states",
+    name: "Newick",
+    isStates: true,
+    suffix: "_states",
+    extension: "nwk",
+  },
+  {
+    key: "json",
+    name: "JSON",
+    isStates: false,
+    suffix: "",
+    extension: "json",
+  },
+  {
+    key: "json_states",
+    name: "JSON",
+    isStates: true,
+    suffix: "_states",
+    extension: "json",
+  },
 ];
 
 class OutputStore {
@@ -77,10 +105,14 @@ class OutputStore {
   tree = "";
   ftree = "";
   net = "";
+  newick = "";
+  json = "";
   states_as_physical = "";
   clu_states = "";
   tree_states = "";
   ftree_states = "";
+  newick_states = "";
+  json_states = "";
   states = "";
 
   activeKey = "tree";
@@ -92,9 +124,13 @@ class OutputStore {
       clu,
       tree,
       ftree,
+      newick,
+      json,
       clu_states,
       tree_states,
       ftree_states,
+      newick_states,
+      json_states,
       net,
       states,
       states_as_physical,
@@ -103,11 +139,15 @@ class OutputStore {
       clu ||
       tree ||
       ftree ||
+      newick ||
+      json ||
       net ||
       states ||
       clu_states ||
       tree_states ||
       ftree_states ||
+      newick_states ||
+      json_states ||
       states_as_physical
     );
   }
@@ -144,9 +184,13 @@ class OutputStore {
       clu,
       tree,
       ftree,
+      newick,
+      json,
       clu_states,
       tree_states,
       ftree_states,
+      newick_states,
+      json_states,
       net,
       states,
       states_as_physical,
@@ -160,6 +204,12 @@ class OutputStore {
     if (ftree) {
       this.ftree = ftree;
     }
+    if (newick) {
+      this.newick = newick;
+    }
+    if (json) {
+      this.json = json;
+    }
     if (clu_states) {
       this.clu_states = clu_states;
     }
@@ -168,6 +218,12 @@ class OutputStore {
     }
     if (ftree_states) {
       this.ftree_states = ftree_states;
+    }
+    if (newick_states) {
+      this.newick_states = newick_states;
+    }
+    if (json_states) {
+      this.json_states = json_states;
     }
     if (net) {
       this.net = net;
@@ -180,17 +236,27 @@ class OutputStore {
     }
 
     this.setActiveKey(
-      clu ? "clu" : tree ? "tree" : ftree ? "ftree" : net ? "net" : states ? "states" : "clu",
-    );
+      clu ? "clu"
+        : tree ? "tree"
+        : ftree ? "ftree"
+        : newick ? "newick"
+        : json ? "json"
+        : net ? "net"
+        : states ? "states"
+        : "clu");
   };
 
   resetContent = () => {
     this.clu = "";
     this.tree = "";
     this.ftree = "";
+    this.newick = "";
+    this.json = "";
     this.clu_states = "";
     this.tree_states = "";
     this.ftree_states = "";
+    this.newick_states = "";
+    this.json_states = "";
     this.net = "";
     this.states = "";
     this.states_as_physical = "";
@@ -205,7 +271,9 @@ class OutputStore {
   downloadFile = formatKey => {
     const file = this.files.find(({ key }) => key === formatKey);
     const content = this[formatKey];
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const mimeType =
+      formatKey === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8";
+    const blob = new Blob([content], { type: mimeType });
     saveAs(blob, file.filename);
     this.setDownloaded();
   };
@@ -228,11 +296,15 @@ export default decorate(OutputStore, {
   clu: observable,
   tree: observable,
   ftree: observable,
+  newick: observable,
+  json: observable,
   net: observable,
   states_as_physical: observable,
   clu_states: observable,
   tree_states: observable,
   ftree_states: observable,
+  newick_states: observable,
+  json_states: observable,
   states: observable,
   activeKey: observable,
   downloaded: observable,
