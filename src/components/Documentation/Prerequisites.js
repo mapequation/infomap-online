@@ -7,14 +7,14 @@ export default () => (
     <Heading id="Prerequisites" />
     <p>
       Infomap requires a working <code>gcc</code> or <code>clang</code> compiler with support for
-      C++14.
+      C++14 and optionally OpenMP.
     </p>
     <Heading id="Linux" />
     <p>
       In Ubuntu, for example, the metapackage <code>build-essential</code> installs the compiler as
-      well as related packages. Install it from the terminal with
+      well as related packages. Install from the terminal with
     </p>
-    <Code>sudo apt-get install build-essential</Code>
+    <Code>sudo apt install build-essential libomp-dev</Code>
     <Heading id="macOS" />
     <p>
       Since Mac OS X 10.9, the standard compiler tools are based on <code>clang</code>, which can be
@@ -22,13 +22,10 @@ export default () => (
     </p>
     <Code>xcode-select --install</Code>
     <p>
-      However, the current version lacks OpenMP support for parallelization. While the Makefile
-      automatically skips the <code>-fopenmap</code> compiler flag if the standard compiler is
-      clang, to get support for OpenMP you can manually install a gcc-based compiler. A simple way
-      is to install <a href="//brew.sh">Homebrew</a> and type, for example,{" "}
-      <code>brew install gcc</code> in the terminal. If you have e.g. GCC version 9, compile with
+      However, the current version lacks OpenMP support for parallelization. To install with OpenMP
+      support, install the <code>libomp</code> package with <a href="//brew.sh">Homebrew</a>:
     </p>
-    <Code>CXX=g++-9 make</Code>
+    <Code>brew install libomp</Code>
     <Heading id="Windows" />
     <p>
       We recommend running Infomap in{" "}
@@ -40,11 +37,11 @@ export default () => (
       Then install the metapackage <code>build-essential</code> for the compiler and related
       packages with
     </p>
-    <Code>sudo apt-get install build-essential</Code>
+    <Code>sudo apt install build-essential libomp-dev</Code>
     <p>
       To install Infomap with <code>pip</code>, install the python3 package
     </p>
-    <Code>sudo apt-get install python3 python3-pip</Code>
+    <Code>sudo apt install python3 python3-pip</Code>
     MingGW is not supported.
   </>
 );

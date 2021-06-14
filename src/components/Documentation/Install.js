@@ -33,6 +33,11 @@ export default () => (
     <Code>pip install --upgrade infomap</Code>
 
     <p>
+      For now, we only provide binary wheels (Python packages) for macOS. This means that you might
+      might need a working compiler and OpenMP libraries installed for your platform.
+    </p>
+
+    <p>
       When Infomap is installed, an executable called <code>infomap</code> is available on the
       command line from any directory.
     </p>
@@ -73,9 +78,7 @@ export default () => (
     <p>Unzip the file and compile Infomap by running</p>
 
     <Code>
-      unzip infomap-{Infomap.__version__}.zip
-      <br />
-      cd infomap-{Infomap.__version__}
+      unzip infomap-{Infomap.__version__}.zip && cd infomap-{Infomap.__version__}
       <br />
       make
     </Code>
