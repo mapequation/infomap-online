@@ -208,7 +208,7 @@ class OutputStore {
       this.newick = newick;
     }
     if (json) {
-      this.json = json;
+      this.json = JSON.stringify(json, null, 2);
     }
     if (clu_states) {
       this.clu_states = clu_states;
@@ -223,7 +223,7 @@ class OutputStore {
       this.newick_states = newick_states;
     }
     if (json_states) {
-      this.json_states = json_states;
+      this.json_states = JSON.stringify(json_states, null, 2);
     }
     if (net) {
       this.net = net;

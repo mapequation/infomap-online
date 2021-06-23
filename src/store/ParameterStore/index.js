@@ -1,4 +1,4 @@
-import { infomapParameters } from "@mapequation/infomap";
+import { parameters as infomapParameters } from "@mapequation/infomap";
 import arg from "arg";
 import { action, decorate, observable } from "mobx";
 import getArgSpec from "./argSpec";

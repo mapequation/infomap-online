@@ -1,4 +1,4 @@
-import { infomapChangelog } from "@mapequation/infomap";
+import { changelog as infomapChangelog } from "@mapequation/infomap";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Divider, Header, Icon, List } from "semantic-ui-react";

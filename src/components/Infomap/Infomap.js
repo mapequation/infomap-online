@@ -130,12 +130,17 @@ export default observer(
       });
 
       if (this.runId) {
-        this.infomap.cleanup(this.runId);
+        this.infomap.terminate(this.runId);
         this.runId = null;
       }
 
       try {
-        this.runId = this.infomap.run(store.infomapNetwork, store.params.args, store.infomapFiles);
+        this.runId = this.infomap.run({
+          network: store.infomapNetwork.content,
+          filename: store.infomapNetwork.filename,
+          args: store.params.args,
+          files: store.infomapFiles,
+        });
       } catch (e) {
         this.setState({
           running: false,

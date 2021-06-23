@@ -1,4 +1,4 @@
-import Infomap, { infomapChangelog } from "@mapequation/infomap";
+import Infomap, { changelog as infomapChangelog } from "@mapequation/infomap";
 import React from "react";
 import { Message } from "semantic-ui-react";
 import store from "../../store";
