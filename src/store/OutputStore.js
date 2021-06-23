@@ -67,6 +67,20 @@ const FORMATS = [
     extension: "net",
   },
   {
+    key: "flow",
+    name: "Flow",
+    isStates: false,
+    suffix: "_flow",
+    extension: "net",
+  },
+  {
+    key: "flow_as_physical",
+    name: "Flow states as physical",
+    isStates: true,
+    suffix: "_states_as_physical_flow",
+    extension: "net",
+  },
+  {
     key: "newick",
     name: "Newick",
     isStates: false,
@@ -134,6 +148,8 @@ class OutputStore {
       net,
       states,
       states_as_physical,
+      flow,
+      flow_as_physical,
     } = this;
     return !!(
       clu ||
@@ -148,7 +164,9 @@ class OutputStore {
       ftree_states ||
       newick_states ||
       json_states ||
-      states_as_physical
+      states_as_physical ||
+      flow ||
+      flow_as_physical
     );
   }
 
@@ -194,6 +212,8 @@ class OutputStore {
       net,
       states,
       states_as_physical,
+      flow,
+      flow_as_physical,
     } = content;
     if (clu) {
       this.clu = clu;
@@ -234,6 +254,12 @@ class OutputStore {
     if (states_as_physical) {
       this.states_as_physical = states_as_physical;
     }
+    if (flow) {
+      this.flow = flow;
+    }
+    if (flow_as_physical) {
+      this.flow_as_physical = flow_as_physical;
+    }
 
     this.setActiveKey(
       clu ? "clu"
@@ -243,6 +269,7 @@ class OutputStore {
         : json ? "json"
         : net ? "net"
         : states ? "states"
+        : flow ? "flow"
         : "clu");
   };
 
@@ -260,6 +287,8 @@ class OutputStore {
     this.net = "";
     this.states = "";
     this.states_as_physical = "";
+    this.flow = "";
+    this.flow_as_physical = "";
 
     this.downloaded = false;
   };
@@ -306,6 +335,8 @@ export default decorate(OutputStore, {
   newick_states: observable,
   json_states: observable,
   states: observable,
+  flow: observable,
+  flow_as_physical: observable,
   activeKey: observable,
   downloaded: observable,
   completed: computed,
