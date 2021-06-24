@@ -108,6 +108,20 @@ const FORMATS = [
     suffix: "_states",
     extension: "json",
   },
+  {
+    key: "csv",
+    name: "CSV",
+    isStates: false,
+    suffix: "",
+    extension: "csv",
+  },
+  {
+    key: "csv_states",
+    name: "CSV",
+    isStates: true,
+    suffix: "_states",
+    extension: "csv",
+  },
 ];
 
 class OutputStore {
@@ -121,12 +135,14 @@ class OutputStore {
   net = "";
   newick = "";
   json = "";
+  csv = "";
   states_as_physical = "";
   clu_states = "";
   tree_states = "";
   ftree_states = "";
   newick_states = "";
   json_states = "";
+  csv = "";
   states = "";
 
   activeKey = "tree";
@@ -140,11 +156,13 @@ class OutputStore {
       ftree,
       newick,
       json,
+      csv,
       clu_states,
       tree_states,
       ftree_states,
       newick_states,
       json_states,
+      csv_states,
       net,
       states,
       states_as_physical,
@@ -157,6 +175,7 @@ class OutputStore {
       ftree ||
       newick ||
       json ||
+      csv ||
       net ||
       states ||
       clu_states ||
@@ -164,6 +183,7 @@ class OutputStore {
       ftree_states ||
       newick_states ||
       json_states ||
+      csv_states ||
       states_as_physical ||
       flow ||
       flow_as_physical
@@ -204,11 +224,13 @@ class OutputStore {
       ftree,
       newick,
       json,
+      csv,
       clu_states,
       tree_states,
       ftree_states,
       newick_states,
       json_states,
+      csv_states,
       net,
       states,
       states_as_physical,
@@ -230,6 +252,9 @@ class OutputStore {
     if (json) {
       this.json = JSON.stringify(json, null, 2);
     }
+    if (csv) {
+      this.csv = csv;
+    }
     if (clu_states) {
       this.clu_states = clu_states;
     }
@@ -244,6 +269,9 @@ class OutputStore {
     }
     if (json_states) {
       this.json_states = JSON.stringify(json_states, null, 2);
+    }
+    if (csv_states) {
+      this.clu_states = csv_states;
     }
     if (net) {
       this.net = net;
@@ -267,6 +295,7 @@ class OutputStore {
         : ftree ? "ftree"
         : newick ? "newick"
         : json ? "json"
+        : csv ? "csv"
         : net ? "net"
         : states ? "states"
         : flow ? "flow"
@@ -279,11 +308,13 @@ class OutputStore {
     this.ftree = "";
     this.newick = "";
     this.json = "";
+    this.csv = "";
     this.clu_states = "";
     this.tree_states = "";
     this.ftree_states = "";
     this.newick_states = "";
     this.json_states = "";
+    this.csv_states = "";
     this.net = "";
     this.states = "";
     this.states_as_physical = "";
@@ -327,6 +358,7 @@ export default decorate(OutputStore, {
   ftree: observable,
   newick: observable,
   json: observable,
+  csv: observable,
   net: observable,
   states_as_physical: observable,
   clu_states: observable,
@@ -334,6 +366,7 @@ export default decorate(OutputStore, {
   ftree_states: observable,
   newick_states: observable,
   json_states: observable,
+  csv_states: observable,
   states: observable,
   flow: observable,
   flow_as_physical: observable,
