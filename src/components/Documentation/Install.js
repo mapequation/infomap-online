@@ -96,6 +96,12 @@ export default () => (
         The Linux and macOS binaries are dynamically linked, so you need to install OpenMP
         separately (see <a href="#Prerequisites">Prerequisites</a>).
       </p>
+
+      <p>
+        The binaries are not currently code signed.
+        On macOS, run <code>spctl --add Infomap</code> and enter your password
+        to add the Infomap binary to GateKeeper's trusted binaries.
+      </p>
     </Message>
 
     <Heading id="CompilingFromSource" />
