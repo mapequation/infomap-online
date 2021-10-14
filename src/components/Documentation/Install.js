@@ -1,6 +1,7 @@
+import infomap from "@mapequation/infomap";
 import Infomap from "@mapequation/infomap";
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
+import { Icon, Message, List } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./Contents";
 
@@ -11,8 +12,13 @@ export default () => (
     <p>Infomap can be installed on your computer in several ways.</p>
 
     <p>
-      We recommend <a href="#UsingPip">using pip</a>. If you want to compile from source yourself,
-      read the section <a href="#CompilingFromSource">Compiling from source</a>.
+      We recommend <a href="#UsingPip">using pip</a>. We also provide{" "}
+      <a href="#DownloadBinary">pre-compiled binaries</a>.
+    </p>
+
+    <p>
+      If you want to compile from source yourself, read the section{" "}
+      <a href="#CompilingFromSource">Compiling from source</a>.
     </p>
 
     <p>
@@ -52,6 +58,46 @@ export default () => (
       <p>Since Python 2 has reached End of Life, Infomap now only supports Python 3.</p>
     </Message>
 
+    <Heading id="DownloadBinary" />
+    <p>
+      We provide pre-compiled binaries for Windows, Linux and macOS. You can download the binaries
+      use the{" "}
+      <a href="//github.com/mapequation/infomap/releases/latest">releases page</a> or use the
+      following direct links:
+    </p>
+
+    <List verticalAlign="middle">
+      <List.Item
+        as="a"
+        href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip"
+      >
+        <List.Icon size="large" name="windows" color="blue" />
+        <List.Content>Infomap (Windows)</List.Content>
+      </List.Item>
+      <List.Item
+        as="a"
+        href="//github.com/mapequation/infomap/releases/latest/download/infomap-linux.zip"
+      >
+        <List.Icon size="large" name="linux" color="black" />
+        <List.Content>Infomap (Linux)</List.Content>
+      </List.Item>
+      <List.Item
+        as="a"
+        href="//github.com/mapequation/infomap/releases/latest/download/infomap-macos.zip"
+      >
+        <List.Icon size="large" name="apple" color="black" />
+        <List.Content>Infomap (macOS)</List.Content>
+      </List.Item>
+    </List>
+
+    <Message>
+      <Message.Header>Note</Message.Header>
+      <p>
+        The Linux and macOS binaries are dynamically linked, so you need to install OpenMP
+        separately (see <a href="#Prerequisites">Prerequisites</a>).
+      </p>
+    </Message>
+
     <Heading id="CompilingFromSource" />
 
     <p>
@@ -69,7 +115,7 @@ export default () => (
     <p>
       <a href={`//github.com/mapequation/infomap/archive/v${Infomap.__version__}.zip`}>
         <Icon name="download" />
-        Download Infomap {Infomap.__version__}
+        Download Infomap {Infomap.__version__} source code
       </a>{" "}
       or check the <a href="//github.com/mapequation/infomap/releases">releases page</a> for all
       releases.

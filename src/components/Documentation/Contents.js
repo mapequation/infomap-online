@@ -12,10 +12,13 @@ const tocSource = {
   },
   Install: {
     heading: "Install",
-    children: ["UsingPip", "CompilingFromSource"],
+    children: ["UsingPip", "DownloadBinary", "CompilingFromSource"],
   },
   UsingPip: {
     heading: "Using pip",
+  },
+  DownloadBinary: {
+    heading: "Download binary",
   },
   CompilingFromSource: {
     heading: "Compiling from source",
