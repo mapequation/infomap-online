@@ -45,8 +45,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-decorators": "^7.12.1",
-    "husky": "^4.3.0",
-    "precise-commits": "^1.0.2",
     "prettier": "2.0.5",
     "react-snap": "^1.23.0"
   },
@@ -54,10 +52,5 @@
     "arrowParens": "avoid",
     "printWidth": 100,
     "trailingComma": "all"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "precise-commits"
-    }
   }
 }
