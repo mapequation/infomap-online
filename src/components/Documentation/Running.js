@@ -11,27 +11,23 @@ export default () => (
       If you installed Infomap using <code>pip</code>, usage is
     </p>
 
-    <Code>infomap [parameters] network_data out_directory</Code>
+    <Code>infomap [params] network outdir</Code>
 
     <p>
-      If you compiled Infomap from source by running <code>make</code>, usage is
+      If you downloaded the binary or compiled Infomap from source, usage is
     </p>
 
-    <Code>./Infomap [parameters] network_data out_directory</Code>
-
+    <Code>./Infomap [params] network outdir</Code>
+    on Linux and macOS and
+    <Code>.\Infomap [params] network outdir</Code>
     <p>
-      To make the compiled from source version of Infomap available in any directory, either add the
-      source directory to your <code>$PATH</code>, or add an alias to your <code>.profile</code> by
-      running
+      in the Windows command line.
+      You can also use the <code>--help</code> option to get a list of all parameters.
     </p>
-
-    <Code>echo "alias Infomap=$PWD/Infomap" >> ~/.profile</Code>
-
-    <p>in the source directory and restarting your shell.</p>
 
     <p>
       The optional <a href="#Parameters">parameters</a> can be put anywhere. The{" "}
-      <code>network_data</code> should point to a valid network file and <code>out_directory</code>{" "}
+      <code>network</code> should point to a valid network file and <code>outdir</code>{" "}
       to a directory where Infomap should write output files.
     </p>
 

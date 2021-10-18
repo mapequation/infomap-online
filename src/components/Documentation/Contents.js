@@ -5,17 +5,14 @@ import "./Contents.css";
 const tocSource = {
   Infomap: {
     heading: "Infomap",
-    children: ["InfomapOnline", "Install", "Prerequisites"],
+    children: ["InfomapOnline", "Install"],
   },
   InfomapOnline: {
     heading: "Infomap Online",
   },
   Install: {
     heading: "Install",
-    children: ["UsingPip", "DownloadBinary", "CompilingFromSource"],
-  },
-  UsingPip: {
-    heading: "Using pip",
+    children: ["DownloadBinary", "CompilingFromSource"],
   },
   DownloadBinary: {
     heading: "Download binary",
@@ -29,19 +26,6 @@ const tocSource = {
   },
   Git: {
     heading: "Clone the git repository",
-  },
-  Prerequisites: {
-    heading: "Prerequisites",
-    children: ["Linux", "macOS", "Windows"],
-  },
-  Linux: {
-    heading: "Linux",
-  },
-  macOS: {
-    heading: "macOS",
-  },
-  Windows: {
-    heading: "Windows",
   },
   Running: {
     heading: "Running",

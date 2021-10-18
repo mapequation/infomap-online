@@ -8,27 +8,15 @@ import { Heading } from "./Contents";
 export default () => (
   <>
     <Heading id="Install" />
-
-    <p>Infomap can be installed on your computer in several ways.</p>
-
     <p>
-      We recommend <a href="#UsingPip">using pip</a>. We also provide{" "}
-      <a href="#DownloadBinary">pre-compiled binaries</a>.
+      We recommend installing Infomap from the Python Package Index. Upgrades are easy
+      and you get access to the <a href="//mapequation.github.io/infomap/python">Python API</a>.
     </p>
-
     <p>
-      If you want to compile from source yourself, read the section{" "}
-      <a href="#CompilingFromSource">Compiling from source</a>.
+      Currently, we provide pre-compiled packages for Windows and macOS.
+      If no package is available for your platform and Python version,
+      the code <a href="#CompilingFromSource">compiles from source</a>.
     </p>
-
-    <p>
-      Installing Infomap requires a working <code>gcc</code> or <code>clang</code> compiler. More
-      information can be found under <a href="#Prerequisites">Prerequisites</a>.
-    </p>
-
-    <Heading id="UsingPip" />
-
-    <p>The easiest way to download Infomap is from the Python Package Index, PyPi.</p>
 
     <p>To install, run</p>
 
@@ -38,30 +26,15 @@ export default () => (
 
     <Code>pip install --upgrade infomap</Code>
 
-    <p>
-      For now, we only provide binary wheels (Python packages) for macOS. This means that you might
-      might need a working compiler and OpenMP libraries installed for your platform.
-    </p>
-
-    <p>
-      When Infomap is installed, an executable called <code>infomap</code> is available on the
-      command line from any directory.
-    </p>
-
-    <p>
-      To use the Infomap Python API, read the{" "}
-      <a href="//mapequation.github.io/infomap/python">the API documentation</a>.
-    </p>
-
     <Message warning>
-      <Message.Header>Python 2 support</Message.Header>
-      <p>Since Python 2 has reached End of Life, Infomap now only supports Python 3.</p>
+      <Message.Header>Infomap only supports Python 3</Message.Header>
+      We currently build packages for Python 3.6 to 3.9.
     </Message>
 
     <Heading id="DownloadBinary" />
     <p>
-      We provide pre-compiled binaries for Windows, Linux and macOS. You can download the binaries
-      use the{" "}
+      If you don't want to install Python, we provide pre-compiled binaries for Windows, Linux and macOS.
+      You can download the binaries use the{" "}
       <a href="//github.com/mapequation/infomap/releases/latest">releases page</a> or use the
       following direct links:
     </p>
@@ -91,29 +64,38 @@ export default () => (
     </List>
 
     <Message>
-      <Message.Header>Note</Message.Header>
+      <Message.Header>OpenMP required</Message.Header>
       <p>
-        The Linux and macOS binaries are dynamically linked, so you need to install OpenMP
-        separately (see <a href="#Prerequisites">Prerequisites</a>).
+        The Linux and macOS binaries requires OpenMP
+        (<code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS) to be installed.
       </p>
+    </Message>
 
+    <Message>
+      <Message.Header>Trusting binaries on macOS</Message.Header>
       <p>
-        The binaries are not currently code signed.
-        On macOS, run <code>spctl --add Infomap</code> and enter your password
+        Run <code>spctl --add Infomap</code> and enter your password
         to add the Infomap binary to GateKeeper's trusted binaries.
       </p>
     </Message>
 
     <Heading id="CompilingFromSource" />
-
     <p>
-      To compile Infomap from source, first <a href="#Download">download the source code</a> or{" "}
-      <a href="#Git">clone the git repository</a>.
+      Building Infomap from source requires a working <code>GCC</code> or <code>clang</code> compiler with support for
+      C++14 and optionally OpenMP.
     </p>
 
     <p>
-      After downloading the source and running <code>make</code>, an executable called{" "}
-      <code>Infomap</code> will be available in the source directory.
+      On Ubuntu and Windows with WSL, install the <code>build-essential</code> and <code>libomp-dev</code> packages.
+    </p>
+
+    <p>
+      On macOS, you can install Apple's development tools with <code>xcode-select --install</code> and the <a href="\\brew.sh">Homebrew</a> version of OpenMP with <code>brew install libomp</code>.
+    </p>
+
+    <p>
+      We don't currently support building Infomap from source on Windows without WSL.
+      If you don't have WSL, you should use the binary releases or the Python package.
     </p>
 
     <Heading id="Download" />
@@ -132,7 +114,7 @@ export default () => (
     <Code>
       unzip infomap-{Infomap.__version__}.zip && cd infomap-{Infomap.__version__}
       <br />
-      make
+      make -j
     </Code>
 
     <Heading id="Git" />
@@ -148,25 +130,7 @@ export default () => (
       <br />
       cd infomap
       <br />
-      make
+      make -j
     </Code>
-
-    <Message warning>
-      <Message.Header>Migrating from 0.x to 1.0</Message.Header>
-
-      <p>
-        We have moved the old master branch to <code>v0.x</code>.
-      </p>
-
-      <p>If you have cloned Infomap before v1.0, get the master branch up-to-date by running</p>
-
-      <Code>
-        git checkout v0.x
-        <br />
-        git branch -D master
-        <br />
-        git checkout master
-      </Code>
-    </Message>
   </>
 );
