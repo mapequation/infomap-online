@@ -1,7 +1,6 @@
-import infomap from "@mapequation/infomap";
 import Infomap from "@mapequation/infomap";
 import React from "react";
-import { Icon, Message, List } from "semantic-ui-react";
+import { Icon, Message, Table } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./Contents";
 
@@ -33,43 +32,38 @@ export default () => (
 
     <Heading id="DownloadBinary" />
     <p>
-      If you don't want to install Python, we provide pre-compiled binaries for Windows, Linux and macOS.
-      You can download the binaries use the{" "}
-      <a href="//github.com/mapequation/infomap/releases/latest">releases page</a> or use the
-      following direct links:
+      If you don't want to install Python, we provide pre-compiled binaries for Windows, Ubuntu and macOS.
+      You can download the binaries from the{" "}
+      <a href="//github.com/mapequation/infomap/releases/latest">releases page</a> or use the direct links below.
+      The OpenMP versions require <code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS.
     </p>
 
-    <List verticalAlign="middle">
-      <List.Item
-        as="a"
-        href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip"
-      >
-        <List.Icon size="large" name="windows" color="blue" />
-        <List.Content>Infomap (Windows)</List.Content>
-      </List.Item>
-      <List.Item
-        as="a"
-        href="//github.com/mapequation/infomap/releases/latest/download/infomap-linux.zip"
-      >
-        <List.Icon size="large" name="linux" color="black" />
-        <List.Content>Infomap (Linux)</List.Content>
-      </List.Item>
-      <List.Item
-        as="a"
-        href="//github.com/mapequation/infomap/releases/latest/download/infomap-macos.zip"
-      >
-        <List.Icon size="large" name="apple" color="black" />
-        <List.Content>Infomap (macOS)</List.Content>
-      </List.Item>
-    </List>
-
-    <Message>
-      <Message.Header>OpenMP required</Message.Header>
-      <p>
-        The Linux and macOS binaries requires OpenMP
-        (<code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS) to be installed.
-      </p>
-    </Message>
+    <Table basic="very">
+      <Table.Header>
+        <Table.Row>
+          <Table.Cell />
+          <Table.HeaderCell>OpenMP</Table.HeaderCell>
+          <Table.HeaderCell>Without OpenMP</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.HeaderCell><Icon name="windows" color="blue" />Windows</Table.HeaderCell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip">infomap-win.zip</a></Table.Cell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win-noomp.zip">infomap-win-noomp.zip</a></Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.HeaderCell><Icon name="linux" color="black" />Ubuntu 18.04</Table.HeaderCell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">infomap-ubuntu.zip</a></Table.Cell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">infomap-ubuntu-noomp.zip</a></Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.HeaderCell><Icon name="apple" color="black" />macOS 10.15</Table.HeaderCell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">infomap-mac.zip</a></Table.Cell>
+          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac-noomp.zip">infomap-mac-noomp.zip</a></Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
 
     <Message>
       <Message.Header>Trusting binaries on macOS</Message.Header>
@@ -81,7 +75,7 @@ export default () => (
 
     <Heading id="CompilingFromSource" />
     <p>
-      Building Infomap from source requires a working <code>GCC</code> or <code>clang</code> compiler with support for
+      Building Infomap from source requires a working GCC or Clang compiler with support for
       C++14 and optionally OpenMP.
     </p>
 

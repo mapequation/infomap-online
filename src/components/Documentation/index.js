@@ -1,7 +1,7 @@
 import "katex/dist/katex.min.css";
 import React, { createRef } from "react";
 import { BlockMath } from "react-katex";
-import { Divider, Grid, Header, Message, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
+import { Divider, Grid, Header, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Contents, { Heading } from "./Contents";
