@@ -1,6 +1,6 @@
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import { action, computed, decorate, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 const FORMATS = [
   {
@@ -124,9 +124,45 @@ const FORMATS = [
   },
 ];
 
-class OutputStore {
+export default class OutputStore {
   constructor(parent) {
     this._parent = parent;
+
+    makeObservable(this, {
+      clu: observable,
+      tree: observable,
+      ftree: observable,
+      newick: observable,
+      json: observable,
+      csv: observable,
+      net: observable,
+      states_as_physical: observable,
+      clu_states: observable,
+      tree_states: observable,
+      ftree_states: observable,
+      newick_states: observable,
+      json_states: observable,
+      csv_states: observable,
+      states: observable,
+      flow: observable,
+      flow_as_physical: observable,
+      activeKey: observable,
+      downloaded: observable,
+      completed: computed,
+      activeContent: computed,
+      name: computed,
+      files: computed,
+      physicalFiles: computed,
+      stateFiles: computed,
+      activeFile: computed,
+      setContent: action,
+      resetContent: action,
+      setActiveKey: action,
+      setDownloaded: action,
+      downloadFile: action,
+      downloadActiveContent: action,
+      downloadAll: action,
+    });
   }
 
   clu = "";
@@ -142,8 +178,10 @@ class OutputStore {
   ftree_states = "";
   newick_states = "";
   json_states = "";
-  csv = "";
+  csv_states = "";
   states = "";
+  flow = "";
+  flow_as_physical = "";
 
   activeKey = "tree";
 
@@ -290,16 +328,26 @@ class OutputStore {
     }
 
     this.setActiveKey(
-      clu ? "clu"
-        : tree ? "tree"
-        : ftree ? "ftree"
-        : newick ? "newick"
-        : json ? "json"
-        : csv ? "csv"
-        : net ? "net"
-        : states ? "states"
-        : flow ? "flow"
-        : "clu");
+      clu
+        ? "clu"
+        : tree
+        ? "tree"
+        : ftree
+        ? "ftree"
+        : newick
+        ? "newick"
+        : json
+        ? "json"
+        : csv
+        ? "csv"
+        : net
+        ? "net"
+        : states
+        ? "states"
+        : flow
+        ? "flow"
+        : "clu",
+    );
   };
 
   resetContent = () => {
@@ -351,39 +399,3 @@ class OutputStore {
     zip.generateAsync({ type: "blob" }).then(blob => saveAs(blob, `${this.name}.zip`));
   };
 }
-
-export default decorate(OutputStore, {
-  clu: observable,
-  tree: observable,
-  ftree: observable,
-  newick: observable,
-  json: observable,
-  csv: observable,
-  net: observable,
-  states_as_physical: observable,
-  clu_states: observable,
-  tree_states: observable,
-  ftree_states: observable,
-  newick_states: observable,
-  json_states: observable,
-  csv_states: observable,
-  states: observable,
-  flow: observable,
-  flow_as_physical: observable,
-  activeKey: observable,
-  downloaded: observable,
-  completed: computed,
-  activeContent: computed,
-  name: computed,
-  files: computed,
-  physicalFiles: computed,
-  stateFiles: computed,
-  activeFile: computed,
-  setContent: action,
-  resetContent: action,
-  setActiveKey: action,
-  setDownloaded: action,
-  downloadFile: action,
-  downloadActiveContent: action,
-  downloadAll: action,
-});

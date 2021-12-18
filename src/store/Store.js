@@ -1,4 +1,4 @@
-import { action, computed, decorate, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { createRef } from "react";
 import * as exampleNetworks from "./exampleNetworks";
 import * as outputFormats from "./outputFormats";
@@ -10,7 +10,7 @@ const camelToSnake = str =>
     .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
     .replace(/([A-Z])/g, ([letter]) => `_${letter.toLowerCase()}`);
 
-class Store {
+export default class Store {
   network = { name: "two_triangles", value: exampleNetworks.twoTriangles };
   clusterData = { name: "", value: "" };
   metaData = { name: "", value: "" };
@@ -24,6 +24,22 @@ class Store {
   DEFAULT_META_NAME = "metadata.clu";
 
   params = new ParameterStore(this);
+
+  constructor() {
+    makeObservable(this, {
+      network: observable,
+      clusterData: observable,
+      metaData: observable,
+      activeInput: observable,
+      setActiveInput: action,
+      setNetwork: action,
+      setClusterData: action,
+      setMetaData: action,
+      runExample: action,
+      infomapNetwork: computed,
+      infomapFiles: computed,
+    });
+  }
 
   setActiveInput = name => (this.activeInput = name);
 
@@ -62,17 +78,3 @@ class Store {
 
   getOutputFormat = name => outputFormats[name];
 }
-
-export default decorate(Store, {
-  network: observable,
-  clusterData: observable,
-  metaData: observable,
-  activeInput: observable,
-  setActiveInput: action,
-  setNetwork: action,
-  setClusterData: action,
-  setMetaData: action,
-  runExample: action,
-  infomapNetwork: computed,
-  infomapFiles: computed,
-});

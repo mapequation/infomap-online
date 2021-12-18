@@ -2,17 +2,7 @@ import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import React from "react";
-import {
-  Button,
-  Form,
-  Grid,
-  Icon,
-  Label,
-  Menu,
-  Message,
-  Rail,
-  Responsive,
-} from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Label, Menu, Message, Rail } from "semantic-ui-react";
 import "url-search-params-polyfill";
 import store from "../../store";
 import Console from "./Console";
@@ -234,7 +224,7 @@ export default observer(
             <Label basic size="small" pointing="below">
               Could not store network. Please download ftree and load manually.
             </Label>
-          )
+          );
         }
       }
 
@@ -278,10 +268,9 @@ export default observer(
                 <a href="#Input">Supported formats.</a> {SupportedExtensions}
               </Message>
             </InputTextarea>
-            <Responsive as={Rail} minWidth={1400} close="very" position="left">
+            <Rail close="very" position="left">
               <Menu compact text {...inputMenuProps} />
-            </Responsive>
-            <Responsive as={Menu} maxWidth={1399} fluid {...inputMenuProps} />
+            </Rail>
           </Grid.Column>
 
           <Grid.Column width={8} floated="left" className="run">
@@ -307,18 +296,7 @@ export default observer(
                 href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
                 disabled={!output.ftree || running || hasLocalforageError}
               >
-                <Responsive minWidth={1200} as={React.Fragment}>
-                  Open in Network Navigator
-                </Responsive>
-                <Responsive maxWidth={1199} minWidth={992} as={React.Fragment}>
-                  Open in Navigator
-                </Responsive>
-                <Responsive maxWidth={991} minWidth={768} as={React.Fragment}>
-                  Navigator&#8230;
-                </Responsive>
-                <Responsive maxWidth={767} as={React.Fragment}>
-                  Open in Network Navigator
-                </Responsive>
+                Open in Network Navigator
               </Button>
               <DownloadMenu disabled={running} />
             </Button.Group>
@@ -331,10 +309,9 @@ export default observer(
                 wrap="off"
               />
             </Form>
-            <Responsive as={Rail} minWidth={1400} close="very" position="right">
+            <Rail close="very" position="right">
               <OutputMenu compact text {...outputMenuProps} />
-            </Responsive>
-            <Responsive as={OutputMenu} maxWidth={1399} fluid {...outputMenuProps} />
+            </Rail>
           </Grid.Column>
         </Grid>
       );
