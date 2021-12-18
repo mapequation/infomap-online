@@ -1,7 +1,7 @@
 import "katex/dist/katex.min.css";
 import React, { createRef } from "react";
-import { BlockMath } from "react-katex";
-import { Divider, Grid, Header, Rail, Ref, Responsive, Sticky } from "semantic-ui-react";
+import TeX from "@matejmazur/react-katex";
+import { Divider, Grid, Header, Rail, Ref, Sticky } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
 import Contents, { Heading } from "./Contents";
@@ -32,18 +32,21 @@ function Documentation() {
             </a>
             :
           </p>
-          <BlockMath math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}" />
+          <TeX
+            math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
+            block
+          />
 
           <Heading id="InfomapOnline" />
           <p>
-            Infomap Online is a client-side web application that enables users to run
-            Infomap in the web browser.
-            Your data never leaves your computer; we don't store any
-            data on our servers.
+            Infomap Online is a client-side web application that enables users to run Infomap in the
+            web browser. Your data never leaves your computer; we don't store any data on our
+            servers.
           </p>
           <p>
-            We achieve this by compiling Infomap from <a href="//emscripten.org">C++ to JavaScript</a>,
-            which gives a performance penalty compared to the stand-alone version of Infomap.
+            We achieve this by compiling Infomap from{" "}
+            <a href="//emscripten.org">C++ to JavaScript</a>, which gives a performance penalty
+            compared to the stand-alone version of Infomap.
           </p>
           <p>
             If you want to integrate Infomap in your own web application, you can use the{" "}
@@ -56,21 +59,14 @@ function Documentation() {
           <Input />
           <Output />
 
-          <Responsive
-            as={Rail}
-            minWidth={breakpoint}
-            position="left"
-            dividing
-            close
-            style={{ width: 280 }}
-          >
+          <Rail position="left" dividing close style={{ width: 280 }}>
             <Sticky context={contextRef} offset={50}>
               <Header as="h2" style={{ marginTop: "0.5em" }}>
                 Contents
               </Header>
               <Contents />
             </Sticky>
-          </Responsive>
+          </Rail>
         </Grid.Column>
       </Ref>
       <Grid.Column>

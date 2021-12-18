@@ -4,7 +4,7 @@ import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
-import { BlockMath, InlineMath } from "react-katex";
+import TeX from "@matejmazur/react-katex";
 import Figure, { FigLink } from "./Figure";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
@@ -37,14 +37,13 @@ export default () => {
       </Code>
 
       <p>
-        The relative codelength savings <InlineMath>S_L</InlineMath> is calculated as
+        The relative codelength savings <TeX>S_L</TeX> is calculated as
       </p>
 
-      <BlockMath math="S_L = 1 - \frac{L}{L_1}" />
+      <TeX math="S_L = 1 - \frac{L}{L_1}" block />
 
       <p>
-        where <InlineMath>L</InlineMath> is the codelength and <InlineMath>L_1</InlineMath> is the
-        one-level codelength.
+        where <TeX>L</TeX> is the codelength and <TeX>L_1</TeX> is the one-level codelength.
       </p>
 
       <Message info>

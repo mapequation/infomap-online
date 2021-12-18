@@ -1,11 +1,9 @@
 import "core-js/features/object/values";
 import * as Sentry from "@sentry/browser";
-import "mobx-react-lite/batchingForReactDom";
 import React from "react";
 import { hydrate, render } from "react-dom";
 import App from "./App";
 import "./index.css";
-
 
 Sentry.init({
   dsn:

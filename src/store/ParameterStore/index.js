@@ -1,6 +1,6 @@
 import { parameters as infomapParameters } from "@mapequation/infomap";
 import arg from "arg";
-import { action, decorate, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import getArgSpec from "./argSpec";
 import createParams from "./createParams";
 import paramToString from "./paramToString";
@@ -8,9 +8,25 @@ import updateParam from "./updateParam";
 
 const argSpec = getArgSpec(infomapParameters);
 
-class ParameterStore {
+export default class ParameterStore {
   constructor(parent) {
     this._parent = parent;
+
+    makeObservable(this, {
+      params: observable,
+      refs: observable,
+      setRef: action,
+      toggle: action,
+      setIncremental: action,
+      setInput: action,
+      setOption: action,
+      setFileParam: action,
+      resetFileParam: action,
+      args: observable,
+      argsError: observable,
+      hasArgsError: observable,
+      setArgs: action,
+    });
   }
 
   params = createParams(infomapParameters);
@@ -112,19 +128,3 @@ class ParameterStore {
     this.args = args;
   };
 }
-
-export default decorate(ParameterStore, {
-  params: observable,
-  refs: observable,
-  setRef: action,
-  toggle: action,
-  setIncremental: action,
-  setInput: action,
-  setOption: action,
-  setFileParam: action,
-  resetFileParam: action,
-  args: observable,
-  argsError: observable,
-  hasArgsError: observable,
-  setArgs: action,
-});
