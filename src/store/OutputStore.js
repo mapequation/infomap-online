@@ -271,7 +271,7 @@ class OutputStore {
       this.json_states = JSON.stringify(json_states, null, 2);
     }
     if (csv_states) {
-      this.clu_states = csv_states;
+      this.csv_states = csv_states;
     }
     if (net) {
       this.net = net;
