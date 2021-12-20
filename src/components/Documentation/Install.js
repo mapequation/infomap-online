@@ -1,11 +1,11 @@
 import Infomap from "@mapequation/infomap";
-import React from "react";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./Contents";
 
-export default () => (
-  <>
+
+export default function Install() {
+  return <>
     <Heading id="Install" />
     <p>
       We recommend installing Infomap from the Python Package Index. Upgrades are easy
@@ -49,18 +49,24 @@ export default () => (
       <Table.Body>
         <Table.Row>
           <Table.HeaderCell><Icon name="windows" color="blue" />Windows</Table.HeaderCell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip">infomap-win.zip</a></Table.Cell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win-noomp.zip">infomap-win-noomp.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip">infomap-win.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-win-noomp.zip">infomap-win-noomp.zip</a></Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell><Icon name="linux" color="black" />Ubuntu 18.04</Table.HeaderCell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">infomap-ubuntu.zip</a></Table.Cell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">infomap-ubuntu-noomp.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">infomap-ubuntu.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">infomap-ubuntu-noomp.zip</a></Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell><Icon name="apple" color="black" />macOS 10.15</Table.HeaderCell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">infomap-mac.zip</a></Table.Cell>
-          <Table.Cell><a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac-noomp.zip">infomap-mac-noomp.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">infomap-mac.zip</a></Table.Cell>
+          <Table.Cell><a
+            href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac-noomp.zip">infomap-mac-noomp.zip</a></Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
@@ -84,7 +90,8 @@ export default () => (
     </p>
 
     <p>
-      On macOS, you can install Apple's development tools with <code>xcode-select --install</code> and the <a href="\\brew.sh">Homebrew</a> version of OpenMP with <code>brew install libomp</code>.
+      On macOS, you can install Apple's development tools with <code>xcode-select --install</code> and the <a
+      href="\\brew.sh">Homebrew</a> version of OpenMP with <code>brew install libomp</code>.
     </p>
 
     <p>
@@ -126,5 +133,5 @@ export default () => (
       <br />
       make -j
     </Code>
-  </>
-);
+  </>;
+}

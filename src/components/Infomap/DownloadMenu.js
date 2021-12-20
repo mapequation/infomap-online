@@ -1,6 +1,7 @@
-import React from "react";
+import { Fragment } from "react";
 import { Dropdown, Icon } from "semantic-ui-react";
 import store from "../../store";
+
 
 const FileItem = ({ file }) => (
   <Dropdown.Item onClick={() => store.output.downloadFile(file.key)}>
@@ -9,17 +10,17 @@ const FileItem = ({ file }) => (
   </Dropdown.Item>
 );
 
-export default ({ disabled }) => {
+export default function DownloadMenu({ disabled }) {
   const { files, physicalFiles, stateFiles } = store.output;
 
   const DownloadAll = (
-    <React.Fragment>
+    <>
       <Dropdown.Divider />
       <Dropdown.Item onClick={store.output.downloadAll}>
         <Icon name="file archive" color="blue" />
         <span style={{ color: "#555" }}>Download all</span>
       </Dropdown.Item>
-    </React.Fragment>
+    </>
   );
 
   const DropdownMenu =
@@ -48,9 +49,9 @@ export default ({ disabled }) => {
     <Dropdown
       disabled={disabled || files.length === 0}
       className="button icon active"
-      trigger={<React.Fragment />}
+      trigger={<Fragment />}
     >
       {DropdownMenu}
     </Dropdown>
   );
-};
+}

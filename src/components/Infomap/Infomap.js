@@ -1,7 +1,7 @@
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
-import React from "react";
+import { Component } from "react";
 import { Button, Form, Grid, Icon, Label, Menu, Message, Rail } from "semantic-ui-react";
 import "url-search-params-polyfill";
 import store from "../../store";
@@ -13,8 +13,9 @@ import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
 import Steps from "./Steps";
 
+
 export default observer(
-  class InfomapOnline extends React.Component {
+  class InfomapOnline extends Component {
     state = {
       infomapOutput: [],
       loading: false, // Loading input network
@@ -58,7 +59,7 @@ export default observer(
         .on("finished", onFinished);
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
       localforage.config({ name: "infomap" });
 
       const urlSearchParams = URLSearchParams || window.URLSearchParams;
@@ -70,9 +71,9 @@ export default observer(
       } else {
         store.params.setArgs("--clu --ftree");
       }
-    };
+    }
 
-    onInputChange = activeInput => (e, { name, value }) => {
+    onInputChange = (activeInput) => (e, { name, value }) => {
       const { params } = store;
 
       if (activeInput === "network") {
@@ -96,7 +97,7 @@ export default observer(
       });
     };
 
-    onLoad = activeInput => files => {
+    onLoad = (activeInput) => (files) => {
       if (files.length < 1) return;
 
       const file = files[0];

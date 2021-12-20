@@ -5,6 +5,7 @@ import * as outputFormats from "./outputFormats";
 import OutputStore from "./OutputStore";
 import ParameterStore from "./ParameterStore";
 
+
 const camelToSnake = str =>
   str
     .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())

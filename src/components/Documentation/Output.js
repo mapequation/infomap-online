@@ -1,16 +1,15 @@
 import Infomap, { changelog as infomapChangelog } from "@mapequation/infomap";
-import React from "react";
+import TeX from "@matejmazur/react-katex";
 import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
-import TeX from "@matejmazur/react-katex";
 import Figure, { FigLink } from "./Figure";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
 const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
 
-export default () => {
+export default function Output() {
   return (
     <>
       <Heading id="Output" />
@@ -77,7 +76,7 @@ export default () => {
 
       <Figure id="FigurePhysicalAndStateNodes" />
 
-      <div id="tree"></div>
+      <div id="tree" />
       <Heading id="OutputTree" />
       <p>
         <code>--tree</code>, <code>-o tree</code>
@@ -173,4 +172,4 @@ export default () => {
       <Code highlight>{store.getOutputFormat("json")}</Code>
     </>
   );
-};
+}

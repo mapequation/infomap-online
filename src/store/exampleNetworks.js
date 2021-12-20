@@ -1,5 +1,6 @@
 import { figNumber } from "../components/Documentation/Figure";
 
+
 export const twoTriangles = `#source target [weight]
 1 2
 1 3

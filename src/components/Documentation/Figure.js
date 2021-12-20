@@ -1,4 +1,3 @@
-import React from "react";
 import TeX from "@matejmazur/react-katex";
 import imgBipartite from "../../images/bipartite.svg";
 import imgMultilayerNetworkFull from "../../images/multilayer-network-full.svg";
@@ -7,6 +6,7 @@ import imgMultilayerNetworkIntra from "../../images/multilayer-network-intra.svg
 import imgNineTriangles from "../../images/nine-triangles.svg";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
 import imgStateNetwork from "../../images/state-network.svg";
+
 
 const FIGURE_NUMBER = [
   "FigureNineTriangles",

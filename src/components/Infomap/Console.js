@@ -1,8 +1,15 @@
-import React from "react";
+import { Component } from "react";
 import { Segment } from "semantic-ui-react";
 
-class Console extends React.Component {
+
+export default class Console extends Component {
   keepScrolling = true;
+  onScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = this.container;
+    const diff = scrollHeight - clientHeight;
+    const isAtBottom = scrollTop === diff;
+    return (this.keepScrolling = isAtBottom);
+  };
 
   componentDidUpdate() {
     if (this.keepScrolling) {
@@ -10,13 +17,6 @@ class Console extends React.Component {
       this.container.scrollTop = scrollHeight - clientHeight;
     }
   }
-
-  onScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } = this.container;
-    const diff = scrollHeight - clientHeight;
-    const isAtBottom = scrollTop === diff;
-    return (this.keepScrolling = isAtBottom);
-  };
 
   render() {
     const { content, placeholder, ...props } = this.props;
@@ -30,5 +30,3 @@ class Console extends React.Component {
     );
   }
 }
-
-export default Console;

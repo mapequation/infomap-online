@@ -1,6 +1,6 @@
-import React from "react";
 import { Icon, Menu } from "semantic-ui-react";
 import store from "../../store";
+
 
 const DocIcon = (
   <a href="#PhysicalAndStateOutput">
@@ -8,7 +8,7 @@ const DocIcon = (
   </a>
 );
 
-export default props => {
+export default function OutputMenu(props) {
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
 
   const getMenuItem = ({ key, name }) => (
@@ -42,4 +42,4 @@ export default props => {
       ))}
     </Menu>
   );
-};
+}

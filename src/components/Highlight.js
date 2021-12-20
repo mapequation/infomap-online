@@ -1,5 +1,6 @@
-import React from "react";
+import { Fragment } from "react";
 import "./Highlight.css";
+
 
 const parseLine = line => {
   const buff = [{ className: null, content: "" }];
@@ -9,7 +10,7 @@ const parseLine = line => {
     let curr = buff[buff.length - 1];
 
     switch (char) {
-      case '"':
+      case "\"":
         if (isString) {
           curr.content += char;
           isString = false;
@@ -41,7 +42,7 @@ const parseLine = line => {
   return buff;
 };
 
-export default ({ content }) => {
+export default function Highlight({ content }) {
   if (!content) return null;
 
   const lines = content.split("\n");
@@ -55,9 +56,9 @@ export default ({ content }) => {
       lines[i] = <span className="highlight-heading">{line}</span>;
     } else {
       lines[i] = parseLine(line).map(({ className, content }, i) => (
-        <React.Fragment key={i}>
+        <Fragment key={i}>
           <span className={className}>{content}</span>{" "}
-        </React.Fragment>
+        </Fragment>
       ));
     }
   }
@@ -65,11 +66,11 @@ export default ({ content }) => {
   return (
     <>
       {lines.map((line, i) => (
-        <React.Fragment key={i}>
+        <Fragment key={i}>
           {line}
           <br />
-        </React.Fragment>
+        </Fragment>
       ))}
     </>
   );
-};
+}

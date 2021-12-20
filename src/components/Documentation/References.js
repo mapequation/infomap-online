@@ -1,8 +1,8 @@
-import React from "react";
 import { Heading } from "./Contents";
 
-export default () => (
-  <>
+
+export default function References() {
+  return <>
     <Heading id="References" />
     <p>
       If you are using the software at mapequation.org in one of your research articles or otherwise
@@ -14,5 +14,5 @@ export default () => (
       D. Edler, A. Eriksson and M. Rosvall, The MapEquation software package, available online at{" "}
       <a href="//www.mapequation.org">mapequation.org</a>.
     </p>
-  </>
-);
+  </>;
+}

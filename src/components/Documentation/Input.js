@@ -1,11 +1,11 @@
-import React from "react";
 import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
 import { Heading } from "./Contents";
 import Figure from "./Figure";
 
-export default () => {
+
+export default function Input() {
   return (
     <>
       <Heading id="Input" />
@@ -321,4 +321,4 @@ export default () => {
       </p>
     </>
   );
-};
+}

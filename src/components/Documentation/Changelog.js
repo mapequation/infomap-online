@@ -1,8 +1,8 @@
 import { changelog as infomapChangelog } from "@mapequation/infomap";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { Heading } from "./Contents";
+
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -33,14 +33,14 @@ const Change = ({ change }) => {
 const Changes = ({ heading, changes }) => {
   if (changes.length === 0) return null;
   return (
-    <React.Fragment>
+    <>
       <h4>{heading}</h4>
       <List bulleted>
         {changes.map((change, i) => (
           <Change key={i} change={change} />
         ))}
       </List>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -159,10 +159,6 @@ const Changelog = ({ changes }) => {
       </Divider>
     </>
   );
-};
-
-Changelog.propTypes = {
-  changes: PropTypes.array.isRequired,
 };
 
 export default () => <Changelog changes={infomapChangelog} />;

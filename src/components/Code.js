@@ -3,7 +3,8 @@ import { Label, Segment } from "semantic-ui-react";
 import "./Code.css";
 import Highlight from "./Highlight";
 
-export default ({ highlight, lines, labelProps, children }) => {
+
+export default function Code({ highlight, lines, labelProps, children }) {
   const [collapsed, setCollapsed] = useState(true);
 
   const toggle = () => setCollapsed(!collapsed);
@@ -28,4 +29,4 @@ export default ({ highlight, lines, labelProps, children }) => {
       )}
     </Segment>
   );
-};
+}

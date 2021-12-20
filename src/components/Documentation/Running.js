@@ -1,10 +1,10 @@
-import React from "react";
 import { Message } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./Contents";
 
-export default () => (
-  <>
+
+export default function Running() {
+  return <>
     <Heading id="Running" />
 
     <p>
@@ -35,5 +35,5 @@ export default () => (
       If no <strong>parameters</strong> are provided, Infomap will assume an{" "}
       <strong>undirected</strong> network and try to partition it <strong>hierarchically</strong>.
     </Message>
-  </>
-);
+  </>;
+}

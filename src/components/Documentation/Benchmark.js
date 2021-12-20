@@ -1,7 +1,5 @@
-import React from "react";
-
-export default () => (
-  <>
+export default function Benchmark() {
+  return <>
     <h2 id="Benchmark">
       <a href="#Benchmark">Benchmark</a>
     </h2>
@@ -56,5 +54,5 @@ export default () => (
       The performance is measured on a real-world network with code from different dates in the
       history of Infomap.
     </figcaption>
-  </>
-);
+  </>;
+}

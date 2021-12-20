@@ -5,8 +5,8 @@ const getOptions = description => {
   return match[1].split(",").map(option => option.trim());
 };
 
-export default params =>
-  params.map(param => {
+export default function createParams(params) {
+  return params.map(param => {
     if (param.short) {
       param.shortString = `${param.short}${param.shortType ? `<${param.shortType}>` : ""}`;
     }
@@ -64,3 +64,4 @@ export default params =>
 
     return param;
   });
+}
