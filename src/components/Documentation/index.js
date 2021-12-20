@@ -59,7 +59,7 @@ function Documentation() {
           <Input />
           <Output />
 
-          <Rail position="left" dividing close style={{ width: 280 }}>
+          <Rail position="left" dividing close style={{ width: 280 }} className="contents">
             <Sticky context={contextRef} offset={50}>
               <Header as="h2" style={{ marginTop: "0.5em" }}>
                 Contents
