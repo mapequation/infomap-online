@@ -1,6 +1,6 @@
-import "katex/dist/katex.min.css";
-import React, { createRef } from "react";
 import TeX from "@matejmazur/react-katex";
+import "katex/dist/katex.min.css";
+import { createRef } from "react";
 import { Divider, Grid, Header, Rail, Ref, Sticky } from "semantic-ui-react";
 import Algorithm from "./Algorithm";
 import Changelog from "./Changelog";
@@ -16,9 +16,11 @@ import Parameters from "./Parameters";
 import References from "./References";
 import Running from "./Running";
 
+
 function Documentation() {
   const contextRef = createRef();
-  const breakpoint = 1800;
+  // Was used for <Responsive>
+  //const breakpoint = 1800;
 
   return (
     <Grid container stackable columns={2} className="documentation">

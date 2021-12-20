@@ -1,6 +1,6 @@
-import React from "react";
 import { Header } from "semantic-ui-react";
 import "./Contents.css";
+
 
 const tocSource = {
   Infomap: {
@@ -135,7 +135,7 @@ const tocSource = {
   },
 };
 
-const toc = (function (tocSource) {
+const toc = (function(tocSource) {
   const ids = Object.keys(tocSource);
   const tree = tocSource;
 
@@ -215,7 +215,7 @@ const Items = ({ ids, toc, level = 1, maxLevel }) => {
   );
 };
 
-export default () => {
+export default function Contents() {
   const topLevelIds = Object.keys(toc).filter(id => toc[id].level === 1);
   return <Items ids={topLevelIds} toc={toc} maxLevel={3} />;
-};
+}

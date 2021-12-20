@@ -1,8 +1,8 @@
-import React from "react";
 import { Heading } from "./Contents";
 
-export default () => (
-  <>
+
+export default function Algorithm() {
+  return <>
     <Heading id="Algorithm" />
     <p>
       The hierarchical map equation measures the per-step average code length necessary to describe
@@ -91,5 +91,5 @@ export default () => (
       multilevel code structure in its search for the optimal hierarchical partitioning. For every
       split of a module into submodules, we use the two-level search algorithm described above.
     </p>
-  </>
-);
+  </>;
+}

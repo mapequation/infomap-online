@@ -6,6 +6,7 @@ import createParams from "./createParams";
 import paramToString from "./paramToString";
 import updateParam from "./updateParam";
 
+
 const argSpec = getArgSpec(infomapParameters);
 
 export default class ParameterStore {

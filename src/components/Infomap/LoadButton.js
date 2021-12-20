@@ -1,8 +1,8 @@
-import React from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Ref } from "semantic-ui-react";
 
-export default ({ onDrop, accept, children, ...props }) => {
+
+export default function LoadButton({ onDrop, accept, children, ...props }) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
@@ -18,4 +18,4 @@ export default ({ onDrop, accept, children, ...props }) => {
       </Button>
     </Ref>
   );
-};
+}

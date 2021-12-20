@@ -1,9 +1,9 @@
-import React from "react";
 import { Header } from "semantic-ui-react";
 import { Heading } from "./Contents";
 
-export default () => (
-  <>
+
+export default function Features() {
+  return <>
     <Heading id="Features" />
 
     <p>
@@ -66,5 +66,5 @@ export default () => (
       <a href="//mapequation.org/apps/multilayer-network/index.html">this interactive storyboard</a>
       .
     </p>
-  </>
-);
+  </>;
+}

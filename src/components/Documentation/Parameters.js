@@ -1,9 +1,10 @@
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
 import { Heading } from "./Contents";
+
 
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({
@@ -189,7 +190,7 @@ const ParameterGroup = observer(({ group, advanced }) => {
   );
 });
 
-export default () => {
+export default function Parameters() {
   const [advanced, setAdvanced] = useState(false);
 
   if (!advanced && window.location && window.location.hash) {
@@ -216,4 +217,4 @@ export default () => {
       <ParameterGroup group="About" advanced={advanced} />
     </>
   );
-};
+}
