@@ -19,8 +19,6 @@ import Running from "./Running";
 
 function Documentation() {
   const contextRef = createRef();
-  // Was used for <Responsive>
-  //const breakpoint = 1800;
 
   return (
     <Grid container stackable columns={2} className="documentation">
