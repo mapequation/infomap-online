@@ -107,3 +107,31 @@
     border: none;
     font-size: 0.7rem;
 }
+
+.button-menu {
+    visibility: hidden;
+}
+
+.navigator-button:after {
+    content: "Open in Network Navigator"
+}
+
+@media screen and (max-width: 1400px) {
+    .ui.rail.rail-menu {
+        visibility: hidden;
+    }
+
+    .ui.button-menu {
+        visibility: visible;
+    }
+
+    .navigator-button:after {
+        content: "Open in Navigator"
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .navigator-button:after {
+        content: "Navigator..."
+    }
+}

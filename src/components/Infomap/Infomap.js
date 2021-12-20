@@ -269,9 +269,10 @@ export default observer(
                 <a href="#Input">Supported formats.</a> {SupportedExtensions}
               </Message>
             </InputTextarea>
-            <Rail close="very" position="left">
+            <Rail close="very" position="left" className="rail-menu">
               <Menu compact text {...inputMenuProps} />
             </Rail>
+            <Menu fluid className="button-menu" {...inputMenuProps} />
           </Grid.Column>
 
           <Grid.Column width={8} floated="left" className="run">
@@ -296,9 +297,8 @@ export default observer(
                 rel="noopener noreferrer"
                 href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
                 disabled={!output.ftree || running || hasLocalforageError}
-              >
-                Open in Network Navigator
-              </Button>
+                className="navigator-button"
+              />
               <DownloadMenu disabled={running} />
             </Button.Group>
 
@@ -310,9 +310,10 @@ export default observer(
                 wrap="off"
               />
             </Form>
-            <Rail close="very" position="right">
+            <Rail close="very" position="right" className="rail-menu">
               <OutputMenu compact text {...outputMenuProps} />
             </Rail>
+            <OutputMenu fluid className="button-menu" {...outputMenuProps} />
           </Grid.Column>
         </Grid>
       );
