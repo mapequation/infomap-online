@@ -36,3 +36,9 @@
     cursor: pointer;
     user-select: none;
 }
+
+@media screen and (max-width: 1800px) {
+    .ui.left.rail {
+        visibility: hidden;
+    }
+}
