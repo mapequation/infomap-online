@@ -50,6 +50,14 @@
   "prettier": {
     "arrowParens": "avoid",
     "printWidth": 100,
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "overrides": [
+      {
+        "files": "*.css",
+        "options": {
+          "tabWidth": 4
+        }
+      }
+    ]
   }
 }
