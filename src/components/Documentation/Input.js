@@ -4,7 +4,6 @@ import Code from "../Code";
 import { Heading } from "./Contents";
 import Figure from "./Figure";
 
-
 export default function Input() {
   return (
     <>
@@ -16,24 +15,11 @@ export default function Input() {
       </p>
 
       <p>
-        Infomap will try to recognize the file format, but the format can be explicitly specified
-        with the flags{" "}
-        <a href="#--input-format">
-          <code>-i</code>
-        </a>{" "}
-        or{" "}
-        <a href="#--input-format">
-          <code>--input-format</code>
-        </a>{" "}
-        followed by a format specifier.
+        Infomap will automatically recognize the file format by the headers in the file, and assume
+        a<a href="#InputLinkList">link list</a> format by default.
       </p>
 
       <Heading id="InputLinkList" />
-      <p>
-        <a href="#--input-format">
-          <code>-i link-list</code>
-        </a>
-      </p>
 
       <p>This is a minimal format to describe a network by only specifying a set of links.</p>
 
@@ -61,11 +47,6 @@ export default function Input() {
       </p>
 
       <Heading id="InputPajek" />
-      <p>
-        <a href="#--input-format">
-          <code>-i pajek</code>
-        </a>
-      </p>
 
       <p>
         The <a href="http://pajek.imfm.si/doku.php">Pajek</a> format specifies both the nodes and
@@ -93,11 +74,6 @@ export default function Input() {
       </p>
 
       <Heading id="InputBipartite" />
-      <p>
-        <a href="#--input-format">
-          <code>-i bipartite</code>
-        </a>
-      </p>
 
       <p>
         A bipartite network has two types of nodes with links only between different node types. If
@@ -159,11 +135,6 @@ export default function Input() {
       </Code>
 
       <Heading id="InputMultilayer" />
-      <p>
-        <a href="#--input-format">
-          <code>-i multilayer</code>
-        </a>
-      </p>
 
       <p>
         In a multilayer network, each physical node can exist in a number of <em>layers</em>, with
@@ -285,11 +256,6 @@ export default function Input() {
       </Code>
 
       <Heading id="InputStates" />
-      <p>
-        <a href="#--input-format">
-          <code>-i states</code>
-        </a>
-      </p>
 
       <p>
         The state format describes the exact network used internally by Infomap. It can model both
