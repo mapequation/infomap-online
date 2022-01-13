@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { Heading } from "./Contents";
 
-
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
   const Scope = scope ? <strong>{scope} </strong> : null;
@@ -72,19 +71,21 @@ const Release = ({ changes }) => {
 
   return (
     <div style={{ marginBottom: 2 }}>
-      <h3 style={{ marginBottom: 2 }}>
-        {release.subject}
-        <span
-          style={{
-            color: "#999",
-            fontWeight: 300,
-            marginLeft: 6,
-            fontSize: "0.8em",
-          }}
-        >
-          ({release.date.slice(0, 10)})
-        </span>
-      </h3>
+      <a href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}>
+        <h3 style={{ marginBottom: 2 }} id={release.subject}>
+          {release.subject}
+          <span
+            style={{
+              color: "#999",
+              fontWeight: 300,
+              marginLeft: 6,
+              fontSize: "0.8em",
+            }}
+          >
+            ({release.date.slice(0, 10)})
+          </span>
+        </h3>
+      </a>
 
       <div
         style={{
