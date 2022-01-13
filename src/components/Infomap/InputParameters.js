@@ -2,7 +2,6 @@ import { observer } from "mobx-react";
 import { Form } from "semantic-ui-react";
 import store from "../../store";
 
-
 export default observer(({ loading, onClick }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
