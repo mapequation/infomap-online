@@ -16,8 +16,18 @@ export default function Input() {
 
       <p>
         Infomap will automatically recognize the file format by the headers in the file, and assume
-        a<a href="#InputLinkList">link list</a> format by default.
+        a <a href="#InputLinkList">link list</a> format by default.
       </p>
+
+      <Message info>
+        <Message.Header>Self links</Message.Header>
+        Since version <a href="#2.0.0">2.0.0</a>, Infomap includes self links by default. To exclude
+        self links, use <code>--no-self-links</code>.
+        <p>
+          For undirected networks, Infomap uses the the convention of counting self links once. To
+          count them twice, double the weight on self links.
+        </p>
+      </Message>
 
       <Heading id="InputLinkList" />
 
