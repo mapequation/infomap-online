@@ -1,4 +1,3 @@
-import "./index.css";
-
+import "../../styles/Infomap.module.css";
 
 export { default } from "./Infomap";

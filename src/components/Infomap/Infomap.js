@@ -3,7 +3,6 @@ import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
 import { Button, Form, Grid, Icon, Label, Menu, Message, Rail } from "semantic-ui-react";
-import "url-search-params-polyfill";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -12,7 +11,6 @@ import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
 import Steps from "./Steps";
-
 
 export default observer(
   class InfomapOnline extends Component {
@@ -28,12 +26,12 @@ export default observer(
     constructor(props) {
       super(props);
 
-      const onData = content =>
+      const onData = (content) =>
         this.setState({
           infomapOutput: [...this.state.infomapOutput, content],
         });
 
-      const onError = content =>
+      const onError = (content) =>
         this.setState({
           infomapError: content.replace(/^Error:\s+/i, ""),
           infomapOutput: [...this.state.infomapOutput, content],
@@ -41,7 +39,7 @@ export default observer(
           completed: false,
         });
 
-      const onFinished = content => {
+      const onFinished = (content) => {
         store.output.setContent(content);
         localforage
           .setItem("ftree", store.output.ftree)
@@ -73,29 +71,31 @@ export default observer(
       }
     }
 
-    onInputChange = (activeInput) => (e, { name, value }) => {
-      const { params } = store;
+    onInputChange =
+      (activeInput) =>
+      (e, { name, value }) => {
+        const { params } = store;
 
-      if (activeInput === "network") {
-        store.setNetwork({ name, value });
-      } else if (activeInput === "cluster data") {
-        const param = params.getParam("--cluster-data");
-        if (!value) return params.resetFileParam(param);
-        params.setFileParam(param, { name, value });
-      } else if (activeInput === "meta data") {
-        const param = params.getParam("--meta-data");
-        if (!value) return params.resetFileParam(param);
-        params.setFileParam(param, { name, value });
-      }
+        if (activeInput === "network") {
+          store.setNetwork({ name, value });
+        } else if (activeInput === "cluster data") {
+          const param = params.getParam("--cluster-data");
+          if (!value) return params.resetFileParam(param);
+          params.setFileParam(param, { name, value });
+        } else if (activeInput === "meta data") {
+          const param = params.getParam("--meta-data");
+          if (!value) return params.resetFileParam(param);
+          params.setFileParam(param, { name, value });
+        }
 
-      store.output.setDownloaded(false);
+        store.output.setDownloaded(false);
 
-      this.setState({
-        loading: false,
-        completed: false,
-        infomapError: "",
-      });
-    };
+        this.setState({
+          loading: false,
+          completed: false,
+          infomapError: "",
+        });
+      };
 
     onLoad = (activeInput) => (files) => {
       if (files.length < 1) return;
@@ -106,7 +106,7 @@ export default observer(
 
       const onInputChange = this.onInputChange(activeInput);
 
-      reader.onloadend = event => onInputChange(event, { name: file.name, value: reader.result });
+      reader.onloadend = (event) => onInputChange(event, { name: file.name, value: reader.result });
 
       this.setState({ loading: true }, () => reader.readAsText(file, "utf-8"));
     };
@@ -151,14 +151,8 @@ export default observer(
     onCopyClusters = () => store.output.setDownloaded(true);
 
     render() {
-      const {
-        loading,
-        running,
-        completed,
-        infomapError,
-        infomapOutput,
-        hasLocalforageError,
-      } = this.state;
+      const { loading, running, completed, infomapError, infomapOutput, hasLocalforageError } =
+        this.state;
 
       const { activeInput, network, clusterData, metaData, output, params } = store;
 
@@ -176,7 +170,7 @@ export default observer(
 
       const inputValue = inputOptions[activeInput].value;
 
-      const inputMenuOptions = ["network", "cluster data", "meta data"].map(name => ({
+      const inputMenuOptions = ["network", "cluster data", "meta data"].map((name) => ({
         key: name,
         name,
         active: activeInput === name,
@@ -187,7 +181,7 @@ export default observer(
         <span>
           Extensions:{" "}
           {inputAccept[activeInput]
-            .map(extension => (
+            .map((extension) => (
               <a key={extension} href={`#${extension.substring(1)}`}>
                 {extension}
               </a>

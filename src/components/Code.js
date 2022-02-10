@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Label, Segment } from "semantic-ui-react";
-import "./Code.css";
+import "../styles/Code.module.css";
 import Highlight from "./Highlight";
-
 
 export default function Code({ highlight, lines, labelProps, children }) {
   const [collapsed, setCollapsed] = useState(true);

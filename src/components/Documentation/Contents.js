@@ -1,6 +1,5 @@
 import { Header } from "semantic-ui-react";
-import "./Contents.css";
-
+import "../../styles/Contents.module.css";
 
 const tocSource = {
   Infomap: {
@@ -135,12 +134,12 @@ const tocSource = {
   },
 };
 
-const toc = (function(tocSource) {
+const toc = (function (tocSource) {
   const ids = Object.keys(tocSource);
   const tree = tocSource;
 
   // set parents and child id
-  ids.forEach(id => {
+  ids.forEach((id) => {
     const item = tree[id];
     (item.children || []).forEach((childId, i) => {
       const child = tree[childId];
@@ -150,7 +149,7 @@ const toc = (function(tocSource) {
   });
 
   // set levels
-  ids.forEach(id => {
+  ids.forEach((id) => {
     const item = tree[id];
     item.level = 1;
     let parent = item.parent;
@@ -161,10 +160,10 @@ const toc = (function(tocSource) {
   });
 
   // set child ids of top nodes
-  ids.filter(id => tree[id].level === 1).forEach((id, i) => (tree[id].childId = i + 1));
+  ids.filter((id) => tree[id].level === 1).forEach((id, i) => (tree[id].childId = i + 1));
 
   // set tree ids
-  ids.forEach(id => {
+  ids.forEach((id) => {
     const item = tree[id];
     const childIds = [item.childId];
     let parent = item.parent;
@@ -208,7 +207,7 @@ const Items = ({ ids, toc, level = 1, maxLevel }) => {
   if (!ids) return null;
   return (
     <ol className={`tocList tocList${level}`}>
-      {ids.map(id => (
+      {ids.map((id) => (
         <Item key={id} id={id} toc={toc} level={level} maxLevel={maxLevel} />
       ))}
     </ol>
@@ -216,6 +215,6 @@ const Items = ({ ids, toc, level = 1, maxLevel }) => {
 };
 
 export default function Contents() {
-  const topLevelIds = Object.keys(toc).filter(id => toc[id].level === 1);
+  const topLevelIds = Object.keys(toc).filter((id) => toc[id].level === 1);
   return <Items ids={topLevelIds} toc={toc} maxLevel={3} />;
 }

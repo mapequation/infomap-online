@@ -1,8 +1,7 @@
 import { Fragment } from "react";
-import "./Highlight.css";
+import "../styles/Highlight.module.css";
 
-
-const parseLine = line => {
+const parseLine = (line) => {
   const buff = [{ className: null, content: "" }];
   let isString = false;
 
@@ -10,7 +9,7 @@ const parseLine = line => {
     let curr = buff[buff.length - 1];
 
     switch (char) {
-      case "\"":
+      case '"':
         if (isString) {
           curr.content += char;
           isString = false;
