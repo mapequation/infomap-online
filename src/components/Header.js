@@ -9,6 +9,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Infomap from "@mapequation/infomap";
 import { FaGithub } from "react-icons/fa";
 import "../styles/Header.module.css";
@@ -24,10 +25,11 @@ export default function Header() {
         <HStack justify="space-between" align="center">
           <HStack justify="flex-start" align="center" spacing={3}>
             <a href="//mapequation.org">
-              <img
+              <Image
                 alt="MapEquation"
-                className="mapequation-logo"
-                src="//www.mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
+                width="57px"
+                height="57px"
+                src="https://mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
               />
             </a>
             <Box>

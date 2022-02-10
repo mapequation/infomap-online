@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Drawer,
@@ -13,11 +14,12 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import Documentation from "../components/Documentation";
 import Contents from "../components/Documentation/Contents";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
-import Infomap from "../components/Infomap";
+
+const Header = dynamic(() => import("../components/Header"), { ssr: false });
+const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
+const Documentation = dynamic(() => import("../components/Documentation"), { ssr: false });
 
 const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

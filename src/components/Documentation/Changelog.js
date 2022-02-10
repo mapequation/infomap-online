@@ -43,19 +43,19 @@ const Changes = ({ heading, changes }) => {
   );
 };
 
-const Breaking = props => <Changes heading="BREAKING CHANGES" {...props} />;
-const Features = props => <Changes heading="Features" {...props} />;
-const Fixes = props => <Changes heading="Fixes" {...props} />;
+const Breaking = (props) => <Changes heading="BREAKING CHANGES" {...props} />;
+const Features = (props) => <Changes heading="Features" {...props} />;
+const Fixes = (props) => <Changes heading="Fixes" {...props} />;
 
 const Release = ({ changes }) => {
   const features = [];
   const fixes = [];
   const breaking = [];
 
-  changes.forEach(change => {
+  changes.forEach((change) => {
     const { type, notes, scope } = change;
 
-    const breakingNote = notes.find(note => note.title === "BREAKING CHANGE");
+    const breakingNote = notes.find((note) => note.title === "BREAKING CHANGE");
     if (breakingNote) {
       breaking.push({ subject: breakingNote.text, scope });
     }
@@ -103,7 +103,8 @@ const Release = ({ changes }) => {
   );
 };
 
-const Changelog = ({ changes }) => {
+export default function Changelog() {
+  const changes = infomapChangelog;
   const [expanded, setExpanded] = useState(false);
 
   if (changes.length === 0) {
@@ -160,6 +161,4 @@ const Changelog = ({ changes }) => {
       </Divider>
     </>
   );
-};
-
-export default () => <Changelog changes={infomapChangelog} />;
+}

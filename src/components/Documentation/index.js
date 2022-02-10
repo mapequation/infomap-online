@@ -44,7 +44,8 @@ function Documentation() {
         <Heading id="InfomapOnline" />
         <p>
           Infomap Online is a client-side web application that enables users to run Infomap in the
-          web browser. Your data never leaves your computer; we don't store any data on our servers.
+          web browser. Your data never leaves your computer; we don&apos;t store any data on our
+          servers.
         </p>
         <p>
           We achieve this by compiling Infomap from <a href="//emscripten.org">C++ to JavaScript</a>
