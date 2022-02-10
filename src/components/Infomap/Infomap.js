@@ -1,9 +1,10 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Button, ButtonGroup, Grid, GridItem } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
+import { Step, Steps } from "chakra-ui-steps";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { Button, Form, Label, Menu, Message, Rail } from "semantic-ui-react";
+import { Form, Label, Menu, Message, Rail } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -11,13 +12,13 @@ import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
-import Steps from "./Steps";
 
 export default observer(
   class InfomapOnline extends Component {
-    onInputChange =
-      (activeInput) =>
-      (e, { name, value }) => {
+    onInputChange = (activeInput) => {
+      return (event) => {
+        // console.log(event);
+        const { name, value } = event;
         const { params } = store;
 
         if (activeInput === "network") {
@@ -40,6 +41,7 @@ export default observer(
           infomapError: "",
         });
       };
+    };
     onLoad = (activeInput) => (files) => {
       if (files.length < 1) return;
 
@@ -58,7 +60,6 @@ export default observer(
 
       this.setState({
         completed: false,
-        hasLocalforageError: false,
         infomapOutput: [],
       });
 
@@ -106,12 +107,9 @@ export default observer(
           completed: false,
         });
 
-      const onFinished = (content) => {
+      const onFinished = async (content) => {
         store.output.setContent(content);
-        localforage
-          .setItem("ftree", store.output.ftree)
-          .then(() => this.setState({ hasLocalforageError: false }))
-          .catch(() => this.setState({ hasLocalforageError: true }));
+        await localforage.setItem("ftree", store.output.ftree);
         this.setState({
           running: false,
           completed: true,
@@ -139,8 +137,7 @@ export default observer(
     }
 
     render() {
-      const { loading, running, completed, infomapError, infomapOutput, hasLocalforageError } =
-        this.state;
+      const { loading, running, completed, infomapError, infomapOutput } = this.state;
 
       const { activeInput, network, clusterData, metaData, output, params } = store;
 
@@ -202,28 +199,35 @@ export default observer(
               )}
             </Label>
           );
-        } else if (output.ftree && hasLocalforageError) {
-          navigatorLabel = (
-            <Label basic size="small" pointing="below">
-              Could not store network. Please download ftree and load manually.
-            </Label>
-          );
+          // } else if (output.ftree) {
+          //   navigatorLabel = (
+          //     <Label basic size="small" pointing="below">
+          //       Could not store network. Please download ftree and load manually.
+          //     </Label>
+          //   );
+        }
+      }
+
+      let activeStep = 0;
+      if (!!network.value) {
+        activeStep = 1;
+        if (completed || running) {
+          activeStep = 2;
+          if (output.downloaded) {
+            activeStep = 3;
+          }
         }
       }
 
       return (
-        <Grid templateColumns="1fr 3fr 1fr" maxWidth="120ch" mx="auto" p="1rem" gap="4rem">
-          {/*<Grid.Column width={16} textAlign="center">*/}
-          {/*  <Steps*/}
-          {/*    firstActive={!network.value}*/}
-          {/*    firstCompleted={!!network.value}*/}
-          {/*    secondActive={!!network.value && !completed}*/}
-          {/*    secondCompleted={completed || running}*/}
-          {/*    thirdActive={completed}*/}
-          {/*    thirdCompleted={output.downloaded}*/}
-          {/*  />*/}
-          {/*  <div ref={store.mainView} />*/}
-          {/*</Grid.Column>*/}
+        <Grid templateColumns="1fr 2fr 1fr" maxWidth="120ch" mx="auto" p="1rem" gap="2rem">
+          <GridItem colSpan={3} px={[0, 0, 0, "2rem"]}>
+            <Steps size="lg" activeStep={activeStep} colorScheme="blue" labelOrientation="vertical">
+              <Step label="Load network" description="Edit network or load file" />
+              <Step label="Run Infomap" description="Toggle parameters or add arguments" />
+              <Step label="Explore map!" description="Save result or open in Network Navigator" />
+            </Steps>
+          </GridItem>
 
           <GridItem className="network">
             <LoadButton onDrop={this.onLoad(activeInput)} accept={inputAccept[activeInput]}>
@@ -237,17 +241,12 @@ export default observer(
               onChange={this.onInputChange(activeInput)}
               value={inputValue}
               placeholder={`Input ${activeInput} here`}
-              wrap="off"
-            >
-              <Message attached="bottom" size="mini">
-                Load {activeInput} by dragging & dropping.
-                <br />
-                <a href="#Input">Supported formats.</a> {SupportedExtensions}
-              </Message>
-            </InputTextarea>
-            <Rail close="very" position="left" className="rail-menu">
-              <Menu compact text {...inputMenuProps} />
-            </Rail>
+            />
+            <Message attached="bottom" size="mini">
+              Load {activeInput} by dragging & dropping.
+              <br />
+              <a href="#Input">Supported formats.</a> {SupportedExtensions}
+            </Message>
             <Menu fluid className="button-menu" {...inputMenuProps} />
           </GridItem>
 
@@ -266,17 +265,21 @@ export default observer(
 
           <GridItem className="output">
             {navigatorLabel}
-            <Button.Group primary fluid>
+            <ButtonGroup isAttached>
               <Button
+                colorScheme="blue"
                 as="a"
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-                disabled={!output.ftree || running || hasLocalforageError}
-                className="navigator-button"
-              />
+                disabled={!output.ftree || running}
+                borderRightRadius={0}
+                //className="navigator-button"
+              >
+                Open in Network Navigator
+              </Button>
               <DownloadMenu disabled={running} />
-            </Button.Group>
+            </ButtonGroup>
 
             <Form loading={running}>
               <Form.TextArea
@@ -286,9 +289,6 @@ export default observer(
                 wrap="off"
               />
             </Form>
-            <Rail close="very" position="right" className="rail-menu">
-              <OutputMenu compact text {...outputMenuProps} />
-            </Rail>
             <OutputMenu fluid className="button-menu" {...outputMenuProps} />
           </GridItem>
         </Grid>
@@ -301,7 +301,6 @@ export default observer(
       running: false,
       completed: false,
       infomapError: "",
-      hasLocalforageError: false,
     };
   },
 );

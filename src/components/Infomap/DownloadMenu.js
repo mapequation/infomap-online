@@ -1,56 +1,55 @@
-import { Fragment } from "react";
-import { Dropdown, Icon } from "semantic-ui-react";
+import { ChevronDownIcon, DownloadIcon } from "@chakra-ui/icons";
+import {
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import store from "../../store";
 
 const FileItem = ({ file }) => (
-  <Dropdown.Item onClick={() => store.output.downloadFile(file.key)}>
-    <Icon name="download" color="blue" />
-    <span style={{ color: "#555" }}>{file.filename}</span>
-  </Dropdown.Item>
+  <MenuItem icon={<DownloadIcon />} onClick={() => store.output.downloadFile(file.key)}>
+    {file.filename}
+  </MenuItem>
 );
 
 export default function DownloadMenu({ disabled }) {
   const { files, physicalFiles, stateFiles } = store.output;
 
-  const DownloadAll = (
-    <>
-      <Dropdown.Divider />
-      <Dropdown.Item onClick={store.output.downloadAll}>
-        <Icon name="file archive" color="blue" />
-        <span style={{ color: "#555" }}>Download all</span>
-      </Dropdown.Item>
-    </>
-  );
-
-  const DropdownMenu =
-    stateFiles.length === 0 ? (
-      <Dropdown.Menu>
-        {physicalFiles.map((file) => (
-          <FileItem key={file.key} file={file} />
-        ))}
-        {DownloadAll}
-      </Dropdown.Menu>
-    ) : (
-      <Dropdown.Menu>
-        <Dropdown.Header>Physical nodes</Dropdown.Header>
-        {physicalFiles.map((file) => (
-          <FileItem key={file.key} file={file} />
-        ))}
-        <Dropdown.Header>State nodes</Dropdown.Header>
-        {stateFiles.map((file) => (
-          <FileItem key={file.key} file={file} />
-        ))}
-        {DownloadAll}
-      </Dropdown.Menu>
-    );
-
   return (
-    <Dropdown
-      disabled={disabled || files.length === 0}
-      className="button icon active"
-      trigger={<Fragment />}
-    >
-      {DropdownMenu}
-    </Dropdown>
+    <Menu>
+      <MenuButton
+        disabled={disabled || files.length === 0}
+        colorScheme="blue"
+        as={IconButton}
+        icon={<ChevronDownIcon />}
+        borderLeftRadius={0}
+      />
+      <MenuList>
+        {stateFiles.length === 0 ? (
+          physicalFiles.map((file) => <FileItem key={file.key} file={file} />)
+        ) : (
+          <>
+            <MenuGroup>Physical nodes</MenuGroup>
+            {physicalFiles.map((file) => (
+              <FileItem key={file.key} file={file} />
+            ))}
+            <MenuGroup>State nodes</MenuGroup>
+            {stateFiles.map((file) => (
+              <FileItem key={file.key} file={file} />
+            ))}
+          </>
+        )}
+        {files.length > 1 && (
+          <>
+            <MenuDivider />
+            <MenuItem onClick={store.output.downloadAll}>Download all</MenuItem>
+          </>
+        )}
+      </MenuList>
+    </Menu>
   );
 }

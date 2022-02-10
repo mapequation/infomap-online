@@ -15,17 +15,17 @@ body {
     background-size: 10px 10px;
 }
 
-a,
-a:link,
-a:visited {
-    color: #128bc2;
-    text-decoration: none;
-}
+/*a,*/
+/*a:link,*/
+/*a:visited {*/
+/*    color: #128bc2;*/
+/*    text-decoration: none;*/
+/*}*/
 
-a:active,
-a:hover {
-    color: #096992;
-}
+/*a:active,*/
+/*a:hover {*/
+/*    color: #096992;*/
+/*}*/
 
 .ui.header {
     color: #128bc2;

@@ -1,3 +1,4 @@
+import { Button, FormControl, Input, InputGroup, InputRightAddon } from "@chakra-ui/react";
 import { observer } from "mobx-react";
 import { Form } from "semantic-ui-react";
 import store from "../../store";
@@ -6,24 +7,28 @@ export default observer(({ loading, onClick }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (
-    <Form error={hasArgsError}>
-      <Form.Group widths="equal">
-        <Form.Input
+    <FormControl isLoading={loading} error={hasArgsError}>
+      <InputGroup>
+        <Input
           placeholder="Parameters"
           value={args}
-          error={hasArgsError ? { content: argsError, pointing: "below" } : false}
-          onChange={(e, { value }) => setArgs(value)}
-          action={
-            <Form.Button
-              primary
-              disabled={hasArgsError || loading}
-              loading={loading}
-              onClick={onClick}
-              content="Run Infomap"
-            />
-          }
+          isInvalid={hasArgsError}
+          errorBorderColor="red.600"
+          focusBorderColor={hasArgsError ? "red.600" : undefined}
+          onChange={(event) => setArgs(event.target.value)}
+          borderRightRadius={0}
         />
-      </Form.Group>
-    </Form>
+        <Button
+          colorScheme="blue"
+          disabled={hasArgsError || loading}
+          isLoading={loading}
+          onClick={onClick}
+          px={10}
+          borderLeftRadius={0}
+        >
+          Run Infomap
+        </Button>
+      </InputGroup>
+    </FormControl>
   );
 });
