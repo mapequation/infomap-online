@@ -1,6 +1,5 @@
+import { Box } from "@chakra-ui/react";
 import { Component } from "react";
-import { Segment } from "semantic-ui-react";
-
 
 export default class Console extends Component {
   keepScrolling = true;
@@ -22,11 +21,11 @@ export default class Console extends Component {
     const { content, placeholder, ...props } = this.props;
 
     return (
-      <Segment {...props}>
-        <div ref={el => (this.container = el)} onScroll={this.onScroll}>
+      <Box {...props}>
+        <div ref={(el) => (this.container = el)} onScroll={this.onScroll}>
           {content ? <code>{content}</code> : <div>{placeholder}</div>}
         </div>
-      </Segment>
+      </Box>
     );
   }
 }

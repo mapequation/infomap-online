@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 import { HamburgerIcon } from "@chakra-ui/icons";

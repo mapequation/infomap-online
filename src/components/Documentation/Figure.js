@@ -7,7 +7,6 @@ import imgNineTriangles from "../../images/nine-triangles.svg";
 import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
 import imgStateNetwork from "../../images/state-network.svg";
 
-
 const FIGURE_NUMBER = [
   "FigureNineTriangles",
   "FigureBipartite",
@@ -21,13 +20,13 @@ const FIGURE_NUMBER = [
   return figNumberMap;
 }, {});
 
-const ASSERT_FIGURE = id => {
+const ASSERT_FIGURE = (id) => {
   if (!FIGURE_NUMBER.hasOwnProperty(id)) {
     throw new Error(`No figure with id '${id}'.`);
   }
 };
 
-export const figNumber = id => {
+export const figNumber = (id) => {
   ASSERT_FIGURE(id);
   return FIGURE_NUMBER[id];
 };

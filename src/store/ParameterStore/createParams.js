@@ -1,12 +1,12 @@
-const getOptions = description => {
+const getOptions = (description) => {
   const match = description.match(/Options: (.*)\.$/);
   if (!(match && match[1])) return [];
 
-  return match[1].split(",").map(option => option.trim());
+  return match[1].split(",").map((option) => option.trim());
 };
 
 export default function createParams(params) {
-  return params.map(param => {
+  return params.map((param) => {
     if (param.short) {
       param.shortString = `${param.short}${param.shortType ? `<${param.shortType}>` : ""}`;
     }
@@ -56,7 +56,7 @@ export default function createParams(params) {
       param.active = false;
       const short = param.short.slice(1);
       param.maxValue = short === "h" ? 2 : 3;
-      param.stringValue = value => (value > 0 ? short.repeat(value) : short);
+      param.stringValue = (value) => (value > 0 ? short.repeat(value) : short);
     } else {
       param.value = param.default || false;
       param.active = !!param.value;

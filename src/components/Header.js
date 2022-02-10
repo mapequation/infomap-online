@@ -9,8 +9,8 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import Infomap from "@mapequation/infomap";
+import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 import "../styles/Header.module.css";
 

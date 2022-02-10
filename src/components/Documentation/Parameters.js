@@ -5,7 +5,6 @@ import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react"
 import store from "../../store";
 import { Heading } from "./Contents";
 
-
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({
     key,
@@ -16,7 +15,7 @@ const DropdownParameter = observer(({ param }) => {
   return (
     <Dropdown
       id={param.long}
-      ref={ref => store.params.setRef(param.long, ref)}
+      ref={(ref) => store.params.setRef(param.long, ref)}
       selection
       options={options}
       multiple={param.longType === "list"}
@@ -41,7 +40,7 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
-  const onDrop = files => {
+  const onDrop = (files) => {
     if (files.length < 1) return;
 
     const file = files[0];
@@ -93,7 +92,7 @@ const ToggleParameter = observer(({ param }) => {
 const IncrementalParameter = observer(({ param }) => {
   const { value, maxValue, stringValue } = param;
 
-  const setValue = value => store.params.setIncremental(param, value);
+  const setValue = (value) => store.params.setIncremental(param, value);
 
   return (
     <Button.Group id={param.long}>
@@ -113,7 +112,7 @@ const ParameterControl = ({ param }) => {
   return <ToggleParameter param={param} />;
 };
 
-const getHeaderProps = param => {
+const getHeaderProps = (param) => {
   const { active, long, dropdown, input, file, incremental, value } = param;
   const { params } = store;
 
@@ -139,7 +138,7 @@ const getHeaderProps = param => {
 
   if (input || file) {
     return {
-      onClick: event => {
+      onClick: (event) => {
         if (!active) return;
         if (file) {
           event.preventDefault();
@@ -157,7 +156,7 @@ const getHeaderProps = param => {
 const ParameterGroup = observer(({ group, advanced }) => {
   const params = store.params
     .getParamsForGroup(group)
-    .filter(param => !param.advanced || advanced)
+    .filter((param) => !param.advanced || advanced)
     .sort((a, b) => (a.advanced === b.advanced ? 0 : a.advanced ? 1 : -1));
 
   const id = `Params${group}`;

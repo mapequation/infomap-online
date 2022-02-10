@@ -1,7 +1,6 @@
 import { Icon, Menu } from "semantic-ui-react";
 import store from "../../store";
 
-
 const DocIcon = (
   <a href="#PhysicalAndStateOutput">
     <Icon name="question circle" />

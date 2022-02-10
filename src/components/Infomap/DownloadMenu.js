@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { Dropdown, Icon } from "semantic-ui-react";
 import store from "../../store";
 
-
 const FileItem = ({ file }) => (
   <Dropdown.Item onClick={() => store.output.downloadFile(file.key)}>
     <Icon name="download" color="blue" />
@@ -26,7 +25,7 @@ export default function DownloadMenu({ disabled }) {
   const DropdownMenu =
     stateFiles.length === 0 ? (
       <Dropdown.Menu>
-        {physicalFiles.map(file => (
+        {physicalFiles.map((file) => (
           <FileItem key={file.key} file={file} />
         ))}
         {DownloadAll}
@@ -34,11 +33,11 @@ export default function DownloadMenu({ disabled }) {
     ) : (
       <Dropdown.Menu>
         <Dropdown.Header>Physical nodes</Dropdown.Header>
-        {physicalFiles.map(file => (
+        {physicalFiles.map((file) => (
           <FileItem key={file.key} file={file} />
         ))}
         <Dropdown.Header>State nodes</Dropdown.Header>
-        {stateFiles.map(file => (
+        {stateFiles.map((file) => (
           <FileItem key={file.key} file={file} />
         ))}
         {DownloadAll}

@@ -1,10 +1,9 @@
 import arg from "arg";
 
-
 export default function getArgSpec(params) {
   const spec = {};
 
-  params.forEach(param => {
+  params.forEach((param) => {
     const { short, long, longType, incremental } = param;
 
     if (short) {
