@@ -1,7 +1,9 @@
-import Infomap from "@mapequation/infomap";
+import dynamic from "next/dynamic";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Code from "../Code";
 import { Heading } from "./Contents";
+
+const Version = dynamic(() => import("../InfomapVersion"), { ssr: false });
 
 export default function Install() {
   return (
@@ -120,7 +122,7 @@ export default function Install() {
 
       <p>
         On macOS, you can install Apple&apos;s development tools with{" "}
-        <code>xcode-select --install</code> and the <a href="\\brew.sh">Homebrew</a> version of
+        <code>xcode-select --install</code> and the <a href="//brew.sh">Homebrew</a> version of
         OpenMP with <code>brew install libomp</code>.
       </p>
 
@@ -132,9 +134,9 @@ export default function Install() {
       <Heading id="Download" />
 
       <p>
-        <a href={`//github.com/mapequation/infomap/archive/v${Infomap.__version__}.zip`}>
+        <a href="//github.com/mapequation/infomap/archive/refs/heads/master.zip">
           <Icon name="download" />
-          Download Infomap {Infomap.__version__} source code
+          Download Infomap <Version /> source code
         </a>{" "}
         or check the <a href="//github.com/mapequation/infomap/releases">releases page</a> for all
         releases.
@@ -143,7 +145,10 @@ export default function Install() {
       <p>Unzip the file and compile Infomap by running</p>
 
       <Code>
-        unzip infomap-{Infomap.__version__}.zip && cd infomap-{Infomap.__version__}
+        unzip infomap-
+        <Version />
+        .zip && cd infomap-
+        <Version />
         <br />
         make -j
       </Code>

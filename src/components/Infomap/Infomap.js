@@ -1,8 +1,9 @@
+import { Grid, GridItem } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { Button, Form, Grid, Icon, Label, Menu, Message, Rail } from "semantic-ui-react";
+import { Button, Form, Label, Menu, Message, Rail } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -211,27 +212,21 @@ export default observer(
       }
 
       return (
-        <Grid container stackable className="infomap">
-          <Grid.Column width={16} textAlign="center">
-            <Steps
-              firstActive={!network.value}
-              firstCompleted={!!network.value}
-              secondActive={!!network.value && !completed}
-              secondCompleted={completed || running}
-              thirdActive={completed}
-              thirdCompleted={output.downloaded}
-            />
-            <div ref={store.mainView} />
-          </Grid.Column>
+        <Grid templateColumns="1fr 3fr 1fr" maxWidth="120ch" mx="auto" p="1rem" gap="4rem">
+          {/*<Grid.Column width={16} textAlign="center">*/}
+          {/*  <Steps*/}
+          {/*    firstActive={!network.value}*/}
+          {/*    firstCompleted={!!network.value}*/}
+          {/*    secondActive={!!network.value && !completed}*/}
+          {/*    secondCompleted={completed || running}*/}
+          {/*    thirdActive={completed}*/}
+          {/*    thirdCompleted={output.downloaded}*/}
+          {/*  />*/}
+          {/*  <div ref={store.mainView} />*/}
+          {/*</Grid.Column>*/}
 
-          <Grid.Column width={4} className="network">
-            <LoadButton
-              fluid
-              primary
-              onDrop={this.onLoad(activeInput)}
-              accept={inputAccept[activeInput]}
-            >
-              <Icon name="file" />
+          <GridItem className="network">
+            <LoadButton onDrop={this.onLoad(activeInput)} accept={inputAccept[activeInput]}>
               Load {activeInput}
             </LoadButton>
 
@@ -254,9 +249,9 @@ export default observer(
               <Menu compact text {...inputMenuProps} />
             </Rail>
             <Menu fluid className="button-menu" {...inputMenuProps} />
-          </Grid.Column>
+          </GridItem>
 
-          <Grid.Column width={8} floated="left" className="run">
+          <GridItem className="run">
             <InputParameters loading={running} onClick={this.run} />
 
             <Form error={hasInfomapError}>
@@ -267,9 +262,9 @@ export default observer(
               />
               <Message error size="tiny" attached="bottom" content={infomapError} />
             </Form>
-          </Grid.Column>
+          </GridItem>
 
-          <Grid.Column width={4} className="output">
+          <GridItem className="output">
             {navigatorLabel}
             <Button.Group primary fluid>
               <Button
@@ -295,7 +290,7 @@ export default observer(
               <OutputMenu compact text {...outputMenuProps} />
             </Rail>
             <OutputMenu fluid className="button-menu" {...outputMenuProps} />
-          </Grid.Column>
+          </GridItem>
         </Grid>
       );
     }

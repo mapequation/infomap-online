@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
 import { Heading } from "./Contents";
+import styles from "../../styles/Documentation.module.css";
 
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({
@@ -164,7 +165,7 @@ const ParameterGroup = observer(({ group, advanced }) => {
   return (
     <>
       <Heading id={id} />
-      <Item.Group className="paramGroup">
+      <Item.Group className={styles.paramGroup}>
         {params.map((param, key) => (
           <Item key={key}>
             <Item.Content verticalAlign="top">

@@ -1,5 +1,6 @@
+import { Button } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
-import { Button, Ref } from "semantic-ui-react";
+import { FaFile } from "react-icons/fa";
 
 export default function LoadButton({ onDrop, accept, children, ...props }) {
   const { getRootProps, getInputProps } = useDropzone({
@@ -10,11 +11,16 @@ export default function LoadButton({ onDrop, accept, children, ...props }) {
   const { ref, ...rootProps } = getRootProps();
 
   return (
-    <Ref innerRef={ref}>
-      <Button {...rootProps} {...props}>
-        {children}
-        <input {...getInputProps()} />
-      </Button>
-    </Ref>
+    <Button
+      leftIcon={<FaFile />}
+      ref={ref}
+      isFullWidth
+      colorScheme="blue"
+      {...rootProps}
+      {...props}
+    >
+      {children}
+      <input {...getInputProps()} />
+    </Button>
   );
 }

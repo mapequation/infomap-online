@@ -9,10 +9,11 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import Infomap from "@mapequation/infomap";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { FaGithub } from "react-icons/fa";
-import "../styles/Header.module.css";
+import styles from "../styles/Header.module.css";
+
+const Version = dynamic(() => import("./InfomapVersion"), { ssr: false });
 
 export default function Header() {
   const buttonProps = {
@@ -20,12 +21,12 @@ export default function Header() {
   };
 
   return (
-    <header className="page-header">
+    <header className={styles.header}>
       <Container maxW="120ch">
         <HStack justify="space-between" align="center">
           <HStack justify="flex-start" align="center" spacing={3}>
             <a href="//mapequation.org">
-              <Image
+              <img
                 alt="MapEquation"
                 width="57px"
                 height="57px"
@@ -44,7 +45,7 @@ export default function Header() {
           </HStack>
           <ButtonGroup variant="ghost" colorScheme="blue">
             <Button as="a" rightIcon={<DownloadIcon />} href="#Install" {...buttonProps}>
-              Infomap {Infomap.__version__}
+              Infomap <Version />
             </Button>
             <IconButton
               as="a"

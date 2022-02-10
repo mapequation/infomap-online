@@ -21,11 +21,9 @@ export default class Console extends Component {
     const { content, placeholder, ...props } = this.props;
 
     return (
-      <Box {...props}>
-        <div ref={(el) => (this.container = el)} onScroll={this.onScroll}>
-          {content ? <code>{content}</code> : <div>{placeholder}</div>}
-        </div>
-      </Box>
+      <div ref={(el) => (this.container = el)} onScroll={this.onScroll}>
+        {content ? <code>{content}</code> : <div>{placeholder}</div>}
+      </div>
     );
   }
 }

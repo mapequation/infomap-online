@@ -1,4 +1,4 @@
-import Infomap, { changelog as infomapChangelog } from "@mapequation/infomap";
+//import Infomap from "@mapequation/infomap";
 import TeX from "@matejmazur/react-katex";
 import { Message } from "semantic-ui-react";
 import store from "../../store";
@@ -7,7 +7,7 @@ import { Heading } from "./Contents";
 import Figure, { FigLink } from "./Figure";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
-const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
+//const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
 
 export default function Output() {
   return (
@@ -26,9 +26,9 @@ export default function Output() {
       </p>
 
       <Code highlight>
-        {`# v${Infomap.__version__}
+        {`# v2.0.0
 # ./Infomap network.net . --ftree --clu
-# started at ${dateOfLastVersion}
+# started at ${new Date().toLocaleString()}
 # completed in 0.114 s
 # partitioned into 2 levels with 2 top modules
 # codelength 2.32073 bits

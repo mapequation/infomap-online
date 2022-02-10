@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Label, Segment } from "semantic-ui-react";
-import "../styles/Code.module.css";
+import styles from "../styles/Code.module.css";
 import Highlight from "./Highlight";
 
 export default function Code({ highlight, lines, labelProps, children }) {
@@ -15,9 +15,9 @@ export default function Code({ highlight, lines, labelProps, children }) {
   const inner = highlight ? <Highlight content={children} /> : children;
 
   return (
-    <Segment as="pre" className="code">
+    <Segment as="pre">
       {labelProps && <Label as="a" attached="top" {...labelProps} />}
-      <code>{inner}</code>
+      <code className={styles.code}>{inner}</code>
       {lines && (
         <Label
           as="a"

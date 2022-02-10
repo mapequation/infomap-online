@@ -1,20 +1,26 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import TeX from "@matejmazur/react-katex";
 import "katex/dist/katex.min.css";
+import dynamic from "next/dynamic";
 import { Divider } from "semantic-ui-react";
-import "../../styles/Documentation.module.css";
+import styles from "../../styles/Documentation.module.css";
 import Algorithm from "./Algorithm";
-import Changelog from "./Changelog";
 import { Heading } from "./Contents";
 import Features from "./Features";
 import Feedback from "./Feedback";
-import Input from "./Input";
 import Install from "./Install";
 import MapEquation from "./MapEquation";
-import Output from "./Output";
-import Parameters from "./Parameters";
 import References from "./References";
 import Running from "./Running";
+// import Input from "./Input";
+// import Output from "./Output";
+// import Parameters from "./Parameters";
+// import Changelog from "./Changelog";
+
+const Input = dynamic(() => import("./Input"), { ssr: false });
+const Output = dynamic(() => import("./Output"), { ssr: false });
+const Parameters = dynamic(() => import("./Parameters"), { ssr: false });
+const Changelog = dynamic(() => import("./Changelog"), { ssr: false });
 
 function Documentation() {
   return (
@@ -25,7 +31,7 @@ function Documentation() {
       p="1rem"
       gap="4rem"
       lineHeight="1.6em"
-      className="documentation"
+      className={styles.documentation}
     >
       <GridItem>
         <Heading id="Infomap" />

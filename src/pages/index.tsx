@@ -13,12 +13,12 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
+import Header from "../components/Header";
 import Contents from "../components/Documentation/Contents";
+import Documentation from "../components/Documentation";
 import Footer from "../components/Footer";
 
-const Header = dynamic(() => import("../components/Header"), { ssr: false });
 const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
-const Documentation = dynamic(() => import("../components/Documentation"), { ssr: false });
 
 const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
