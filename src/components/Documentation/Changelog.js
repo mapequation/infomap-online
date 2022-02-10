@@ -2,6 +2,7 @@ import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
 import { Divider, Header, Icon, List } from "semantic-ui-react";
 import { Heading } from "./Contents";
+import styles from "../../styles/Documentation.module.css";
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -19,7 +20,7 @@ const Change = ({ change }) => {
       </a>
     ) : null;
   return (
-    <List.Item className="changelogItem">
+    <List.Item className={styles.changelogItem}>
       <span>
         {Scope}
         {Subject}

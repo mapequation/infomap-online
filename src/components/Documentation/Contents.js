@@ -1,6 +1,7 @@
 import { Header } from "semantic-ui-react";
 import styles from "../../styles/Contents.module.css";
 
+
 const tocSource = {
   Infomap: {
     heading: "Infomap",
@@ -134,7 +135,7 @@ const tocSource = {
   },
 };
 
-const toc = (function (tocSource) {
+const toc = (function(tocSource) {
   const ids = Object.keys(tocSource);
   const tree = tocSource;
 
@@ -205,10 +206,9 @@ const Item = ({ id, toc, level, maxLevel }) => {
 
 const Items = ({ ids, toc, level = 1, maxLevel }) => {
   if (!ids) return null;
-  let classNames = styles.tocList;
-  if (level === 1) {
-    classNames += ` ${styles.tocList1}`;
-  }
+
+  const classNames = level === 1 ? `${styles.tocList} ${styles.tocList1}` : styles.tocList;
+
   return (
     <ol className={classNames}>
       {ids.map((id) => (

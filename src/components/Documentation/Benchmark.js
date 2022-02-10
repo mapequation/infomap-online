@@ -12,21 +12,13 @@ export default function Benchmark() {
         <a href="//arxiv.org/abs/0805.4770">described by Andrea Lancichinetti et al</a>.
       </p>
 
-      <img
-        className="header-img"
-        src="assets/img/benchmark-performance.svg"
-        alt="Speed benchmark"
-      />
+      <img src="/assets/img/benchmark-performance.svg" alt="Speed benchmark" />
       <figcaption>
         <strong>Speed benchmark</strong>
         The speed is measured as the time needed to partition the benchmark networks in two levels.
       </figcaption>
 
-      <img
-        className="header-img"
-        src="assets/img/benchmark-accuracy.svg"
-        alt="Accuracy benchmark"
-      />
+      <img src="/assets/img/benchmark-accuracy.svg" alt="Accuracy benchmark" />
       <figcaption>
         <strong>Accuracy benchmark</strong>
         The accuracy is measured as Normalized Mutual Information (NMI) between the output cluster
@@ -34,16 +26,8 @@ export default function Benchmark() {
         sizes between 20 and 200.
       </figcaption>
 
-      <img
-        className="header-img"
-        src="assets/img/benchmark-hier-accuracy.svg"
-        alt="Hierarchical benchmark"
-      />
-      <img
-        className="header-img"
-        src="assets/img/triangle-network-levels_3.svg"
-        alt="Triangle network"
-      />
+      <img src="/assets/img/benchmark-hier-accuracy.svg" alt="Hierarchical benchmark" />
+      <img src="/assets/img/triangle-network-levels_3.svg" alt="Triangle network" />
 
       <figcaption>
         <strong>Hierarchical accuracy benchmark.</strong>
@@ -57,11 +41,7 @@ export default function Benchmark() {
         different levels.
       </figcaption>
 
-      <img
-        className="header-img"
-        src="assets/img/infomap-evolution.svg"
-        alt="Evolution of Infomap"
-      />
+      <img src="/assets/img/infomap-evolution.svg" alt="Evolution of Infomap" />
       <figcaption>
         <strong>Performance evolution of Infomap.</strong>
         The performance is measured on a real-world network with code from different dates in the
