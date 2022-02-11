@@ -1,10 +1,10 @@
-import { Button, ButtonGroup, Grid, GridItem } from "@chakra-ui/react";
+import { Button, ButtonGroup, FormControl, Grid, GridItem, Textarea } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import { Step, Steps } from "chakra-ui-steps";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { Form, Label, Menu, Message, Rail } from "semantic-ui-react";
+import { Form, Menu } from "semantic-ui-react";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -138,7 +138,6 @@ export default observer(
 
     render() {
       const { loading, running, completed, infomapError, infomapOutput } = this.state;
-
       const { activeInput, network, clusterData, metaData, output, params } = store;
 
       const inputOptions = {
@@ -192,18 +191,18 @@ export default observer(
       if (completed && !hasInfomapError) {
         if (!output.ftree) {
           navigatorLabel = (
-            <Label basic size="small" pointing="below">
+            <div>
               Network Navigator requires ftree output.{" "}
               {!params.getParam("--ftree").active && (
                 <a onClick={() => params.setArgs(params.args + " --ftree")}>Enable.</a>
               )}
-            </Label>
+            </div>
           );
           // } else if (output.ftree) {
           //   navigatorLabel = (
-          //     <Label basic size="small" pointing="below">
+          //     <div>
           //       Could not store network. Please download ftree and load manually.
-          //     </Label>
+          //     </div>
           //   );
         }
       }
@@ -230,7 +229,12 @@ export default observer(
           </GridItem>
 
           <GridItem className="network">
-            <LoadButton onDrop={this.onLoad(activeInput)} accept={inputAccept[activeInput]}>
+            <LoadButton
+              mb="1rem"
+              size="sm"
+              onDrop={this.onLoad(activeInput)}
+              accept={inputAccept[activeInput]}
+            >
               Load {activeInput}
             </LoadButton>
 
@@ -241,54 +245,71 @@ export default observer(
               onChange={this.onInputChange(activeInput)}
               value={inputValue}
               placeholder={`Input ${activeInput} here`}
+              spellCheck="false"
+              wrap="off"
+              overflow="auto"
+              resize="none"
+              h="60ch"
+              variant="outline"
+              bg="white"
+              fontSize="sm"
             />
-            <Message attached="bottom" size="mini">
+            <div>
               Load {activeInput} by dragging & dropping.
               <br />
               <a href="#Input">Supported formats.</a> {SupportedExtensions}
-            </Message>
+            </div>
             <Menu fluid className="button-menu" {...inputMenuProps} />
           </GridItem>
 
           <GridItem className="run">
-            <InputParameters loading={running} onClick={this.run} />
+            <InputParameters loading={running} onClick={this.run} mb="1rem" />
 
             <Form error={hasInfomapError}>
-              <Console
-                content={consoleContent}
-                placeholder="Infomap output will be printed here"
-                attached={hasInfomapError ? "top" : false}
-              />
-              <Message error size="tiny" attached="bottom" content={infomapError} />
+              <Console content={consoleContent} placeholder="Infomap output will be printed here" />
             </Form>
+            <div>{infomapError}</div>
           </GridItem>
 
           <GridItem className="output">
             {navigatorLabel}
-            <ButtonGroup isAttached>
+            <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={running}>
               <Button
+                isFullWidth
                 colorScheme="blue"
                 as="a"
+                _hover={{
+                  color: "white",
+                  bg: "blue.600",
+                }}
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-                disabled={!output.ftree || running}
+                disabled={!output.ftree}
                 borderRightRadius={0}
-                //className="navigator-button"
+                size="sm"
               >
-                Open in Network Navigator
+                Open in Navigator
               </Button>
               <DownloadMenu disabled={running} />
             </ButtonGroup>
 
-            <Form loading={running}>
-              <Form.TextArea
+            <FormControl loading={running}>
+              <Textarea
+                //readOnly
+                onCopy={this.onCopyClusters}
                 value={output.activeContent}
                 placeholder="Cluster output will be printed here"
-                onCopy={this.onCopyClusters}
+                spellCheck="false"
                 wrap="off"
+                overflow="auto"
+                resize="none"
+                h="60ch"
+                variant="outline"
+                bg="white"
+                fontSize="sm"
               />
-            </Form>
+            </FormControl>
             <OutputMenu fluid className="button-menu" {...outputMenuProps} />
           </GridItem>
         </Grid>

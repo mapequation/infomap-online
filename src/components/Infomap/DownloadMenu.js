@@ -22,11 +22,12 @@ export default function DownloadMenu({ disabled }) {
   return (
     <Menu>
       <MenuButton
-        disabled={disabled || files.length === 0}
+        disabled={files.length === 0}
         colorScheme="blue"
         as={IconButton}
         icon={<ChevronDownIcon />}
         borderLeftRadius={0}
+        size="sm"
       />
       <MenuList>
         {stateFiles.length === 0 ? (

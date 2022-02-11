@@ -3,11 +3,11 @@ import { observer } from "mobx-react";
 import { Form } from "semantic-ui-react";
 import store from "../../store";
 
-export default observer(({ loading, onClick }) => {
+export default observer(({ loading, onClick, ...props }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (
-    <FormControl isLoading={loading} error={hasArgsError}>
+    <FormControl isLoading={loading} error={hasArgsError} {...props}>
       <InputGroup>
         <Input
           placeholder="Parameters"
@@ -17,6 +17,8 @@ export default observer(({ loading, onClick }) => {
           focusBorderColor={hasArgsError ? "red.600" : undefined}
           onChange={(event) => setArgs(event.target.value)}
           borderRightRadius={0}
+          size="sm"
+          variant="solid"
         />
         <Button
           colorScheme="blue"
@@ -25,6 +27,7 @@ export default observer(({ loading, onClick }) => {
           onClick={onClick}
           px={10}
           borderLeftRadius={0}
+          size="sm"
         >
           Run Infomap
         </Button>
