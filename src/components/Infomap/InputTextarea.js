@@ -6,7 +6,7 @@ export default function InputTextarea({ onDrop, accept, loading, ...props }) {
 
   return (
     <FormControl {...getRootProps()} isLoading={loading}>
-      <Textarea h="50ch" variant="outline" resize="none" {...props} />
+      <Textarea h="50ch" variant="solid" resize="none" {...props} />
     </FormControl>
   );
 }
