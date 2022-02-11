@@ -1,17 +1,19 @@
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { Button, Icon, ListItem, UnorderedList, chakra } from "@chakra-ui/react";
 import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
-import { Header, Icon, List } from "semantic-ui-react";
-import { Heading } from "../Contents";
+import { IoEllipsisVertical } from "react-icons/io5";
 import styles from "../../styles/Documentation.module.css";
+import { Heading } from "../Contents";
 
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
   const Scope = scope ? <strong>{scope} </strong> : null;
   const Subject = (
-    <span style={{ whiteSpace: "pre" }}>
+    <chakra.span whiteSpace="pre">
       {subject.replace(/ \(#\d+\)$/, "").replace(/\.\s/g, ".\n")}
-    </span>
+    </chakra.span>
   );
   const Reference =
     (references || []).length > 0 ? (
@@ -20,14 +22,15 @@ const Change = ({ change }) => {
         (#{references[0].issue})
       </a>
     ) : null;
+
   return (
-    <List.Item className={styles.changelogItem}>
-      <span>
+    <ListItem className={styles.changelogItem}>
+      <chakra.span wordBreak="break-all">
         {Scope}
         {Subject}
         {Reference}
-      </span>
-    </List.Item>
+      </chakra.span>
+    </ListItem>
   );
 };
 
@@ -36,11 +39,11 @@ const Changes = ({ heading, changes }) => {
   return (
     <>
       <h4>{heading}</h4>
-      <List bulleted>
+      <UnorderedList>
         {changes.map((change, i) => (
           <Change key={i} change={change} />
         ))}
-      </List>
+      </UnorderedList>
     </>
   );
 };
@@ -121,20 +124,20 @@ export default function Changelog() {
   });
 
   const maxVisible = 15;
-  let visible = 0;
+  let numVisible = 0;
   let lastVisibleIndex = 0;
 
-  for (let i = 0; i < changes.length && visible <= maxVisible; ++i) {
+  for (let i = 0; i < changes.length && numVisible <= maxVisible; ++i) {
     const change = changes[i];
     if (change.type === "feat" || change.type === "fix") {
       lastVisibleIndex = i;
-      ++visible;
+      ++numVisible;
     }
   }
 
   const lastIndex = expanded ? changes.length - 1 : lastVisibleIndex;
-
   const releases = [];
+
   releaseIndices.forEach((releaseIndex, i) => {
     let nextReleaseIndexOrEnd =
       i < releaseIndices.length - 1 ? releaseIndices[i + 1] : changes.length - 1;
@@ -149,16 +152,16 @@ export default function Changelog() {
       {releases.map((changes, i) => (
         <Release key={i} changes={changes} />
       ))}
-      {!expanded && (
-        <Icon
-          style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em" }}
-          name="ellipsis vertical"
-        />
-      )}
-      <Header as="h5" onClick={() => setExpanded(!expanded)}>
-        <Icon name={expanded ? "angle up" : "angle down"} />
+      {!expanded && <Icon as={IoEllipsisVertical} my="1em" ml="0.8em" />}
+      <Button
+        size="sm"
+        isFullWidth
+        variant="ghost"
+        leftIcon={expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        onClick={() => setExpanded(!expanded)}
+      >
         {expanded ? "Show less" : "Show more"}
-      </Header>
+      </Button>
     </>
   );
 }
