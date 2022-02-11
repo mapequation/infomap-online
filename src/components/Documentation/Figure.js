@@ -1,11 +1,5 @@
 import TeX from "@matejmazur/react-katex";
-import imgBipartite from "../../images/bipartite.svg";
-import imgMultilayerNetworkFull from "../../images/multilayer-network-full.svg";
-import imgMultilayerNetworkIntraInter from "../../images/multilayer-network-intra-inter.svg";
-import imgMultilayerNetworkIntra from "../../images/multilayer-network-intra.svg";
-import imgNineTriangles from "../../images/nine-triangles.svg";
-import imgPhysicalAndStateNodes from "../../images/physical-and-state-nodes.svg";
-import imgStateNetwork from "../../images/state-network.svg";
+
 
 const FIGURE_NUMBER = [
   "FigureNineTriangles",
@@ -40,7 +34,7 @@ const Figure = ({ id }) => {
     case "FigureNineTriangles":
       return (
         <figure id={id}>
-          <img src={imgNineTriangles} alt="Network of nine triangles" />
+          <img src="/infomap/images/nine-triangles.svg" alt="Network of nine triangles" />
           <figcaption>
             <strong>Figure {figNumber(id)}.</strong> Network generated from a Sierpinski fractal of
             three levels with nine triangles at the bottom level. Note that the optimal solution is
@@ -52,7 +46,7 @@ const Figure = ({ id }) => {
       return (
         <figure id={id}>
           <img
-            src={imgBipartite}
+            src="/infomap/images/bipartite.svg"
             style={{ width: "40%" }}
             alt="Bipartite network with three round and two square nodes"
           />
@@ -65,7 +59,7 @@ const Figure = ({ id }) => {
     case "FigureMultilayerNetworkFull":
       return (
         <figure id={id}>
-          <img src={imgMultilayerNetworkFull} alt="Multilayer network" />
+          <img src="/infomap/images/multilayer-network-full.svg" alt="Multilayer network" />
           <figcaption>
             <strong>Figure {figNumber(id)}.</strong> A multilayer network with five physical nodes{" "}
             <TeX>i,\dotsc,m</TeX> in two layers, <TeX>\alpha</TeX> and <TeX>\beta</TeX>. With the{" "}
@@ -83,7 +77,7 @@ const Figure = ({ id }) => {
       return (
         <figure id={id}>
           <img
-            src={imgMultilayerNetworkIntraInter}
+            src="/infomap/images/multilayer-network-intra-inter.svg"
             alt="Multilayer network in intra-inter format"
           />
           <figcaption>
@@ -104,7 +98,7 @@ const Figure = ({ id }) => {
       return (
         <figure id={id}>
           <img
-            src={imgMultilayerNetworkIntra}
+            src="/infomap/images/multilayer-network-intra.svg"
             alt="Multilayer network using inter-layer relaxation"
           />
           <figcaption>
@@ -124,7 +118,7 @@ const Figure = ({ id }) => {
     case "FigureStateNetwork":
       return (
         <figure id={id}>
-          <img src={imgStateNetwork} alt="State network" />
+          <img src="/infomap/images/state-network.svg" alt="State network" />
           <figcaption>
             <strong>Figure {figNumber(id)}.</strong> A State network with five physical nodes{" "}
             <TeX>i,\dotsc,m</TeX> and six state nodes{" "}
@@ -136,7 +130,7 @@ const Figure = ({ id }) => {
     case "FigurePhysicalAndStateNodes":
       return (
         <figure id={id}>
-          <img src={imgPhysicalAndStateNodes} alt="Physical and state nodes in output" />
+          <img src="/infomap/images/physical-and-state-nodes.svg" alt="Physical and state nodes in output" />
           <figcaption>
             <strong>Figure {figNumber(id)}.</strong> Network flows at different modular levels.
             Large circles represent physical nodes, small circles represent state nodes, and dashed

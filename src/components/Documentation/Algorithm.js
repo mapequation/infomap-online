@@ -46,7 +46,7 @@ export default function Algorithm() {
       </p>
 
       <chakra.p pl={10}>
-        <chakra.p mb={0}>Submodule movements</chakra.p>
+        <em>Submodule movements:</em>
         First, each cluster is treated as a network on its own and the main algorithm is applied to
         this network. This procedure generates one or more submodules for each module. Then all
         submodules are moved back to their respective modules of the previous step. At this stage,
@@ -55,7 +55,7 @@ export default function Algorithm() {
       </chakra.p>
 
       <chakra.p pl={10}>
-        <chakra.p mb={0}>Single-node movements</chakra.p>
+        <em>Single-node movements:</em>
         First, each node is re-assigned to be the sole member of its own module, in order to allow
         for single-node movements. Then all nodes are moved back to their respective modules of the
         previous step. At this stage, with the same partition as in the previous step but with each

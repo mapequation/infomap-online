@@ -183,7 +183,7 @@ export default function Input() {
         {store.getExampleNetwork("multilayer")}
       </Code>
 
-      <Message info>
+      <Message bg="info">
         The <code>*Multilayer</code> heading is no longer optional.
       </Message>
 

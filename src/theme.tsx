@@ -1,12 +1,8 @@
 import "@fontsource/philosopher/700.css";
 import "@fontsource/open-sans/400.css";
 import { extendTheme } from "@chakra-ui/react";
-import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
 const theme = extendTheme({
-  components: {
-    Steps,
-  },
   styles: {
     global: {
       body: {

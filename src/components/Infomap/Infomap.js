@@ -5,19 +5,20 @@ import {
   FormControl,
   Grid,
   GridItem,
+  HStack,
+  Image,
   List,
-  ListIcon,
   ListItem,
   Progress,
-  Textarea, VStack,
+  Text,
+  Textarea,
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
-import { Step, Steps } from "chakra-ui-steps";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { MdCheckCircle } from "react-icons/md";
 import store from "../../store";
+import { Step, Steps } from "../Steps";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
 import InputParameters from "./InputParameters";
@@ -232,11 +233,35 @@ export default observer(
           p="1rem"
           gap="2rem"
         >
-          <GridItem area="steps" px={[0, 0, 0, "2rem"]}>
-            <Steps size="lg" activeStep={activeStep} colorScheme="blue" labelOrientation="vertical">
-              <Step label="Load network" description="Edit network or load file" />
-              <Step label="Run Infomap" description="Toggle parameters or add arguments" />
-              <Step label="Explore map!" description="Save result or open in Network Navigator" />
+          <GridItem area="steps">
+            <Steps activeStep={activeStep}>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image src="/infomap/images/step1.png" alt="step 1" boxSize="48px" />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>Load network</Text>
+                    <Text fontSize="xs" my={0}>Edit network or load file</Text>
+                  </Box>
+                </HStack>
+              </Step>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image src="/infomap/images/step2.png" alt="step 1" boxSize="48px" />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>Run Infomap</Text>
+                    <Text fontSize="xs" my={0}>Toggle parameters or add arguments</Text>
+                  </Box>
+                </HStack>
+              </Step>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image src="/infomap/images/step3.png" alt="step 1" boxSize="48px" />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>Explore map!</Text>
+                    <Text fontSize="xs" my={0}>Save result or open in Network Navigator</Text>
+                  </Box>
+                </HStack>
+              </Step>
             </Steps>
           </GridItem>
 
