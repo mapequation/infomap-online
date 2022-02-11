@@ -36,9 +36,9 @@ export default function Input() {
 
       <Code
         highlight
-        lines={10}
+        startingHeight={200}
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => {
             const param = store.params.getParam("--num-trials");
             store.params.setInput(param, 5);
@@ -64,9 +64,9 @@ export default function Input() {
 
       <Code
         highlight
-        lines={15}
+        startingHeight={300}
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("pajek"),
         }}
       >
@@ -124,7 +124,7 @@ export default function Input() {
       <Code
         highlight
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("bipartite"),
         }}
       >
@@ -136,7 +136,7 @@ export default function Input() {
       <Code
         highlight
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("bipartiteLinkList"),
         }}
       >
@@ -176,7 +176,7 @@ export default function Input() {
       <Code
         highlight
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("multilayer"),
         }}
       >
@@ -227,7 +227,7 @@ export default function Input() {
       <Code
         highlight
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("multilayerIntraInter"),
         }}
       >
@@ -257,7 +257,7 @@ export default function Input() {
       <Code
         highlight
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("multilayerIntra"),
         }}
       >
@@ -275,9 +275,9 @@ export default function Input() {
 
       <Code
         highlight
-        lines={23}
+        startingHeight={400}
         labelProps={{
-          content: "Run example",
+          children: "Run example",
           onClick: () => store.runExample("states"),
         }}
       >

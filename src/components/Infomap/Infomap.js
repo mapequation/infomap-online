@@ -209,6 +209,7 @@ export default observer(
 
       return (
         <Grid
+          ref={store.mainView}
           templateAreas={{
             base: "'steps' 'input' 'inputMenu' 'console' 'output' 'outputMenu'",
             lg: "'steps steps steps' 'input console output' 'inputMenu empty outputMenu'",
