@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { Component } from "react";
 
+
 export default class Console extends Component {
   keepScrolling = true;
   onScroll = () => {
@@ -35,7 +36,7 @@ export default class Console extends Component {
         onScroll={this.onScroll}
       >
         {children ? (
-          <code style={{ fontSize: "0.675rem" }}>{children}</code>
+          <code style={{ fontSize: "0.55rem" }}>{children}</code>
         ) : (
           <Box color="gray.400">{placeholder}</Box>
         )}

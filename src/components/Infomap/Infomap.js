@@ -5,15 +5,18 @@ import {
   FormControl,
   Grid,
   GridItem,
+  List,
+  ListIcon,
+  ListItem,
   Progress,
-  Textarea,
+  Textarea, VStack,
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import { Step, Steps } from "chakra-ui-steps";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { Form, Menu } from "semantic-ui-react";
+import { MdCheckCircle } from "react-icons/md";
 import store from "../../store";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
@@ -21,6 +24,7 @@ import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
+
 
 export default observer(
   class InfomapOnline extends Component {
@@ -168,24 +172,8 @@ export default observer(
 
       const inputValue = inputOptions[activeInput].value;
 
-      const inputMenuOptions = ["network", "cluster data", "meta data"].map((name) => ({
-        key: name,
-        name,
-        active: activeInput === name,
-        className: inputOptions[name].value ? "finished" : undefined,
-      }));
-
       const consoleContent = infomapOutput.join("\n");
       const hasInfomapError = !!infomapError;
-
-      const inputMenuProps = {
-        vertical: true,
-        size: "small",
-        onItemClick: this.onInputMenuClick,
-        items: inputMenuOptions,
-      };
-
-      const outputMenuProps = { vertical: true, disabled: !isCompleted };
 
       let navigatorLabel = null;
 
@@ -220,8 +208,30 @@ export default observer(
       }
 
       return (
-        <Grid templateColumns="1fr 2fr 1fr" maxWidth="120ch" mx="auto" p="1rem" gap="2rem">
-          <GridItem colSpan={3} px={[0, 0, 0, "2rem"]}>
+        <Grid
+          templateAreas={{
+            base: "'steps' 'input' 'inputMenu' 'console' 'output' 'outputMenu'",
+            lg: "'steps steps steps' 'input console output' 'inputMenu empty outputMenu'",
+            xl: "'start steps steps steps end' 'inputMenu input console output outputMenu'",
+          }}
+          templateColumns={{
+            base: "1fr",
+            lg: "1fr 2fr 1fr",
+            xl: "0.5fr 1fr 2fr 1fr 0.5fr",
+            "2xl": "1fr 1fr 3fr 1fr 1fr",
+          }}
+          mx="auto"
+          maxW={
+            {
+              base: "100%",
+              lg: "62em",
+              xl: "80em",
+              "2xl": "96em",
+            }}
+          p="1rem"
+          gap="2rem"
+        >
+          <GridItem area="steps" px={[0, 0, 0, "2rem"]}>
             <Steps size="lg" activeStep={activeStep} colorScheme="blue" labelOrientation="vertical">
               <Step label="Load network" description="Edit network or load file" />
               <Step label="Run Infomap" description="Toggle parameters or add arguments" />
@@ -229,7 +239,7 @@ export default observer(
             </Steps>
           </GridItem>
 
-          <GridItem className="network">
+          <GridItem area="input" className="network">
             <LoadButton
               mb="1rem"
               size="sm"
@@ -267,17 +277,33 @@ export default observer(
                 borderTopColor="gray.200"
                 borderTopWidth={2}
                 borderTopStyle="dashed"
-                zIndex={9999}
+                zIndex={1000}
               >
                 Load {activeInput} by dragging & dropping.
                 <br />
                 <a href="#Input">Supported formats.</a>
               </Box>
             </InputTextarea>
-            <Menu fluid className="button-menu" {...inputMenuProps} />
+          </GridItem>
+          <GridItem area="inputMenu" pt={{ base: 0, xl: "3em" }}>
+            <List fontSize="sm" textAlign={{ base: "left", xl: "right" }}>
+              {["network", "cluster data", "meta data"].map((option) => (
+                <ListItem
+                  key={option}
+                  size="sm"
+                  onClick={() => store.setActiveInput(option)}
+                  color={option === activeInput ? "gray.900" : "gray.500"}
+                  mb={1}
+                  cursor="pointer"
+                  textTransform="capitalize"
+                >
+                  {option}
+                </ListItem>
+              ))}
+            </List>
           </GridItem>
 
-          <GridItem className="run">
+          <GridItem area="console" className="run">
             <InputParameters loading={isRunning} onClick={this.run} mb="1rem" />
 
             <Console placeholder="Infomap output will be printed here">{consoleContent}</Console>
@@ -285,7 +311,7 @@ export default observer(
             <div>{infomapError}</div>
           </GridItem>
 
-          <GridItem className="output">
+          <GridItem area="output" className="output">
             {navigatorLabel}
             <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
               <Button
@@ -310,7 +336,7 @@ export default observer(
 
             <FormControl>
               <Textarea
-                //readOnly
+                readOnly
                 onCopy={this.onCopyClusters}
                 value={output.activeContent}
                 placeholder="Cluster output will be printed here"
@@ -324,7 +350,10 @@ export default observer(
                 fontSize="sm"
               />
             </FormControl>
-            <OutputMenu fluid className="button-menu" {...outputMenuProps} />
+
+          </GridItem>
+          <GridItem area="outputMenu" pt={{ base: 0, xl: "3em" }}>
+            <OutputMenu fontSize="sm" />
           </GridItem>
         </Grid>
       );

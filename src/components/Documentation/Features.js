@@ -1,5 +1,14 @@
-import { Header } from "semantic-ui-react";
-import { Heading } from "./Contents";
+import { chakra, Heading as CkHeading } from "@chakra-ui/react";
+import { Heading } from "../Contents";
+
+
+const Header = chakra(CkHeading, {
+  baseStyle: {
+    fontSize: "md",
+    fontWeight: 600,
+    mb: 1,
+  },
+});
 
 export default function Features() {
   return (

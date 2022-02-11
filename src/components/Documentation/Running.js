@@ -1,6 +1,7 @@
-import { Message } from "semantic-ui-react";
 import Code from "../Code";
-import { Heading } from "./Contents";
+import Message from "../Message";
+import { Heading } from "../Contents";
+
 
 export default function Running() {
   return (
@@ -23,7 +24,8 @@ export default function Running() {
         <code>network</code> should point to a valid network file and <code>outdir</code> to a
         directory where Infomap should write output files.
       </p>
-      <Message info>
+
+      <Message bg="info">
         If no <strong>parameters</strong> are provided, Infomap will assume an{" "}
         <strong>undirected</strong> network and try to partition it <strong>hierarchically</strong>.
       </Message>

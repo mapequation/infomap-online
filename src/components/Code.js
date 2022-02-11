@@ -1,7 +1,8 @@
+import { Box, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Label, Segment } from "semantic-ui-react";
 import styles from "../styles/Code.module.css";
 import Highlight from "./Highlight";
+
 
 export default function Code({ highlight, lines, labelProps, children }) {
   const [collapsed, setCollapsed] = useState(true);
@@ -15,17 +16,16 @@ export default function Code({ highlight, lines, labelProps, children }) {
   const inner = highlight ? <Highlight content={children} /> : children;
 
   return (
-    <Segment as="pre">
-      {labelProps && <Label as="a" attached="top" {...labelProps} />}
+    <Box as="pre">
+      {labelProps && <Text as="a" {...labelProps} />}
       <code className={styles.code}>{inner}</code>
       {lines && (
-        <Label
+        <Text
           as="a"
-          attached="bottom"
           onClick={toggle}
           content={collapsed ? "Show more" : "Show less"}
         />
       )}
-    </Segment>
+    </Box>
   );
 }

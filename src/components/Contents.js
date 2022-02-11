@@ -1,5 +1,5 @@
-import { Header } from "semantic-ui-react";
-import styles from "../../styles/Contents.module.css";
+import { Heading as CkHeading } from "@chakra-ui/react";
+import styles from "../styles/Contents.module.css";
 
 
 const tocSource = {
@@ -179,12 +179,15 @@ const toc = (function(tocSource) {
   return tree;
 })(tocSource);
 
-export const Heading = ({ id }) => {
+export const Heading = ({ id, ...props }) => {
   const { level, heading } = toc[id];
+  const sizes = "lg md sm xs".split(" ");
+  const mt = [8, 8, 6, 4];
+  const mb = [6, 6, 4, 2];
   return (
-    <Header as={`h${level}`} id={id}>
+    <CkHeading as={`h${level}`} size={sizes[level - 1]} mt={mt[level - 1]} mb={mb[level - 1]} id={id} {...props}>
       <a href={`#${id}`}>{heading}</a>
-    </Header>
+    </CkHeading>
   );
 };
 
@@ -194,11 +197,13 @@ const Item = ({ id, toc, level, maxLevel }) => {
     return null;
   }
 
+  const sizes = "md sm xs".split(" ");
+
   return (
     <li id={item.treeId} style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}>
-      <Header as={`h${level + 2}`} className={styles.liHeader} style={{ marginBottom: 0 }}>
+      <CkHeading as={`h${level + 2}`} size={sizes[level - 1]} className={styles.liHeader} style={{ marginBottom: 0 }}>
         <a href={`#${id}`}>{item.heading}</a>
-      </Header>
+      </CkHeading>
       <Items ids={item.children} toc={toc} level={level + 1} maxLevel={maxLevel} />
     </li>
   );

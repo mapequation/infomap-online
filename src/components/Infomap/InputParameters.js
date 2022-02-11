@@ -1,13 +1,17 @@
 import { Button, FormControl, Input, InputGroup, InputRightAddon } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import { Form } from "semantic-ui-react";
 import store from "../../store";
+
 
 export default observer(({ loading, onClick, ...props }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (
-    <FormControl isLoading={loading} error={hasArgsError} {...props}>
+    <FormControl
+      //isLoading={loading}
+      //error={hasArgsError}
+      {...props}
+    >
       <InputGroup>
         <Input
           placeholder="Parameters"

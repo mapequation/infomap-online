@@ -2,31 +2,8 @@ html {
     scroll-behavior: smooth;
 }
 
-
-.ui.header {
-    color: #128bc2;
-}
-
-
 figure {
     text-align: center;
-}
-
-.segment {
-    box-shadow: none !important;
-}
-
-.message {
-    font-weight: 400 !important;
-}
-
-.message .header {
-    font-weight: 500 !important;
-    margin-bottom: 0.7rem !important;
-}
-
-.message.info {
-    background-color: hsl(206, 80%, 97%) !important;
 }
 
 figcaption {

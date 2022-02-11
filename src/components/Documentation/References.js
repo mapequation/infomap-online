@@ -1,4 +1,5 @@
-import { Heading } from "./Contents";
+import { Heading } from "../Contents";
+
 
 export default function References() {
   return (

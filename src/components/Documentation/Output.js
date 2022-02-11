@@ -1,9 +1,9 @@
 //import Infomap from "@mapequation/infomap";
 import TeX from "@matejmazur/react-katex";
-import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
-import { Heading } from "./Contents";
+import Message from "../Message";
+import { Heading } from "../Contents";
 import Figure, { FigLink } from "./Figure";
 
 // 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
@@ -44,10 +44,6 @@ export default function Output() {
       <p>
         where <TeX>L</TeX> is the codelength and <TeX>L_1</TeX> is the one-level codelength.
       </p>
-
-      <Message info>
-        The <strong>Map format</strong> used by the old flash Network Navigator is deprecated.
-      </Message>
 
       <Heading id="PhysicalAndStateOutput" />
       <p>

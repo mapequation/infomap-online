@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
 import store from "../../store";
-import { Heading } from "./Contents";
+import { Heading } from "../Contents";
 import styles from "../../styles/Documentation.module.css";
+
 
 const DropdownParameter = observer(({ param }) => {
   const options = param.options.map((value, key) => ({

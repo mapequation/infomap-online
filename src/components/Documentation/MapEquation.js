@@ -1,5 +1,6 @@
 import TeX from "@matejmazur/react-katex";
-import { Heading } from "./Contents";
+import { Heading } from "../Contents";
+
 
 const TeXBlockLeftAligned = ({ math, children }) => (
   <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -59,14 +60,16 @@ export default function MapEquation() {
         given by the total probability that the random walker exits any of the <TeX>m</TeX> modules.
       </p>
 
-      <TeXBlockLeftAligned math="H(\mathcal{Q}) = -\sum_{i = 1}^{m}{\frac{q_{i\curvearrowright}}{q_\curvearrowright} \log{\frac{q_{i\curvearrowright}}{q_\curvearrowright}}}" />
+      <TeXBlockLeftAligned
+        math="H(\mathcal{Q}) = -\sum_{i = 1}^{m}{\frac{q_{i\curvearrowright}}{q_\curvearrowright} \log{\frac{q_{i\curvearrowright}}{q_\curvearrowright}}}" />
       <p>
         The frequency-weighted average length of codewords in the index codebook. The entropy of the
         relative rates to use the module codebooks measures the smallest average codeword length
         that is theoretically possible.
       </p>
 
-      <TeXBlockLeftAligned math="\sum_{i = 1}^{m}{p_{\circlearrowright}^i} = \sum_{i = 1}^{m}{\left( \sum_{\alpha \in i}{p_\alpha + q_\curvearrowright} \right)}" />
+      <TeXBlockLeftAligned
+        math="\sum_{i = 1}^{m}{p_{\circlearrowright}^i} = \sum_{i = 1}^{m}{\left( \sum_{\alpha \in i}{p_\alpha + q_\curvearrowright} \right)}" />
       <p>
         The rate at which the module codebooks are used. The per-step use rate of the module
         codebooks is given by the total use rate of the <TeX>m</TeX> module codebooks. For module{" "}

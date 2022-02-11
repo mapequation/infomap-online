@@ -1,4 +1,6 @@
-import { Heading } from "./Contents";
+import { chakra } from "@chakra-ui/react";
+import { Heading } from "../Contents";
+
 
 export default function Algorithm() {
   return (
@@ -43,23 +45,23 @@ export default function Algorithm() {
         two following ways:
       </p>
 
-      <p style={{ paddingLeft: 20 }}>
-        <em>Submodule movements: </em>
+      <chakra.p pl={10}>
+        <chakra.p mb={0}>Submodule movements</chakra.p>
         First, each cluster is treated as a network on its own and the main algorithm is applied to
         this network. This procedure generates one or more submodules for each module. Then all
         submodules are moved back to their respective modules of the previous step. At this stage,
         with the same partition as in the previous step but with each submodule being freely movable
         between the modules, the main algorithm is re-applied on the submodules.
-      </p>
+      </chakra.p>
 
-      <p style={{ paddingLeft: 20 }}>
-        <em>Single-node movements: </em>
+      <chakra.p pl={10}>
+        <chakra.p mb={0}>Single-node movements</chakra.p>
         First, each node is re-assigned to be the sole member of its own module, in order to allow
         for single-node movements. Then all nodes are moved back to their respective modules of the
         previous step. At this stage, with the same partition as in the previous step but with each
         single node being freely movable between the modules, the main algorithm is re-applied on
         the single nodes.
-      </p>
+      </chakra.p>
 
       <p>
         In practice, we repeat the two extensions to the core algorithm in sequence and as long as

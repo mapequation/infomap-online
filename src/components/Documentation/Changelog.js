@@ -1,8 +1,9 @@
 import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
-import { Divider, Header, Icon, List } from "semantic-ui-react";
-import { Heading } from "./Contents";
+import { Header, Icon, List } from "semantic-ui-react";
+import { Heading } from "../Contents";
 import styles from "../../styles/Documentation.module.css";
+
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -154,12 +155,10 @@ export default function Changelog() {
           name="ellipsis vertical"
         />
       )}
-      <Divider horizontal onClick={() => setExpanded(!expanded)}>
-        <Header as="h5">
-          <Icon name={expanded ? "angle up" : "angle down"} />
-          {expanded ? "Show less" : "Show more"}
-        </Header>
-      </Divider>
+      <Header as="h5" onClick={() => setExpanded(!expanded)}>
+        <Icon name={expanded ? "angle up" : "angle down"} />
+        {expanded ? "Show less" : "Show more"}
+      </Header>
     </>
   );
 }

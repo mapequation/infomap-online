@@ -1,8 +1,9 @@
-import { Message } from "semantic-ui-react";
 import store from "../../store";
 import Code from "../Code";
-import { Heading } from "./Contents";
+import Message from "../Message";
+import { Heading } from "../Contents";
 import Figure from "./Figure";
+
 
 export default function Input() {
   return (
@@ -19,14 +20,12 @@ export default function Input() {
         a <a href="#InputLinkList">link list</a> format by default.
       </p>
 
-      <Message info>
-        <Message.Header>Self links</Message.Header>
+      <Message bg="info" header="Self links">
         Since version <a href="#2.0.0">2.0.0</a>, Infomap includes self links by default. To exclude
         self links, use <code>--no-self-links</code>.
-        <p>
-          For undirected networks, Infomap uses the the convention of counting self links once. To
-          count them twice, double the weight on self links.
-        </p>
+        <br />
+        For undirected networks, Infomap uses the the convention of counting self links once. To
+        count them twice, double the weight on self links.
       </Message>
 
       <Heading id="InputLinkList" />
@@ -103,7 +102,7 @@ export default function Input() {
         the drawback of a unipartite network projection.
       </p>
 
-      <Message info>
+      <Message>
         The bipartite dynamics described above is the default for the bipartite format, and makes
         sense for a sparse bipartite network (for which the two-step dynamics helps) where only the
         primary nodes are of interest. Otherwise, add the flag{" "}

@@ -1,13 +1,43 @@
-import dynamic from "next/dynamic";
-import { Icon, Message, Table } from "semantic-ui-react";
+import { DownloadIcon } from "@chakra-ui/icons";
+import { Icon, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import TeX from "@matejmazur/react-katex";
+import { FaApple, FaUbuntu, FaWindows } from "react-icons/fa";
 import Code from "../Code";
-import { Heading } from "./Contents";
+import Message from "../Message";
+import { Heading } from "../Contents";
 
-const Version = dynamic(() => import("../InfomapVersion"), { ssr: false });
 
-export default function Install() {
+export default function Infomap() {
   return (
     <>
+      <Heading id="Infomap" />
+      <p>
+        Infomap is a network clustering algorithm based on the{" "}
+        <a href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
+          Map Equation
+        </a>
+        :
+      </p>
+      <TeX
+        math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
+        block
+      />
+
+      <Heading id="InfomapOnline" />
+      <p>
+        Infomap Online is a client-side web application that enables users to run Infomap in the
+        web browser. Your data never leaves your computer; we don&apos;t store any data on our
+        servers.
+      </p>
+      <p>
+        We achieve this by compiling Infomap from <a href="//emscripten.org">C++ to JavaScript</a>
+        , which gives a performance penalty compared to the stand-alone version of Infomap.
+      </p>
+      <p>
+        If you want to integrate Infomap in your own web application, you can use the{" "}
+        <a href="//www.npmjs.com/package/@mapequation/infomap">Infomap NPM package</a>.
+      </p>
+
       <Heading id="Install" />
       <p>
         We recommend installing Infomap from the Python Package Index. Upgrades are easy and you get
@@ -27,8 +57,7 @@ export default function Install() {
 
       <Code>pip install --upgrade infomap</Code>
 
-      <Message warning>
-        <Message.Header>Infomap only supports Python 3</Message.Header>
+      <Message bg="info" header="Infomap only supports Python 3">
         We currently build packages for Python 3.6 to 3.9.
       </Message>
 
@@ -41,72 +70,69 @@ export default function Install() {
         <code>libomp</code> on macOS.
       </p>
 
-      <Table basic="very">
-        <Table.Header>
-          <Table.Row>
-            <Table.Cell />
-            <Table.HeaderCell>OpenMP</Table.HeaderCell>
-            <Table.HeaderCell>Without OpenMP</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.HeaderCell>
-              <Icon name="windows" color="blue" />
+      <Table variant="simple" size="sm" mb={2}>
+        <Thead>
+          <Tr>
+            <Th />
+            <Th>OpenMP</Th>
+            <Th>Without OpenMP</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Th>
+              <Icon as={FaWindows} color="blue.600" mr={2} />
               Windows
-            </Table.HeaderCell>
-            <Table.Cell>
+            </Th>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip">
                 infomap-win.zip
               </a>
-            </Table.Cell>
-            <Table.Cell>
+            </Td>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win-noomp.zip">
                 infomap-win-noomp.zip
               </a>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.HeaderCell>
-              <Icon name="linux" color="black" />
+            </Td>
+          </Tr>
+          <Tr>
+            <Th>
+              <Icon as={FaUbuntu} color="orange.500" mr={2} />
               Ubuntu 18.04
-            </Table.HeaderCell>
-            <Table.Cell>
+            </Th>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">
                 infomap-ubuntu.zip
               </a>
-            </Table.Cell>
-            <Table.Cell>
+            </Td>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">
                 infomap-ubuntu-noomp.zip
               </a>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.HeaderCell>
-              <Icon name="apple" color="black" />
+            </Td>
+          </Tr>
+          <Tr>
+            <Th>
+              <Icon as={FaApple} color="black" mr={2} />
               macOS 10.15
-            </Table.HeaderCell>
-            <Table.Cell>
+            </Th>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">
                 infomap-mac.zip
               </a>
-            </Table.Cell>
-            <Table.Cell>
+            </Td>
+            <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac-noomp.zip">
                 infomap-mac-noomp.zip
               </a>
-            </Table.Cell>
-          </Table.Row>
-        </Table.Body>
+            </Td>
+          </Tr>
+        </Tbody>
       </Table>
 
-      <Message>
-        <Message.Header>Trusting binaries on macOS</Message.Header>
-        <p>
-          Run <code>spctl --add Infomap</code> and enter your password to add the Infomap binary to
-          GateKeeper&apos;s trusted binaries.
-        </p>
+      <Message header="Trusting binaries on macOS">
+        Run <code>spctl --add Infomap</code> and enter your password to add the Infomap binary to
+        GateKeeper&apos;s trusted binaries.
       </Message>
 
       <Heading id="CompilingFromSource" />
@@ -135,8 +161,8 @@ export default function Install() {
 
       <p>
         <a href="//github.com/mapequation/infomap/archive/refs/heads/master.zip">
-          <Icon name="download" />
-          Download Infomap <Version /> source code
+          <DownloadIcon />
+          Download Infomap source code
         </a>{" "}
         or check the <a href="//github.com/mapequation/infomap/releases">releases page</a> for all
         releases.
@@ -145,10 +171,7 @@ export default function Install() {
       <p>Unzip the file and compile Infomap by running</p>
 
       <Code>
-        unzip infomap-
-        <Version />
-        .zip && cd infomap-
-        <Version />
+        unzip infomap.zip && cd infomap
         <br />
         make -j
       </Code>
