@@ -18,12 +18,28 @@ export default class Console extends Component {
   }
 
   render() {
-    const { content, placeholder, ...props } = this.props;
+    const { placeholder, children, ...props } = this.props;
 
     return (
-      <div ref={(el) => (this.container = el)} onScroll={this.onScroll}>
-        {content ? <code>{content}</code> : <div>{placeholder}</div>}
-      </div>
+      <Box
+        bg="white"
+        h="60ch"
+        px="1rem"
+        py="0.5rem"
+        fontSize="sm"
+        overflow="auto"
+        borderWidth={1}
+        borderColor="gray.200"
+        borderRadius="md"
+        ref={(el) => (this.container = el)}
+        onScroll={this.onScroll}
+      >
+        {children ? (
+          <code style={{ fontSize: "0.675rem" }}>{children}</code>
+        ) : (
+          <Box color="gray.400">{placeholder}</Box>
+        )}
+      </Box>
     );
   }
 }

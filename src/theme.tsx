@@ -26,12 +26,12 @@ const theme = extendTheme({
       code: {
         fontFamily:
           "Monaco, Consolas, Inconsolata, Deja Vu Sans Mono, Droid Sans Mono, Andale Mono, Lucida Console, monospace",
-        fontSize: "0.85rem",
+        //fontSize: "0.85rem",
         color: "#555",
-        padding: "0 4px",
+        //padding: "0 4px",
         borderRadius: "3px",
-        border: "1px solid #dedede",
-        backgroundColor: "#f9f9f9",
+        //border: "1px solid #dedede",
+        //backgroundColor: "#f9f9f9",
         display: "inline-block",
         whiteSpace: "pre-wrap",
         overflowWrap: "break-word",

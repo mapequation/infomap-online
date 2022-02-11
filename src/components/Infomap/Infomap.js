@@ -1,4 +1,13 @@
-import { Button, ButtonGroup, FormControl, Grid, GridItem, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FormControl,
+  Grid,
+  GridItem,
+  Progress,
+  Textarea,
+} from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import { Step, Steps } from "chakra-ui-steps";
 import localforage from "localforage";
@@ -36,8 +45,8 @@ export default observer(
         store.output.setDownloaded(false);
 
         this.setState({
-          loading: false,
-          completed: false,
+          isLoading: false,
+          isCompleted: false,
           infomapError: "",
         });
       };
@@ -53,13 +62,13 @@ export default observer(
 
       reader.onloadend = (event) => onInputChange(event, { name: file.name, value: reader.result });
 
-      this.setState({ loading: true }, () => reader.readAsText(file, "utf-8"));
+      this.setState({ isLoading: true }, () => reader.readAsText(file, "utf-8"));
     };
     run = () => {
       store.output.resetContent();
 
       this.setState({
-        completed: false,
+        isCompleted: false,
         infomapOutput: [],
       });
 
@@ -77,14 +86,14 @@ export default observer(
         });
       } catch (e) {
         this.setState({
-          running: false,
+          isRunning: false,
           infomapError: e.message,
         });
         return;
       }
 
       this.setState({
-        running: true,
+        isRunning: true,
         infomapError: "",
       });
     };
@@ -103,21 +112,25 @@ export default observer(
         this.setState({
           infomapError: content.replace(/^Error:\s+/i, ""),
           infomapOutput: [...this.state.infomapOutput, content],
-          running: false,
-          completed: false,
+          isRunning: false,
+          isCompleted: false,
         });
+
+      const onProgress = (progress) => this.setState({ progress });
 
       const onFinished = async (content) => {
         store.output.setContent(content);
         await localforage.setItem("ftree", store.output.ftree);
         this.setState({
-          running: false,
-          completed: true,
+          isRunning: false,
+          isCompleted: true,
+          progress: 0,
         });
       };
 
       this.infomap = new Infomap()
         .on("data", onData)
+        .on("progress", onProgress)
         .on("error", onError)
         .on("finished", onFinished);
     }
@@ -137,7 +150,8 @@ export default observer(
     }
 
     render() {
-      const { loading, running, completed, infomapError, infomapOutput } = this.state;
+      const { isLoading, isRunning, isCompleted, infomapError, infomapOutput, progress } =
+        this.state;
       const { activeInput, network, clusterData, metaData, output, params } = store;
 
       const inputOptions = {
@@ -161,19 +175,6 @@ export default observer(
         className: inputOptions[name].value ? "finished" : undefined,
       }));
 
-      const SupportedExtensions = inputAccept[activeInput] ? (
-        <span>
-          Extensions:{" "}
-          {inputAccept[activeInput]
-            .map((extension) => (
-              <a key={extension} href={`#${extension.substring(1)}`}>
-                {extension}
-              </a>
-            ))
-            .reduce((prev, curr) => [prev, ", ", curr])}
-        </span>
-      ) : null;
-
       const consoleContent = infomapOutput.join("\n");
       const hasInfomapError = !!infomapError;
 
@@ -184,11 +185,11 @@ export default observer(
         items: inputMenuOptions,
       };
 
-      const outputMenuProps = { vertical: true, disabled: !completed };
+      const outputMenuProps = { vertical: true, disabled: !isCompleted };
 
       let navigatorLabel = null;
 
-      if (completed && !hasInfomapError) {
+      if (isCompleted && !hasInfomapError) {
         if (!output.ftree) {
           navigatorLabel = (
             <div>
@@ -210,7 +211,7 @@ export default observer(
       let activeStep = 0;
       if (!!network.value) {
         activeStep = 1;
-        if (completed || running) {
+        if (isCompleted || isRunning) {
           activeStep = 2;
           if (output.downloaded) {
             activeStep = 3;
@@ -241,7 +242,6 @@ export default observer(
             <InputTextarea
               onDrop={this.onLoad(activeInput)}
               accept={inputAccept[activeInput]}
-              loading={loading}
               onChange={this.onInputChange(activeInput)}
               value={inputValue}
               placeholder={`Input ${activeInput} here`}
@@ -253,27 +253,41 @@ export default observer(
               variant="outline"
               bg="white"
               fontSize="sm"
-            />
-            <div>
-              Load {activeInput} by dragging & dropping.
-              <br />
-              <a href="#Input">Supported formats.</a> {SupportedExtensions}
-            </div>
+            >
+              <Box
+                pos="absolute"
+                w="calc(100% - 8px)"
+                p="0.5rem"
+                m={1}
+                fontSize="xs"
+                bg="whiteAlpha.900"
+                bottom={0}
+                left={0}
+                borderBottomRadius="lg"
+                borderTopColor="gray.200"
+                borderTopWidth={2}
+                borderTopStyle="dashed"
+                zIndex={9999}
+              >
+                Load {activeInput} by dragging & dropping.
+                <br />
+                <a href="#Input">Supported formats.</a>
+              </Box>
+            </InputTextarea>
             <Menu fluid className="button-menu" {...inputMenuProps} />
           </GridItem>
 
           <GridItem className="run">
-            <InputParameters loading={running} onClick={this.run} mb="1rem" />
+            <InputParameters loading={isRunning} onClick={this.run} mb="1rem" />
 
-            <Form error={hasInfomapError}>
-              <Console content={consoleContent} placeholder="Infomap output will be printed here" />
-            </Form>
+            <Console placeholder="Infomap output will be printed here">{consoleContent}</Console>
+            {isRunning && <Progress pos="relative" bottom={0} size="xs" value={progress} />}
             <div>{infomapError}</div>
           </GridItem>
 
           <GridItem className="output">
             {navigatorLabel}
-            <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={running}>
+            <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
               <Button
                 isFullWidth
                 colorScheme="blue"
@@ -291,10 +305,10 @@ export default observer(
               >
                 Open in Navigator
               </Button>
-              <DownloadMenu disabled={running} />
+              <DownloadMenu disabled={isRunning} />
             </ButtonGroup>
 
-            <FormControl loading={running}>
+            <FormControl>
               <Textarea
                 //readOnly
                 onCopy={this.onCopyClusters}
@@ -318,10 +332,11 @@ export default observer(
 
     state = {
       infomapOutput: [],
-      loading: false, // Loading input network
-      running: false,
-      completed: false,
+      isLoading: false, // Loading input network
+      isRunning: false,
+      isCompleted: false,
       infomapError: "",
+      progress: 0,
     };
   },
 );
