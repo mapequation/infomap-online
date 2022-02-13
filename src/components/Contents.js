@@ -208,6 +208,14 @@ export const Heading = ({ id, ...props }) => {
       mt={mt[level - 1]}
       mb={mb[level - 1]}
       id={id}
+      _hover={{
+        _after: {
+          content: '"#"',
+          color: "gray.300",
+          fontSize: "0.8em",
+          ml: "0.2em",
+        },
+      }}
       {...props}
     >
       <a href={`#${id}`}>{heading}</a>
@@ -217,7 +225,7 @@ export const Heading = ({ id, ...props }) => {
 
 const Item = ({ id, toc, level, maxLevel }) => {
   const item = toc[id];
-  if (item.hideInToc || (maxLevel && item.level > maxLevel)) {
+  if (maxLevel && item.level > maxLevel) {
     return null;
   }
 

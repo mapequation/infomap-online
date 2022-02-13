@@ -19,6 +19,7 @@ export default observer(({ loading, onClick, ...props }) => {
           errorBorderColor="red.600"
           focusBorderColor={hasArgsError ? "red.600" : undefined}
           onChange={(event) => setArgs(event.target.value)}
+          borderLeftRadius="md"
           borderRightRadius={0}
           size="sm"
           variant="solid"

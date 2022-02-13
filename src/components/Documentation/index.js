@@ -1,7 +1,6 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Container, Grid, GridItem } from "@chakra-ui/react";
 import "katex/dist/katex.min.css";
 import dynamic from "next/dynamic";
-import styles from "../../styles/Documentation.module.css";
 import Algorithm from "./Algorithm";
 import Features from "./Features";
 import Feedback from "./Feedback";
@@ -22,17 +21,14 @@ const Changelog = dynamic(() => import("./Changelog"), { ssr: false });
 function Documentation() {
   return (
     <Grid
-      templateColumns="1fr 1fr"
-      maxW={{
-        base: "100%",
-        lg: "62em",
-        xl: "80em",
-      }}
+      as={Container}
+      maxW="container.xl"
+      templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
       mx="auto"
       p="1rem"
-      gap="4rem"
+      gap={{ base: 0, lg: "4rem" }}
       lineHeight="1.6em"
-      className={styles.documentation}
+      textShadow="rgba(255, 255, 255, 0.746094) 0 1px 0"
     >
       <GridItem>
         <Infomap />

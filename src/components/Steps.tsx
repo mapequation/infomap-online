@@ -68,6 +68,7 @@ export function Step({
           padding: "0.5rem 1rem",
         }}
         animate={bg}
+        transition={{ duration: 0.2, bounce: 0 }}
       >
         {!isLast && (
           <motion.div
@@ -79,18 +80,19 @@ export function Step({
               width: "18px",
               height: "18px",
               transform: "rotate(45deg)",
-              borderTopWidth: 1,
-              borderRightWidth: 1,
+              borderTopWidth: "1.4px",
+              borderRightWidth: "1.4px",
             }}
             initial={false}
             animate={{
               ...bg,
-              opacity: 1,
+              opacity: completed ? 1 : 0,
               right: completed ? "-9.5px" : "5px",
               borderColor: completed
                 ? "var(--chakra-colors-blackAlpha-300)"
                 : "hsla(0, 0%, 80%, 0)",
             }}
+            transition={{ duration: 0.2, bounce: 0 }}
           />
         )}
         {children}

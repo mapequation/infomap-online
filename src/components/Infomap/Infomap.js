@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Container,
   FormControl,
   Grid,
   GridItem,
@@ -221,6 +222,8 @@ export default observer(
 
       return (
         <Grid
+          as={Container}
+          maxW="96em"
           ref={store.mainView}
           templateAreas={{
             base: "'steps' 'input' 'inputMenu' 'console' 'output' 'outputMenu'",
@@ -230,17 +233,9 @@ export default observer(
           templateColumns={{
             base: "1fr",
             lg: "1fr 2fr 1fr",
-            xl: "0.5fr 1fr 2fr 1fr 0.5fr",
-            "2xl": "1fr 1fr 3fr 1fr 1fr",
+            xl: "1fr 2fr 4fr 2fr 1fr",
           }}
           mx="auto"
-          maxW={{
-            base: "100%",
-            lg: "62em",
-            xl: "80em",
-            "2xl": "96em",
-          }}
-          p="1rem"
           gap="2rem"
         >
           <GridItem area="steps">
@@ -328,7 +323,7 @@ export default observer(
                 pos="absolute"
                 w="calc(100% - 8px)"
                 p="0.5rem"
-                m={1}
+                m="0.1rem"
                 fontSize="xs"
                 bg="whiteAlpha.900"
                 bottom={0}
@@ -370,7 +365,14 @@ export default observer(
               {consoleContent}
             </Console>
             {isRunning && (
-              <Progress pos="relative" bottom={0} size="xs" value={progress} />
+              <Progress
+                mx="5px"
+                borderBottomRadius="md"
+                pos="relative"
+                bottom={0}
+                size="xs"
+                value={progress}
+              />
             )}
             <div>{infomapError}</div>
           </GridItem>

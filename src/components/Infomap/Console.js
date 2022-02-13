@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, chakra } from "@chakra-ui/react";
 import { Component } from "react";
 
 export default class Console extends Component {
@@ -35,7 +35,9 @@ export default class Console extends Component {
         onScroll={this.onScroll}
       >
         {children ? (
-          <code style={{ fontSize: "0.55rem" }}>{children}</code>
+          <chakra.code fontSize="xs" border="none" bg="none">
+            {children}
+          </chakra.code>
         ) : (
           <Box color="gray.400">{placeholder}</Box>
         )}

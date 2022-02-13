@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import Contents from "../components/Contents";
 import Documentation from "../components/Documentation";
 import Footer from "../components/Footer";
+import styles from "../styles/Drawer.module.css";
 
 const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
 
@@ -51,23 +52,27 @@ const Home: NextPage = () => {
       <IconButton
         aria-label="contents"
         icon={<HamburgerIcon />}
-        variant="ghost"
+        variant="outline"
+        bg={{ base: "whiteAlpha.800", xl: "whiteAlpha.500" }}
         onClick={onOpen}
         pos="fixed"
-        top={15}
-        left={15}
+        visibility={isOpen ? "hidden" : "visible"}
+        top={5}
+        right={5}
+        zIndex={5000}
+        boxShadow={{ base: "md", xl: "none" }}
       />
 
       <Drawer
         isOpen={isOpen}
-        placement="left"
+        placement="right"
         onClose={onClose}
         returnFocusOnClose={false}
         blockScrollOnMount={false}
       >
         <DrawerOverlay bg="transparent" />
-        <DrawerContent>
-          <DrawerCloseButton />
+        <DrawerContent className={styles.drawer}>
+          <DrawerCloseButton top={5} right={5} variant="outline" />
           <DrawerHeader>Contents</DrawerHeader>
           <DrawerBody>
             <Contents />

@@ -9,7 +9,6 @@ import {
 import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
-import styles from "../../styles/Documentation.module.css";
 import { Heading } from "../Contents";
 
 const Change = ({ change }) => {
@@ -31,7 +30,7 @@ const Change = ({ change }) => {
     ) : null;
 
   return (
-    <ListItem className={styles.changelogItem}>
+    <ListItem sx={{ "::marker": { color: "blackAlpha.400" } }}>
       <chakra.span wordBreak="break-all">
         {Scope}
         {Subject}

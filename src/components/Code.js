@@ -14,7 +14,7 @@ export default function Code({
   const inner = highlight ? <Highlight content={children} /> : children;
 
   const code = (
-    <chakra.code fontSize="sm" p={4}>
+    <chakra.code border={0} bg="none" p={4}>
       {inner}
     </chakra.code>
   );

@@ -3,6 +3,23 @@ import "@fontsource/open-sans/400.css";
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  components: {
+    Button: {
+      variants: {
+        outline: {
+          borderColor: "blackAlpha.200",
+          _hover: {
+            bg: "whiteAlpha.700",
+          },
+        },
+        ghost: {
+          _hover: {
+            bg: "whiteAlpha.700",
+          },
+        },
+      },
+    },
+  },
   styles: {
     global: {
       body: {
@@ -22,12 +39,13 @@ const theme = extendTheme({
       code: {
         fontFamily:
           "Monaco, Consolas, Inconsolata, Deja Vu Sans Mono, Droid Sans Mono, Andale Mono, Lucida Console, monospace",
-        //fontSize: "0.85rem",
-        color: "#555",
-        //padding: "0 4px",
-        borderRadius: "3px",
-        //border: "1px solid #dedede",
-        //backgroundColor: "#f9f9f9",
+        color: "gray.700",
+        fontSize: "sm",
+        px: "0.4em",
+        borderRadius: "md",
+        borderWidth: 1,
+        borderColor: "gray.200",
+        bg: "whiteAlpha.800",
         display: "inline-block",
         whiteSpace: "pre-wrap",
         overflowWrap: "break-word",

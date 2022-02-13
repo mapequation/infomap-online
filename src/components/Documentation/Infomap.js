@@ -1,4 +1,3 @@
-import { DownloadIcon } from "@chakra-ui/icons";
 import { Icon, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import TeX from "@matejmazur/react-katex";
 import { FaApple, FaUbuntu, FaWindows } from "react-icons/fa";
@@ -171,13 +170,10 @@ export default function Infomap() {
 
       <p>
         <a href="//github.com/mapequation/infomap/archive/refs/heads/master.zip">
-          <DownloadIcon />
           Download Infomap source code
         </a>{" "}
         or check the{" "}
-        <a href="//github.com/mapequation/infomap/releases">
-          releases page
-        </a>{" "}
+        <a href="//github.com/mapequation/infomap/releases">releases page</a>{" "}
         for all releases.
       </p>
 
