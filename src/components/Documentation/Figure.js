@@ -47,7 +47,7 @@ const Figure = ({ id }) => {
         <figure id={id}>
           <img
             src="/infomap/images/bipartite.svg"
-            style={{ width: "40%" }}
+            style={{ width: "40%", marginInline: "auto" }}
             alt="Bipartite network with three round and two square nodes"
           />
           <figcaption>

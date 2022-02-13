@@ -1,31 +1,50 @@
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FormControl,
+  FormLabel,
+  HStack,
+  Icon,
+  IconButton,
+  Input,
+  Select,
+  Switch,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button, Checkbox, Dropdown, Input, Item, Ref } from "semantic-ui-react";
+import { BsClipboard, BsClipboardCheck } from "react-icons/bs";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import store from "../../store";
 import { Heading } from "../Contents";
-import styles from "../../styles/Documentation.module.css";
-
 
 const DropdownParameter = observer(({ param }) => {
-  const options = param.options.map((value, key) => ({
-    key,
-    text: value,
-    value,
-  }));
-
   return (
-    <Dropdown
+    <Select
       id={param.long}
+      variant="filled"
+      bg="white"
+      _hover={{ bg: "white" }}
+      _focus={{ bg: "white" }}
+      //w="100px"
       ref={(ref) => store.params.setRef(param.long, ref)}
-      selection
-      options={options}
-      multiple={param.longType === "list"}
       placeholder={param.longType}
-      clearable={param.clearable}
       value={param.value}
-      onChange={(e, { value }) => store.params.setOption(param, value)}
-    />
+      clearable={param.clearable.toString()}
+      multiple={param.longType === "list"}
+      onChange={(e) => {
+        console.log(e.target.value);
+        store.params.setOption(param, e.target.value);
+      }}
+    >
+      {param.options.map((value, i) => (
+        <option key={i} value={value}>
+          {value}
+        </option>
+      ))}
+    </Select>
   );
 });
 
@@ -33,10 +52,15 @@ const InputParameter = observer(({ param }) => {
   return (
     <Input
       id={param.long}
-      style={{ width: "100px" }}
+      //maxW="50%"
+      w="100px"
+      bg="white"
+      _hover={{ bg: "white" }}
+      _focus={{ bg: "white" }}
+      variant="filled"
       placeholder={param.default}
       value={param.value}
-      onChange={(e, { value }) => store.params.setInput(param, value)}
+      onChange={(e) => store.params.setInput(param, e.target.value)}
     />
   );
 });
@@ -71,21 +95,24 @@ const FileInputParameter = observer(({ param }) => {
   const { ref, ...rootProps } = getRootProps();
 
   return (
-    <Ref innerRef={ref}>
-      <Button basic as="label" htmlFor={param.long} {...rootProps}>
-        Load file
-        <input id={param.long} {...getInputProps()} />
-      </Button>
-    </Ref>
+    <Button
+      variant="outline"
+      ref={ref}
+      as="label"
+      htmlFor={param.long}
+      {...rootProps}
+    >
+      Load file
+      <input id={param.long} {...getInputProps()} />
+    </Button>
   );
 });
 
 const ToggleParameter = observer(({ param }) => {
   return (
-    <Checkbox
+    <Switch
       id={param.long}
-      toggle
-      checked={param.active}
+      isChecked={param.active}
       onChange={() => store.params.toggle(param)}
     />
   );
@@ -97,11 +124,21 @@ const IncrementalParameter = observer(({ param }) => {
   const setValue = (value) => store.params.setIncremental(param, value);
 
   return (
-    <Button.Group id={param.long}>
-      <Button basic icon="minus" disabled={value === 0} onClick={() => setValue(value - 1)} />
-      <Button basic icon disabled={value === 0} content={stringValue(value)} />
-      <Button basic icon="plus" disabled={value === maxValue} onClick={() => setValue(value + 1)} />
-    </Button.Group>
+    <ButtonGroup variant="outline" isAttached id={param.long}>
+      <IconButton
+        aria-label="minus"
+        icon={<FaMinus />}
+        disabled={value === 0}
+        onClick={() => setValue(value - 1)}
+      />
+      <Button disabled={value === 0}>{stringValue(value)}</Button>
+      <IconButton
+        aria-label="plus"
+        icon={<FaPlus />}
+        disabled={value === maxValue}
+        onClick={() => setValue(value + 1)}
+      />
+    </ButtonGroup>
   );
 });
 
@@ -118,13 +155,19 @@ const getHeaderProps = (param) => {
   const { active, long, dropdown, input, file, incremental, value } = param;
   const { params } = store;
 
-  const props = { className: active ? "active" : "", as: "label" };
+  const props = { as: "label" };
 
   if (dropdown) {
     const ref = params.getRef(long);
     if (!ref) return props;
     return {
-      onClick: () => (active ? params.setOption(param, param.default) : ref.open()),
+      onClick: () => {
+        if (active) return params.setOption(param, param.default);
+        // TODO
+        const event = new MouseEvent("mousedown", { bubbles: true });
+        ref.dispatchEvent(event);
+        //return (active ? params.setOption(param, param.default) : ref?.open()); },
+      },
       ...props,
     };
   }
@@ -155,7 +198,34 @@ const getHeaderProps = (param) => {
   return labelProps;
 };
 
+function ParamName({ param, short }) {
+  const name = short && param.short ? param.shortString : param.longString;
+
+  return (
+    <motion.code
+      initial={false}
+      style={{
+        borderWidth: "1px",
+        paddingInline: "0.4em",
+        borderRadius: "5px",
+        cursor: "pointer",
+        userSelect: "none",
+      }}
+      animate={{
+        color: param.active ? "hsl(206, 73%, 25%)" : "rgb(45, 55, 72)",
+        backgroundColor: param.active ? "hsl(206, 80%, 90%)" : "#fff",
+        borderColor: param.active ? "hsl(206, 80%, 80%)" : "hsl(0, 0%, 80%)",
+      }}
+      transition={{ duration: 0.15 }}
+    >
+      {name}
+    </motion.code>
+  );
+}
+
 const ParameterGroup = observer(({ group, advanced }) => {
+  const [clipboardClicked, setClipboardClicked] = useState("");
+
   const params = store.params
     .getParamsForGroup(group)
     .filter((param) => !param.advanced || advanced)
@@ -166,27 +236,50 @@ const ParameterGroup = observer(({ group, advanced }) => {
   return (
     <>
       <Heading id={id} />
-      <Item.Group className={styles.paramGroup}>
+      <Box>
         {params.map((param, key) => (
-          <Item key={key}>
-            <Item.Content verticalAlign="top">
-              <Item.Header {...getHeaderProps(param)}>
-                {param.short && (
-                  <>
-                    <code>{param.shortString}</code>
-                    {", "}
-                  </>
-                )}
-                <code>{param.longString}</code>
-              </Item.Header>
-              <Item.Meta>
-                <ParameterControl param={param} />
-              </Item.Meta>
-              <Item.Description content={param.description} />
-            </Item.Content>
-          </Item>
+          <HStack
+            key={key}
+            alignItems="flex-start"
+            justifyContent="space-between"
+            py="0.8em"
+            borderBottomWidth="1px"
+            borderBottomColor="rgba(34, 36, 38, 0.1)"
+            _last={{ borderBottomWidth: 0 }}
+          >
+            <Box maxW="70%">
+              <HStack>
+                <Box fontSize="xs" {...getHeaderProps(param)}>
+                  {param.short && (
+                    <>
+                      <ParamName param={param} short />,{" "}
+                    </>
+                  )}
+                  <ParamName param={param} />
+                </Box>
+                <Icon
+                  ml={4}
+                  cursor="pointer"
+                  _hover={{ color: "black", transform: "scale(1.1)" }}
+                  as={
+                    clipboardClicked === param.long
+                      ? BsClipboardCheck
+                      : BsClipboard
+                  }
+                  onClick={async () => {
+                    await navigator?.clipboard?.writeText(param.long);
+                    setClipboardClicked(param.long);
+                  }}
+                />
+              </HStack>
+              <Box fontSize="sm">{param.description}</Box>
+            </Box>
+            <Box>
+              <ParameterControl param={param} />
+            </Box>
+          </HStack>
         ))}
-      </Item.Group>
+      </Box>
     </>
   );
 });
@@ -204,13 +297,18 @@ export default function Parameters() {
 
   return (
     <>
-      <Heading id="Parameters" advanced={advanced} />
-      <Checkbox
-        toggle
-        checked={advanced}
-        onChange={() => setAdvanced(!advanced)}
-        label="Show advanced parameters"
+      <Heading
+        id="Parameters"
+        //advanced={advanced}
       />
+      <FormControl display="flex" alignItems="center" gap={4}>
+        <FormLabel htmlFor="show-advanced">Show advanced parameters</FormLabel>
+        <Switch
+          id="show-advanced"
+          isChecked={advanced}
+          onChange={() => setAdvanced(!advanced)}
+        />
+      </FormControl>
       <ParameterGroup group="Input" advanced={advanced} />
       <ParameterGroup group="Output" advanced={advanced} />
       <ParameterGroup group="Algorithm" advanced={advanced} />
