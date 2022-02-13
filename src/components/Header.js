@@ -13,7 +13,6 @@ import dynamic from "next/dynamic";
 import { FaGithub } from "react-icons/fa";
 import styles from "../styles/Header.module.css";
 
-
 const Version = dynamic(() => import("./InfomapVersion"), { ssr: false });
 
 export default function Header() {
@@ -35,7 +34,11 @@ export default function Header() {
               />
             </a>
             <Box>
-              <Heading fontSize="1.75rem" fontFamily="Philosopher, serif" fontWeight={700}>
+              <Heading
+                fontSize="1.75rem"
+                fontFamily="Philosopher, serif"
+                fontWeight={700}
+              >
                 <span style={{ color: "#555" }}>Infomap</span>{" "}
                 <span style={{ color: "#b22222" }}>Online</span>
               </Heading>
@@ -45,7 +48,12 @@ export default function Header() {
             </Box>
           </HStack>
           <ButtonGroup variant="ghost" colorScheme="blue">
-            <Button as="a" rightIcon={<DownloadIcon />} href="#Infomap" {...buttonProps}>
+            <Button
+              as="a"
+              rightIcon={<DownloadIcon />}
+              href="#Infomap"
+              {...buttonProps}
+            >
               Infomap <Version />
             </Button>
             <IconButton

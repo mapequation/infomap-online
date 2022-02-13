@@ -26,7 +26,6 @@ import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
 
-
 export default observer(
   class InfomapOnline extends Component {
     onInputChange = (activeInput) => {
@@ -65,9 +64,12 @@ export default observer(
 
       const onInputChange = this.onInputChange(activeInput);
 
-      reader.onloadend = (event) => onInputChange(event, { name: file.name, value: reader.result });
+      reader.onloadend = (event) =>
+        onInputChange(event, { name: file.name, value: reader.result });
 
-      this.setState({ isLoading: true }, () => reader.readAsText(file, "utf-8"));
+      this.setState({ isLoading: true }, () =>
+        reader.readAsText(file, "utf-8")
+      );
     };
     run = () => {
       store.output.resetContent();
@@ -155,9 +157,16 @@ export default observer(
     }
 
     render() {
-      const { isLoading, isRunning, isCompleted, infomapError, infomapOutput, progress } =
-        this.state;
-      const { activeInput, network, clusterData, metaData, output, params } = store;
+      const {
+        isLoading,
+        isRunning,
+        isCompleted,
+        infomapError,
+        infomapOutput,
+        progress,
+      } = this.state;
+      const { activeInput, network, clusterData, metaData, output, params } =
+        store;
 
       const inputOptions = {
         network: network,
@@ -184,7 +193,9 @@ export default observer(
             <div>
               Network Navigator requires ftree output.{" "}
               {!params.getParam("--ftree").active && (
-                <a onClick={() => params.setArgs(params.args + " --ftree")}>Enable.</a>
+                <a onClick={() => params.setArgs(params.args + " --ftree")}>
+                  Enable.
+                </a>
               )}
             </div>
           );
@@ -223,13 +234,12 @@ export default observer(
             "2xl": "1fr 1fr 3fr 1fr 1fr",
           }}
           mx="auto"
-          maxW={
-            {
-              base: "100%",
-              lg: "62em",
-              xl: "80em",
-              "2xl": "96em",
-            }}
+          maxW={{
+            base: "100%",
+            lg: "62em",
+            xl: "80em",
+            "2xl": "96em",
+          }}
           p="1rem"
           gap="2rem"
         >
@@ -237,28 +247,52 @@ export default observer(
             <Steps activeStep={activeStep}>
               <Step>
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
-                  <Image src="/infomap/images/step1.png" alt="step 1" boxSize="48px" />
+                  <Image
+                    src="/infomap/images/step1.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
                   <Box textAlign="center">
-                    <Text fontWeight={700} my={0}>Load network</Text>
-                    <Text fontSize="xs" my={0}>Edit network or load file</Text>
+                    <Text fontWeight={700} my={0}>
+                      Load network
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Edit network or load file
+                    </Text>
                   </Box>
                 </HStack>
               </Step>
               <Step>
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
-                  <Image src="/infomap/images/step2.png" alt="step 1" boxSize="48px" />
+                  <Image
+                    src="/infomap/images/step2.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
                   <Box textAlign="center">
-                    <Text fontWeight={700} my={0}>Run Infomap</Text>
-                    <Text fontSize="xs" my={0}>Toggle parameters or add arguments</Text>
+                    <Text fontWeight={700} my={0}>
+                      Run Infomap
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Toggle parameters or add arguments
+                    </Text>
                   </Box>
                 </HStack>
               </Step>
               <Step>
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
-                  <Image src="/infomap/images/step3.png" alt="step 1" boxSize="48px" />
+                  <Image
+                    src="/infomap/images/step3.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
                   <Box textAlign="center">
-                    <Text fontWeight={700} my={0}>Explore map!</Text>
-                    <Text fontSize="xs" my={0}>Save result or open in Network Navigator</Text>
+                    <Text fontWeight={700} my={0}>
+                      Explore map!
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Save result or open in Network Navigator
+                    </Text>
                   </Box>
                 </HStack>
               </Step>
@@ -332,8 +366,12 @@ export default observer(
           <GridItem area="console" className="run">
             <InputParameters loading={isRunning} onClick={this.run} mb="1rem" />
 
-            <Console placeholder="Infomap output will be printed here">{consoleContent}</Console>
-            {isRunning && <Progress pos="relative" bottom={0} size="xs" value={progress} />}
+            <Console placeholder="Infomap output will be printed here">
+              {consoleContent}
+            </Console>
+            {isRunning && (
+              <Progress pos="relative" bottom={0} size="xs" value={progress} />
+            )}
             <div>{infomapError}</div>
           </GridItem>
 
@@ -376,7 +414,6 @@ export default observer(
                 fontSize="sm"
               />
             </FormControl>
-
           </GridItem>
           <GridItem area="outputMenu" pt={{ base: 0, xl: "3em" }}>
             <OutputMenu fontSize="sm" />
@@ -393,5 +430,5 @@ export default observer(
       infomapError: "",
       progress: 0,
     };
-  },
+  }
 );

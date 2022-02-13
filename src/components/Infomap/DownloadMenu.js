@@ -11,7 +11,10 @@ import {
 import store from "../../store";
 
 const FileItem = ({ file }) => (
-  <MenuItem icon={<DownloadIcon />} onClick={() => store.output.downloadFile(file.key)}>
+  <MenuItem
+    icon={<DownloadIcon />}
+    onClick={() => store.output.downloadFile(file.key)}
+  >
     {file.filename}
   </MenuItem>
 );

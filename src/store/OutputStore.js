@@ -2,7 +2,6 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { action, computed, makeObservable, observable } from "mobx";
 
-
 const FORMATS = [
   {
     key: "clu",
@@ -238,25 +237,25 @@ export default class OutputStore {
   }
 
   get files() {
-    return FORMATS.filter(({ key }) => this[key]).map(format => ({
+    return FORMATS.filter(({ key }) => this[key]).map((format) => ({
       ...format,
       filename: `${this.name}${format.suffix}.${format.extension}`,
     }));
   }
 
   get physicalFiles() {
-    return this.files.filter(file => !file.isStates);
+    return this.files.filter((file) => !file.isStates);
   }
 
   get stateFiles() {
-    return this.files.filter(file => file.isStates);
+    return this.files.filter((file) => file.isStates);
   }
 
   get activeFile() {
     return this.files.find(({ key }) => key === this.activeKey);
   }
 
-  setContent = content => {
+  setContent = (content) => {
     const {
       clu,
       tree,
@@ -347,7 +346,7 @@ export default class OutputStore {
         ? "states"
         : flow
         ? "flow"
-        : "clu",
+        : "clu"
     );
   };
 
@@ -373,15 +372,17 @@ export default class OutputStore {
     this.downloaded = false;
   };
 
-  setActiveKey = key => (this.activeKey = key);
+  setActiveKey = (key) => (this.activeKey = key);
 
-  setDownloaded = value => (this.downloaded = value);
+  setDownloaded = (value) => (this.downloaded = value);
 
-  downloadFile = formatKey => {
+  downloadFile = (formatKey) => {
     const file = this.files.find(({ key }) => key === formatKey);
     const content = this[formatKey];
     const mimeType =
-      formatKey === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8";
+      formatKey === "json"
+        ? "application/json;charset=utf-8"
+        : "text/plain;charset=utf-8";
     const blob = new Blob([content], { type: mimeType });
     saveAs(blob, file.filename);
     this.setDownloaded();
@@ -397,6 +398,8 @@ export default class OutputStore {
       const content = this[file.key];
       zip.file(file.filename, content);
     }
-    zip.generateAsync({ type: "blob" }).then(blob => saveAs(blob, `${this.name}.zip`));
+    zip
+      .generateAsync({ type: "blob" })
+      .then((blob) => saveAs(blob, `${this.name}.zip`));
   };
 }

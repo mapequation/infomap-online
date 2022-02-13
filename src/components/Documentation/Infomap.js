@@ -3,9 +3,8 @@ import { Icon, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import TeX from "@matejmazur/react-katex";
 import { FaApple, FaUbuntu, FaWindows } from "react-icons/fa";
 import Code from "../Code";
-import Message from "../Message";
 import { Heading } from "../Contents";
-
+import Message from "../Message";
 
 export default function Infomap() {
   return (
@@ -25,27 +24,33 @@ export default function Infomap() {
 
       <Heading id="InfomapOnline" />
       <p>
-        Infomap Online is a client-side web application that enables users to run Infomap in the
-        web browser. Your data never leaves your computer; we don&apos;t store any data on our
-        servers.
+        Infomap Online is a client-side web application that enables users to
+        run Infomap in the web browser. Your data never leaves your computer; we
+        don&apos;t store any data on our servers.
       </p>
       <p>
-        We achieve this by compiling Infomap from <a href="//emscripten.org">C++ to JavaScript</a>
-        , which gives a performance penalty compared to the stand-alone version of Infomap.
+        We achieve this by compiling Infomap from{" "}
+        <a href="//emscripten.org">C++ to JavaScript</a>, which gives a
+        performance penalty compared to the stand-alone version of Infomap.
       </p>
       <p>
-        If you want to integrate Infomap in your own web application, you can use the{" "}
-        <a href="//www.npmjs.com/package/@mapequation/infomap">Infomap NPM package</a>.
+        If you want to integrate Infomap in your own web application, you can
+        use the{" "}
+        <a href="//www.npmjs.com/package/@mapequation/infomap">
+          Infomap NPM package
+        </a>
+        .
       </p>
 
       <Heading id="Install" />
       <p>
-        We recommend installing Infomap from the Python Package Index. Upgrades are easy and you get
-        access to the <a href="//mapequation.github.io/infomap/python">Python API</a>.
+        We recommend installing Infomap from the Python Package Index. Upgrades
+        are easy and you get access to the{" "}
+        <a href="//mapequation.github.io/infomap/python">Python API</a>.
       </p>
       <p>
-        Currently, we provide pre-compiled packages for Windows and macOS. If no package is
-        available for your platform and Python version, the code{" "}
+        Currently, we provide pre-compiled packages for Windows and macOS. If no
+        package is available for your platform and Python version, the code{" "}
         <a href="#CompilingFromSource">compiles from source</a>.
       </p>
 
@@ -63,11 +68,14 @@ export default function Infomap() {
 
       <Heading id="DownloadBinary" />
       <p>
-        If you don&apos;t want to install Python, we provide pre-compiled binaries for Windows,
-        Ubuntu and macOS. You can download the binaries from the{" "}
-        <a href="//github.com/mapequation/infomap/releases/latest">releases page</a> or use the
-        direct links below. The OpenMP versions require <code>libomp-dev</code> on Ubuntu and{" "}
-        <code>libomp</code> on macOS.
+        If you don&apos;t want to install Python, we provide pre-compiled
+        binaries for Windows, Ubuntu and macOS. You can download the binaries
+        from the{" "}
+        <a href="//github.com/mapequation/infomap/releases/latest">
+          releases page
+        </a>{" "}
+        or use the direct links below. The OpenMP versions require{" "}
+        <code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS.
       </p>
 
       <Table variant="simple" size="sm" mb={2}>
@@ -131,30 +139,32 @@ export default function Infomap() {
       </Table>
 
       <Message header="Trusting binaries on macOS">
-        Run <code>spctl --add Infomap</code> and enter your password to add the Infomap binary to
-        GateKeeper&apos;s trusted binaries.
+        Run <code>spctl --add Infomap</code> and enter your password to add the
+        Infomap binary to GateKeeper&apos;s trusted binaries.
       </Message>
 
       <Heading id="CompilingFromSource" />
       <p>
-        Building Infomap from source requires a working GCC or Clang compiler with support for C++14
-        and optionally OpenMP.
+        Building Infomap from source requires a working GCC or Clang compiler
+        with support for C++14 and optionally OpenMP.
       </p>
 
       <p>
-        On Ubuntu and Windows with WSL, install the <code>build-essential</code> and{" "}
-        <code>libomp-dev</code> packages.
+        On Ubuntu and Windows with WSL, install the <code>build-essential</code>{" "}
+        and <code>libomp-dev</code> packages.
       </p>
 
       <p>
         On macOS, you can install Apple&apos;s development tools with{" "}
-        <code>xcode-select --install</code> and the <a href="//brew.sh">Homebrew</a> version of
-        OpenMP with <code>brew install libomp</code>.
+        <code>xcode-select --install</code> and the{" "}
+        <a href="//brew.sh">Homebrew</a> version of OpenMP with{" "}
+        <code>brew install libomp</code>.
       </p>
 
       <p>
-        We don&apos;t currently support building Infomap from source on Windows without WSL. If you
-        don&apos;t have WSL, you should use the binary releases or the Python package.
+        We don&apos;t currently support building Infomap from source on Windows
+        without WSL. If you don&apos;t have WSL, you should use the binary
+        releases or the Python package.
       </p>
 
       <Heading id="Download" />
@@ -164,8 +174,11 @@ export default function Infomap() {
           <DownloadIcon />
           Download Infomap source code
         </a>{" "}
-        or check the <a href="//github.com/mapequation/infomap/releases">releases page</a> for all
-        releases.
+        or check the{" "}
+        <a href="//github.com/mapequation/infomap/releases">
+          releases page
+        </a>{" "}
+        for all releases.
       </p>
 
       <p>Unzip the file and compile Infomap by running</p>
@@ -180,8 +193,8 @@ export default function Infomap() {
 
       <p>
         To download the development version from{" "}
-        <a href="//www.github.com/mapequation/infomap">Github</a>, clone the repository and compile
-        Infomap by running
+        <a href="//www.github.com/mapequation/infomap">Github</a>, clone the
+        repository and compile Infomap by running
       </p>
 
       <Code>

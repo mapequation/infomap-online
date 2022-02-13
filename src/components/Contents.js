@@ -1,7 +1,6 @@
 import { Heading as CkHeading } from "@chakra-ui/react";
 import styles from "../styles/Contents.module.css";
 
-
 const tocSource = {
   Infomap: {
     heading: "Infomap",
@@ -33,7 +32,13 @@ const tocSource = {
   },
   Input: {
     heading: "Input formats",
-    children: ["InputLinkList", "InputPajek", "InputBipartite", "InputMultilayer", "InputStates"],
+    children: [
+      "InputLinkList",
+      "InputPajek",
+      "InputBipartite",
+      "InputMultilayer",
+      "InputStates",
+    ],
   },
   InputLinkList: {
     heading: "Link-list",
@@ -46,7 +51,11 @@ const tocSource = {
   },
   InputMultilayer: {
     heading: "Multilayer",
-    children: ["InputMultilayerFull", "InputMultilayerIntraInter", "InputMultilayerIntra"],
+    children: [
+      "InputMultilayerFull",
+      "InputMultilayerIntraInter",
+      "InputMultilayerIntra",
+    ],
   },
   InputMultilayerFull: {
     heading: "With multilayer links",
@@ -91,7 +100,13 @@ const tocSource = {
   },
   Parameters: {
     heading: "Parameters",
-    children: ["ParamsInput", "ParamsOutput", "ParamsAlgorithm", "ParamsAccuracy", "ParamsAbout"],
+    children: [
+      "ParamsInput",
+      "ParamsOutput",
+      "ParamsAlgorithm",
+      "ParamsAccuracy",
+      "ParamsAbout",
+    ],
   },
   ParamsAbout: {
     heading: "About",
@@ -135,7 +150,7 @@ const tocSource = {
   },
 };
 
-const toc = (function(tocSource) {
+const toc = (function (tocSource) {
   const ids = Object.keys(tocSource);
   const tree = tocSource;
 
@@ -161,7 +176,9 @@ const toc = (function(tocSource) {
   });
 
   // set child ids of top nodes
-  ids.filter((id) => tree[id].level === 1).forEach((id, i) => (tree[id].childId = i + 1));
+  ids
+    .filter((id) => tree[id].level === 1)
+    .forEach((id, i) => (tree[id].childId = i + 1));
 
   // set tree ids
   ids.forEach((id) => {
@@ -185,7 +202,14 @@ export const Heading = ({ id, ...props }) => {
   const mt = [8, 8, 6, 4];
   const mb = [6, 6, 4, 2];
   return (
-    <CkHeading as={`h${level}`} size={sizes[level - 1]} mt={mt[level - 1]} mb={mb[level - 1]} id={id} {...props}>
+    <CkHeading
+      as={`h${level}`}
+      size={sizes[level - 1]}
+      mt={mt[level - 1]}
+      mb={mb[level - 1]}
+      id={id}
+      {...props}
+    >
       <a href={`#${id}`}>{heading}</a>
     </CkHeading>
   );
@@ -200,11 +224,24 @@ const Item = ({ id, toc, level, maxLevel }) => {
   const sizes = "md sm xs".split(" ");
 
   return (
-    <li id={item.treeId} style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}>
-      <CkHeading as={`h${level + 2}`} size={sizes[level - 1]} className={styles.liHeader} style={{ marginBottom: 0 }}>
+    <li
+      id={item.treeId}
+      style={{ marginTop: (3 - level) * 6, marginBottom: 0 }}
+    >
+      <CkHeading
+        as={`h${level + 2}`}
+        size={sizes[level - 1]}
+        className={styles.liHeader}
+        style={{ marginBottom: 0 }}
+      >
         <a href={`#${id}`}>{item.heading}</a>
       </CkHeading>
-      <Items ids={item.children} toc={toc} level={level + 1} maxLevel={maxLevel} />
+      <Items
+        ids={item.children}
+        toc={toc}
+        level={level + 1}
+        maxLevel={maxLevel}
+      />
     </li>
   );
 };
@@ -212,7 +249,8 @@ const Item = ({ id, toc, level, maxLevel }) => {
 const Items = ({ ids, toc, level = 1, maxLevel }) => {
   if (!ids) return null;
 
-  const classNames = level === 1 ? `${styles.tocList} ${styles.tocList1}` : styles.tocList;
+  const classNames =
+    level === 1 ? `${styles.tocList} ${styles.tocList1}` : styles.tocList;
 
   return (
     <ol className={classNames}>

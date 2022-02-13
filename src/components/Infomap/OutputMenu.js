@@ -3,7 +3,6 @@ import { List, ListItem } from "@chakra-ui/react";
 import { observer } from "mobx-react";
 import store from "../../store";
 
-
 const DocIcon = (
   <a href="#PhysicalAndStateOutput">
     <QuestionOutlineIcon />
@@ -27,9 +26,7 @@ export default observer(function OutputMenu(props) {
 
   if (!stateFiles.length) {
     return physicalFiles.length < 2 ? null : (
-      <List {...props}>
-        {physicalFiles.map(getMenuItem)}
-      </List>
+      <List {...props}>{physicalFiles.map(getMenuItem)}</List>
     );
   }
 

@@ -6,7 +6,6 @@ import createParams from "./createParams";
 import paramToString from "./paramToString";
 import updateParam from "./updateParam";
 
-
 const argSpec = getArgSpec(infomapParameters);
 
 export default class ParameterStore {
@@ -36,19 +35,20 @@ export default class ParameterStore {
 
   setRef = (name, ref) => (this.refs[name] = ref);
 
-  getRef = name => this.refs[name];
+  getRef = (name) => this.refs[name];
 
   args = "";
   argsError = "";
   hasArgsError = false;
 
-  getParam = name => {
-    return this.params.find(param => param.long === name);
+  getParam = (name) => {
+    return this.params.find((param) => param.long === name);
   };
 
-  getParamsForGroup = group => Object.values(this.params).filter(param => param.group === group);
+  getParamsForGroup = (group) =>
+    Object.values(this.params).filter((param) => param.group === group);
 
-  toggle = param => {
+  toggle = (param) => {
     if (!param) return;
     param.active = !param.active;
     this.rebuildArgs();
@@ -96,7 +96,7 @@ export default class ParameterStore {
     }
   };
 
-  resetFileParam = param => {
+  resetFileParam = (param) => {
     this.setInput(param, "");
     if (param.long === "--cluster-data") {
       this._parent.setClusterData({ name: "", value: "" });
@@ -107,12 +107,12 @@ export default class ParameterStore {
 
   rebuildArgs = () => {
     this.args = this.params
-      .filter(param => param.active)
+      .filter((param) => param.active)
       .map(paramToString)
       .join(" ");
   };
 
-  setArgs = args => {
+  setArgs = (args) => {
     const argv = args.trim().split(/\s+/);
 
     this.argsError = "";

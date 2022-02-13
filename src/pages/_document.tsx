@@ -36,13 +36,19 @@ export default function Document() {
           name="twitter:description"
           content="Infomap finds important patterns in complex networks by optimizing the map equation, which exploits the information-theoretic duality between the problem of compressing data and detecting patterns."
         />
-        <meta name="twitter:url" content="https://www.mapequation.org/infomap" />
+        <meta
+          name="twitter:url"
+          content="https://www.mapequation.org/infomap"
+        />
         <meta
           name="twitter:image"
           content="https://www.mapequation.org/assets/img/infomap-online.png"
         />
 
-        <link rel="shortcut icon" href="https://www.mapequation.org/assets/img/icons/favicon.ico" />
+        <link
+          rel="shortcut icon"
+          href="https://www.mapequation.org/assets/img/icons/favicon.ico"
+        />
         <link
           rel="apple-touch-icon"
           sizes="57x57"

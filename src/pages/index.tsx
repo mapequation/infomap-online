@@ -26,7 +26,9 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Infomap - Network community detection using the Map Equation framework</title>
+        <title>
+          Infomap - Network community detection using the Map Equation framework
+        </title>
       </Head>
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=UA-27168379-1"

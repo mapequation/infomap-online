@@ -8,10 +8,14 @@ const getOptions = (description) => {
 export default function createParams(params) {
   return params.map((param) => {
     if (param.short) {
-      param.shortString = `${param.short}${param.shortType ? `<${param.shortType}>` : ""}`;
+      param.shortString = `${param.short}${
+        param.shortType ? `<${param.shortType}>` : ""
+      }`;
     }
 
-    param.longString = `${param.long}${param.longType ? ` <${param.longType}>` : ""}`;
+    param.longString = `${param.long}${
+      param.longType ? ` <${param.longType}>` : ""
+    }`;
 
     if (param.longType) {
       param.active = false;

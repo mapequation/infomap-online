@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { Component } from "react";
 
-
 export default class Console extends Component {
   keepScrolling = true;
   onScroll = () => {

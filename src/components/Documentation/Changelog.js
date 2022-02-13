@@ -1,11 +1,16 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Button, Icon, ListItem, UnorderedList, chakra } from "@chakra-ui/react";
+import {
+  Button,
+  chakra,
+  Icon,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
 import styles from "../../styles/Documentation.module.css";
 import { Heading } from "../Contents";
-
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
@@ -17,7 +22,9 @@ const Change = ({ change }) => {
   );
   const Reference =
     (references || []).length > 0 ? (
-      <a href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}>
+      <a
+        href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}
+      >
         {" "}
         (#{references[0].issue})
       </a>
@@ -76,7 +83,9 @@ const Release = ({ changes }) => {
 
   return (
     <div style={{ marginBottom: 2 }}>
-      <a href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}>
+      <a
+        href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}
+      >
         <h3 style={{ marginBottom: 2 }} id={release.subject}>
           {release.subject}
           <span
@@ -140,7 +149,9 @@ export default function Changelog() {
 
   releaseIndices.forEach((releaseIndex, i) => {
     let nextReleaseIndexOrEnd =
-      i < releaseIndices.length - 1 ? releaseIndices[i + 1] : changes.length - 1;
+      i < releaseIndices.length - 1
+        ? releaseIndices[i + 1]
+        : changes.length - 1;
     nextReleaseIndexOrEnd = Math.min(nextReleaseIndexOrEnd, lastIndex);
     if (releaseIndex < lastIndex - 2)
       releases.push(changes.slice(releaseIndex, nextReleaseIndexOrEnd));

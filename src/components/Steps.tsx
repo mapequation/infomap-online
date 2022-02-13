@@ -2,7 +2,11 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import React, { PropsWithChildren } from "react";
 
-export function Steps({ activeStep, children, ...props }: PropsWithChildren<any>) {
+export function Steps({
+  activeStep,
+  children,
+  ...props
+}: PropsWithChildren<any>) {
   const numChildren = React.Children.count(children);
 
   return (
@@ -23,15 +27,29 @@ export function Steps({ activeStep, children, ...props }: PropsWithChildren<any>
           index: i,
           numChildren,
           active: i === activeStep,
-          completed: i < activeStep, ...child.props,
-        }),
+          completed: i < activeStep,
+          ...child.props,
+        })
       )}
     </Grid>
   );
 }
 
-export function Step({ index, numChildren, active, completed, children, ...props }: PropsWithChildren<any>) {
-  const bg = { backgroundColor: completed ? "hsl(0, 0%, 100%)" : active ? "hsl(0, 0%, 95%)" : "hsl(0, 0%, 90%)" };
+export function Step({
+  index,
+  numChildren,
+  active,
+  completed,
+  children,
+  ...props
+}: PropsWithChildren<any>) {
+  const bg = {
+    backgroundColor: completed
+      ? "hsl(0, 0%, 100%)"
+      : active
+      ? "hsl(0, 0%, 95%)"
+      : "hsl(0, 0%, 90%)",
+  };
   const isLast = index === numChildren - 1;
 
   return (
@@ -69,7 +87,9 @@ export function Step({ index, numChildren, active, completed, children, ...props
               ...bg,
               opacity: 1,
               right: completed ? "-9.5px" : "5px",
-              borderColor: completed ? "var(--chakra-colors-blackAlpha-300)" : "hsla(0, 0%, 80%, 0)",
+              borderColor: completed
+                ? "var(--chakra-colors-blackAlpha-300)"
+                : "hsla(0, 0%, 80%, 0)",
             }}
           />
         )}
