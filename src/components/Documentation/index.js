@@ -1,87 +1,50 @@
-import TeX from "@matejmazur/react-katex";
+import { Container, Grid, GridItem } from "@chakra-ui/react";
 import "katex/dist/katex.min.css";
-import { createRef } from "react";
-import { Divider, Grid, Header, Rail, Ref, Sticky } from "semantic-ui-react";
+import dynamic from "next/dynamic";
 import Algorithm from "./Algorithm";
-import Changelog from "./Changelog";
-import Contents, { Heading } from "./Contents";
 import Features from "./Features";
 import Feedback from "./Feedback";
-import "./index.css";
-import Input from "./Input";
-import Install from "./Install";
+import Infomap from "./Infomap";
 import MapEquation from "./MapEquation";
-import Output from "./Output";
-import Parameters from "./Parameters";
 import References from "./References";
 import Running from "./Running";
+// import Input from "./Input";
+// import Output from "./Output";
+// import Parameters from "./Parameters";
+// import Changelog from "./Changelog";
 
+const Input = dynamic(() => import("./Input"), { ssr: false });
+const Output = dynamic(() => import("./Output"), { ssr: false });
+const Parameters = dynamic(() => import("./Parameters"), { ssr: false });
+const Changelog = dynamic(() => import("./Changelog"), { ssr: false });
 
 function Documentation() {
-  const contextRef = createRef();
-
   return (
-    <Grid container stackable columns={2} className="documentation">
-      <Ref innerRef={contextRef}>
-        <Grid.Column>
-          <Heading id="Infomap" />
-          <p>
-            Infomap is a network clustering algorithm based on the{" "}
-            <a href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
-              Map Equation
-            </a>
-            :
-          </p>
-          <TeX
-            math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
-            block
-          />
-
-          <Heading id="InfomapOnline" />
-          <p>
-            Infomap Online is a client-side web application that enables users to run Infomap in the
-            web browser. Your data never leaves your computer; we don't store any data on our
-            servers.
-          </p>
-          <p>
-            We achieve this by compiling Infomap from{" "}
-            <a href="//emscripten.org">C++ to JavaScript</a>, which gives a performance penalty
-            compared to the stand-alone version of Infomap.
-          </p>
-          <p>
-            If you want to integrate Infomap in your own web application, you can use the{" "}
-            <a href="//www.npmjs.com/package/@mapequation/infomap">Infomap NPM package</a>.
-          </p>
-
-          <Install />
-          <Divider />
-          <Running />
-          <Input />
-          <Output />
-
-          <Rail position="left" dividing close style={{ width: 280 }} className="contents">
-            <Sticky context={contextRef} offset={50}>
-              <Header as="h2" style={{ marginTop: "0.5em" }}>
-                Contents
-              </Header>
-              <Contents />
-            </Sticky>
-          </Rail>
-        </Grid.Column>
-      </Ref>
-      <Grid.Column>
+    <Grid
+      as={Container}
+      maxW="container.xl"
+      templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+      mx="auto"
+      p="1rem"
+      gap={{ base: 0, lg: "4rem" }}
+      lineHeight="1.6em"
+      textShadow="rgba(255, 255, 255, 0.746094) 0 1px 0"
+    >
+      <GridItem>
+        <Infomap />
+        <Running />
+        <Input />
+        <Output />
+      </GridItem>
+      <GridItem>
         <Parameters />
-        <Divider />
         <Changelog />
         <MapEquation />
         <Features />
-        <Divider />
         <Algorithm />
-        <Divider />
         <Feedback />
-        <Divider />
         <References />
-      </Grid.Column>
+      </GridItem>
     </Grid>
   );
 }

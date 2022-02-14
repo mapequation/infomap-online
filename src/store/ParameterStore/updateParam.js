@@ -1,7 +1,7 @@
 export default function updateParam(argv) {
-  const args = argv.filter(a => a !== "");
+  const args = argv.filter((a) => a !== "");
 
-  return param => {
+  return (param) => {
     param.active = false;
 
     if (param.longType) {
@@ -13,14 +13,18 @@ export default function updateParam(argv) {
         param.value = "";
       }
 
-      const index = args.findIndex(a => a === param.short || a === param.long);
+      const index = args.findIndex(
+        (a) => a === param.short || a === param.long
+      );
       if (index < 0 || index === args.length - 1) return;
       const value = args[index + 1];
       if (value.startsWith("-") && value !== "-1") return;
 
       switch (param.longType) {
         case "list":
-          const values = value.split(",").filter(value => param.options.includes(value));
+          const values = value
+            .split(",")
+            .filter((value) => param.options.includes(value));
           param.active = values.length > 0;
           param.value = values;
           break;
@@ -45,18 +49,20 @@ export default function updateParam(argv) {
           break;
       }
     } else if (param.incremental) {
-      const index = args.findIndex(a => a === param.long);
+      const index = args.findIndex((a) => a === param.long);
       if (index > -1) {
         param.active = true;
         param.value = 1;
       } else {
         const re = new RegExp(`^${param.short}+$`);
-        const index = args.findIndex(a => re.test(a));
+        const index = args.findIndex((a) => re.test(a));
         param.active = index > -1;
         param.value = index > -1 ? args[index].slice(1).length : 0;
       }
     } else {
-      const index = args.findIndex(a => a === param.short || a === param.long);
+      const index = args.findIndex(
+        (a) => a === param.short || a === param.long
+      );
       param.active = index > -1;
     }
   };

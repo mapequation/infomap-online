@@ -1,0 +1,10 @@
+[role="dialog"].drawer {
+    background-color: var(--chakra-colors-whiteAlpha-900);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    [role="dialog"].drawer {
+        background-color: var(--chakra-colors-whiteAlpha-700);
+        backdrop-filter: blur(10px);
+    }
+}

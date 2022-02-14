@@ -1,31 +1,42 @@
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  chakra,
+  Icon,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { changelog as infomapChangelog } from "@mapequation/infomap";
 import { useState } from "react";
-import { Divider, Header, Icon, List } from "semantic-ui-react";
-import { Heading } from "./Contents";
+import { IoEllipsisVertical } from "react-icons/io5";
+import { Heading } from "../Contents";
 
 const Change = ({ change }) => {
   const { scope, subject, references } = change;
   const Scope = scope ? <strong>{scope} </strong> : null;
   const Subject = (
-    <span style={{ whiteSpace: "pre" }}>
+    <chakra.span whiteSpace="pre">
       {subject.replace(/ \(#\d+\)$/, "").replace(/\.\s/g, ".\n")}
-    </span>
+    </chakra.span>
   );
   const Reference =
     (references || []).length > 0 ? (
-      <a href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}>
+      <a
+        href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}
+      >
         {" "}
         (#{references[0].issue})
       </a>
     ) : null;
+
   return (
-    <List.Item className="changelogItem">
-      <span>
+    <ListItem sx={{ "::marker": { color: "blackAlpha.400" } }}>
+      <chakra.span wordBreak="break-all">
         {Scope}
         {Subject}
         {Reference}
-      </span>
-    </List.Item>
+      </chakra.span>
+    </ListItem>
   );
 };
 
@@ -34,28 +45,28 @@ const Changes = ({ heading, changes }) => {
   return (
     <>
       <h4>{heading}</h4>
-      <List bulleted>
+      <UnorderedList>
         {changes.map((change, i) => (
           <Change key={i} change={change} />
         ))}
-      </List>
+      </UnorderedList>
     </>
   );
 };
 
-const Breaking = props => <Changes heading="BREAKING CHANGES" {...props} />;
-const Features = props => <Changes heading="Features" {...props} />;
-const Fixes = props => <Changes heading="Fixes" {...props} />;
+const Breaking = (props) => <Changes heading="BREAKING CHANGES" {...props} />;
+const Features = (props) => <Changes heading="Features" {...props} />;
+const Fixes = (props) => <Changes heading="Fixes" {...props} />;
 
 const Release = ({ changes }) => {
   const features = [];
   const fixes = [];
   const breaking = [];
 
-  changes.forEach(change => {
+  changes.forEach((change) => {
     const { type, notes, scope } = change;
 
-    const breakingNote = notes.find(note => note.title === "BREAKING CHANGE");
+    const breakingNote = notes.find((note) => note.title === "BREAKING CHANGE");
     if (breakingNote) {
       breaking.push({ subject: breakingNote.text, scope });
     }
@@ -71,7 +82,9 @@ const Release = ({ changes }) => {
 
   return (
     <div style={{ marginBottom: 2 }}>
-      <a href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}>
+      <a
+        href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}
+      >
         <h3 style={{ marginBottom: 2 }} id={release.subject}>
           {release.subject}
           <span
@@ -103,7 +116,8 @@ const Release = ({ changes }) => {
   );
 };
 
-const Changelog = ({ changes }) => {
+export default function Changelog() {
+  const changes = infomapChangelog;
   const [expanded, setExpanded] = useState(false);
 
   if (changes.length === 0) {
@@ -118,23 +132,25 @@ const Changelog = ({ changes }) => {
   });
 
   const maxVisible = 15;
-  let visible = 0;
+  let numVisible = 0;
   let lastVisibleIndex = 0;
 
-  for (let i = 0; i < changes.length && visible <= maxVisible; ++i) {
+  for (let i = 0; i < changes.length && numVisible <= maxVisible; ++i) {
     const change = changes[i];
     if (change.type === "feat" || change.type === "fix") {
       lastVisibleIndex = i;
-      ++visible;
+      ++numVisible;
     }
   }
 
   const lastIndex = expanded ? changes.length - 1 : lastVisibleIndex;
-
   const releases = [];
+
   releaseIndices.forEach((releaseIndex, i) => {
     let nextReleaseIndexOrEnd =
-      i < releaseIndices.length - 1 ? releaseIndices[i + 1] : changes.length - 1;
+      i < releaseIndices.length - 1
+        ? releaseIndices[i + 1]
+        : changes.length - 1;
     nextReleaseIndexOrEnd = Math.min(nextReleaseIndexOrEnd, lastIndex);
     if (releaseIndex < lastIndex - 2)
       releases.push(changes.slice(releaseIndex, nextReleaseIndexOrEnd));
@@ -146,20 +162,16 @@ const Changelog = ({ changes }) => {
       {releases.map((changes, i) => (
         <Release key={i} changes={changes} />
       ))}
-      {!expanded && (
-        <Icon
-          style={{ color: "rgb(204, 204, 204)", margin: "1em 0 0 1.85em" }}
-          name="ellipsis vertical"
-        />
-      )}
-      <Divider horizontal onClick={() => setExpanded(!expanded)}>
-        <Header as="h5">
-          <Icon name={expanded ? "angle up" : "angle down"} />
-          {expanded ? "Show less" : "Show more"}
-        </Header>
-      </Divider>
+      {!expanded && <Icon as={IoEllipsisVertical} my="1em" ml="0.8em" />}
+      <Button
+        size="sm"
+        isFullWidth
+        variant="ghost"
+        leftIcon={expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        onClick={() => setExpanded(!expanded)}
+      >
+        {expanded ? "Show less" : "Show more"}
+      </Button>
     </>
   );
-};
-
-export default () => <Changelog changes={infomapChangelog} />;
+}

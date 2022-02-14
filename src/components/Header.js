@@ -1,45 +1,73 @@
-import Infomap from "@mapequation/infomap";
-import { Container, Header as Heading, Icon, Menu } from "semantic-ui-react";
-import "./Header.css";
+import { DownloadIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Heading,
+  Stack,
+  HStack,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
+import dynamic from "next/dynamic";
+import { FaGithub } from "react-icons/fa";
+import styles from "../styles/Header.module.css";
 
+const Version = dynamic(() => import("./InfomapVersion"), { ssr: false });
 
-const Header = () => (
-  <header>
-    <Container>
-      <Menu borderless stackable className="header-menu documentation">
-        <Menu.Item fitted>
-          <Heading as="h1">
-            <a href="https://www.mapequation.org">
+export default function Header() {
+  return (
+    <header className={styles.header}>
+      <Stack
+        as={Container}
+        maxW="container.xl"
+        direction={{ base: "column", md: "row" }}
+        align="flex-start"
+        justify="space-between"
+        pt={5}
+      >
+        <HStack justify="flex-start" align="flex-start" spacing={3} mr="3em">
+          <Box w="57px" h="57px" flexShrink="0">
+            <a href="//mapequation.org">
               <img
-                className="mapequation-logo"
-                src="//www.mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
-                alt="mapequation-icon"
+                alt="MapEquation"
+                width="57px"
+                height="57px"
+                src="https://mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
               />
             </a>
-            <div className="content">
-              <span className="brand">
-                <span className="infomap">Infomap</span> <span className="online">Online</span>
-              </span>
-              <div className="sub header">
-                Network community detection using the Map Equation framework
-              </div>
-            </div>
-          </Heading>
-        </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item fitted className="icons">
-            <a href="#Install">
-              Infomap {Infomap.__version__}
-              <Icon name="download" size="big" />
-            </a>
-            <a href="https://github.com/mapequation/infomap">
-              <Icon name="github" size="big" />
-            </a>
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
-    </Container>
-  </header>
-);
-
-export default Header;
+          </Box>
+          <Box>
+            <Heading
+              fontSize="1.75rem"
+              fontFamily="Philosopher, serif"
+              fontWeight={700}
+            >
+              <span style={{ color: "#555" }}>Infomap</span>{" "}
+              <span style={{ color: "#b22222" }}>Online</span>
+            </Heading>
+            <Text fontSize="0.95rem" m={0}>
+              Network community detection using the Map Equation framework
+            </Text>
+          </Box>
+        </HStack>
+        <ButtonGroup
+          variant="outline"
+          colorScheme="blue"
+          pr={{ base: "3.3em", "2xl": 0 }}
+        >
+          <Button as="a" rightIcon={<DownloadIcon />} href="#Install">
+            Infomap <Version />
+          </Button>
+          <IconButton
+            as="a"
+            href="//github.com/mapequation/infomap"
+            aria-label="infomap on github"
+            icon={<FaGithub />}
+          />
+        </ButtonGroup>
+      </Stack>
+    </header>
+  );
+}

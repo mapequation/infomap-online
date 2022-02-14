@@ -1,129 +1,7 @@
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { action, computed, makeObservable, observable } from "mobx";
-
-
-const FORMATS = [
-  {
-    key: "clu",
-    name: "Clu",
-    isStates: false,
-    suffix: "",
-    extension: "clu",
-  },
-  {
-    key: "tree",
-    name: "Tree",
-    isStates: false,
-    suffix: "",
-    extension: "tree",
-  },
-  {
-    key: "ftree",
-    name: "Ftree",
-    isStates: false,
-    suffix: "",
-    extension: "ftree",
-  },
-  {
-    key: "net",
-    name: "Network",
-    isStates: false,
-    suffix: "",
-    extension: "net",
-  },
-  {
-    key: "states_as_physical",
-    name: "States as physical",
-    isStates: false,
-    suffix: "_states_as_physical",
-    extension: "net",
-  },
-  {
-    key: "clu_states",
-    name: "Clu",
-    isStates: true,
-    suffix: "_states",
-    extension: "clu",
-  },
-  {
-    key: "tree_states",
-    name: "Tree",
-    isStates: true,
-    suffix: "_states",
-    extension: "tree",
-  },
-  {
-    key: "ftree_states",
-    name: "Ftree",
-    isStates: true,
-    suffix: "_states",
-    extension: "ftree",
-  },
-  {
-    key: "states",
-    name: "States",
-    isStates: true,
-    suffix: "_states",
-    extension: "net",
-  },
-  {
-    key: "flow",
-    name: "Flow",
-    isStates: false,
-    suffix: "_flow",
-    extension: "net",
-  },
-  {
-    key: "flow_as_physical",
-    name: "Flow states as physical",
-    isStates: true,
-    suffix: "_states_as_physical_flow",
-    extension: "net",
-  },
-  {
-    key: "newick",
-    name: "Newick",
-    isStates: false,
-    suffix: "",
-    extension: "nwk",
-  },
-  {
-    key: "newick_states",
-    name: "Newick",
-    isStates: true,
-    suffix: "_states",
-    extension: "nwk",
-  },
-  {
-    key: "json",
-    name: "JSON",
-    isStates: false,
-    suffix: "",
-    extension: "json",
-  },
-  {
-    key: "json_states",
-    name: "JSON",
-    isStates: true,
-    suffix: "_states",
-    extension: "json",
-  },
-  {
-    key: "csv",
-    name: "CSV",
-    isStates: false,
-    suffix: "",
-    extension: "csv",
-  },
-  {
-    key: "csv_states",
-    name: "CSV",
-    isStates: true,
-    suffix: "_states",
-    extension: "csv",
-  },
-];
+import { FORMATS } from "./formats";
 
 export default class OutputStore {
   constructor(parent) {
@@ -238,25 +116,25 @@ export default class OutputStore {
   }
 
   get files() {
-    return FORMATS.filter(({ key }) => this[key]).map(format => ({
+    return FORMATS.filter(({ key }) => this[key]).map((format) => ({
       ...format,
       filename: `${this.name}${format.suffix}.${format.extension}`,
     }));
   }
 
   get physicalFiles() {
-    return this.files.filter(file => !file.isStates);
+    return this.files.filter((file) => !file.isStates);
   }
 
   get stateFiles() {
-    return this.files.filter(file => file.isStates);
+    return this.files.filter((file) => file.isStates);
   }
 
   get activeFile() {
     return this.files.find(({ key }) => key === this.activeKey);
   }
 
-  setContent = content => {
+  setContent = (content) => {
     const {
       clu,
       tree,
@@ -347,7 +225,7 @@ export default class OutputStore {
         ? "states"
         : flow
         ? "flow"
-        : "clu",
+        : "clu"
     );
   };
 
@@ -373,15 +251,17 @@ export default class OutputStore {
     this.downloaded = false;
   };
 
-  setActiveKey = key => (this.activeKey = key);
+  setActiveKey = (key) => (this.activeKey = key);
 
-  setDownloaded = value => (this.downloaded = value);
+  setDownloaded = (value) => (this.downloaded = value);
 
-  downloadFile = formatKey => {
+  downloadFile = (formatKey) => {
     const file = this.files.find(({ key }) => key === formatKey);
     const content = this[formatKey];
     const mimeType =
-      formatKey === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8";
+      formatKey === "json"
+        ? "application/json;charset=utf-8"
+        : "text/plain;charset=utf-8";
     const blob = new Blob([content], { type: mimeType });
     saveAs(blob, file.filename);
     this.setDownloaded();
@@ -397,6 +277,8 @@ export default class OutputStore {
       const content = this[file.key];
       zip.file(file.filename, content);
     }
-    zip.generateAsync({ type: "blob" }).then(blob => saveAs(blob, `${this.name}.zip`));
+    zip
+      .generateAsync({ type: "blob" })
+      .then((blob) => saveAs(blob, `${this.name}.zip`));
   };
 }

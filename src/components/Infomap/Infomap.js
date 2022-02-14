@@ -1,60 +1,88 @@
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  FormControl,
+  Grid,
+  GridItem,
+  HStack,
+  Image,
+  List,
+  ListItem,
+  Progress,
+  Text,
+  Textarea,
+  Tooltip,
+} from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import { Button, Form, Grid, Icon, Label, Menu, Message, Rail } from "semantic-ui-react";
-import "url-search-params-polyfill";
 import store from "../../store";
+import { Step, Steps } from "../Steps";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
-import Steps from "./Steps";
-
 
 export default observer(
   class InfomapOnline extends Component {
     state = {
       infomapOutput: [],
-      loading: false, // Loading input network
-      running: false,
-      completed: false,
+      isLoading: false, // Loading input network
+      isRunning: false,
+      isCompleted: false,
       infomapError: "",
-      hasLocalforageError: false,
+      progress: 0,
     };
 
     constructor(props) {
       super(props);
 
-      const onData = content =>
+      const onData = (content) =>
         this.setState({
           infomapOutput: [...this.state.infomapOutput, content],
         });
 
-      const onError = content =>
+      const onError = (content) => {
+        let infomapError = content.replace(/^Error:\s+/i, "");
         this.setState({
-          infomapError: content.replace(/^Error:\s+/i, ""),
+          infomapError,
           infomapOutput: [...this.state.infomapOutput, content],
-          running: false,
-          completed: false,
+          isRunning: false,
+          isCompleted: false,
         });
+        console.log(infomapError);
+        this.props.toast({
+          title: "Error",
+          description: infomapError,
+          status: "error",
+        });
+      };
 
-      const onFinished = content => {
+      const onProgress = (progress) => this.setState({ progress });
+
+      const onFinished = async (content) => {
         store.output.setContent(content);
-        localforage
-          .setItem("ftree", store.output.ftree)
-          .then(() => this.setState({ hasLocalforageError: false }))
-          .catch(() => this.setState({ hasLocalforageError: true }));
+        await localforage.setItem("network", {
+          timestamp: Date.now(),
+          name: store.network.name,
+          input: store.network.value,
+          ...content,
+        });
         this.setState({
-          running: false,
-          completed: true,
+          isRunning: false,
+          isCompleted: true,
+          progress: 0,
         });
       };
 
       this.infomap = new Infomap()
         .on("data", onData)
+        .on("progress", onProgress)
         .on("error", onError)
         .on("finished", onFinished);
     }
@@ -73,28 +101,28 @@ export default observer(
       }
     }
 
-    onInputChange = (activeInput) => (e, { name, value }) => {
-      const { params } = store;
+    onInputChange = (activeInput) => {
+      return ({ name, value }) => {
+        if (activeInput === "network") {
+          store.setNetwork({ name, value });
+        } else if (activeInput === "cluster data") {
+          const param = store.params.getParam("--cluster-data");
+          if (!value) return store.params.resetFileParam(param);
+          store.params.setFileParam(param, { name, value });
+        } else if (activeInput === "meta data") {
+          const param = store.params.getParam("--meta-data");
+          if (!value) return store.params.resetFileParam(param);
+          store.params.setFileParam(param, { name, value });
+        }
 
-      if (activeInput === "network") {
-        store.setNetwork({ name, value });
-      } else if (activeInput === "cluster data") {
-        const param = params.getParam("--cluster-data");
-        if (!value) return params.resetFileParam(param);
-        params.setFileParam(param, { name, value });
-      } else if (activeInput === "meta data") {
-        const param = params.getParam("--meta-data");
-        if (!value) return params.resetFileParam(param);
-        params.setFileParam(param, { name, value });
-      }
+        store.output.setDownloaded(false);
 
-      store.output.setDownloaded(false);
-
-      this.setState({
-        loading: false,
-        completed: false,
-        infomapError: "",
-      });
+        this.setState({
+          isLoading: false,
+          isCompleted: false,
+          infomapError: "",
+        });
+      };
     };
 
     onLoad = (activeInput) => (files) => {
@@ -106,17 +134,19 @@ export default observer(
 
       const onInputChange = this.onInputChange(activeInput);
 
-      reader.onloadend = event => onInputChange(event, { name: file.name, value: reader.result });
+      reader.onloadend = () =>
+        onInputChange({ name: file.name, value: reader.result });
 
-      this.setState({ loading: true }, () => reader.readAsText(file, "utf-8"));
+      this.setState({ isLoading: true }, () =>
+        reader.readAsText(file, "utf-8")
+      );
     };
 
     run = () => {
       store.output.resetContent();
 
       this.setState({
-        completed: false,
-        hasLocalforageError: false,
+        isCompleted: false,
         infomapOutput: [],
       });
 
@@ -134,14 +164,19 @@ export default observer(
         });
       } catch (e) {
         this.setState({
-          running: false,
+          isRunning: false,
           infomapError: e.message,
+        });
+        this.props.toast({
+          title: "Error",
+          description: e.message,
+          status: "error",
         });
         return;
       }
 
       this.setState({
-        running: true,
+        isRunning: true,
         infomapError: "",
       });
     };
@@ -152,15 +187,15 @@ export default observer(
 
     render() {
       const {
-        loading,
-        running,
-        completed,
+        isLoading,
+        isRunning,
+        isCompleted,
         infomapError,
         infomapOutput,
-        hasLocalforageError,
+        progress,
       } = this.state;
-
-      const { activeInput, network, clusterData, metaData, output, params } = store;
+      const { activeInput, network, clusterData, metaData, output, params } =
+        store;
 
       const inputOptions = {
         network: network,
@@ -175,148 +210,234 @@ export default observer(
       };
 
       const inputValue = inputOptions[activeInput].value;
-
-      const inputMenuOptions = ["network", "cluster data", "meta data"].map(name => ({
-        key: name,
-        name,
-        active: activeInput === name,
-        className: inputOptions[name].value ? "finished" : undefined,
-      }));
-
-      const SupportedExtensions = inputAccept[activeInput] ? (
-        <span>
-          Extensions:{" "}
-          {inputAccept[activeInput]
-            .map(extension => (
-              <a key={extension} href={`#${extension.substring(1)}`}>
-                {extension}
-              </a>
-            ))
-            .reduce((prev, curr) => [prev, ", ", curr])}
-        </span>
-      ) : null;
-
       const consoleContent = infomapOutput.join("\n");
       const hasInfomapError = !!infomapError;
 
-      const inputMenuProps = {
-        vertical: true,
-        size: "small",
-        onItemClick: this.onInputMenuClick,
-        items: inputMenuOptions,
-      };
-
-      const outputMenuProps = { vertical: true, disabled: !completed };
-
-      let navigatorLabel = null;
-
-      if (completed && !hasInfomapError) {
-        if (!output.ftree) {
-          navigatorLabel = (
-            <Label basic size="small" pointing="below">
-              Network Navigator requires ftree output.{" "}
-              {!params.getParam("--ftree").active && (
-                <a onClick={() => params.setArgs(params.args + " --ftree")}>Enable.</a>
-              )}
-            </Label>
-          );
-        } else if (output.ftree && hasLocalforageError) {
-          navigatorLabel = (
-            <Label basic size="small" pointing="below">
-              Could not store network. Please download ftree and load manually.
-            </Label>
-          );
+      let activeStep = 0;
+      if (!!network.value) {
+        activeStep = 1;
+        if (isCompleted || isRunning) {
+          activeStep = 2;
+          if (output.downloaded) {
+            activeStep = 3;
+          }
         }
       }
 
       return (
-        <Grid container stackable className="infomap">
-          <Grid.Column width={16} textAlign="center">
-            <Steps
-              firstActive={!network.value}
-              firstCompleted={!!network.value}
-              secondActive={!!network.value && !completed}
-              secondCompleted={completed || running}
-              thirdActive={completed}
-              thirdCompleted={output.downloaded}
-            />
-            <div ref={store.mainView} />
-          </Grid.Column>
+        <Grid
+          as={Container}
+          maxW="96em"
+          ref={store.mainView}
+          templateAreas={{
+            base: "'steps' 'input' 'inputMenu' 'console' 'output' 'outputMenu'",
+            lg: "'steps steps steps' 'input console output' 'inputMenu empty outputMenu'",
+            xl: "'start steps steps steps end' 'inputMenu input console output outputMenu'",
+          }}
+          templateColumns={{
+            base: "1fr",
+            lg: "1fr 2fr 1fr",
+            xl: "1fr 2fr 4fr 2fr 1fr",
+          }}
+          mx="auto"
+          gap="2rem"
+        >
+          <GridItem area="steps">
+            <Steps activeStep={activeStep}>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image
+                    src="/infomap/images/step1.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>
+                      Load network
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Edit network or load file
+                    </Text>
+                  </Box>
+                </HStack>
+              </Step>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image
+                    src="/infomap/images/step2.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>
+                      Run Infomap
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Toggle parameters or add arguments
+                    </Text>
+                  </Box>
+                </HStack>
+              </Step>
+              <Step>
+                <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
+                  <Image
+                    src="/infomap/images/step3.png"
+                    alt="step 1"
+                    boxSize="48px"
+                  />
+                  <Box textAlign="center">
+                    <Text fontWeight={700} my={0}>
+                      Explore map!
+                    </Text>
+                    <Text fontSize="xs" my={0}>
+                      Save result or open in Network Navigator
+                    </Text>
+                  </Box>
+                </HStack>
+              </Step>
+            </Steps>
+          </GridItem>
 
-          <Grid.Column width={4} className="network">
+          <GridItem area="input" className="network">
             <LoadButton
-              fluid
-              primary
+              mb="1rem"
+              size="sm"
               onDrop={this.onLoad(activeInput)}
               accept={inputAccept[activeInput]}
             >
-              <Icon name="file" />
               Load {activeInput}
             </LoadButton>
 
             <InputTextarea
               onDrop={this.onLoad(activeInput)}
               accept={inputAccept[activeInput]}
-              loading={loading}
-              onChange={this.onInputChange(activeInput)}
+              onChange={(event) =>
+                this.onInputChange(activeInput)(event.target)
+              }
               value={inputValue}
               placeholder={`Input ${activeInput} here`}
+              spellCheck={false}
               wrap="off"
+              overflow="auto"
+              resize="none"
+              h="60ch"
+              variant="outline"
+              bg="white"
+              fontSize="sm"
             >
-              <Message attached="bottom" size="mini">
+              <Box
+                pos="absolute"
+                w="calc(100% - 8px)"
+                p="0.5rem"
+                mb="1px"
+                mx="1px"
+                fontSize="xs"
+                bg="whiteAlpha.900"
+                bottom={0}
+                left={0}
+                borderBottomRadius="lg"
+                borderTopColor="gray.200"
+                borderTopWidth={2}
+                borderTopStyle="dashed"
+                zIndex={1000}
+              >
                 Load {activeInput} by dragging & dropping.
                 <br />
-                <a href="#Input">Supported formats.</a> {SupportedExtensions}
-              </Message>
+                <a href="#Input">Supported formats.</a>
+              </Box>
             </InputTextarea>
-            <Rail close="very" position="left" className="rail-menu">
-              <Menu compact text {...inputMenuProps} />
-            </Rail>
-            <Menu fluid className="button-menu" {...inputMenuProps} />
-          </Grid.Column>
+          </GridItem>
 
-          <Grid.Column width={8} floated="left" className="run">
-            <InputParameters loading={running} onClick={this.run} />
+          <GridItem area="inputMenu" pt={{ base: 0, xl: "3em" }}>
+            <List fontSize="sm" textAlign={{ base: "left", xl: "right" }}>
+              {["network", "cluster data", "meta data"].map((option) => (
+                <ListItem
+                  key={option}
+                  size="sm"
+                  onClick={() => store.setActiveInput(option)}
+                  color={option === activeInput ? "gray.900" : "blackAlpha.600"}
+                  mb={1}
+                  cursor="pointer"
+                  textTransform="capitalize"
+                >
+                  {option}
+                </ListItem>
+              ))}
+            </List>
+          </GridItem>
 
-            <Form error={hasInfomapError}>
-              <Console
-                content={consoleContent}
-                placeholder="Infomap output will be printed here"
-                attached={hasInfomapError ? "top" : false}
+          <GridItem area="console" className="run">
+            <InputParameters loading={isRunning} onClick={this.run} mb="1rem" />
+
+            <Console placeholder="Infomap output will be printed here">
+              {consoleContent}
+            </Console>
+            {isRunning && (
+              <Progress
+                mx="5px"
+                borderBottomRadius="md"
+                pos="relative"
+                bottom={0}
+                size="xs"
+                value={progress}
               />
-              <Message error size="tiny" attached="bottom" content={infomapError} />
-            </Form>
-          </Grid.Column>
+            )}
+          </GridItem>
 
-          <Grid.Column width={4} className="output">
-            {navigatorLabel}
-            <Button.Group primary fluid>
-              <Button
-                as="a"
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-                disabled={!output.ftree || running || hasLocalforageError}
-                className="navigator-button"
-              />
-              <DownloadMenu disabled={running} />
-            </Button.Group>
+          <GridItem area="output" className="output">
+            <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
+              <Tooltip
+                visibility={
+                  isCompleted && !hasInfomapError && !output.ftree
+                    ? "visible"
+                    : "hidden"
+                }
+                placement="top"
+                size="sm"
+                hasArrow
+                label="Network Navigator requires ftree output."
+              >
+                <Button
+                  isFullWidth
+                  colorScheme="blue"
+                  as="a"
+                  _hover={{ color: "white", bg: "blue.600" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
+                  disabled={!output.ftree}
+                  borderRightRadius={0}
+                  size="sm"
+                >
+                  Open in Navigator
+                </Button>
+              </Tooltip>
+              <DownloadMenu disabled={isRunning} />
+            </ButtonGroup>
 
-            <Form loading={running}>
-              <Form.TextArea
+            <FormControl>
+              <Textarea
+                readOnly
+                onCopy={this.onCopyClusters}
                 value={output.activeContent}
                 placeholder="Cluster output will be printed here"
-                onCopy={this.onCopyClusters}
+                spellCheck={false}
                 wrap="off"
+                overflow="auto"
+                resize="none"
+                h="60ch"
+                variant="outline"
+                bg="white"
+                fontSize="sm"
               />
-            </Form>
-            <Rail close="very" position="right" className="rail-menu">
-              <OutputMenu compact text {...outputMenuProps} />
-            </Rail>
-            <OutputMenu fluid className="button-menu" {...outputMenuProps} />
-          </Grid.Column>
+            </FormControl>
+          </GridItem>
+
+          <GridItem area="outputMenu" pt={{ base: 0, xl: "3em" }}>
+            <OutputMenu fontSize="sm" />
+          </GridItem>
         </Grid>
       );
     }
-  },
+  }
 );

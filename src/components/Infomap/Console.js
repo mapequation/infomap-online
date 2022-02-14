@@ -1,6 +1,5 @@
+import { Box, chakra } from "@chakra-ui/react";
 import { Component } from "react";
-import { Segment } from "semantic-ui-react";
-
 
 export default class Console extends Component {
   keepScrolling = true;
@@ -19,14 +18,30 @@ export default class Console extends Component {
   }
 
   render() {
-    const { content, placeholder, ...props } = this.props;
+    const { placeholder, children, ...props } = this.props;
 
     return (
-      <Segment {...props}>
-        <div ref={el => (this.container = el)} onScroll={this.onScroll}>
-          {content ? <code>{content}</code> : <div>{placeholder}</div>}
-        </div>
-      </Segment>
+      <Box
+        bg="white"
+        h="60ch"
+        px="1rem"
+        py="0.5rem"
+        fontSize="sm"
+        overflow="auto"
+        borderWidth={1}
+        borderColor="gray.200"
+        borderRadius="md"
+        ref={(el) => (this.container = el)}
+        onScroll={this.onScroll}
+      >
+        {children ? (
+          <chakra.code fontSize="0.6rem" border="none" bg="none">
+            {children}
+          </chakra.code>
+        ) : (
+          <Box color="gray.400">{placeholder}</Box>
+        )}
+      </Box>
     );
   }
 }

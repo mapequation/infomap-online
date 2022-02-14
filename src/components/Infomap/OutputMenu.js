@@ -1,29 +1,33 @@
-import { Icon, Menu } from "semantic-ui-react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { List, ListItem } from "@chakra-ui/react";
+import { observer } from "mobx-react";
+import { Fragment } from "react";
 import store from "../../store";
-
 
 const DocIcon = (
   <a href="#PhysicalAndStateOutput">
-    <Icon name="question circle" />
+    <QuestionOutlineIcon />
   </a>
 );
 
-export default function OutputMenu(props) {
+export default observer(function OutputMenu(props) {
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
 
   const getMenuItem = ({ key, name }) => (
-    <Menu.Item
+    <ListItem
       key={key}
-      name={key}
-      active={key === activeKey}
-      onClick={(e, { name }) => setActiveKey(name)}
-      content={name}
-    />
+      mb={1}
+      color={activeKey === key ? "gray.900" : "blackAlpha.600"}
+      onClick={() => setActiveKey(key)}
+      cursor="pointer"
+    >
+      {name}
+    </ListItem>
   );
 
   if (!stateFiles.length) {
     return physicalFiles.length < 2 ? null : (
-      <Menu {...props} items={physicalFiles.map(getMenuItem)} />
+      <List {...props}>{physicalFiles.map(getMenuItem)}</List>
     );
   }
 
@@ -33,13 +37,17 @@ export default function OutputMenu(props) {
   ];
 
   return (
-    <Menu {...props}>
+    <List {...props}>
       {items.map(({ header, files }, key) => (
-        <Menu.Item key={key}>
-          <Menu.Header content={header} />
-          <Menu.Menu content={files.map(getMenuItem)} />
-        </Menu.Item>
+        <Fragment key={key}>
+          <ListItem mb={1} fontWeight={500}>
+            {header}
+          </ListItem>
+          <List ml={4} mb={2}>
+            {files.map(getMenuItem)}
+          </List>
+        </Fragment>
       ))}
-    </Menu>
+    </List>
   );
-}
+});

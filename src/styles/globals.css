@@ -1,0 +1,11 @@
+html {
+    scroll-behavior: smooth;
+}
+
+figure {
+    text-align: center;
+}
+
+figcaption {
+    text-align: justify;
+}

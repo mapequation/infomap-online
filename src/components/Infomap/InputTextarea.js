@@ -1,17 +1,13 @@
+import { FormControl, Textarea } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
-import { Form, Ref } from "semantic-ui-react";
 
-
-export default function InputTextarea({ onDrop, accept, loading, children, ...props }) {
+export default function InputTextarea({ onDrop, accept, children, ...props }) {
   const { getRootProps } = useDropzone({ onDrop, multiple: false, accept });
-  const { ref, ...rootProps } = getRootProps();
 
   return (
-    <Ref innerRef={ref}>
-      <Form loading={loading} {...rootProps}>
-        <Form.TextArea {...props} />
-        {children}
-      </Form>
-    </Ref>
+    <FormControl {...getRootProps()} pos="relative">
+      <Textarea {...props} />
+      {children}
+    </FormControl>
   );
 }

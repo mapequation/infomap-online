@@ -1,8 +1,7 @@
 import { Fragment } from "react";
-import "./Highlight.css";
+import styles from "../styles/Highlight.module.css";
 
-
-const parseLine = line => {
+const parseLine = (line) => {
   const buff = [{ className: null, content: "" }];
   let isString = false;
 
@@ -10,14 +9,14 @@ const parseLine = line => {
     let curr = buff[buff.length - 1];
 
     switch (char) {
-      case "\"":
+      case '"':
         if (isString) {
           curr.content += char;
           isString = false;
           break;
-        } else if (curr.className == null || curr.className !== "highlight-string") {
+        } else if (curr.className == null || curr.className !== styles.string) {
           isString = true;
-          curr.className = "highlight-string";
+          curr.className = styles.string;
           curr.content = char;
           break;
         }
@@ -32,7 +31,7 @@ const parseLine = line => {
       // eslist-disable-line no-fallthrough
       default:
         if (curr.className == null) {
-          curr.className = "highlight-number";
+          curr.className = styles.number;
         }
         curr.content += char;
         break;
@@ -51,9 +50,9 @@ export default function Highlight({ content }) {
     const line = lines[i];
 
     if (line.startsWith("#")) {
-      lines[i] = <span className="highlight-comment">{line}</span>;
+      lines[i] = <span className={styles.comment}>{line}</span>;
     } else if (line.startsWith("*")) {
-      lines[i] = <span className="highlight-heading">{line}</span>;
+      lines[i] = <span className={styles.heading}>{line}</span>;
     } else {
       lines[i] = parseLine(line).map(({ className, content }, i) => (
         <Fragment key={i}>

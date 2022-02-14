@@ -1,12 +1,11 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { createRef } from "react";
-import * as exampleNetworks from "./exampleNetworks";
-import * as outputFormats from "./outputFormats";
+import * as exampleNetworks from "../examples/networks";
+import * as outputFormats from "../examples/output";
 import OutputStore from "./OutputStore";
 import ParameterStore from "./ParameterStore";
 
-
-const camelToSnake = str =>
+const camelToSnake = (str) =>
   str
     .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
     .replace(/([A-Z])/g, ([letter]) => `_${letter.toLowerCase()}`);
@@ -18,13 +17,14 @@ export default class Store {
   activeInput = "network";
 
   output = new OutputStore(this);
+  params = new ParameterStore(this);
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
   DEFAULT_TREE_NAME = "clusters.tree";
   DEFAULT_META_NAME = "metadata.clu";
 
-  params = new ParameterStore(this);
+  mainView = createRef();
 
   constructor() {
     makeObservable(this, {
@@ -42,9 +42,10 @@ export default class Store {
     });
   }
 
-  setActiveInput = name => (this.activeInput = name);
+  setActiveInput = (name) => (this.activeInput = name);
 
-  setNetwork = ({ name, value }) => (this.network = { name: name || this.DEFAULT_NET_NAME, value });
+  setNetwork = ({ name, value }) =>
+    (this.network = { name: name || this.DEFAULT_NET_NAME, value });
 
   setClusterData = ({ name, value }) =>
     (this.clusterData = { name: name || this.DEFAULT_CLU_NAME, value });
@@ -62,20 +63,19 @@ export default class Store {
   get infomapFiles() {
     const { clusterData, metaData } = this;
     const files = {};
-    if (clusterData.name && clusterData.value) files[clusterData.name] = clusterData.value;
+    if (clusterData.name && clusterData.value)
+      files[clusterData.name] = clusterData.value;
     if (metaData.name && metaData.value) files[metaData.name] = metaData.value;
     return files;
   }
 
-  getExampleNetwork = name => exampleNetworks[name];
+  getExampleNetwork = (name) => exampleNetworks[name];
 
-  mainView = createRef();
-
-  runExample = name => {
+  runExample = (name) => {
     this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
     this.setActiveInput("network");
     this.mainView.current.scrollIntoView();
   };
 
-  getOutputFormat = name => outputFormats[name];
+  getOutputFormat = (name) => outputFormats[name];
 }
