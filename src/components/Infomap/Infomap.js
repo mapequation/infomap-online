@@ -29,84 +29,14 @@ import OutputMenu from "./OutputMenu";
 
 export default observer(
   class InfomapOnline extends Component {
-    onInputChange = (activeInput) => {
-      return (event) => {
-        // console.log(event);
-        const { name, value } = event;
-        const { params } = store;
-
-        if (activeInput === "network") {
-          store.setNetwork({ name, value });
-        } else if (activeInput === "cluster data") {
-          const param = params.getParam("--cluster-data");
-          if (!value) return params.resetFileParam(param);
-          params.setFileParam(param, { name, value });
-        } else if (activeInput === "meta data") {
-          const param = params.getParam("--meta-data");
-          if (!value) return params.resetFileParam(param);
-          params.setFileParam(param, { name, value });
-        }
-
-        store.output.setDownloaded(false);
-
-        this.setState({
-          isLoading: false,
-          isCompleted: false,
-          infomapError: "",
-        });
-      };
+    state = {
+      infomapOutput: [],
+      isLoading: false, // Loading input network
+      isRunning: false,
+      isCompleted: false,
+      infomapError: "",
+      progress: 0,
     };
-    onLoad = (activeInput) => (files) => {
-      if (files.length < 1) return;
-
-      const file = files[0];
-
-      const reader = new FileReader();
-
-      const onInputChange = this.onInputChange(activeInput);
-
-      reader.onloadend = (event) =>
-        onInputChange(event, { name: file.name, value: reader.result });
-
-      this.setState({ isLoading: true }, () =>
-        reader.readAsText(file, "utf-8")
-      );
-    };
-    run = () => {
-      store.output.resetContent();
-
-      this.setState({
-        isCompleted: false,
-        infomapOutput: [],
-      });
-
-      if (this.runId) {
-        this.infomap.terminate(this.runId);
-        this.runId = null;
-      }
-
-      try {
-        this.runId = this.infomap.run({
-          network: store.infomapNetwork.content,
-          filename: store.infomapNetwork.filename,
-          args: store.params.args,
-          files: store.infomapFiles,
-        });
-      } catch (e) {
-        this.setState({
-          isRunning: false,
-          infomapError: e.message,
-        });
-        return;
-      }
-
-      this.setState({
-        isRunning: true,
-        infomapError: "",
-      });
-    };
-    onInputMenuClick = (e, { name }) => store.setActiveInput(name);
-    onCopyClusters = () => store.output.setDownloaded(true);
 
     constructor(props) {
       super(props);
@@ -157,6 +87,85 @@ export default observer(
       }
     }
 
+    onInputChange = (activeInput) => {
+      return ({ name, value }) => {
+        if (activeInput === "network") {
+          store.setNetwork({ name, value });
+        } else if (activeInput === "cluster data") {
+          const param = store.params.getParam("--cluster-data");
+          if (!value) return store.params.resetFileParam(param);
+          store.params.setFileParam(param, { name, value });
+        } else if (activeInput === "meta data") {
+          const param = store.params.getParam("--meta-data");
+          if (!value) return store.params.resetFileParam(param);
+          store.params.setFileParam(param, { name, value });
+        }
+
+        store.output.setDownloaded(false);
+
+        this.setState({
+          isLoading: false,
+          isCompleted: false,
+          infomapError: "",
+        });
+      };
+    };
+
+    onLoad = (activeInput) => (files) => {
+      if (files.length < 1) return;
+
+      const file = files[0];
+
+      const reader = new FileReader();
+
+      const onInputChange = this.onInputChange(activeInput);
+
+      reader.onloadend = () =>
+        onInputChange({ name: file.name, value: reader.result });
+
+      this.setState({ isLoading: true }, () =>
+        reader.readAsText(file, "utf-8")
+      );
+    };
+
+    run = () => {
+      store.output.resetContent();
+
+      this.setState({
+        isCompleted: false,
+        infomapOutput: [],
+      });
+
+      if (this.runId) {
+        this.infomap.terminate(this.runId);
+        this.runId = null;
+      }
+
+      try {
+        this.runId = this.infomap.run({
+          network: store.infomapNetwork.content,
+          filename: store.infomapNetwork.filename,
+          args: store.params.args,
+          files: store.infomapFiles,
+        });
+      } catch (e) {
+        this.setState({
+          isRunning: false,
+          infomapError: e.message,
+        });
+        return;
+      }
+
+      this.setState({
+        isRunning: true,
+        infomapError: "",
+      });
+    };
+
+    onInputMenuClick = (e, { name }) => store.setActiveInput(name);
+
+    onCopyClusters = () => store.output.setDownloaded(true);
+
     render() {
       const {
         isLoading,
@@ -182,15 +191,12 @@ export default observer(
       };
 
       const inputValue = inputOptions[activeInput].value;
-
       const consoleContent = infomapOutput.join("\n");
       const hasInfomapError = !!infomapError;
 
-      let navigatorLabel = null;
-
       if (isCompleted && !hasInfomapError) {
         if (!output.ftree) {
-          navigatorLabel = (
+          let navigatorLabel = (
             <div>
               Network Navigator requires ftree output.{" "}
               {!params.getParam("--ftree").active && (
@@ -200,12 +206,6 @@ export default observer(
               )}
             </div>
           );
-          // } else if (output.ftree) {
-          //   navigatorLabel = (
-          //     <div>
-          //       Could not store network. Please download ftree and load manually.
-          //     </div>
-          //   );
         }
       }
 
@@ -307,10 +307,12 @@ export default observer(
             <InputTextarea
               onDrop={this.onLoad(activeInput)}
               accept={inputAccept[activeInput]}
-              onChange={this.onInputChange(activeInput)}
+              onChange={(event) =>
+                this.onInputChange(activeInput)(event.target)
+              }
               value={inputValue}
               placeholder={`Input ${activeInput} here`}
-              spellCheck="false"
+              spellCheck={false}
               wrap="off"
               overflow="auto"
               resize="none"
@@ -323,7 +325,8 @@ export default observer(
                 pos="absolute"
                 w="calc(100% - 8px)"
                 p="0.5rem"
-                m="0.1rem"
+                mb="1px"
+                mx="1px"
                 fontSize="xs"
                 bg="whiteAlpha.900"
                 bottom={0}
@@ -378,7 +381,6 @@ export default observer(
           </GridItem>
 
           <GridItem area="output" className="output">
-            {navigatorLabel}
             <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
               <Button
                 isFullWidth
@@ -406,7 +408,7 @@ export default observer(
                 onCopy={this.onCopyClusters}
                 value={output.activeContent}
                 placeholder="Cluster output will be printed here"
-                spellCheck="false"
+                spellCheck={false}
                 wrap="off"
                 overflow="auto"
                 resize="none"
@@ -423,14 +425,5 @@ export default observer(
         </Grid>
       );
     }
-
-    state = {
-      infomapOutput: [],
-      isLoading: false, // Loading input network
-      isRunning: false,
-      isCompleted: false,
-      infomapError: "",
-      progress: 0,
-    };
   }
 );

@@ -1,6 +1,7 @@
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { List, ListItem } from "@chakra-ui/react";
 import { observer } from "mobx-react";
+import { Fragment } from "react";
 import store from "../../store";
 
 const DocIcon = (
@@ -38,14 +39,14 @@ export default observer(function OutputMenu(props) {
   return (
     <List {...props}>
       {items.map(({ header, files }, key) => (
-        <>
-          <ListItem key={key} mb={1} fontWeight={500}>
+        <Fragment key={key}>
+          <ListItem mb={1} fontWeight={500}>
             {header}
           </ListItem>
           <List ml={4} mb={2}>
             {files.map(getMenuItem)}
           </List>
-        </>
+        </Fragment>
       ))}
     </List>
   );

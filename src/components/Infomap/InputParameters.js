@@ -6,17 +6,12 @@ export default observer(({ loading, onClick, ...props }) => {
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (
-    <FormControl
-      //isLoading={loading}
-      //error={hasArgsError}
-      {...props}
-    >
+    <FormControl {...props}>
       <InputGroup>
         <Input
           placeholder="Parameters"
           value={args}
           isInvalid={hasArgsError}
-          errorBorderColor="red.600"
           focusBorderColor={hasArgsError ? "red.600" : undefined}
           onChange={(event) => setArgs(event.target.value)}
           borderLeftRadius="md"
