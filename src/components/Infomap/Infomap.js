@@ -13,6 +13,7 @@ import {
   Progress,
   Text,
   Textarea,
+  Tooltip,
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
@@ -46,13 +47,21 @@ export default observer(
           infomapOutput: [...this.state.infomapOutput, content],
         });
 
-      const onError = (content) =>
+      const onError = (content) => {
+        let infomapError = content.replace(/^Error:\s+/i, "");
         this.setState({
-          infomapError: content.replace(/^Error:\s+/i, ""),
+          infomapError,
           infomapOutput: [...this.state.infomapOutput, content],
           isRunning: false,
           isCompleted: false,
         });
+        console.log(infomapError);
+        this.props.toast({
+          title: "Error",
+          description: infomapError,
+          status: "error",
+        });
+      };
 
       const onProgress = (progress) => this.setState({ progress });
 
@@ -153,6 +162,11 @@ export default observer(
           isRunning: false,
           infomapError: e.message,
         });
+        this.props.toast({
+          title: "Error",
+          description: e.message,
+          status: "error",
+        });
         return;
       }
 
@@ -193,21 +207,6 @@ export default observer(
       const inputValue = inputOptions[activeInput].value;
       const consoleContent = infomapOutput.join("\n");
       const hasInfomapError = !!infomapError;
-
-      if (isCompleted && !hasInfomapError) {
-        if (!output.ftree) {
-          let navigatorLabel = (
-            <div>
-              Network Navigator requires ftree output.{" "}
-              {!params.getParam("--ftree").active && (
-                <a onClick={() => params.setArgs(params.args + " --ftree")}>
-                  Enable.
-                </a>
-              )}
-            </div>
-          );
-        }
-      }
 
       let activeStep = 0;
       if (!!network.value) {
@@ -343,6 +342,7 @@ export default observer(
               </Box>
             </InputTextarea>
           </GridItem>
+
           <GridItem area="inputMenu" pt={{ base: 0, xl: "3em" }}>
             <List fontSize="sm" textAlign={{ base: "left", xl: "right" }}>
               {["network", "cluster data", "meta data"].map((option) => (
@@ -350,7 +350,7 @@ export default observer(
                   key={option}
                   size="sm"
                   onClick={() => store.setActiveInput(option)}
-                  color={option === activeInput ? "gray.900" : "gray.500"}
+                  color={option === activeInput ? "gray.900" : "blackAlpha.600"}
                   mb={1}
                   cursor="pointer"
                   textTransform="capitalize"
@@ -377,28 +377,36 @@ export default observer(
                 value={progress}
               />
             )}
-            <div>{infomapError}</div>
           </GridItem>
 
           <GridItem area="output" className="output">
             <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
-              <Button
-                isFullWidth
-                colorScheme="blue"
-                as="a"
-                _hover={{
-                  color: "white",
-                  bg: "blue.600",
-                }}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
-                disabled={!output.ftree}
-                borderRightRadius={0}
+              <Tooltip
+                visibility={
+                  isCompleted && !hasInfomapError && !output.ftree
+                    ? "visible"
+                    : "hidden"
+                }
+                placement="top"
                 size="sm"
+                hasArrow
+                label="Network Navigator requires ftree output."
               >
-                Open in Navigator
-              </Button>
+                <Button
+                  isFullWidth
+                  colorScheme="blue"
+                  as="a"
+                  _hover={{ color: "white", bg: "blue.600" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`//www.mapequation.org/navigator?infomap=${network.name}.ftree`}
+                  disabled={!output.ftree}
+                  borderRightRadius={0}
+                  size="sm"
+                >
+                  Open in Navigator
+                </Button>
+              </Tooltip>
               <DownloadMenu disabled={isRunning} />
             </ButtonGroup>
 
@@ -419,6 +427,7 @@ export default observer(
               />
             </FormControl>
           </GridItem>
+
           <GridItem area="outputMenu" pt={{ base: 0, xl: "3em" }}>
             <OutputMenu fontSize="sm" />
           </GridItem>

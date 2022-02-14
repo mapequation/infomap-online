@@ -35,7 +35,7 @@ export default class Console extends Component {
         onScroll={this.onScroll}
       >
         {children ? (
-          <chakra.code fontSize="xs" border="none" bg="none">
+          <chakra.code fontSize="0.6rem" border="none" bg="none">
             {children}
           </chakra.code>
         ) : (

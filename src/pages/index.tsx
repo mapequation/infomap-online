@@ -12,6 +12,7 @@ import {
   DrawerOverlay,
   IconButton,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import Header from "../components/Header";
 import Contents from "../components/Contents";
@@ -23,6 +24,7 @@ const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
 
 const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   return (
     <div>
@@ -81,7 +83,7 @@ const Home: NextPage = () => {
       </Drawer>
 
       <Header />
-      <Infomap />
+      <Infomap toast={toast} />
       <Documentation />
       <Footer />
     </div>

@@ -17,7 +17,7 @@ export default observer(function OutputMenu(props) {
     <ListItem
       key={key}
       mb={1}
-      color={activeKey === key ? "gray.900" : "gray.500"}
+      color={activeKey === key ? "gray.900" : "blackAlpha.600"}
       onClick={() => setActiveKey(key)}
       cursor="pointer"
     >
