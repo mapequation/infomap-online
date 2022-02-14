@@ -8,9 +8,9 @@ import {
   Icon,
   IconButton,
   Input,
-  Select,
   Switch,
 } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import { useState } from "react";
@@ -21,30 +21,42 @@ import store from "../../store";
 import { Heading } from "../Contents";
 
 const DropdownParameter = observer(({ param }) => {
+  const selectStyle = {
+    container: (provided) => ({ ...provided, minW: "200px" }),
+    valueContainer: (provided) => ({ ...provided, bg: "white", w: "100%" }),
+    control: (provided) => ({ ...provided, bg: "white" }),
+  };
+  console.log(param);
+
+  const isMulti = param.longType === "list";
+
+  const value = isMulti
+    ? param.value.map((v) => ({ label: v, value: v }))
+    : { label: param.value, value: param.value };
+
+  const onChange = (value) =>
+    store.params.setOption(
+      param,
+      isMulti ? value.map((v) => v.value) : value.value
+    );
+
+  const options = param.options.map((option) => ({
+    value: option,
+    label: option,
+  }));
+
   return (
     <Select
       id={param.long}
-      variant="filled"
-      bg="white"
-      _hover={{ bg: "white" }}
-      _focus={{ bg: "white" }}
-      //w="100px"
       ref={(ref) => store.params.setRef(param.long, ref)}
+      chakraStyles={selectStyle}
       placeholder={param.longType}
-      value={param.value}
-      clearable={param.clearable.toString()}
-      multiple={param.longType === "list"}
-      onChange={(e) => {
-        console.log(e.target.value);
-        store.params.setOption(param, e.target.value);
-      }}
-    >
-      {param.options.map((value, i) => (
-        <option key={i} value={value}>
-          {value}
-        </option>
-      ))}
-    </Select>
+      isMulti={isMulti}
+      closeMenuOnSelect={!isMulti}
+      value={value}
+      onChange={onChange}
+      options={options}
+    />
   );
 });
 
