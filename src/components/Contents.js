@@ -240,7 +240,8 @@ const Item = ({ id, toc, level, maxLevel }) => {
         as={`h${level + 2}`}
         size={sizes[level - 1]}
         className={styles.liHeader}
-        style={{ marginBottom: 0 }}
+        mt={Math.max(0, 3 - level)}
+        mb={0}
       >
         <a href={`#${id}`}>{item.heading}</a>
       </CkHeading>
@@ -254,7 +255,7 @@ const Item = ({ id, toc, level, maxLevel }) => {
   );
 };
 
-const Items = ({ ids, toc, level = 1, maxLevel }) => {
+const Items = ({ ids, toc, level = 1, maxLevel, children }) => {
   if (!ids) return null;
 
   const classNames =
@@ -262,6 +263,7 @@ const Items = ({ ids, toc, level = 1, maxLevel }) => {
 
   return (
     <ol className={classNames}>
+      {children}
       {ids.map((id) => (
         <Item key={id} id={id} toc={toc} level={level} maxLevel={maxLevel} />
       ))}
@@ -271,5 +273,26 @@ const Items = ({ ids, toc, level = 1, maxLevel }) => {
 
 export default function Contents() {
   const topLevelIds = Object.keys(toc).filter((id) => toc[id].level === 1);
-  return <Items ids={topLevelIds} toc={toc} maxLevel={3} />;
+  return (
+    <Items ids={topLevelIds} toc={toc} maxLevel={3}>
+      <li>
+        <CkHeading
+          as="h3"
+          size="sm"
+          className={styles.liHeader}
+          w="100%"
+          pb={6}
+          borderBottomColor="gray.300"
+          borderBottomWidth={1}
+        >
+          <a
+            href="#"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            Back to top
+          </a>
+        </CkHeading>
+      </li>
+    </Items>
+  );
 }
