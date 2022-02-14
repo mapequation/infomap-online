@@ -67,7 +67,12 @@ export default observer(
 
       const onFinished = async (content) => {
         store.output.setContent(content);
-        await localforage.setItem("ftree", store.output.ftree);
+        await localforage.setItem("network", {
+          timestamp: Date.now(),
+          name: store.network.name,
+          input: store.network.value,
+          ...content,
+        });
         this.setState({
           isRunning: false,
           isCompleted: true,
