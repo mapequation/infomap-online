@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { createRef } from "react";
-import * as exampleNetworks from "./exampleNetworks";
-import * as outputFormats from "./outputFormats";
+import * as exampleNetworks from "../examples/networks";
+import * as outputFormats from "../examples/output";
 import OutputStore from "./OutputStore";
 import ParameterStore from "./ParameterStore";
 
@@ -17,13 +17,14 @@ export default class Store {
   activeInput = "network";
 
   output = new OutputStore(this);
+  params = new ParameterStore(this);
 
   DEFAULT_NET_NAME = "network";
   DEFAULT_CLU_NAME = "clusters.clu";
   DEFAULT_TREE_NAME = "clusters.tree";
   DEFAULT_META_NAME = "metadata.clu";
 
-  params = new ParameterStore(this);
+  mainView = createRef();
 
   constructor() {
     makeObservable(this, {
@@ -69,8 +70,6 @@ export default class Store {
   }
 
   getExampleNetwork = (name) => exampleNetworks[name];
-
-  mainView = createRef();
 
   runExample = (name) => {
     this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
