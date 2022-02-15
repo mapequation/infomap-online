@@ -1,5 +1,11 @@
+import { createContext, useContext } from "react";
 import Store from "./Store";
 
 const store = new Store();
 
-export default store;
+const StoreContext = createContext(store);
+
+const useStore = () => useContext(StoreContext);
+
+export { store };
+export default useStore;

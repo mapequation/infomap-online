@@ -6,9 +6,14 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import store from "../../store";
+import useStore from "../../store";
 
-export default observer(({ loading, onClick, ...props }) => {
+export default observer(function InputParameters({
+  loading,
+  onClick,
+  ...props
+}) {
+  const store = useStore();
   const { args, setArgs, argsError, hasArgsError } = store.params;
 
   return (

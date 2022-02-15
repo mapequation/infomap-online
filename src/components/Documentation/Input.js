@@ -1,4 +1,4 @@
-import store from "../../store";
+import { store } from "../../store";
 import Code from "../Code";
 import { Heading } from "../Contents";
 import Message from "../Message";

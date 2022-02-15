@@ -1,6 +1,6 @@
 //import Infomap from "@mapequation/infomap";
 import TeX from "@matejmazur/react-katex";
-import store from "../../store";
+import { store } from "../../store";
 import Code from "../Code";
 import { Heading } from "../Contents";
 import Figure, { FigLink } from "./Figure";

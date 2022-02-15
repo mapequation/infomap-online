@@ -2,7 +2,7 @@ import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { List, ListItem } from "@chakra-ui/react";
 import { observer } from "mobx-react";
 import { Fragment } from "react";
-import store from "../../store";
+import useStore from "../../store";
 
 const DocIcon = (
   <a href="#PhysicalAndStateOutput">
@@ -11,6 +11,7 @@ const DocIcon = (
 );
 
 export default observer(function OutputMenu(props) {
+  const store = useStore();
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
 
   const getMenuItem = ({ key, name }) => (

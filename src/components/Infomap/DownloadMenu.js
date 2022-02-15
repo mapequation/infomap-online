@@ -8,24 +8,25 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import store from "../../store";
+import { observer } from "mobx-react";
+import useStore from "../../store";
 
-const FileItem = ({ file }) => (
-  <MenuItem
-    icon={<DownloadIcon />}
-    onClick={() => store.output.downloadFile(file.key)}
-  >
-    {file.filename}
-  </MenuItem>
-);
+function FileItem({ label, onClick }) {
+  return (
+    <MenuItem icon={<DownloadIcon />} onClick={onClick}>
+      {label}
+    </MenuItem>
+  );
+}
 
-export default function DownloadMenu({ disabled }) {
+export default observer(function DownloadMenu({ disabled }) {
+  const store = useStore();
   const { files, physicalFiles, stateFiles } = store.output;
 
   return (
     <Menu>
       <MenuButton
-        disabled={files.length === 0}
+        disabled={files.length === 0 || disabled}
         colorScheme="blue"
         as={IconButton}
         icon={<ChevronDownIcon />}
@@ -34,16 +35,30 @@ export default function DownloadMenu({ disabled }) {
       />
       <MenuList>
         {stateFiles.length === 0 ? (
-          physicalFiles.map((file) => <FileItem key={file.key} file={file} />)
+          physicalFiles.map((file) => (
+            <FileItem
+              key={file.key}
+              label={file.filename}
+              onClick={() => store.output.downloadFile(file.key)}
+            />
+          ))
         ) : (
           <>
             <MenuGroup>Physical nodes</MenuGroup>
             {physicalFiles.map((file) => (
-              <FileItem key={file.key} file={file} />
+              <FileItem
+                key={file.key}
+                label={file.filename}
+                onClick={() => store.output.downloadFile(file.key)}
+              />
             ))}
             <MenuGroup>State nodes</MenuGroup>
             {stateFiles.map((file) => (
-              <FileItem key={file.key} file={file} />
+              <FileItem
+                key={file.key}
+                label={file.filename}
+                onClick={() => store.output.downloadFile(file.key)}
+              />
             ))}
           </>
         )}
@@ -56,4 +71,4 @@ export default function DownloadMenu({ disabled }) {
       </MenuList>
     </Menu>
   );
-}
+});

@@ -17,16 +17,17 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { BsClipboard, BsClipboardCheck } from "react-icons/bs";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import store from "../../store";
+import useStore from "../../store";
 import { Heading } from "../Contents";
 
 const DropdownParameter = observer(({ param }) => {
+  const store = useStore();
+
   const selectStyle = {
     container: (provided) => ({ ...provided, minW: "200px" }),
     valueContainer: (provided) => ({ ...provided, bg: "white", w: "100%" }),
     control: (provided) => ({ ...provided, bg: "white" }),
   };
-  console.log(param);
 
   const isMulti = param.longType === "list";
 
@@ -61,6 +62,8 @@ const DropdownParameter = observer(({ param }) => {
 });
 
 const InputParameter = observer(({ param }) => {
+  const store = useStore();
+
   return (
     <Input
       id={param.long}
@@ -78,6 +81,8 @@ const InputParameter = observer(({ param }) => {
 });
 
 const FileInputParameter = observer(({ param }) => {
+  const store = useStore();
+
   const onDrop = (files) => {
     if (files.length < 1) return;
 
@@ -121,6 +126,8 @@ const FileInputParameter = observer(({ param }) => {
 });
 
 const ToggleParameter = observer(({ param }) => {
+  const store = useStore();
+
   return (
     <Switch
       id={param.long}
@@ -131,6 +138,7 @@ const ToggleParameter = observer(({ param }) => {
 });
 
 const IncrementalParameter = observer(({ param }) => {
+  const store = useStore();
   const { value, maxValue, stringValue } = param;
 
   const setValue = (value) => store.params.setIncremental(param, value);
@@ -163,53 +171,6 @@ const ParameterControl = ({ param }) => {
   return <ToggleParameter param={param} />;
 };
 
-const getHeaderProps = (param) => {
-  const { active, long, dropdown, input, file, incremental, value } = param;
-  const { params } = store;
-
-  const props = { as: "label" };
-
-  if (dropdown) {
-    const ref = params.getRef(long);
-    if (!ref) return props;
-    return {
-      onClick: () => {
-        if (active) return params.setOption(param, param.default);
-        // TODO
-        const event = new MouseEvent("mousedown", { bubbles: true });
-        ref.dispatchEvent(event);
-        //return (active ? params.setOption(param, param.default) : ref?.open()); },
-      },
-      ...props,
-    };
-  }
-
-  const labelProps = { htmlFor: long, ...props };
-
-  if (incremental) {
-    return {
-      onClick: () => params.setIncremental(param, value > 0 ? 0 : 1),
-      ...labelProps,
-    };
-  }
-
-  if (input || file) {
-    return {
-      onClick: (event) => {
-        if (!active) return;
-        if (file) {
-          event.preventDefault();
-          return params.resetFileParam(param);
-        }
-        params.setInput(param, "");
-      },
-      ...labelProps,
-    };
-  }
-
-  return labelProps;
-};
-
 function ParamName({ param, short }) {
   const name = short && param.short ? param.shortString : param.longString;
 
@@ -236,7 +197,51 @@ function ParamName({ param, short }) {
 }
 
 const ParameterGroup = observer(({ group, advanced }) => {
+  const store = useStore();
   const [clipboardClicked, setClipboardClicked] = useState("");
+
+  const getHeaderProps = (param) => {
+    const { active, long, dropdown, input, file, incremental, value } = param;
+
+    const props = { as: "label" };
+
+    if (dropdown) {
+      const ref = store.params.getRef(long);
+      if (!ref) return props;
+      return {
+        onClick: () => {
+          if (active) return store.params.setOption(param, param.default);
+          //return (active ? store.params.setOption(param, param.default) : ref?.open()); },
+        },
+        ...props,
+      };
+    }
+
+    const labelProps = { htmlFor: long, ...props };
+
+    if (incremental) {
+      return {
+        onClick: () => store.params.setIncremental(param, value > 0 ? 0 : 1),
+        ...labelProps,
+      };
+    }
+
+    if (input || file) {
+      return {
+        onClick: (event) => {
+          if (!active) return;
+          if (file) {
+            event.preventDefault();
+            return store.params.resetFileParam(param);
+          }
+          store.params.setInput(param, "");
+        },
+        ...labelProps,
+      };
+    }
+
+    return labelProps;
+  };
 
   const params = store.params
     .getParamsForGroup(group)
@@ -296,7 +301,8 @@ const ParameterGroup = observer(({ group, advanced }) => {
   );
 });
 
-export default function Parameters() {
+export default observer(function Parameters() {
+  const store = useStore();
   const [advanced, setAdvanced] = useState(false);
 
   if (!advanced && window.location && window.location.hash) {
@@ -328,4 +334,4 @@ export default function Parameters() {
       <ParameterGroup group="About" advanced={advanced} />
     </>
   );
-}
+});

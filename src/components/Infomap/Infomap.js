@@ -19,7 +19,7 @@ import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { observer } from "mobx-react";
 import { Component } from "react";
-import store from "../../store";
+import { store } from "../../store";
 import { Step, Steps } from "../Steps";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
