@@ -6,6 +6,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react";
+import { useEffect, useState } from "react";
 import useStore from "../../store";
 
 export default observer(function InputParameters({
@@ -15,6 +16,14 @@ export default observer(function InputParameters({
 }) {
   const store = useStore();
   const { args, setArgs, argsError, hasArgsError } = store.params;
+  const [args_, setArgs_] = useState(args);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setArgs(args_), 500);
+    return () => clearTimeout(timer);
+  }, [args_, setArgs]);
+
+  useEffect(() => setArgs_(args), [args]);
 
   return (
     <form
@@ -33,10 +42,10 @@ export default observer(function InputParameters({
           >
             <Input
               placeholder="Parameters"
-              value={args}
+              value={args_}
               errorBorderColor="red.600"
               focusBorderColor={hasArgsError ? "red.600" : undefined}
-              onChange={(event) => setArgs(event.target.value)}
+              onChange={(event) => setArgs_(event.target.value)}
               borderLeftRadius="md"
               borderRightRadius={0}
               size="sm"
