@@ -18,8 +18,10 @@ import Header from "../components/Header";
 import Contents from "../components/Contents";
 import Documentation from "../components/Documentation";
 import Footer from "../components/Footer";
+import ErrorBoundary from "../components/ErrorBoundary";
 import styles from "../styles/Drawer.module.css";
 
+const Network = dynamic(() => import("../components/Network"), { ssr: false });
 const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
 
 const Home: NextPage = () => {
@@ -83,7 +85,15 @@ const Home: NextPage = () => {
       </Drawer>
 
       <Header />
-      <Infomap toast={toast} />
+
+      <ErrorBoundary>
+        <Infomap toast={toast} />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Network />
+      </ErrorBoundary>
+
       <Documentation />
       <Footer />
     </div>

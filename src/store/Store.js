@@ -44,8 +44,10 @@ export default class Store {
 
   setActiveInput = (name) => (this.activeInput = name);
 
-  setNetwork = ({ name, value }) =>
-    (this.network = { name: name || this.DEFAULT_NET_NAME, value });
+  setNetwork = ({ name, value }) => {
+    this.network = { name: name || this.DEFAULT_NET_NAME, value };
+    this.output.modules.clear();
+  };
 
   setClusterData = ({ name, value }) =>
     (this.clusterData = { name: name || this.DEFAULT_CLU_NAME, value });
@@ -75,6 +77,7 @@ export default class Store {
     this.setNetwork({ name: camelToSnake(name), value: exampleNetworks[name] });
     this.setActiveInput("network");
     this.mainView.current.scrollIntoView();
+    window.location.hash = "#";
   };
 
   getOutputFormat = (name) => outputFormats[name];

@@ -41,6 +41,7 @@ export default class OutputStore {
       downloadFile: action,
       downloadActiveContent: action,
       downloadAll: action,
+      modules: observable,
     });
   }
 
@@ -65,6 +66,8 @@ export default class OutputStore {
   activeKey = "tree";
 
   downloaded = false;
+
+  modules = new Map();
 
   get completed() {
     const {
@@ -206,6 +209,26 @@ export default class OutputStore {
       this.flow_as_physical = flow_as_physical;
     }
 
+    if (this.clu_states || this.clu) {
+      const clu = this.clu_states || this.clu;
+      const lines = clu.split("\n").filter(Boolean);
+
+      const modules = new Map();
+
+      for (let line of lines) {
+        if (line.startsWith("#")) {
+          continue;
+        }
+
+        const [id, moduleId] = line.split(" ").map(Number);
+        modules.set(id, moduleId);
+      }
+
+      this.modules = modules;
+    } else {
+      this.modules = new Map();
+    }
+
     this.setActiveKey(
       clu
         ? "clu"
@@ -249,6 +272,8 @@ export default class OutputStore {
     this.flow_as_physical = "";
 
     this.downloaded = false;
+
+    this.modules = new Map();
   };
 
   setActiveKey = (key) => (this.activeKey = key);

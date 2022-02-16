@@ -26,6 +26,8 @@ export default class ParameterStore {
       argsError: observable,
       hasArgsError: observable,
       setArgs: action,
+      noInfomapArgs: observable,
+      updateNoInfomapArgs: action,
     });
   }
 
@@ -110,6 +112,8 @@ export default class ParameterStore {
       .filter((param) => param.active)
       .map(paramToString)
       .join(" ");
+
+    this.updateNoInfomapArgs();
   };
 
   setArgs = (args) => {
@@ -127,5 +131,23 @@ export default class ParameterStore {
     }
 
     this.args = args;
+    this.updateNoInfomapArgs();
   };
+
+  noInfomapArgs = "--silent --no-infomap -o flow";
+
+  updateNoInfomapArgs() {
+    let noInfomapArgs = this.args
+      .replace("--clu", "")
+      .replace("--tree", "")
+      .replace("--ftree", "")
+      .replace(/(-o)|(--output)\s(\S+,?)+/, "");
+
+    noInfomapArgs += " --silent --no-infomap -o flow";
+    noInfomapArgs = noInfomapArgs.trim();
+
+    if (this.noInfomapArgs !== noInfomapArgs) {
+      this.noInfomapArgs = noInfomapArgs;
+    }
+  }
 }
