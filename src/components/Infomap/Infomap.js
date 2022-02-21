@@ -302,6 +302,7 @@ export default observer(
             <LoadButton
               mb="1rem"
               size="sm"
+              isDisabled={isRunning}
               onDrop={this.onLoad(activeInput)}
               accept={inputAccept[activeInput]}
             >

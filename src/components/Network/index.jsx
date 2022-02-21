@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   chakra,
   Collapse,
   Container,
@@ -45,6 +46,16 @@ export default observer(function Network() {
     zoom.on("zoom", (event) => zoomable.attr("transform", event.transform));
   }, [isOpen]);
 
+  const downloadSvg = () => {
+    if (!ref.current) return;
+
+    const svg = ref.current;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const blob = new Blob([svgData], { type: "image/svg+xml" });
+    const filename = store.network.name + ".svg";
+    saveAs(blob, filename);
+  };
+
   const networkSize = useMemo(() => {
     if (!store.network.value) {
       return 0;
@@ -60,20 +71,20 @@ export default observer(function Network() {
       <Container maxW="container.xl" my={10}>
         <Popover isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)}>
           <PopoverTrigger>
-            <Button
-              variant="ghost"
-              size="sm"
-              mb={2}
-              onClick={() => {
-                if (isOpen || networkSize < maxNetworkLines) {
-                  setIsOpen(!isOpen);
-                } else {
-                  setIsConfirmOpen(true);
-                }
-              }}
-            >
-              {isOpen ? "Hide network" : "Show network"}
-            </Button>
+            <ButtonGroup variant="ghost" size="sm" mb={2}>
+              <Button
+                onClick={() => {
+                  if (isOpen || networkSize < maxNetworkLines) {
+                    setIsOpen(!isOpen);
+                  } else {
+                    setIsConfirmOpen(true);
+                  }
+                }}
+              >
+                {isOpen ? "Hide network" : "Show network"}
+              </Button>
+              {isOpen && <Button onClick={downloadSvg}>Download SVG</Button>}
+            </ButtonGroup>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
@@ -88,7 +99,7 @@ export default observer(function Network() {
                   setIsOpen(true);
                 }}
               >
-                OK
+                Proceed
               </Button>
             </PopoverBody>
           </PopoverContent>

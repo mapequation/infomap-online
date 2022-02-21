@@ -36,7 +36,7 @@ export default observer(function Renderer() {
     const moduleId = store.output.modules.get(node.id);
 
     if (!moduleId) {
-      return "var(--chakra-colors-gray-100)";
+      return "#e6e6e6";
     }
 
     return scheme[moduleId % MAX_COLORS];
@@ -138,6 +138,8 @@ export default observer(function Renderer() {
     });
   }, [network, directed, nodeRadius, linkWidth]);
 
+  const linkColor = "#ccc";
+
   return (
     <>
       <defs>
@@ -149,16 +151,13 @@ export default observer(function Renderer() {
           refX="right"
           viewBox="-5 -5 10 10"
         >
-          <path
-            d="M 0,0 m -5,-5 L 5,0 L -5,5 Z"
-            fill="var(--chakra-colors-gray-300)"
-          />
+          <path d="M 0,0 m -5,-5 L 5,0 L -5,5 Z" fill={linkColor} />
         </marker>
       </defs>
 
       <g
         className="links"
-        stroke={"var(--chakra-colors-gray-300)"}
+        stroke={linkColor}
         markerEnd={directed ? "url(#arrow)" : "none"}
       >
         {network?.links.map((link) => (
@@ -173,9 +172,10 @@ export default observer(function Renderer() {
       <g
         className="nodes"
         fill="#444"
-        stroke="var(--chakra-colors-whiteAlpha-800)"
+        stroke="rgba(255, 255, 255, 0.8)"
         strokeLinejoin="round"
         paintOrder="stroke"
+        fontFamily="Helvetica, sans-serif"
         cursor="pointer"
       >
         {network?.nodes.map((node) => {
@@ -186,10 +186,9 @@ export default observer(function Renderer() {
               <circle fill={fill(node)} strokeWidth={0} r={r} />
               <text
                 fontSize={fontSize}
-                fontWeight={600}
                 textAnchor="middle"
                 dy={fontSize / 3}
-                strokeWidth={1}
+                strokeWidth={fontSize / 5}
               >
                 {node.id}
               </text>
