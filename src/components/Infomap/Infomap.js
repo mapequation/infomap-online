@@ -321,6 +321,7 @@ export default observer(
               overflow="auto"
               resize="none"
               h="60ch"
+              pb={15}
               variant="outline"
               bg="white"
               fontSize="sm"

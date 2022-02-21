@@ -176,6 +176,7 @@ export default observer(function Renderer() {
         stroke="var(--chakra-colors-whiteAlpha-800)"
         strokeLinejoin="round"
         paintOrder="stroke"
+        cursor="pointer"
       >
         {network?.nodes.map((node) => {
           const r = nodeRadius(node.flow);
