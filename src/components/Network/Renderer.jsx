@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import useStore from "../../store";
 
 const MAX_COLORS = 100;
-const scheme = c3.colors(MAX_COLORS, { scheme: "Sinebow", lightness: 0.8 });
 
 const im = new Infomap();
 
@@ -15,13 +14,15 @@ const maxRadius = 6;
 const minLinkWidth = 0.2;
 const maxLinkWidth = 1;
 
-export default observer(function Renderer() {
+export default observer(function Renderer({ scheme: schemeName }) {
   const store = useStore();
 
   const [network, setNetwork] = useState(null);
   const [maxNodeFlow, setMaxNodeFlow] = useState(1);
   const [maxLinkFlow, setMaxLinkFlow] = useState(1);
   const [directed, setDirected] = useState(false);
+
+  const scheme = c3.colors(MAX_COLORS, { scheme: schemeName, lightness: 0.8 });
 
   const nodeRadius = d3
     .scaleSqrt([0, maxNodeFlow])

@@ -1,16 +1,18 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   chakra,
   Collapse,
   Container,
+  FormLabel,
+  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Select,
 } from "@chakra-ui/react";
 import * as d3 from "d3";
 import { observer } from "mobx-react";
@@ -26,6 +28,7 @@ export default observer(function Network() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [scheme, setScheme] = useState("Sinebow");
 
   useEffect(() => {
     const currentRef = ref.current;
@@ -69,10 +72,15 @@ export default observer(function Network() {
   return (
     <>
       <Container maxW="container.xl" my={10}>
-        <Popover isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)}>
-          <PopoverTrigger>
-            <ButtonGroup variant="ghost" size="sm" mb={2}>
+        <HStack alignItems="baseline" gap={2} mb={2}>
+          <Popover
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+          >
+            <PopoverTrigger>
               <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => {
                   if (isOpen || networkSize < maxNetworkLines) {
                     setIsOpen(!isOpen);
@@ -83,27 +91,51 @@ export default observer(function Network() {
               >
                 {isOpen ? "Hide network" : "Show network"}
               </Button>
-              {isOpen && <Button onClick={downloadSvg}>Download SVG</Button>}
-            </ButtonGroup>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverHeader>This may take a while to render.</PopoverHeader>
-            <PopoverBody>
-              <Button
-                size="sm"
-                ml="auto"
-                colorScheme="blue"
-                onClick={() => {
-                  setIsConfirmOpen(false);
-                  setIsOpen(true);
-                }}
-              >
-                Proceed
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>This may take a while to render.</PopoverHeader>
+              <PopoverBody>
+                <Button
+                  size="sm"
+                  ml="auto"
+                  colorScheme="blue"
+                  onClick={() => {
+                    setIsConfirmOpen(false);
+                    setIsOpen(true);
+                  }}
+                >
+                  Proceed
+                </Button>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+
+          {isOpen && (
+            <>
+              <Button variant="ghost" size="sm" onClick={downloadSvg}>
+                Download SVG
               </Button>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+              <FormLabel fontSize="sm" my={0}>
+                Color scheme
+              </FormLabel>
+              <Select
+                w="200px"
+                size="sm"
+                bg="white"
+                value={scheme}
+                onChange={(event) => setScheme(event.target.value)}
+              >
+                {["Rainbow", "Sinebow", "Turbo", "Viridis"].map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Select>
+            </>
+          )}
+        </HStack>
+
         <Collapse in={isOpen} unmountOnExit style={{ position: "relative" }}>
           <>
             <chakra.svg
@@ -119,7 +151,7 @@ export default observer(function Network() {
               xmlns={d3.namespaces.svg}
             >
               <g id="zoomable">
-                <Renderer />
+                <Renderer scheme={scheme} />
               </g>
             </chakra.svg>
             <Box
