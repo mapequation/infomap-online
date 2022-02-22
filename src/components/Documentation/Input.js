@@ -1,6 +1,7 @@
 import { store } from "../../store";
 import Code from "../Code";
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 import Message from "../Message";
 import Figure from "./Figure";
 
@@ -62,8 +63,9 @@ export default function Input() {
       <Heading id="InputPajek" />
 
       <p>
-        The <a href="http://pajek.imfm.si/doku.php">Pajek</a> format specifies
-        both the nodes and the links in two different sections of the file:
+        The <ExternalLink href="//pajek.imfm.si/doku.php">Pajek</ExternalLink>{" "}
+        format specifies both the nodes and the links in two different sections
+        of the file:
       </p>
 
       <Code
@@ -101,10 +103,10 @@ export default function Input() {
         However, such a projection to primary nodes gives an overload of links
         already for moderately dense networks. With the map equation for varying
         Markov times, we avoid this projection because{" "}
-        <a href="https://www.mapequation.org/publications.html#Kheirkhahzadeh-Etal-2016-Markovtimes">
+        <ExternalLink href="//www.mapequation.org/publications.html#Kheirkhahzadeh-Etal-2016-Markovtimes">
           a bipartite-to-unipartite projection corresponds to doubling the
           Markov time
-        </a>
+        </ExternalLink>
         . This approach approximates a two-step random walker. By shifting the
         flow from the feature nodes to primary nodes, the map equation encodes
         steps on the primary nodes while avoiding the drawback of a unipartite
@@ -173,9 +175,9 @@ export default function Input() {
           optionally constrained by inter-layer links
         </a>{" "}
         defined under the <code>*Inter</code> heading. See the{" "}
-        <a href="//mapequation.org/apps/multilayer-network/index.html">
+        <ExternalLink href="//mapequation.org/apps/multilayer-network/index.html">
           interactive storyboard
-        </a>{" "}
+        </ExternalLink>{" "}
         for an illustration.
       </p>
 

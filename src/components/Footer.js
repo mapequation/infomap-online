@@ -10,7 +10,7 @@ export default function Footer() {
       mt="180px"
     >
       &copy; {new Date().getFullYear()} mapequation.org &ndash;{" "}
-      <a href="https://www.mapequation.org/about.html#Terms">Terms</a>
+      <a href="//www.mapequation.org/about.html#Terms">Terms</a>
     </Container>
   );
 }

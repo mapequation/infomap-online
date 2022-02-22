@@ -1,5 +1,6 @@
 import TeX from "@matejmazur/react-katex";
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 
 const TeXBlockLeftAligned = ({ math, children }) => (
   <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -15,9 +16,9 @@ export default function MapEquation() {
       <Heading id="MapEquation" />
       <p>
         Infomap optimizes{" "}
-        <a href="//mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
+        <ExternalLink href="//mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
           The Map equation
-        </a>
+        </ExternalLink>
         , which exploits the <em>information-theoretic</em> duality between
         finding community structure in networks and minimizing the description
         length of a random walker&apos;s movements on a network. For a given

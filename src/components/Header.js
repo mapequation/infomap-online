@@ -34,7 +34,7 @@ export default function Header() {
                 alt="MapEquation"
                 width="57px"
                 height="57px"
-                src="https://mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
+                src="//mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
               />
             </a>
           </Box>

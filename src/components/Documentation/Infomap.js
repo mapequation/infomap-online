@@ -3,6 +3,7 @@ import TeX from "@matejmazur/react-katex";
 import { FaApple, FaUbuntu, FaWindows } from "react-icons/fa";
 import Code from "../Code";
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 import Message from "../Message";
 
 export default function Infomap() {
@@ -11,9 +12,9 @@ export default function Infomap() {
       <Heading id="Infomap" />
       <p>
         Infomap is a network clustering algorithm based on the{" "}
-        <a href="https://www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
+        <ExternalLink href="//www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
           Map Equation
-        </a>
+        </ExternalLink>
         :
       </p>
       <TeX
@@ -29,15 +30,16 @@ export default function Infomap() {
       </p>
       <p>
         We achieve this by compiling Infomap from{" "}
-        <a href="//emscripten.org">C++ to JavaScript</a>, which gives a
-        performance penalty compared to the stand-alone version of Infomap.
+        <ExternalLink href="//emscripten.org">C++ to JavaScript</ExternalLink>,
+        which gives a performance penalty compared to the stand-alone version of
+        Infomap.
       </p>
       <p>
         If you want to integrate Infomap in your own web application, you can
         use the{" "}
-        <a href="//www.npmjs.com/package/@mapequation/infomap">
+        <ExternalLink href="//www.npmjs.com/package/@mapequation/infomap">
           Infomap NPM package
-        </a>
+        </ExternalLink>
         .
       </p>
 
@@ -45,7 +47,10 @@ export default function Infomap() {
       <p>
         We recommend installing Infomap from the Python Package Index. Upgrades
         are easy and you get access to the{" "}
-        <a href="//mapequation.github.io/infomap/python">Python API</a>.
+        <ExternalLink href="//mapequation.github.io/infomap/python">
+          Python API
+        </ExternalLink>
+        .
       </p>
       <p>
         Currently, we provide pre-compiled packages for Windows and macOS. If no
@@ -70,9 +75,9 @@ export default function Infomap() {
         If you don&apos;t want to install Python, we provide pre-compiled
         binaries for Windows, Ubuntu and macOS. You can download the binaries
         from the{" "}
-        <a href="//github.com/mapequation/infomap/releases/latest">
+        <ExternalLink href="//github.com/mapequation/infomap/releases/latest">
           releases page
-        </a>{" "}
+        </ExternalLink>{" "}
         or use the direct links below. The OpenMP versions require{" "}
         <code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS.
       </p>
@@ -156,8 +161,8 @@ export default function Infomap() {
       <p>
         On macOS, you can install Apple&apos;s development tools with{" "}
         <code>xcode-select --install</code> and the{" "}
-        <a href="//brew.sh">Homebrew</a> version of OpenMP with{" "}
-        <code>brew install libomp</code>.
+        <ExternalLink href="//brew.sh">Homebrew</ExternalLink> version of OpenMP
+        with <code>brew install libomp</code>.
       </p>
 
       <p>
@@ -173,7 +178,9 @@ export default function Infomap() {
           Download Infomap source code
         </a>{" "}
         or check the{" "}
-        <a href="//github.com/mapequation/infomap/releases">releases page</a>{" "}
+        <ExternalLink href="//github.com/mapequation/infomap/releases">
+          releases page
+        </ExternalLink>{" "}
         for all releases.
       </p>
 
@@ -189,8 +196,10 @@ export default function Infomap() {
 
       <p>
         To download the development version from{" "}
-        <a href="//www.github.com/mapequation/infomap">Github</a>, clone the
-        repository and compile Infomap by running
+        <ExternalLink href="//www.github.com/mapequation/infomap">
+          Github
+        </ExternalLink>
+        , clone the repository and compile Infomap by running
       </p>
 
       <Code>

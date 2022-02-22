@@ -1,5 +1,6 @@
 import { chakra } from "@chakra-ui/react";
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 
 export default function Algorithm() {
   return (
@@ -23,9 +24,9 @@ export default function Algorithm() {
       <Heading id="TwolevelAlgorithm" />
       <p>
         The core of the algorithm follows closely the{" "}
-        <a href="https://sites.google.com/site/findcommunities/">
+        <ExternalLink href="//sites.google.com/site/findcommunities/">
           Louvain method
-        </a>
+        </ExternalLink>
         : neighboring nodes are joined into modules, which subsequently are
         joined into supermodules and so on. First, each node is assigned to its
         own module. Then, in random sequential order, each node is moved to the
@@ -54,7 +55,7 @@ export default function Algorithm() {
       </p>
 
       <chakra.p pl={10}>
-        <em>Submodule movements:</em>
+        <chakra.em mr={4}>Submodule movements:</chakra.em>
         First, each cluster is treated as a network on its own and the main
         algorithm is applied to this network. This procedure generates one or
         more submodules for each module. Then all submodules are moved back to
@@ -65,7 +66,7 @@ export default function Algorithm() {
       </chakra.p>
 
       <chakra.p pl={10}>
-        <em>Single-node movements:</em>
+        <chakra.em mr={4}>Single-node movements:</chakra.em>
         First, each node is re-assigned to be the sole member of its own module,
         in order to allow for single-node movements. Then all nodes are moved
         back to their respective modules of the previous step. At this stage,

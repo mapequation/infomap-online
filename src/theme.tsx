@@ -19,6 +19,14 @@ const theme = extendTheme({
         },
       },
     },
+    Link: {
+      baseStyle: {
+        color: "#128bc2",
+        _hover: {
+          color: "#096992",
+        },
+      },
+    },
   },
   styles: {
     global: {

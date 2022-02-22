@@ -22,7 +22,7 @@ const Change = ({ change }) => {
   const Reference =
     (references || []).length > 0 ? (
       <a
-        href={`https://github.com/mapequation/infomap/issues/${references[0].issue}`}
+        href={`//github.com/mapequation/infomap/issues/${references[0].issue}`}
       >
         {" "}
         (#{references[0].issue})
@@ -83,7 +83,7 @@ const Release = ({ changes }) => {
   return (
     <div style={{ marginBottom: 2 }}>
       <a
-        href={`https://github.com/mapequation/infomap/releases/tag/v${release.subject}`}
+        href={`//github.com/mapequation/infomap/releases/tag/v${release.subject}`}
       >
         <h3 style={{ marginBottom: 2 }} id={release.subject}>
           {release.subject}

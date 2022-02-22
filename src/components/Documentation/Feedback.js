@@ -1,4 +1,5 @@
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 
 export default function Feedback() {
   return (
@@ -7,14 +8,17 @@ export default function Feedback() {
       <p>
         If you have any questions or suggestions regarding the software, please
         add them to{" "}
-        <a href="//github.com/mapequation/infomap/discussions">
+        <ExternalLink href="//github.com/mapequation/infomap/discussions">
           GitHub Discussions
-        </a>
+        </ExternalLink>
         .
       </p>
       <p>
         Bugs and installation problems can be reported in{" "}
-        <a href="//github.com/mapequation/infomap/issues">GitHub Issues</a>.
+        <ExternalLink href="//github.com/mapequation/infomap/issues">
+          GitHub Issues
+        </ExternalLink>
+        .
       </p>
     </>
   );

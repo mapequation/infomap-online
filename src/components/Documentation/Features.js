@@ -1,5 +1,6 @@
 import { chakra, Heading as CkHeading } from "@chakra-ui/react";
 import { Heading } from "../Contents";
+import ExternalLink from "../ExternalLink";
 
 const Header = chakra(CkHeading, {
   baseStyle: {
@@ -28,13 +29,13 @@ export default function Features() {
       <Header as="h3">Two-level and multi-level solutions</Header>
       <p>
         Infomap clusters tightly interconnected nodes into modules (
-        <a href="//mapequation.org/publications.html#Rosvall-Bergstrom-2008-Maps-of-information-flow">
+        <ExternalLink href="//mapequation.org/publications.html#Rosvall-Bergstrom-2008-Maps-of-information-flow">
           two-level clustering
-        </a>
+        </ExternalLink>
         ) or the optimal number of nested modules (
-        <a href="//mapequation.org/publications.html#Rosvall-Bergstrom-2011-Multilevel">
+        <ExternalLink href="//mapequation.org/publications.html#Rosvall-Bergstrom-2011-Multilevel">
           multi-level clustering
-        </a>
+        </ExternalLink>
         ).
       </p>
 
@@ -46,14 +47,14 @@ export default function Features() {
         moves to on the network both depends on where it currently is and where
         it just came from). Infomap captures second-order dynamics by performing
         first-order dynamics on <em>memory nodes</em>, see{" "}
-        <a href="//mapequation.org/publications.html#Rosvall-Etal-2014-Memory">
+        <ExternalLink href="//mapequation.org/publications.html#Rosvall-Etal-2014-Memory">
           Memory in network flows and its effects on spreading dynamics and
           community detection
-        </a>{" "}
+        </ExternalLink>{" "}
         and{" "}
-        <a href="//mapequation.org/apps/sparse-memory-network/index.html">
+        <ExternalLink href="//mapequation.org/apps/sparse-memory-network/index.html">
           this interactive storyboard
-        </a>
+        </ExternalLink>
         .
       </p>
 
@@ -71,14 +72,14 @@ export default function Features() {
         Infomap can identify (overlapping) modules in{" "}
         <em>multilayer (multiplex) networks</em> that may not be identified in a
         single aggregated network or by analyzing the layers separately. See{" "}
-        <a href="//mapequation.org/publications.html#Domenico-Etal-2015-Multiplex">
+        <ExternalLink href="//mapequation.org/publications.html#Domenico-Etal-2015-Multiplex">
           Identifying modular flows on multilayer networks reveals highly
           overlapping organization in interconnected systems
-        </a>{" "}
+        </ExternalLink>{" "}
         and{" "}
-        <a href="//mapequation.org/apps/multilayer-network/index.html">
+        <ExternalLink href="//mapequation.org/apps/multilayer-network/index.html">
           this interactive storyboard
-        </a>
+        </ExternalLink>
         .
       </p>
     </>
