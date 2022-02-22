@@ -146,6 +146,7 @@ export default observer(function Network() {
               borderRadius="md"
               boxShadow="md"
               width="100%"
+              cursor="move"
               height="clamp(200px, 50vw, 500px)"
               viewBox="-100 -100 200 200"
               xmlns={d3.namespaces.svg}

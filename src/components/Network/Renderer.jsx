@@ -1,3 +1,4 @@
+import { List, ListItem, Tooltip } from "@chakra-ui/react";
 import * as c3 from "@mapequation/c3";
 import Infomap from "@mapequation/infomap";
 import * as d3 from "d3";
@@ -141,6 +142,10 @@ export default observer(function Renderer({ scheme: schemeName }) {
 
   const linkColor = "#ccc";
 
+  const Node = React.forwardRef(function Node(props, ref) {
+    return <g ref={ref} {...props} />;
+  });
+
   return (
     <>
       <defs>
@@ -183,17 +188,36 @@ export default observer(function Renderer({ scheme: schemeName }) {
           const r = nodeRadius(node.flow);
           const fontSize = Math.max(r, 3);
           return (
-            <g key={node.id} className="node">
-              <circle fill={fill(node)} strokeWidth={0} r={r} />
-              <text
-                fontSize={fontSize}
-                textAnchor="middle"
-                dy={fontSize / 3}
-                strokeWidth={fontSize / 5}
-              >
-                {node.id}
-              </text>
-            </g>
+            <Tooltip
+              key={node.id}
+              hasArrow
+              placement="top"
+              label={
+                <List>
+                  <ListItem fontWeight="bold">{node.name}</ListItem>
+                  {store.output.modules.has(node.id) && (
+                    <ListItem>
+                      Module: {store.output.modules.get(node.id)}
+                    </ListItem>
+                  )}
+                  <ListItem>
+                    Flow: {node.flow < 1e-6 ? 0 : node.flow.toFixed(4)}
+                  </ListItem>
+                </List>
+              }
+            >
+              <Node className="node">
+                <circle fill={fill(node)} strokeWidth={0} r={r} />
+                <text
+                  fontSize={fontSize}
+                  textAnchor="middle"
+                  dy={fontSize / 3}
+                  strokeWidth={fontSize / 5}
+                >
+                  {node.id}
+                </text>
+              </Node>
+            </Tooltip>
           );
         })}
       </g>
