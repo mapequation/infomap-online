@@ -5,9 +5,9 @@ import {
   ButtonGroup,
   Container,
   Heading,
-  Stack,
   HStack,
   IconButton,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";

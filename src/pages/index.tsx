@@ -19,9 +19,14 @@ import Contents from "../components/Contents";
 import Documentation from "../components/Documentation";
 import Footer from "../components/Footer";
 import ErrorBoundary from "../components/ErrorBoundary";
+import Loading from "../components/Loading";
 import styles from "../styles/Drawer.module.css";
 
-const Network = dynamic(() => import("../components/Network"), { ssr: false });
+const Network = dynamic(() => import("../components/Network"), {
+  ssr: false,
+  loading: Loading,
+});
+
 const Infomap = dynamic(() => import("../components/Infomap"), { ssr: false });
 
 const Home: NextPage = () => {
