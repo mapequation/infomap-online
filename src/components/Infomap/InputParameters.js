@@ -19,7 +19,7 @@ export default observer(function InputParameters({
   const [args_, setArgs_] = useState(args);
 
   useEffect(() => {
-    const timer = setTimeout(() => setArgs(args_), 500);
+    const timer = setTimeout(() => setArgs(args_), 200);
     return () => clearTimeout(timer);
   }, [args_, setArgs]);
 
