@@ -248,7 +248,7 @@ export default observer(
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
                   <Image
                     src="/infomap/images/step1.png"
-                    alt="step 1"
+                    alt=""
                     boxSize="48px"
                   />
                   <Box textAlign="center">
@@ -265,7 +265,7 @@ export default observer(
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
                   <Image
                     src="/infomap/images/step2.png"
-                    alt="step 1"
+                    alt=""
                     boxSize="48px"
                   />
                   <Box textAlign="center">
@@ -282,7 +282,7 @@ export default observer(
                 <HStack mx="auto" spacing={2} maxW="max-content" h="100%">
                   <Image
                     src="/infomap/images/step3.png"
-                    alt="step 1"
+                    alt=""
                     boxSize="48px"
                   />
                   <Box textAlign="center">

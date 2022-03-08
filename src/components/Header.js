@@ -32,6 +32,7 @@ export default function Header() {
             <a href="//mapequation.org">
               <img
                 alt="MapEquation"
+                role="presentation"
                 width="57px"
                 height="57px"
                 src="//mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"

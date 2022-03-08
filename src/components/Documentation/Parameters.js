@@ -269,7 +269,8 @@ const ParameterGroup = observer(({ group, advanced }) => {
                 <Box fontSize="xs" {...getHeaderProps(param)}>
                   {param.short && (
                     <>
-                      <ParamName param={param} short />,{" "}
+                      <ParamName param={param} short />
+                      {", "}
                     </>
                   )}
                   <ParamName param={param} />
