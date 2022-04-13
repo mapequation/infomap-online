@@ -8,7 +8,8 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && scp -r out/* icelab-mapequation:/var/www/infomap"
+    "predeploy": "npm run build",
+    "deploy": "scp -r out/* icelab-mapequation:/var/www/infomap"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.5",
