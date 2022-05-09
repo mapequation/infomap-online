@@ -1,6 +1,9 @@
-import { Component, ErrorInfo } from "react";
+import { Component, ErrorInfo, PropsWithChildren } from "react";
 
-export default class ErrorBoundary extends Component {
+export default class ErrorBoundary extends Component<
+  PropsWithChildren<{}>,
+  { hasError: boolean }
+> {
   state = {
     hasError: false,
   };
