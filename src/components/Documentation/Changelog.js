@@ -165,7 +165,7 @@ export default function Changelog() {
       {!expanded && <Icon as={IoEllipsisVertical} my="1em" ml="0.8em" />}
       <Button
         size="sm"
-        isFullWidth
+        width="full"
         variant="ghost"
         leftIcon={expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
         onClick={() => setExpanded(!expanded)}

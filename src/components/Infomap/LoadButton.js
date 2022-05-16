@@ -14,7 +14,7 @@ export default function LoadButton({ onDrop, accept, children, ...props }) {
     <Button
       leftIcon={<FaFile />}
       ref={ref}
-      isFullWidth
+      width="full"
       colorScheme="blue"
       {...rootProps}
       {...props}

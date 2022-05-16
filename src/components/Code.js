@@ -33,7 +33,7 @@ export default function Code({
       {labelProps && (
         <Button
           size="sm"
-          isFullWidth
+          width="full"
           borderBottomRadius="none"
           {...labelProps}
         />
@@ -49,7 +49,7 @@ export default function Code({
       {startingHeight && (
         <Button
           size="xs"
-          isFullWidth
+          width="full"
           borderTopRadius="none"
           variant="outline"
           onClick={() => setShow(!show)}

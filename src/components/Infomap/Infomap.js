@@ -400,7 +400,7 @@ export default observer(
                 label="Network Navigator requires ftree output."
               >
                 <Button
-                  isFullWidth
+                  width="full"
                   colorScheme="blue"
                   as="a"
                   _hover={{ color: "white", bg: "blue.600" }}
