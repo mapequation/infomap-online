@@ -67,7 +67,7 @@ export default function Infomap() {
       <Code>pip install --upgrade infomap</Code>
 
       <Message bg="info" header="Infomap only supports Python 3">
-        We currently build packages for Python 3.6 to 3.9.
+        We currently build packages for Python 3.6 to 3.10.
       </Message>
 
       <Heading id="DownloadBinary" />
