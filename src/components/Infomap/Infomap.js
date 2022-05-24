@@ -43,18 +43,18 @@ export default observer(
       super(props);
 
       const onData = (content) =>
-        this.setState({
-          infomapOutput: [...this.state.infomapOutput, content],
-        });
+        this.setState(({ infomapOutput }) => ({
+          infomapOutput: [...infomapOutput, content],
+        }));
 
       const onError = (content) => {
         let infomapError = content.replace(/^Error:\s+/i, "");
-        this.setState({
+        this.setState(({ infomapOutput }) => ({
           infomapError,
-          infomapOutput: [...this.state.infomapOutput, content],
+          infomapOutput: [...infomapOutput, content],
           isRunning: false,
           isCompleted: false,
-        });
+        }));
         console.log(infomapError);
         this.props.toast({
           title: "Error",
