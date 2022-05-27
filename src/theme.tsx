@@ -3,6 +3,10 @@ import "@fontsource/open-sans/400.css";
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  config: {
+    initialColorMode: "light",
+    useSystemColorMode: false,
+  },
   components: {
     Button: {
       variants: {
