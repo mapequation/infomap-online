@@ -28,6 +28,8 @@ import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
 import OutputMenu from "./OutputMenu";
 
+localforage.config({ name: "infomap" });
+
 export default observer(function InfomapOnline({ toast }) {
   const store = useStore();
   const [infomapOutput, setInfomapOutput] = useState([]);
@@ -62,18 +64,14 @@ export default observer(function InfomapOnline({ toast }) {
     });
 
   useEffect(() => {
-    localforage.config({ name: "infomap" });
-
-    const urlSearchParams = URLSearchParams || window.URLSearchParams;
-    const urlParams = new urlSearchParams(window.location.search);
-    const args = urlParams.get("args");
+    const args = new URLSearchParams(window.location.search).get("args");
 
     if (args) {
       store.params.setArgs(args);
     } else {
       store.params.setArgs("--clu --ftree");
     }
-  });
+  }, [store]);
 
   const onInputChange =
     (activeInput) =>
