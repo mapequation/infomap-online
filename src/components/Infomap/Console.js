@@ -1,47 +1,37 @@
 import { Box, chakra } from "@chakra-ui/react";
-import { Component } from "react";
+import { useEffect, useRef } from "react";
 
-export default class Console extends Component {
-  keepScrolling = true;
-  onScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } = this.container;
-    const diff = scrollHeight - clientHeight;
-    const isAtBottom = scrollTop === diff;
-    return (this.keepScrolling = isAtBottom);
-  };
+export default function Console({ placeholder, children }) {
+  const ref = useRef();
 
-  componentDidUpdate() {
-    if (this.keepScrolling) {
-      const { scrollHeight, clientHeight } = this.container;
-      this.container.scrollTop = scrollHeight - clientHeight;
-    }
-  }
+  useEffect(() => {
+    const currentRef = ref.current;
+    if (!currentRef) return;
 
-  render() {
-    const { placeholder, children, ...props } = this.props;
+    const { scrollHeight, clientHeight } = currentRef;
+    currentRef.scrollTop = scrollHeight - clientHeight;
+  }, [children]);
 
-    return (
-      <Box
-        bg="white"
-        h="60ch"
-        px="1rem"
-        py="0.5rem"
-        fontSize="sm"
-        overflow="auto"
-        borderWidth={1}
-        borderColor="gray.200"
-        borderRadius="md"
-        ref={(el) => (this.container = el)}
-        onScroll={this.onScroll}
-      >
-        {children ? (
-          <chakra.code fontSize="0.6rem" border="none" bg="none">
-            {children}
-          </chakra.code>
-        ) : (
-          <Box color="gray.400">{placeholder}</Box>
-        )}
-      </Box>
-    );
-  }
+  return (
+    <Box
+      bg="white"
+      h="60ch"
+      px="1rem"
+      py="0.5rem"
+      fontSize="sm"
+      overflow="auto"
+      borderWidth={1}
+      borderColor="gray.200"
+      borderRadius="md"
+      ref={ref}
+    >
+      {children ? (
+        <chakra.code fontSize="0.6rem" border="none" bg="none">
+          {children}
+        </chakra.code>
+      ) : (
+        <Box color="gray.400">{placeholder}</Box>
+      )}
+    </Box>
+  );
 }
