@@ -61,6 +61,9 @@ export default observer(function InfomapOnline({ toast }) {
       setIsRunning(false);
       setIsCompleted(true);
       setProgress(0);
+      if (window.navigator?.vibrate) {
+        window.navigator.vibrate([200, 100, 200, 100, 200]);
+      }
     });
 
   useEffect(() => {
