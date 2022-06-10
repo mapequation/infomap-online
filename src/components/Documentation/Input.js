@@ -44,8 +44,7 @@ export default function Input() {
         labelProps={{
           children: "Run example",
           onClick: () => {
-            const param = store.params.getParam("--num-trials");
-            store.params.setInput(param, 5);
+            store.params.setArgs("--clu --ftree --num-trials 5");
             store.runExample("nineTriangles");
           },
         }}
