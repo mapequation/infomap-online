@@ -23,6 +23,7 @@ import useStore from "../../store";
 import { Step, Steps } from "../Steps";
 import Console from "./Console";
 import DownloadMenu from "./DownloadMenu";
+import ExamplesMenu from "./ExamplesMenu";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
@@ -230,15 +231,17 @@ export default observer(function InfomapOnline({ toast }) {
       </GridItem>
 
       <GridItem area="input" className="network">
-        <LoadButton
-          mb="1rem"
-          size="sm"
-          isDisabled={isRunning}
-          onDrop={onLoad(activeInput)}
-          accept={inputAccept[activeInput]}
-        >
-          Load {activeInput}
-        </LoadButton>
+        <ButtonGroup isAttached w="100%" mb="1rem" isDisabled={isRunning}>
+          <LoadButton
+            width="full"
+            size="sm"
+            onDrop={onLoad(activeInput)}
+            accept={inputAccept[activeInput]}
+          >
+            Load {activeInput}
+          </LoadButton>
+          <ExamplesMenu disabled={isRunning} />
+        </ButtonGroup>
 
         <InputTextarea
           onDrop={onLoad(activeInput)}
