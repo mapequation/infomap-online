@@ -47,26 +47,27 @@ export default function MapEquation() {
         index codebook and the module codebooks weighted by their rates of use:
       </p>
       <TeX
-        math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
+        math="L(M) = q_\curvearrowleft H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
         block
       />
 
       <TeXBlockLeftAligned>L(M)</TeXBlockLeftAligned>
       <p>
-        The description length for module partition <TeX>M</TeX>. For module
-        partition <TeX>M</TeX> of <TeX>n</TeX> nodes into <TeX>m</TeX> modules,
-        the lower bound of the average length of the code describing a step of
-        the random walker.
+        The two-level average description length for a step of the random walker
+        on a network with <TeX>n</TeX> nodes partitioned into map  <TeX>M</TeX> with <TeX>m</TeX> modules. 
+        The first term is the average description length of the index codebook 
+        and the second term is the average description length of the module 
+        codebooks.
       </p>
 
-      <TeXBlockLeftAligned math="q_\curvearrowright = \sum_{i = 1}^{m}{q_{i\curvearrowright}}" />
+      <TeXBlockLeftAligned math="q_\curvearrowleft = \sum_{i = 1}^{m}{q_{i\curvearrowleft}}" />
       <p>
         The rate at which the index codebook is used. The per-step use rate of
         the index codebook is given by the total probability that the random
-        walker exits any of the <TeX>m</TeX> modules.
+        walker enters any of the <TeX>m</TeX> modules.
       </p>
 
-      <TeXBlockLeftAligned math="H(\mathcal{Q}) = -\sum_{i = 1}^{m}{\frac{q_{i\curvearrowright}}{q_\curvearrowright} \log{\frac{q_{i\curvearrowright}}{q_\curvearrowright}}}" />
+      <TeXBlockLeftAligned math="H(\mathcal{Q}) = -\sum_{i = 1}^{m}{\frac{q_{i\curvearrowleft}}{q_\curvearrowleft} \log{\frac{q_{i\curvearrowleft}}{q_\curvearrowleft}}}" />
       <p>
         The frequency-weighted average length of codewords in the index
         codebook. The entropy of the relative rates to use the module codebooks
