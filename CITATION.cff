@@ -1,16 +1,29 @@
-cff-version: 2.3.0
-message: "If you use this software, please cite it as below."
+cff-version: 1.2.0
+title: Infomap Online
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
 authors:
-- family-names: "Edler"
-  given-names: "Daniel"
-  orcid: "https://orcid.org/0000-0001-5420-0591"
-- family-names: "Eriksson"
-  given-names: "Anton"
-  orcid: "https://orcid.org/0000-0001-5859-4073"
-- family-names: "Rosvall"
-  given-names: "Martin"
-  orcid: "https://orcid.org/0000-0002-7181-9940"
-title: "The MapEquation software package"
-version: 2.3.0
-date-released: 2022-04-13
-url: "https://mapequation.org"
+  - given-names: Anton
+    family-names: Holmgren
+    email: anton.holmgren@umu.se
+    orcid: 'https://orcid.org/0000-0001-5859-4073'
+  - given-names: Daniel
+    family-names: Edler
+    email: daniel.edler@umu.se
+    orcid: 'https://orcid.org/0000-0001-5420-0591'
+  - given-names: Martin
+    family-names: Rosvall
+    email: martin.rosvall@umu.se
+    orcid: 'https://orcid.org/0000-0002-7181-9940'
+url: 'https://mapequation.org/infomap'
+repository: 'https://github.com/mapequation/infomap-online/'
+keywords:
+  - networks
+  - community detection
+  - map equation
+  - infomap
+license: MIT
+version: 2.0.0
+date-released: '2022-06-20'
