@@ -12,4 +12,4 @@ The code for running Infomap as a web worker in the browser is available as a
 
 ## Authors
 
-Daniel Edler, Anton Eriksson, Martin Rosvall
+Daniel Edler, Anton Holmgren, Martin Rosvall

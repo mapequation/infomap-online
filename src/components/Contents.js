@@ -145,8 +145,8 @@ const tocSource = {
   Feedback: {
     heading: "Feedback",
   },
-  References: {
-    heading: "References",
+  HowToCite: {
+    heading: "How to cite",
   },
 };
 
