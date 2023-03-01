@@ -71,7 +71,7 @@ export default observer(function Network() {
 
   return (
     <>
-      <Container maxW="container.xl" my={10}>
+      <Container maxW="container.xl" mt={10} px={14}>
         <HStack alignItems="baseline" gap={2} mb={2}>
           <Popover
             isOpen={isConfirmOpen}
@@ -79,7 +79,7 @@ export default observer(function Network() {
           >
             <PopoverTrigger>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 onClick={() => {
                   if (isOpen || networkSize < maxNetworkLines) {
