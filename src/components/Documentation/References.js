@@ -1,12 +1,7 @@
-import { Code, Text, Heading as CkHeading } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
+import { Code, Text } from "@chakra-ui/react";
 import { Heading } from "../Contents";
 import ExternalLink from "../ExternalLink";
-
-const Version = dynamic(() => import("../InfomapVersion"), {
-  ssr: false,
-  loading: () => "2.6",
-});
+import MapEquationBibTeX from "./MapEquationBibTeX";
 
 export default function References() {
   return (
@@ -25,31 +20,17 @@ export default function References() {
         available online at <a href="//www.mapequation.org">mapequation.org</a>.
       </p>
       <Text fontWeight={600} my="1em">
-        BibTeX for all Map Equation software, including Infomap
+        BibTeX
       </Text>
-      <Code fontSize="xs" whiteSpace="pre-wrap" display="block">
-        {`@software{mapequation2022software,
-  author = {Edler, Daniel and Holmgren, Anton and Rosvall, Martin},
-  title = {{The MapEquation software package}},
-  url = {https://mapequation.org},
-  version = {`}
-        <Version />
-        {`},
-  year = {2022}
-}`}
-      </Code>
-
-      <Text fontWeight={600} my="1em">
-        BibTeX for Infomap Online
-      </Text>
-      <Code fontSize="xs" whiteSpace="pre-wrap" display="block">
-        {`@software{mapequation2022infomaponline,
-  author = {Holmgren, Anton and Edler, Daniel and Rosvall, Martin},
-  title = {{Infomap Online}},
-  url = {https://mapequation.org/infomap},
-  version = {2.0.0},
-  year = {2022}
-}`}
+      <Code
+        fontSize="xs"
+        whiteSpace="pre-wrap"
+        display="block"
+        bg="white"
+        p={2}
+        lineHeight={1.5}
+      >
+        <MapEquationBibTeX />
       </Code>
     </>
   );
