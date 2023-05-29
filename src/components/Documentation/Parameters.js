@@ -105,7 +105,7 @@ const FileInputParameter = observer(({ param }) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
-    accept: param.accept,
+    accept: { "text/plain": param.accept },
     noClick: true, // Turn off default click trigger to prevent double file requests
   });
 
