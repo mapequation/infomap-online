@@ -80,7 +80,7 @@ export default function Input() {
 
       <p>
         The node section must start with <code>*Vertices N</code> and the link
-        section with <code>*Edges N</code> or
+        section with <code>*Edges N</code>, <code>*Links N</code>, or
         <code>*Arcs N</code> (case insensitive), where <code>N</code> is the
         number of nodes or links. The characters within each quotation mark
         defines the corresponding node name. Weights can be given to nodes by
