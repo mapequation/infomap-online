@@ -124,7 +124,7 @@ export default observer(function ExamplesMenu({ disabled }) {
               store.setNetwork(network);
               Object.entries(network.args).forEach(([key, value]) => {
                 const p = store.params.getParam(key);
-                if (p.value !== value) {
+                if (p.active !== value) {
                   store.params.toggle(p);
                 }
               });
