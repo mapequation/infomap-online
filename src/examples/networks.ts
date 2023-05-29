@@ -353,7 +353,7 @@ export const modular_w = `*Edges
 17 24 8
 19 18 3`;
 
-export const modular_wd = `*Arcs
+export const modular_wd = `*Links
 1 3 2
 2 3 4
 3 4 5
