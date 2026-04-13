@@ -30,6 +30,7 @@ export default observer(function DownloadMenu({ disabled }) {
         colorScheme="blue"
         as={IconButton}
         icon={<ChevronDownIcon />}
+        aria-label="Download outputs"
         borderLeftRadius={0}
         size="sm"
       />

@@ -28,7 +28,9 @@ export default observer(function OutputMenu(props) {
 
   if (!stateFiles.length) {
     return physicalFiles.length < 2 ? null : (
-      <List {...props}>{physicalFiles.map(getMenuItem)}</List>
+      <List data-testid="output-formats" {...props}>
+        {physicalFiles.map(getMenuItem)}
+      </List>
     );
   }
 
@@ -38,7 +40,7 @@ export default observer(function OutputMenu(props) {
   ];
 
   return (
-    <List {...props}>
+    <List data-testid="output-formats" {...props}>
       {items.map(({ header, files }, key) => (
         <Fragment key={key}>
           <ListItem mb={1} fontWeight={500}>
