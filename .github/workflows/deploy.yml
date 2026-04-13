@@ -1,0 +1,128 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Existing CI run ID to deploy. Leave empty to use the latest successful master run.
+        required: false
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  resolve-run:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'master')
+    runs-on: ubuntu-24.04
+    outputs:
+      run_id: ${{ steps.resolve.outputs.run_id }}
+      head_sha: ${{ steps.resolve.outputs.head_sha }}
+
+    steps:
+      - name: Resolve artifact source run
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_RUN_ID: ${{ inputs.run_id }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            run_id="${{ github.event.workflow_run.id }}"
+            head_sha="${{ github.event.workflow_run.head_sha }}"
+          else
+            run_id="$INPUT_RUN_ID"
+            if [ -z "$run_id" ]; then
+              run_id="$(gh api "repos/$REPOSITORY/actions/workflows/ci.yml/runs" -f branch=master -F per_page=20 --jq '.workflow_runs[] | select(.conclusion == "success") | .id' | head -n 1)"
+            fi
+
+            if [ -z "$run_id" ]; then
+              echo "No successful CI run found to deploy." >&2
+              exit 1
+            fi
+
+            head_sha="$(gh api "repos/$REPOSITORY/actions/runs/$run_id" --jq '.head_sha')"
+          fi
+
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          echo "Using run $run_id for $head_sha"
+
+  deploy:
+    needs: resolve-run
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: production
+    env:
+      REPOSITORY: ${{ github.repository }}
+      RUN_ID: ${{ needs.resolve-run.outputs.run_id }}
+      HEAD_SHA: ${{ needs.resolve-run.outputs.head_sha }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+    steps:
+      - name: Download static artifact from CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          artifact_id="$(gh api "repos/$REPOSITORY/actions/runs/$RUN_ID/artifacts" --jq '.artifacts[] | select(.name == "site-export") | .id' | head -n 1)"
+          if [ -z "$artifact_id" ]; then
+            echo "Artifact site-export not found for run $RUN_ID" >&2
+            exit 1
+          fi
+
+          gh api "repos/$REPOSITORY/actions/artifacts/$artifact_id/zip" > site-export.zip
+          unzip -q site-export.zip -d artifact
+          test -d artifact/out
+
+      - name: Configure SSH
+        run: |
+          set -euo pipefail
+
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Deploy static site
+        run: |
+          set -euo pipefail
+
+          port="${SSH_PORT:-22}"
+          rsync --archive --compress --delete --delay-updates \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $port -o StrictHostKeyChecking=yes" \
+            artifact/out/ "$SSH_USER@$SSH_HOST:/var/www/infomap/"
+
+      - name: Smoke-check deployed site
+        env:
+          DEPLOY_BASE_URL: ${{ vars.DEPLOY_BASE_URL }}
+        run: |
+          set -euo pipefail
+
+          url="${DEPLOY_BASE_URL:-https://www.mapequation.org/infomap/}"
+          curl --fail --silent --show-error --location "$url" -o deployed.html
+          grep -q "Infomap Online" deployed.html
+          grep -q "/infomap/" deployed.html
+
+      - name: Report deployed revision
+        run: echo "Deployed $HEAD_SHA from CI run $RUN_ID"

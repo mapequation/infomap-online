@@ -113,6 +113,7 @@ export default observer(function ExamplesMenu({ disabled }) {
         colorScheme="blue"
         as={IconButton}
         icon={<ChevronDownIcon />}
+        aria-label="Choose example network"
         borderLeftRadius={0}
         size="sm"
       />
