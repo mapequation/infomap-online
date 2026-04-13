@@ -15,7 +15,7 @@ export default function Infomap() {
         <ExternalLink href="//www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
           Map Equation
         </ExternalLink>
-        :
+        . It finds modules by compressing the description of flow on a network:
       </p>
       <TeX
         math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
@@ -24,18 +24,18 @@ export default function Infomap() {
 
       <Heading id="InfomapOnline" />
       <p>
-        Infomap Online is a client-side web application that enables users to
-        run Infomap in the web browser. Your data never leaves your computer; we
-        don&apos;t store any data on our servers.
+        Infomap Online is a client-side web application for running Infomap in
+        the browser. Your data never leaves your computer, and we do not store
+        any data on our servers.
       </p>
       <p>
-        We achieve this by compiling Infomap from{" "}
+        We do this by compiling Infomap from{" "}
         <ExternalLink href="//emscripten.org">C++ to JavaScript</ExternalLink>,
-        which gives a performance penalty compared to the stand-alone version of
+        which makes the browser version slower than the stand-alone version of
         Infomap.
       </p>
       <p>
-        If you want to integrate Infomap in your own web application, you can
+        If you want to integrate Infomap into your own web application, you can
         use the{" "}
         <ExternalLink href="//www.npmjs.com/package/@mapequation/infomap">
           Infomap NPM package
@@ -46,7 +46,7 @@ export default function Infomap() {
       <Heading id="Install" />
       <p>
         We recommend installing Infomap from the Python Package Index. Upgrades
-        are easy and you get access to the{" "}
+        are straightforward, and you also get access to the{" "}
         <ExternalLink href="//mapequation.github.io/infomap/python">
           Python API
         </ExternalLink>
@@ -54,8 +54,8 @@ export default function Infomap() {
       </p>
       <p>
         Currently, we provide pre-compiled packages for Windows and macOS. If no
-        package is available for your platform and Python version, the code{" "}
-        <a href="#CompilingFromSource">compiles from source</a>.
+        package is available for your platform and Python version, Infomap will{" "}
+        <a href="#CompilingFromSource">compile from source</a>.
       </p>
 
       <p>To install, run</p>
@@ -144,13 +144,13 @@ export default function Infomap() {
 
       <Message header="Trusting binaries on macOS">
         Run <code>spctl --add Infomap</code> and enter your password to add the
-        Infomap binary to GateKeeper&apos;s trusted binaries.
+        Infomap binary to Gatekeeper&apos;s trusted binaries.
       </Message>
 
       <Heading id="CompilingFromSource" />
       <p>
         Building Infomap from source requires a working GCC or Clang compiler
-        with support for C++14 and optionally OpenMP.
+        with C++14 support and, optionally, OpenMP.
       </p>
 
       <p>
@@ -197,7 +197,7 @@ export default function Infomap() {
       <p>
         To download the development version from{" "}
         <ExternalLink href="//www.github.com/mapequation/infomap">
-          Github
+          GitHub
         </ExternalLink>
         , clone the repository and compile Infomap by running
       </p>

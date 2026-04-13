@@ -8,8 +8,8 @@ export default function References() {
     <>
       <Heading id="HowToCite" />
       <p>
-        If you are using the software at mapequation.org in one of your research
-        articles or otherwise want to refer to it, please cite{" "}
+        If you use the software at mapequation.org in a research article, or
+        otherwise want to refer to it, please cite a{" "}
         <ExternalLink href="//www.mapequation.org/publications.html">
           relevant publication
         </ExternalLink>{" "}

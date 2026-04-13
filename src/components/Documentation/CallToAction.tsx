@@ -68,10 +68,10 @@ export default function CallToAction() {
           Get Help
         </Heading>
         <Text mt={6} color="blackAlpha.700">
-          We answer questions on Github discussions.
+          We answer questions in GitHub Discussions.
         </Text>
         <ExternalLink href="http://github.com/mapequation/infomap/discussions">
-          Github Discussions
+          GitHub Discussions
         </ExternalLink>
       </Box>
     </Grid>

@@ -19,20 +19,17 @@ export default function MapEquation() {
         <ExternalLink href="//mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
           The Map equation
         </ExternalLink>
-        , which exploits the <em>information-theoretic</em> duality between
-        finding community structure in networks and minimizing the description
-        length of a random walker&apos;s movements on a network. For a given
-        network partition <TeX>M</TeX>, the map equation specifies the
-        theoretical limit <TeX>L(M)</TeX> of how concisely we can describe the
-        trajectory of this random walk.
+        , which turns community detection into an information-theoretic coding
+        problem. For a given network partition <TeX>M</TeX>, the map equation
+        gives the theoretical limit <TeX>L(M)</TeX> of how concisely we can
+        describe the trajectory of a random walk on the network.
       </p>
       <p>
-        The underlying code structure of the map equation is designed such that
-        the description can be compressed if the network has regions in which
-        the random walker tends to stay for a long time. Therefore, with a
-        random walk as a proxy for real flow, minimizing the map equation over
-        all possible network partitions reveals important aspects of network
-        structure with respect to the dynamics on the network.
+        The code structure is designed so that the description becomes shorter
+        when the network has regions where the random walker tends to stay for
+        a long time. With the random walk as a proxy for flow, minimizing the
+        map equation over all possible partitions reveals the network structure
+        that best matches those dynamics.
       </p>
       <p>
         To take advantage of the regional structure of the network, one index
@@ -54,10 +51,10 @@ export default function MapEquation() {
       <TeXBlockLeftAligned>L(M)</TeXBlockLeftAligned>
       <p>
         The two-level average description length for a step of the random walker
-        on a network with <TeX>n</TeX> nodes partitioned into map  <TeX>M</TeX> with <TeX>m</TeX> modules. 
-        The first term is the average description length of the index codebook 
-        and the second term is the average description length of the module 
-        codebooks.
+        on a network with <TeX>n</TeX> nodes partitioned into map <TeX>M</TeX>{" "}
+        with <TeX>m</TeX> modules. The first term is the average description
+        length of the index codebook, and the second term is the average
+        description length of the module codebooks.
       </p>
 
       <TeXBlockLeftAligned math="q_\curvearrowleft = \sum_{i = 1}^{m}{q_{i\curvearrowleft}}" />
@@ -70,9 +67,9 @@ export default function MapEquation() {
       <TeXBlockLeftAligned math="H(\mathcal{Q}) = -\sum_{i = 1}^{m}{\frac{q_{i\curvearrowleft}}{q_\curvearrowleft} \log{\frac{q_{i\curvearrowleft}}{q_\curvearrowleft}}}" />
       <p>
         The frequency-weighted average length of codewords in the index
-        codebook. The entropy of the relative rates to use the module codebooks
-        measures the smallest average codeword length that is theoretically
-        possible.
+        codebook. The entropy of the relative rates at which the module
+        codebooks are used gives the smallest average codeword length that is
+        theoretically possible.
       </p>
 
       <TeXBlockLeftAligned math="\sum_{i = 1}^{m}{p_{\circlearrowright}^i} = \sum_{i = 1}^{m}{\left( \sum_{\alpha \in i}{p_\alpha + q_\curvearrowright} \right)}" />
@@ -81,9 +78,9 @@ export default function MapEquation() {
         of the module codebooks is given by the total use rate of the{" "}
         <TeX>m</TeX> module codebooks. For module <TeX>i</TeX>, this is given by
         the fraction of time the random walker spends in module <TeX>i</TeX>,
-        which is given by the total probability that any node in the module is
-        visited, plus the probability that it exits the module and the exit
-        message is used.
+        that is, the total probability that any node in the module is visited,
+        plus the probability that the walker exits the module and the exit code
+        is used.
       </p>
 
       <TeXBlockLeftAligned
@@ -98,7 +95,7 @@ export default function MapEquation() {
         The frequency-weighted average length of codewords in module codebook{" "}
         <TeX>i</TeX>. The entropy of the relative rates at which the random
         walker exits module <TeX>i</TeX> and visits each node in module{" "}
-        <TeX>i</TeX> measures the smallest average codeword length that is
+        <TeX>i</TeX> gives the smallest average codeword length that is
         theoretically possible.
       </p>
     </>
