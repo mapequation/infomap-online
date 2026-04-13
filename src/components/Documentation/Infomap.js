@@ -66,6 +66,21 @@ export default function Infomap() {
 
       <Code>pip install --upgrade infomap</Code>
 
+      <p>
+        If you only want the native CLI on macOS or Linux, install the
+        Homebrew tap and formula with:
+      </p>
+
+      <Code>
+        brew tap mapequation/infomap
+        <br />
+        brew install infomap
+      </Code>
+
+      <p>Or install directly in one command:</p>
+
+      <Code>brew install mapequation/infomap/infomap</Code>
+
       <Message bg="info" header="Infomap only supports Python 3">
         We currently build packages for Python 3.11 to 3.14.
       </Message>
