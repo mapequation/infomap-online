@@ -1,7 +1,8 @@
 import { createReadStream } from "node:fs";
-import { access } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
+import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -41,7 +42,12 @@ function getFilePath(requestPath) {
   }
 
   const resolvedPath = path.resolve(exportDir, `.${relativePath}`);
-  if (!resolvedPath.startsWith(exportDir)) {
+  const relativeResolvedPath = path.relative(exportDir, resolvedPath);
+  if (
+    relativeResolvedPath === ".." ||
+    relativeResolvedPath.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relativeResolvedPath)
+  ) {
     return false;
   }
 
@@ -65,7 +71,10 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    await access(filePath);
+    const fileInfo = await stat(filePath);
+    if (!fileInfo.isFile()) {
+      throw new Error("Not a regular file");
+    }
   } catch {
     res.writeHead(404);
     res.end("Not found");
@@ -77,7 +86,17 @@ const server = http.createServer(async (req, res) => {
     "Content-Type": MIME_TYPES[extension] || "application/octet-stream",
     "Cache-Control": "no-cache",
   });
-  createReadStream(filePath).pipe(res);
+
+  try {
+    await pipeline(createReadStream(filePath), res);
+  } catch {
+    if (!res.headersSent) {
+      res.writeHead(500);
+      res.end("Internal server error");
+      return;
+    }
+    res.destroy();
+  }
 });
 
 server.listen(port, "127.0.0.1", () => {

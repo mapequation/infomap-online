@@ -43,7 +43,7 @@
   "devDependencies": {
     "@playwright/test": "^1.55.1",
     "@types/d3": "^7.4.0",
-    "@types/node": "^18.11.9",
+    "@types/node": "^20.0.0",
     "@types/react": "^18.0.25",
     "eslint": "^8.26.0",
     "eslint-config-next": "^13.0.2",
