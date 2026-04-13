@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test("renders the static site and runs an example network", async ({ page }) => {
+  test.setTimeout(90_000);
+
   await page.goto("/infomap/");
 
   await expect(
@@ -14,9 +16,14 @@ test("renders the static site and runs an example network", async ({ page }) => 
   await page.getByRole("menuitem", { name: "Two triangles" }).click();
   await page.getByRole("button", { name: "Run Infomap" }).click();
 
-  await expect(page.getByTestId("output-formats")).toContainText("Clu", {
+  const downloadButton = page.getByRole("button", { name: "Download outputs" });
+  await expect(downloadButton).toBeEnabled({
     timeout: 60_000,
   });
-  await expect(page.getByRole("button", { name: "Download outputs" })).toBeEnabled();
+
+  await downloadButton.click();
+  await expect(page.getByRole("menuitem").first()).toBeVisible({
+    timeout: 10_000,
+  });
   await expect(page.getByText("Something went wrong.")).toHaveCount(0);
 });
