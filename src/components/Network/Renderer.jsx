@@ -3,7 +3,7 @@ import * as c3 from "@mapequation/c3";
 import Infomap from "@mapequation/infomap";
 import * as d3 from "d3";
 import { observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useStore from "../../store";
 
 const MAX_COLORS = 100;
@@ -25,14 +25,19 @@ export default observer(function Renderer({ scheme: schemeName }) {
 
   const scheme = c3.colors(MAX_COLORS, { scheme: schemeName, lightness: 0.8 });
 
-  const nodeRadius = d3
-    .scaleSqrt([0, maxNodeFlow])
-    .range([minRadius, maxRadius]);
+  const nodeRadius = useMemo(
+    () => d3.scaleSqrt([0, maxNodeFlow]).range([minRadius, maxRadius]),
+    [maxNodeFlow]
+  );
 
-  const linkWidth = d3
-    .scaleLinear()
-    .domain([0, maxLinkFlow])
-    .range([minLinkWidth, maxLinkWidth]);
+  const linkWidth = useMemo(
+    () =>
+      d3
+        .scaleLinear()
+        .domain([0, maxLinkFlow])
+        .range([minLinkWidth, maxLinkWidth]),
+    [maxLinkFlow]
+  );
 
   const fill = (node) => {
     const moduleId = store.output.modules.get(node.id);
@@ -45,7 +50,7 @@ export default observer(function Renderer({ scheme: schemeName }) {
   };
 
   useEffect(() => {
-    console.log("Network run Infomap");
+    let isCancelled = false;
 
     im.runAsync({
       network: store.network.value,
@@ -53,17 +58,27 @@ export default observer(function Renderer({ scheme: schemeName }) {
     })
       .then((result) => parseNetwork(result.flow_as_physical || result.flow))
       .then(({ maxNodeFlow, maxLinkFlow, ...network }) => {
+        if (isCancelled) {
+          return;
+        }
         setNetwork(network);
         setMaxNodeFlow(maxNodeFlow);
         setMaxLinkFlow(maxLinkFlow);
         setDirected(/(-d\s)|(--directed\s)/.test(store.params.noInfomapArgs));
       })
-      .catch((error) => console.warn(error));
+      .catch((error) => {
+        if (!isCancelled) {
+          console.warn(error);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [store.network.value, store.params.noInfomapArgs]);
 
   useEffect(() => {
     if (!network) return;
-    console.log("Network update simulation");
 
     const simulation = d3
       .forceSimulation(network.nodes)
@@ -138,6 +153,11 @@ export default observer(function Renderer({ scheme: schemeName }) {
       circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
       text.attr("x", (d) => d.x).attr("y", (d) => d.y);
     });
+
+    return () => {
+      simulation.stop();
+      node.on(".drag", null);
+    };
   }, [network, directed, nodeRadius, linkWidth]);
 
   const linkColor = "#ccc";
