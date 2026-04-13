@@ -40,32 +40,34 @@ export default observer(function InfomapOnline({ toast }) {
   const [error, setError] = useState("");
   const [progress, setProgress] = useState(0);
 
-  const infomap = new Infomap()
-    .on("data", (data) => setInfomapOutput((output) => [...output, data]))
-    .on("progress", (progress) => setProgress(progress))
-    .on("error", (error) => {
-      const infomapError = error.replace(/^Error:\s+/i, "");
-      setError(infomapError);
-      setInfomapOutput((output) => [...output, error]);
-      setIsRunning(false);
-      setIsCompleted(false);
-      toast({ title: "Error", description: infomapError, status: "error" });
-    })
-    .on("finished", async (content) => {
-      store.output.setContent(content);
-      await localforage.setItem("network", {
-        timestamp: Date.now(),
-        name: store.network.name,
-        input: store.network.value,
-        ...content,
-      });
-      setIsRunning(false);
-      setIsCompleted(true);
-      setProgress(0);
-      if (window.navigator?.vibrate) {
-        window.navigator.vibrate([200, 100, 200, 100, 200]);
-      }
-    });
+  const [infomap] = useState(() =>
+    new Infomap()
+      .on("data", (data) => setInfomapOutput((output) => [...output, data]))
+      .on("progress", (progress) => setProgress(progress))
+      .on("error", (error) => {
+        const infomapError = error.replace(/^Error:\s+/i, "");
+        setError(infomapError);
+        setInfomapOutput((output) => [...output, error]);
+        setIsRunning(false);
+        setIsCompleted(false);
+        toast({ title: "Error", description: infomapError, status: "error" });
+      })
+      .on("finished", async (content) => {
+        store.output.setContent(content);
+        await localforage.setItem("network", {
+          timestamp: Date.now(),
+          name: store.network.name,
+          input: store.network.value,
+          ...content,
+        });
+        setIsRunning(false);
+        setIsCompleted(true);
+        setProgress(0);
+        if (window.navigator?.vibrate) {
+          window.navigator.vibrate([200, 100, 200, 100, 200]);
+        }
+      })
+  );
 
   useEffect(() => {
     const args = new URLSearchParams(window.location.search).get("args");

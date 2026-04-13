@@ -289,7 +289,7 @@ export default class OutputStore {
         : "text/plain;charset=utf-8";
     const blob = new Blob([content], { type: mimeType });
     saveAs(blob, file.filename);
-    this.setDownloaded();
+    this.setDownloaded(true);
   };
 
   downloadActiveContent = () => {
@@ -304,6 +304,9 @@ export default class OutputStore {
     }
     zip
       .generateAsync({ type: "blob" })
-      .then((blob) => saveAs(blob, `${this.name}.zip`));
+      .then((blob) => {
+        saveAs(blob, `${this.name}.zip`);
+        this.setDownloaded(true);
+      });
   };
 }
