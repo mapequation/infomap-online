@@ -1,14 +1,13 @@
 import { List, ListItem, Tooltip } from "@chakra-ui/react";
 import * as c3 from "@mapequation/c3";
-import Infomap from "@mapequation/infomap";
 import * as d3 from "d3";
 import { observer } from "mobx-react";
 import React, { useEffect, useMemo, useState } from "react";
+import { loadInfomapRuntime } from "../../lib/infomap-client";
 import useStore from "../../store";
+import parseNetwork from "./parseNetwork";
 
 const MAX_COLORS = 100;
-
-const im = new Infomap();
 
 const minRadius = 2;
 const maxRadius = 6;
@@ -22,6 +21,21 @@ export default observer(function Renderer({ scheme: schemeName }) {
   const [maxNodeFlow, setMaxNodeFlow] = useState(1);
   const [maxLinkFlow, setMaxLinkFlow] = useState(1);
   const [directed, setDirected] = useState(false);
+  const [runtime, setRuntime] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void loadInfomapRuntime().then((Infomap) => {
+      if (isMounted) {
+        setRuntime(new Infomap());
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const scheme = c3.colors(MAX_COLORS, { scheme: schemeName, lightness: 0.8 });
 
@@ -52,10 +66,15 @@ export default observer(function Renderer({ scheme: schemeName }) {
   useEffect(() => {
     let isCancelled = false;
 
-    im.runAsync({
+    if (!runtime) {
+      return;
+    }
+
+    runtime
+      .runAsync({
       network: store.network.value,
       args: store.params.noInfomapArgs,
-    })
+      })
       .then((result) => parseNetwork(result.flow_as_physical || result.flow))
       .then(({ maxNodeFlow, maxLinkFlow, ...network }) => {
         if (isCancelled) {
@@ -75,7 +94,7 @@ export default observer(function Renderer({ scheme: schemeName }) {
     return () => {
       isCancelled = true;
     };
-  }, [store.network.value, store.params.noInfomapArgs]);
+  }, [runtime, store.network.value, store.params.noInfomapArgs]);
 
   useEffect(() => {
     if (!network) return;
@@ -244,55 +263,3 @@ export default observer(function Renderer({ scheme: schemeName }) {
     </>
   );
 });
-
-function parseNetwork(network) {
-  const lines = network.split("\n").filter(Boolean);
-
-  const nodes = new Map();
-  const links = [];
-
-  let context = null;
-
-  let maxNodeFlow = 0;
-  let maxLinkFlow = 0;
-
-  for (let line of lines) {
-    if (line.startsWith("#")) {
-      continue;
-    }
-
-    if (line.startsWith("*")) {
-      context = line;
-      continue;
-    }
-
-    if (context === "*Vertices" || context === "*Nodes") {
-      const match = line.match(/^(\d+)\s+"(.+)"\s+(.+)/);
-      if (match) {
-        const id = Number(match[1]);
-        const name = match[2];
-        const flow = Number(match[3]);
-        maxNodeFlow = Math.max(maxNodeFlow, flow);
-        nodes.set(id, { id, name, flow });
-      }
-    } else if (
-      context === "*Edges" ||
-      context === "*Links" ||
-      context === "*Arcs"
-    ) {
-      const [sourceId, targetId, flow] = line.split(" ").map(Number);
-      const source = nodes.get(sourceId);
-      const target = nodes.get(targetId);
-      if (!source || !target) continue;
-      maxLinkFlow = Math.max(maxLinkFlow, flow);
-      links.push({ source, target, flow });
-    }
-  }
-
-  return {
-    nodes: Array.from(nodes.values()),
-    links,
-    maxNodeFlow,
-    maxLinkFlow,
-  };
-}

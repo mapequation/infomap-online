@@ -1,5 +1,6 @@
 //import Infomap from "@mapequation/infomap";
 import TeX from "@matejmazur/react-katex";
+import { exampleStartedAt } from "../../examples/output";
 import { store } from "../../store";
 import Code from "../Code";
 import { Heading } from "../Contents";
@@ -29,7 +30,7 @@ export default function Output() {
       <Code highlight>
         {`# v2.0.0
 # ./Infomap network.net . --ftree --clu
-# started at ${new Date().toLocaleString()}
+# started at ${exampleStartedAt}
 # completed in 0.114 s
 # partitioned into 2 levels with 2 top modules
 # codelength 2.32073 bits

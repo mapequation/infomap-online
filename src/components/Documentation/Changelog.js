@@ -6,9 +6,9 @@ import {
   ListItem,
   UnorderedList,
 } from "@chakra-ui/react";
-import { changelog as infomapChangelog } from "@mapequation/infomap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
+import { loadInfomapMetadata } from "../../lib/infomap-client";
 import { Heading } from "../Contents";
 
 const Change = ({ change }) => {
@@ -117,8 +117,14 @@ const Release = ({ changes }) => {
 };
 
 export default function Changelog() {
-  const changes = infomapChangelog;
+  const [changes, setChanges] = useState([]);
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    void loadInfomapMetadata().then(({ changelog }) => {
+      setChanges(changelog);
+    });
+  }, []);
 
   if (changes.length === 0) {
     return null;

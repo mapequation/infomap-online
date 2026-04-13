@@ -3,21 +3,16 @@ import "katex/dist/katex.min.css";
 import dynamic from "next/dynamic";
 import Algorithm from "./Algorithm";
 import CallToAction from "./CallToAction";
+import Changelog from "./Changelog";
 import Features from "./Features";
 import Feedback from "./Feedback";
 import Infomap from "./Infomap";
+import Input from "./Input";
 import MapEquation from "./MapEquation";
+import Output from "./Output";
 import References from "./References";
 import Running from "./Running";
-// import Input from "./Input";
-// import Output from "./Output";
-// import Parameters from "./Parameters";
-// import Changelog from "./Changelog";
-
-const Input = dynamic(() => import("./Input"), { ssr: false });
-const Output = dynamic(() => import("./Output"), { ssr: false });
 const Parameters = dynamic(() => import("./Parameters"), { ssr: false });
-const Changelog = dynamic(() => import("./Changelog"), { ssr: false });
 
 function Documentation() {
   return (

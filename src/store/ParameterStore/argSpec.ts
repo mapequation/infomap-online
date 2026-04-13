@@ -1,7 +1,8 @@
 import arg from "arg";
+import type { RuntimeParam } from "../types";
 
-export default function getArgSpec(params) {
-  const spec = {};
+export default function getArgSpec(params: RuntimeParam[]) {
+  const spec: arg.Spec = {};
 
   params.forEach((param) => {
     const { short, long, longType, incremental } = param;

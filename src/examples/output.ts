@@ -1,3 +1,5 @@
+export const exampleStartedAt = "2020-03-30 22:07:26";
+
 export const tree = `# path flow name node_id
 1:1 0.214286 "1" 1
 1:2 0.142857 "2" 2
@@ -40,7 +42,7 @@ export const newick = `(((1:0.166667,2:0.166667,3:0.166667):0.5,(4:0.166667,5:0.
 export const json = `{
   "version": "v2.0.0",
   "args": "-o json example.net .",
-  "startedAt": "${new Date().toLocaleString()}",
+  "startedAt": "${exampleStartedAt}",
   "completedIn": 0.00249326,
   "numLevels": 2,
   "numTopModules": 2,

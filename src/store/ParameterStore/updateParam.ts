@@ -1,7 +1,9 @@
-export default function updateParam(argv) {
-  const args = argv.filter((a) => a !== "");
+import type { RuntimeParam } from "../types";
 
-  return (param) => {
+export default function updateParam(argv: string[]) {
+  const args = argv.filter((entry) => entry !== "");
+
+  return (param: RuntimeParam) => {
     param.active = false;
 
     if (param.longType) {
@@ -13,21 +15,25 @@ export default function updateParam(argv) {
         param.value = "";
       }
 
-      const index = args.findIndex(
-        (a) => a === param.short || a === param.long
-      );
-      if (index < 0 || index === args.length - 1) return;
+      const index = args.findIndex((entry) => entry === param.short || entry === param.long);
+      if (index < 0 || index === args.length - 1) {
+        return;
+      }
+
       const value = args[index + 1];
-      if (value.startsWith("-") && value !== "-1") return;
+      if (value.startsWith("-") && value !== "-1") {
+        return;
+      }
 
       switch (param.longType) {
-        case "list":
+        case "list": {
           const values = value
             .split(",")
-            .filter((value) => param.options.includes(value));
+            .filter((item) => param.options.includes(item));
           param.active = values.length > 0;
           param.value = values;
           break;
+        }
         case "option":
           if (!param.options.includes(value)) {
             param.active = false;
@@ -48,22 +54,26 @@ export default function updateParam(argv) {
         default:
           break;
       }
-    } else if (param.incremental) {
-      const index = args.findIndex((a) => a === param.long);
-      if (index > -1) {
+
+      return;
+    }
+
+    if (param.incremental) {
+      const longIndex = args.findIndex((entry) => entry === param.long);
+      if (longIndex > -1) {
         param.active = true;
         param.value = 1;
-      } else {
-        const re = new RegExp(`^${param.short}+$`);
-        const index = args.findIndex((a) => re.test(a));
-        param.active = index > -1;
-        param.value = index > -1 ? args[index].slice(1).length : 0;
+        return;
       }
-    } else {
-      const index = args.findIndex(
-        (a) => a === param.short || a === param.long
-      );
-      param.active = index > -1;
+
+      const re = new RegExp(`^${param.short}+$`);
+      const shortIndex = args.findIndex((entry) => re.test(entry));
+      param.active = shortIndex > -1;
+      param.value = shortIndex > -1 ? args[shortIndex].slice(1).length : 0;
+      return;
     }
+
+    const index = args.findIndex((entry) => entry === param.short || entry === param.long);
+    param.active = index > -1;
   };
 }

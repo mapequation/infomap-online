@@ -21,6 +21,13 @@ npm ci
 npm run dev
 ```
 
+To preview the static export locally:
+
+```bash
+npm run build
+npm start
+```
+
 ## Verification
 
 Run the same checks locally as in CI:
@@ -29,6 +36,12 @@ Run the same checks locally as in CI:
 npx playwright install chromium
 npm run verify
 ```
+
+Relevant scripts:
+
+- `npm run test` runs the Vitest unit and integration suite.
+- `npm run test:smoke` runs the Playwright smoke test against the exported site.
+- `npm run build` generates the static export in `out/`.
 
 ## CI/CD
 

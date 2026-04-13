@@ -1,5 +1,14 @@
-import Infomap from "@mapequation/infomap";
+import { useEffect, useState } from "react";
+import { loadInfomapMetadata } from "../lib/infomap-client";
 
 export default function InfomapVersion() {
-  return Infomap.__version__;
+  const [version, setVersion] = useState("");
+
+  useEffect(() => {
+    void loadInfomapMetadata().then(({ version }) => {
+      setVersion(version);
+    });
+  }, []);
+
+  return version;
 }

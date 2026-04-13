@@ -1,6 +1,6 @@
 import TeX from "@matejmazur/react-katex";
 
-const FIGURE_NUMBER = [
+const FIGURE_IDS = [
   "FigureNineTriangles",
   "FigureBipartite",
   "FigureMultilayerNetworkFull",
@@ -8,27 +8,42 @@ const FIGURE_NUMBER = [
   "FigureMultilayerNetworkIntra",
   "FigureStateNetwork",
   "FigurePhysicalAndStateNodes",
-].reduce((figNumberMap, figId, figIndex) => {
-  figNumberMap[figId] = figIndex + 1;
-  return figNumberMap;
-}, {});
+] as const;
 
-const ASSERT_FIGURE = (id) => {
-  if (!FIGURE_NUMBER.hasOwnProperty(id)) {
+type FigureId = (typeof FIGURE_IDS)[number];
+
+const FIGURE_NUMBER = FIGURE_IDS.reduce<Record<FigureId, number>>(
+  (figNumberMap, figId, figIndex) => {
+    figNumberMap[figId] = figIndex + 1;
+    return figNumberMap;
+  },
+  {
+    FigureNineTriangles: 0,
+    FigureBipartite: 0,
+    FigureMultilayerNetworkFull: 0,
+    FigureMultilayerNetworkIntraInter: 0,
+    FigureMultilayerNetworkIntra: 0,
+    FigureStateNetwork: 0,
+    FigurePhysicalAndStateNodes: 0,
+  }
+);
+
+function assertFigure(id: string): asserts id is FigureId {
+  if (!(id in FIGURE_NUMBER)) {
     throw new Error(`No figure with id '${id}'.`);
   }
-};
+}
 
-export const figNumber = (id) => {
-  ASSERT_FIGURE(id);
+export const figNumber = (id: string) => {
+  assertFigure(id);
   return FIGURE_NUMBER[id];
 };
 
-export const FigLink = ({ id }) => {
+export const FigLink = ({ id }: { id: string }) => {
   return <a href={`#${id}`}>Figure {figNumber(id)}</a>;
 };
 
-const Figure = ({ id }) => {
+const Figure = ({ id }: { id: string }) => {
   switch (id) {
     case "FigureNineTriangles":
       return (

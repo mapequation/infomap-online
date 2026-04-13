@@ -15,9 +15,11 @@ import {
   Select,
 } from "@chakra-ui/react";
 import * as d3 from "d3";
+import { saveAs } from "file-saver";
 import { observer } from "mobx-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import useStore from "../../store";
+import parseNetwork from "./parseNetwork";
 import Renderer from "./Renderer";
 
 const zoom = d3.zoom().scaleExtent([0.1, 2000]);

@@ -118,4 +118,4 @@ export const FORMATS = [
     suffix: "_states",
     extension: "csv",
   },
-];
+] as const;
