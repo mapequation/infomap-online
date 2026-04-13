@@ -32,7 +32,7 @@ export default function Features() {
         <ExternalLink href="//mapequation.org/publications.html#Rosvall-Bergstrom-2008-Maps-of-information-flow">
           two-level clustering
         </ExternalLink>
-        ) or the optimal number of nested modules (
+        ) or into an optimal hierarchy of nested modules (
         <ExternalLink href="//mapequation.org/publications.html#Rosvall-Bergstrom-2011-Multilevel">
           multi-level clustering
         </ExternalLink>
@@ -42,11 +42,11 @@ export default function Features() {
       <Header as="h3">First- and second-order dynamics</Header>
       <p>
         Infomap captures flow patterns modeled with both first-order dynamics
-        (as on a conventional network: where flow moves to on the network only
-        depends on where it currently is) and second-order dynamics (where flow
-        moves to on the network both depends on where it currently is and where
-        it just came from). Infomap captures second-order dynamics by performing
-        first-order dynamics on <em>memory nodes</em>, see{" "}
+        (where the next step depends only on the current position) and
+        second-order dynamics (where the next step depends both on the current
+        position and on the previous one). Infomap captures second-order
+        dynamics by performing first-order dynamics on <em>memory nodes</em>,
+        see{" "}
         <ExternalLink href="//mapequation.org/publications.html#Rosvall-Etal-2014-Memory">
           Memory in network flows and its effects on spreading dynamics and
           community detection

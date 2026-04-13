@@ -6,8 +6,8 @@ export default function Feedback() {
     <>
       <Heading id="Feedback" />
       <p>
-        If you have any questions or suggestions regarding the software, please
-        add them to{" "}
+        If you have questions or suggestions about the software, please post
+        them in{" "}
         <ExternalLink href="//github.com/mapequation/infomap/discussions">
           GitHub Discussions
         </ExternalLink>

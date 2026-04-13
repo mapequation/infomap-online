@@ -15,7 +15,7 @@ export default function Infomap() {
         <ExternalLink href="//www.mapequation.org/publications.html#Rosvall-Axelsson-Bergstrom-2009-Map-equation">
           Map Equation
         </ExternalLink>
-        :
+        . It finds modules by compressing the description of flow on a network:
       </p>
       <TeX
         math="L(M) = q_\curvearrowright H(\mathcal{Q}) + \sum_{i = 1}^{m}{p_{\circlearrowright}^i H(\mathcal{P}^i)}"
@@ -24,18 +24,18 @@ export default function Infomap() {
 
       <Heading id="InfomapOnline" />
       <p>
-        Infomap Online is a client-side web application that enables users to
-        run Infomap in the web browser. Your data never leaves your computer; we
-        don&apos;t store any data on our servers.
+        Infomap Online is a client-side web application for running Infomap in
+        the browser. Your data never leaves your computer, and we do not store
+        any data on our servers.
       </p>
       <p>
-        We achieve this by compiling Infomap from{" "}
+        We do this by compiling Infomap from{" "}
         <ExternalLink href="//emscripten.org">C++ to JavaScript</ExternalLink>,
-        which gives a performance penalty compared to the stand-alone version of
+        which makes the browser version slower than the stand-alone version of
         Infomap.
       </p>
       <p>
-        If you want to integrate Infomap in your own web application, you can
+        If you want to integrate Infomap into your own web application, you can
         use the{" "}
         <ExternalLink href="//www.npmjs.com/package/@mapequation/infomap">
           Infomap NPM package
@@ -46,16 +46,16 @@ export default function Infomap() {
       <Heading id="Install" />
       <p>
         We recommend installing Infomap from the Python Package Index. Upgrades
-        are easy and you get access to the{" "}
+        are straightforward, and you also get access to the{" "}
         <ExternalLink href="//mapequation.github.io/infomap/python">
           Python API
         </ExternalLink>
         .
       </p>
       <p>
-        Currently, we provide pre-compiled packages for Windows and macOS. If no
-        package is available for your platform and Python version, the code{" "}
-        <a href="#CompilingFromSource">compiles from source</a>.
+        We publish Python packages for supported Python versions on major
+        platforms. If no package is available for your platform and Python
+        version, Infomap will <a href="#CompilingFromSource">compile from source</a>.
       </p>
 
       <p>To install, run</p>
@@ -67,7 +67,7 @@ export default function Infomap() {
       <Code>pip install --upgrade infomap</Code>
 
       <Message bg="info" header="Infomap only supports Python 3">
-        We currently build packages for Python 3.6 to 3.10.
+        We currently build packages for Python 3.11 to 3.14.
       </Message>
 
       <Heading id="DownloadBinary" />
@@ -78,7 +78,8 @@ export default function Infomap() {
         <ExternalLink href="//github.com/mapequation/infomap/releases/latest">
           releases page
         </ExternalLink>{" "}
-        or use the direct links below. The OpenMP versions require{" "}
+        or use the direct links below. Both OpenMP and non-OpenMP variants are
+        available. The OpenMP versions require{" "}
         <code>libomp-dev</code> on Ubuntu and <code>libomp</code> on macOS.
       </p>
 
@@ -110,7 +111,7 @@ export default function Infomap() {
           <Tr>
             <Th>
               <Icon as={FaUbuntu} color="orange.500" mr={2} />
-              Ubuntu 18.04
+              Ubuntu
             </Th>
             <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">
@@ -126,7 +127,7 @@ export default function Infomap() {
           <Tr>
             <Th>
               <Icon as={FaApple} color="black" mr={2} />
-              macOS 10.15
+              macOS
             </Th>
             <Td>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">
@@ -144,18 +145,18 @@ export default function Infomap() {
 
       <Message header="Trusting binaries on macOS">
         Run <code>spctl --add Infomap</code> and enter your password to add the
-        Infomap binary to GateKeeper&apos;s trusted binaries.
+        Infomap binary to Gatekeeper&apos;s trusted binaries.
       </Message>
 
       <Heading id="CompilingFromSource" />
       <p>
         Building Infomap from source requires a working GCC or Clang compiler
-        with support for C++14 and optionally OpenMP.
+        with C++14 support and, optionally, OpenMP.
       </p>
 
       <p>
-        On Ubuntu and Windows with WSL, install the <code>build-essential</code>{" "}
-        and <code>libomp-dev</code> packages.
+        On Ubuntu, install the <code>build-essential</code> and{" "}
+        <code>libomp-dev</code> packages.
       </p>
 
       <p>
@@ -166,9 +167,9 @@ export default function Infomap() {
       </p>
 
       <p>
-        We don&apos;t currently support building Infomap from source on Windows
-        without WSL. If you don&apos;t have WSL, you should use the binary
-        releases or the Python package.
+        If you are building on Windows, we recommend using the binary releases
+        or the Python package unless you already have a working native build
+        environment.
       </p>
 
       <Heading id="Download" />
@@ -189,15 +190,22 @@ export default function Infomap() {
       <Code>
         unzip infomap.zip && cd infomap
         <br />
-        make -j
+        make -j build-native
       </Code>
+
+      <p>
+        If OpenMP is unavailable, you can build without it using{" "}
+        <code>OPENMP=0</code>.
+      </p>
+
+      <Code>make -j build-native OPENMP=0</Code>
 
       <Heading id="Git" />
 
       <p>
         To download the development version from{" "}
         <ExternalLink href="//www.github.com/mapequation/infomap">
-          Github
+          GitHub
         </ExternalLink>
         , clone the repository and compile Infomap by running
       </p>
@@ -207,7 +215,7 @@ export default function Infomap() {
         <br />
         cd infomap
         <br />
-        make -j
+        make -j build-native
       </Code>
     </>
   );

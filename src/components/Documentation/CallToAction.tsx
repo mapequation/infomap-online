@@ -40,7 +40,7 @@ export default function CallToAction() {
       >
         <Heading fontSize="xl">Get Infomap</Heading>
         <Text mb={-5} mt={6} ml={1} fontSize="sm" color="gray.800">
-          Python 3:
+          Python 3.11+:
         </Text>
         {/* @ts-ignore */}
         <Code>pip install infomap</Code>
@@ -68,10 +68,10 @@ export default function CallToAction() {
           Get Help
         </Heading>
         <Text mt={6} color="blackAlpha.700">
-          We answer questions on Github discussions.
+          We answer questions in GitHub Discussions.
         </Text>
         <ExternalLink href="http://github.com/mapequation/infomap/discussions">
-          Github Discussions
+          GitHub Discussions
         </ExternalLink>
       </Box>
     </Grid>
