@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Script from "next/script";
 import dynamic from "next/dynamic";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
@@ -39,6 +40,23 @@ const Home: NextPage = () => {
           Infomap - Network community detection using the Map Equation framework
         </title>
       </Head>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=UA-27168379-1"
+        onLoad={() => {
+          // @ts-ignore
+          window.dataLayer = window.dataLayer || [];
+
+          function gtag() {
+            // @ts-ignore
+            dataLayer.push(arguments);
+          }
+
+          // @ts-ignore
+          gtag("js", new Date());
+          // @ts-ignore
+          gtag("config", "UA-27168379-1");
+        }}
+      />
 
       <IconButton
         aria-label="contents"
