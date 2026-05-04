@@ -1,15 +1,23 @@
 import { expect, test } from "@playwright/test";
 
-test("renders the static site and runs an example network", async ({ page }) => {
+test("renders the static site and runs an example network", async ({
+  page,
+}) => {
   test.setTimeout(90_000);
 
   await page.goto("/infomap/");
 
   await expect(
-    page.getByRole("banner").getByRole("heading", { name: "Infomap Online" })
+    page.getByRole("banner").getByRole("heading", { name: "Infomap Online" }),
   ).toBeVisible();
-  await expect(page.getByRole("button", { name: "Choose example network" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Choose example network" }),
+  ).toBeVisible();
   await expect(page.getByRole("button", { name: "Run Infomap" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /show network/i })).toHaveCount(
+    0,
+  );
+  await expect(page.getByRole("link", { name: /navigator/i })).toHaveCount(0);
   await expect(page.getByText("Something went wrong.")).toHaveCount(0);
 
   await page.getByRole("button", { name: "Choose example network" }).click();
@@ -25,5 +33,8 @@ test("renders the static site and runs an example network", async ({ page }) => 
   await expect(page.getByRole("menuitem").first()).toBeVisible({
     timeout: 10_000,
   });
+  await expect(
+    page.getByRole("menuitem", { name: /download svg/i }),
+  ).toHaveCount(0);
   await expect(page.getByText("Something went wrong.")).toHaveCount(0);
 });

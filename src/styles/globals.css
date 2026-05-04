@@ -1,11 +1,21 @@
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#__next {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
 }
 
 figure {
-    text-align: center;
+  text-align: center;
 }
 
 figcaption {
-    text-align: justify;
+  text-align: justify;
 }

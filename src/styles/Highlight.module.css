@@ -1,15 +1,15 @@
 .comment {
-    color: rgb(159, 160, 166);
+  color: rgb(159, 160, 166);
 }
 
 .heading {
-    color: rgb(168, 25, 153);
+  color: rgb(168, 25, 153);
 }
 
 .number {
-    color: rgb(51, 114, 232);
+  color: rgb(51, 114, 232);
 }
 
 .string {
-    color: rgb(55, 156, 82);
+  color: rgb(55, 156, 82);
 }

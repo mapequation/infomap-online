@@ -1,0 +1,212 @@
+// @ts-nocheck
+//import Infomap from "@mapequation/infomap";
+import { Heading as CkHeading } from "@chakra-ui/react";
+import TeX from "@matejmazur/react-katex";
+import * as outputExamples from "../../data/output";
+import Code from "../../shared/components/Code";
+
+// 2020-03-30T22:07:26+02:00 -> 2020-03-30 22:07:26
+//const dateOfLastVersion = infomapChangelog[0].date.replace("T", " ").substring(0, 19);
+
+export default function Output() {
+  return (
+    <>
+      <CkHeading as="h2" size="md" mt={8} mb={6} id="Output">
+        Output formats
+      </CkHeading>
+
+      <p>
+        By default, Infomap writes a <a href="#OutputTree">.tree</a> file if no
+        other output format is specified. To write several outputs in a single
+        run, use <code>-o tree,ftree,clu</code> (see{" "}
+        <a href="#ParamsOutput">Output parameters</a>).
+      </p>
+
+      <p>
+        All output formats start with a standard header that includes the
+        Infomap version, the command-line arguments, start and completion time,
+        and the resulting codelength:
+      </p>
+
+      <Code highlight>
+        {`# v2.0.0
+# ./Infomap network.net . --ftree --clu
+# started at ${new Date().toLocaleString()}
+# completed in 0.114 s
+# partitioned into 2 levels with 2 top modules
+# codelength 2.32073 bits
+# relative codelength savings 9.22792%`}
+      </Code>
+
+      <p>
+        The relative codelength savings <TeX>S_L</TeX> are calculated as
+      </p>
+
+      <TeX math="S_L = 1 - \frac{L}{L_1}" block />
+
+      <p>
+        where <TeX>L</TeX> is the codelength and <TeX>L_1</TeX> is the one-level
+        codelength.
+      </p>
+
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="PhysicalAndStateOutput">
+        Physical and state-level output
+      </CkHeading>
+      <p>
+        The map equation for first-order network flows measures the description
+        length of a random walker moving between physical nodes within and
+        between modules. The same principle applies to higher-order network
+        flows, but there the random walker is guided by state nodes rather than
+        only by physical nodes. Extending the map equation to higher-order
+        network flows, including memory, multilayer, and sparse memory networks,
+        is therefore straightforward. The only difference is at the finest level
+        (<a href="#FigurePhysicalAndStateNodes">Figure 7</a>
+        b): state nodes that belong to the same physical node and the same
+        module should share a code word, otherwise they would not represent the
+        same object.
+      </p>
+
+      <p>
+        For higher-order networks, Infomap writes two files for each of the{" "}
+        <code>clu</code>, <code>tree</code>, and <code>ftree</code> output
+        options. The extra file has <code>_states</code> appended before the
+        extension and describes the internal state-level network. In the
+        ordinary output, state nodes within a module are merged if they belong
+        to the same physical node, which matches how the map equation for
+        higher-order networks encodes only observable flow. If state nodes of
+        the same physical node occur in different modules, the node id will
+        appear more than once in the physical output, corresponding to
+        overlapping modules. In the state-level output, however, each state node
+        belongs to exactly one module.
+      </p>
+
+      <figure id="FigurePhysicalAndStateNodes">
+        <img
+          src="/infomap/images/physical-and-state-nodes.svg"
+          alt="Physical and state nodes in output"
+        />
+        <figcaption>
+          <strong>Figure 7.</strong> Network flows at different modular levels.
+          Large circles represent physical nodes, small circles represent state
+          nodes, and dashed areas represent modules. <strong>(a)</strong> Finest
+          modular level with physical nodes for first-order network flows;{" "}
+          <strong>(b)</strong> Finest modular level with physical nodes and
+          state nodes for higher-order network flows; <strong>(c)</strong>{" "}
+          Intermediate level; <strong>(d)</strong> coarsest modular level.
+        </figcaption>
+      </figure>
+
+      <div id="tree" />
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="OutputTree">
+        Tree
+      </CkHeading>
+      <p>
+        <code>--tree</code>, <code>-o tree</code>
+      </p>
+
+      <p>
+        This is the default output format if no other output is specified. The
+        resulting hierarchy is written to a file with the extension{" "}
+        <code>.tree</code> and corresponds to the best hierarchical partition
+        found across all attempts, that is, the one with the shortest
+        description length. The output format has the pattern:
+      </p>
+
+      <Code highlight>{outputExamples["tree"]}</Code>
+
+      <p>
+        Each row begins with the multilevel module assignments of a node. The
+        module assignments are colon-separated from coarse to fine level, and
+        the modules within each level are sorted by the total flow (PageRank) of
+        the nodes they contain.
+      </p>
+      <p>
+        The integer after the last colon is the rank within the finest-level
+        module. The decimal number is the amount of flow in that node, that is,
+        the steady-state probability of the random walker. The quoted text is
+        the node name, and the final integer is the node id in the original
+        network file.
+      </p>
+
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="OutputFtree">
+        FTree
+      </CkHeading>
+      <p>
+        <code>--ftree</code>, <code>-o ftree</code>
+      </p>
+
+      <p>
+        This is the <a href="#OutputTree">tree format</a> with an additional
+        section listing the flow between nodes that share the same parent. The
+        file is saved with the extension <code>.ftree</code>. It starts with the
+        node hierarchy in tree format, followed by links formatted as:
+      </p>
+
+      <Code highlight>{outputExamples["ftreeLinks"]}</Code>
+
+      <p>
+        The first line states whether the links are <code>undirected</code> or{" "}
+        <code>directed</code>. Then each module is identified by its{" "}
+        <code>path</code>, followed by all links between that module&apos;s
+        child nodes.
+      </p>
+      <p>
+        The <code>path</code> is a colon-separated path in the tree from the{" "}
+        <code>root</code> to the finest-level module. The links are sorted by
+        flow within each module. Links entering or leaving the module are not
+        included, but the corresponding flow is aggregated into{" "}
+        <code>enterFlow</code> and <code>exitFlow</code>. The number of edges
+        and child nodes within each module is also included in the module header
+        line, as defined in the commented line above.
+      </p>
+
+      <div id="clu" />
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="OutputClu">
+        Clu
+      </CkHeading>
+      <p>
+        <code>--clu</code>, <code>-o clu</code>
+      </p>
+
+      <p>
+        A <code>.clu</code> file describes the best partition (shortest
+        description length) found across all attempts. By default, it outputs
+        the top-level module assignments. To specify another level, use{" "}
+        <code>--clu-level &lt;i&gt;</code> where <code>&lt;i&gt;</code> is an
+        integer.
+      </p>
+      <p>The format has the pattern:</p>
+
+      <Code highlight>{outputExamples["clu"]}</Code>
+
+      <p>
+        If the <code>.clu</code> file is used as an input clustering to Infomap,
+        the <code>flow</code> column is ignored and may be omitted.
+      </p>
+
+      <div id="newick" />
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="OutputNewick">
+        Newick
+      </CkHeading>
+      <p>
+        <code>-o newick</code>
+      </p>
+
+      <p>The format has the pattern:</p>
+
+      <Code highlight>{outputExamples["newick"]}</Code>
+
+      <div id="json" />
+      <CkHeading as="h3" size="sm" mt={6} mb={4} id="OutputJson">
+        JSON
+      </CkHeading>
+      <p>
+        <code>-o json</code>
+      </p>
+
+      <p>The format has the pattern:</p>
+
+      <Code highlight>{outputExamples["json"]}</Code>
+    </>
+  );
+}
