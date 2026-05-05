@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   LuCheck,
   LuPanelLeftOpen,
@@ -109,6 +109,8 @@ export default function InfomapOnline() {
   const store = useStore();
   const [infomapOutput, setInfomapOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const outputBufferRef = useRef<string[]>([]);
+  const outputFrameRef = useRef<number | null>(null);
 
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
   const { hasArgsError } = store.params;
@@ -119,19 +121,49 @@ export default function InfomapOnline() {
   );
   const [outputChangedAt, setOutputChangedAt] = useState(0);
   const [clusterChangedAt, setClusterChangedAt] = useState(0);
+  const drainOutputBuffer = () => {
+    const buffered = outputBufferRef.current;
+    outputBufferRef.current = [];
+
+    if (outputFrameRef.current !== null) {
+      window.cancelAnimationFrame(outputFrameRef.current);
+      outputFrameRef.current = null;
+    }
+
+    return buffered;
+  };
+  const flushOutputBuffer = () => {
+    outputFrameRef.current = null;
+    const buffered = outputBufferRef.current;
+    if (buffered.length === 0) return;
+    outputBufferRef.current = [];
+    setInfomapOutput((output) => [...output, ...buffered]);
+  };
+  const queueInfomapOutput = (data: unknown) => {
+    outputBufferRef.current.push(String(data));
+    if (outputFrameRef.current !== null) return;
+    outputFrameRef.current = window.requestAnimationFrame(flushOutputBuffer);
+  };
 
   const [infomap] = useState(() =>
     new Infomap()
-      .on("data", (data) =>
-        setInfomapOutput((output) => [...output, String(data)]),
-      )
+      .on("data", queueInfomapOutput)
       .on("error", (error) => {
         const infomapError = error.replace(/^Error:\s+/i, "");
-        setInfomapOutput((output) => [...output, `Error: ${infomapError}`]);
+        const buffered = drainOutputBuffer();
+        setInfomapOutput((output) => [
+          ...output,
+          ...buffered,
+          `Error: ${infomapError}`,
+        ]);
         setIsRunning(false);
         console.error(infomapError);
       })
       .on("finished", async (content) => {
+        const buffered = drainOutputBuffer();
+        if (buffered.length > 0) {
+          setInfomapOutput((output) => [...output, ...buffered]);
+        }
         store.output.setContent(content);
         setOutputChangedAt(Date.now());
         await localforage.setItem("network", {
@@ -192,6 +224,7 @@ export default function InfomapOnline() {
     store.output.resetContent();
 
     setIsRunning(true);
+    drainOutputBuffer();
     setInfomapOutput([]);
 
     try {
@@ -204,6 +237,7 @@ export default function InfomapOnline() {
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
       setIsRunning(false);
+      drainOutputBuffer();
       setInfomapOutput([`Error: ${message}`]);
       console.error(e);
       return;
