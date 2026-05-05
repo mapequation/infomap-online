@@ -284,11 +284,15 @@ function FigureBlock({ figure }) {
       borderRadius="md"
       p={{ base: 4, md: 5 }}
       m={0}
+      maxW="100%"
+      overflow="hidden"
     >
       <chakra.img
         src={figure.src}
         alt={figure.alt}
-        maxW={figure.maxW ?? "100%"}
+        maxW={{ base: figure.maxW ?? "18rem", md: figure.maxW ?? "100%" }}
+        w="100%"
+        display="block"
         mx="auto"
       />
       <Text
@@ -332,6 +336,8 @@ function FormatCard({ format }) {
       borderRadius="md"
       p={{ base: 5, md: 6 }}
       scrollMarginTop="6rem"
+      minW={0}
+      maxW="100%"
     >
       <Flex
         justify="space-between"
@@ -376,9 +382,10 @@ function FormatCard({ format }) {
           templateColumns={{ base: "1fr", md: "3fr 2fr" }}
           gap={5}
           alignItems="start"
+          minW={0}
         >
           <FormatDescription format={format} />
-          <Stack gap={3}>
+          <Stack gap={3} minW={0}>
             {format.figures.map((figure) => (
               <FigureBlock key={figure.src} figure={figure} />
             ))}
@@ -400,10 +407,11 @@ const FormatsPage: NextPage = () => {
   return (
     <Container>
       <Grid
-        templateColumns={{ base: "1fr", lg: "13rem 1fr" }}
+        templateColumns={{ base: "minmax(0, 1fr)", lg: "13rem minmax(0, 1fr)" }}
         gap={{ base: 8, lg: 12 }}
         alignItems="start"
         mt={8}
+        minW={0}
       >
         <Box
           as="aside"
@@ -481,7 +489,7 @@ const FormatsPage: NextPage = () => {
           </Box>
         </Box>
 
-        <Box as="main">
+        <Box as="main" minW={0}>
           <Text color="gray.500" fontSize="sm" mb={2}>
             Documentation
           </Text>
@@ -500,11 +508,17 @@ const FormatsPage: NextPage = () => {
           </Text>
 
           <Box as="section" mb={10}>
-            <Flex justify="space-between" align="baseline" mb={3}>
+            <Flex
+              justify="space-between"
+              align="baseline"
+              gap={3}
+              mb={3}
+              minW={0}
+            >
               <Heading as="h2" size="md" id="Input">
                 Input
               </Heading>
-              <Text color="gray.500" fontSize="sm" mb={0}>
+              <Text color="gray.500" fontSize="sm" mb={0} flexShrink={0}>
                 {inputFormats.length} formats
               </Text>
             </Flex>
@@ -537,11 +551,17 @@ const FormatsPage: NextPage = () => {
           </Box>
 
           <Box as="section" mb={10}>
-            <Flex justify="space-between" align="baseline" mb={3}>
+            <Flex
+              justify="space-between"
+              align="baseline"
+              gap={3}
+              mb={3}
+              minW={0}
+            >
               <Heading as="h2" size="md" id="Output">
                 Output
               </Heading>
-              <Text color="gray.500" fontSize="sm" mb={0}>
+              <Text color="gray.500" fontSize="sm" mb={0} flexShrink={0}>
                 {outputFormats.length} formats
               </Text>
             </Flex>

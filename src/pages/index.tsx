@@ -183,14 +183,16 @@ const Home: NextPage = () => {
           ))}
         </SimpleGrid>
         <Box
+          display={{ base: "none", sm: "block" }}
           bg="white"
           borderWidth="1px"
           borderColor="gray.200"
           borderRadius="md"
           px={{ base: 4, md: 6 }}
           py={5}
+          overflowX="auto"
           textAlign="center"
-          style={{ fontSize: "1.5em" }}
+          fontSize={{ base: "1rem", sm: "1.15rem", md: "1.5rem" }}
         >
           <TeX
             math="L(M) = q_{\curvearrowleft}H(\mathcal{Q}) + \sum_{i = 1}^{m}p_{\circlearrowright}^{i}H(\mathcal{P}^{i})"

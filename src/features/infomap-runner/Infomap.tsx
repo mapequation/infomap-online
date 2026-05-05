@@ -362,6 +362,22 @@ export default function InfomapOnline() {
   const inputValue = inputOptions[activeInput].value;
   const consoleContent = infomapOutput.join("\n");
   const outputFiles = [...physicalFiles, ...stateFiles];
+  const runButton = (
+    <Button
+      bg="#b22222"
+      color="white"
+      _hover={{ bg: "#971d1d" }}
+      _active={{ bg: "#7f1818" }}
+      _disabled={{ bg: "gray.300", color: "gray.500" }}
+      disabled={hasArgsError || isRunning}
+      loading={isRunning}
+      onClick={run}
+      size="sm"
+    >
+      <LuPlay />
+      Run
+    </Button>
+  );
   const renderInputPanel = () => (
     <>
       <PanelHeader
@@ -431,22 +447,7 @@ export default function InfomapOnline() {
       <PanelHeader
         title="Parameters"
         description="CLI arguments and common options"
-        action={
-          <Button
-            bg="#b22222"
-            color="white"
-            _hover={{ bg: "#971d1d" }}
-            _active={{ bg: "#7f1818" }}
-            _disabled={{ bg: "gray.300", color: "gray.500" }}
-            disabled={hasArgsError || isRunning}
-            loading={isRunning}
-            onClick={run}
-            size="sm"
-          >
-            <LuPlay />
-            Run Infomap
-          </Button>
-        }
+        action={<Box display={{ base: "none", xl: "block" }}>{runButton}</Box>}
       />
 
       <Box flexShrink={0} mb={4}>
@@ -537,6 +538,7 @@ export default function InfomapOnline() {
               <LuPanelRightOpen />
               Parameters
             </Button>
+            {runButton}
           </HStack>
           <ButtonGroup
             attached

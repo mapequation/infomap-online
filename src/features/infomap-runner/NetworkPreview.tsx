@@ -381,6 +381,7 @@ export default function NetworkPreview({
     }
 
     context.globalAlpha = 1;
+    const nodeStroke = scaledStroke(3.2, transformRef.current.k, 0.9);
     for (const node of graph.nodes) {
       const moduleId = currentModules.get(Number(node.id));
       const fill =
@@ -395,8 +396,7 @@ export default function NetworkPreview({
       context.arc(node.x ?? 0, node.y ?? 0, node.radius, 0, Math.PI * 2);
       context.fillStyle = fill;
       context.fill();
-      context.lineWidth =
-        scaledStroke(4.8, transformRef.current.k, 1.2) / transformRef.current.k;
+      context.lineWidth = nodeStroke / transformRef.current.k;
       context.strokeStyle = isHovered ? "#2D3748" : "#FFFFFF";
       context.stroke();
     }

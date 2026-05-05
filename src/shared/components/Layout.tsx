@@ -65,28 +65,34 @@ export const Layout = ({ children, fillViewport = false }) => {
             columnGap={{ base: 1, sm: 2, md: 3 }}
             rowGap={{ base: 2, md: 3 }}
             py={{ base: 3, md: 5 }}
+            minW={0}
           >
-            <NextLink href="/">
+            <NextLink href="/" style={{ maxWidth: "100%", minWidth: 0 }}>
               <HStack
                 justify={{ base: "center", sm: "flex-start" }}
                 align="center"
                 gap={2}
                 flexBasis={{ base: "100%", sm: "auto" }}
                 mr={{ base: 0, md: 4 }}
+                minW={0}
               >
-                <Box w="40px" h="40px" flexShrink="0">
+                <Box
+                  w={{ base: "32px", sm: "40px" }}
+                  h={{ base: "32px", sm: "40px" }}
+                  flexShrink="0"
+                >
                   <img
                     alt="MapEquation"
                     role="presentation"
-                    width="40px"
-                    height="40px"
+                    width="40"
+                    height="40"
                     src="//mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
                   />
                 </Box>
 
-                <Box>
+                <Box minW={0}>
                   <Heading
-                    fontSize={{ base: "1.55rem", md: "1.75rem" }}
+                    fontSize={{ base: "1.35rem", sm: "1.55rem", md: "1.75rem" }}
                     fontFamily="Philosopher, serif"
                     fontWeight={700}
                   >

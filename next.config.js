@@ -4,6 +4,7 @@ const nextConfig = {
   output: "export",
   outputFileTracingRoot: __dirname,
   basePath: "/infomap",
+  trailingSlash: true,
   images: {
     domains: ["mapequation.org"],
     unoptimized: true,

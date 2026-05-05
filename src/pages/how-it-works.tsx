@@ -447,11 +447,12 @@ const HowItWorksPage: NextPage = () => {
               title="The map equation scores a partition"
             >
               <Grid
-                templateColumns={{ base: "1fr", md: "3fr 2fr" }}
+                templateColumns={{ base: "minmax(0, 1fr)", md: "3fr 2fr" }}
                 gap={5}
                 alignItems="stretch"
+                minW={0}
               >
-                <Stack gap={4}>
+                <Stack gap={4} minW={0}>
                   <Box
                     bg="gray.100"
                     borderWidth="1px"
@@ -461,10 +462,11 @@ const HowItWorksPage: NextPage = () => {
                     minH={{ md: "11rem" }}
                     display="flex"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent={{ base: "flex-start", sm: "center" }}
                     overflowX="auto"
                     textAlign="center"
-                    fontSize={{ base: "md", md: "lg" }}
+                    fontSize={{ base: "0.78rem", sm: "sm", md: "lg" }}
+                    maxW="100%"
                   >
                     <TeX
                       math="L(M) = q_{\curvearrowleft}H(\mathcal{Q}) + \sum_{i = 1}^{m}p_{\circlearrowright}^{i}H(\mathcal{P}^{i})"
