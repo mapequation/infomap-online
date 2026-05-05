@@ -1,0 +1,556 @@
+{
+  "frames": [
+    {
+      "src": "/infomap/trace-demo/frames/000.svg",
+      "title": "Start trial",
+      "phase": "Trial",
+      "description": "Trial"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/001.svg",
+      "title": "Start from singletons",
+      "phase": "Trial",
+      "description": "Trial"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/002.svg",
+      "title": "Choose visit order",
+      "phase": "Move nodes greedily",
+      "description": "Visit nodes: 13, 3, 4, 9, 21, 24, 16, 8, 7, 10, 5, 20, 12, 0, 23, 18, 11, 17, 15, 14, 2, 1, 6, 19, 22"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/003.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 13 will move from module 14 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/004.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 13 moved from module 14 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/005.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 3 will move from module 4 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/006.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 3 moved from module 4 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/007.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 4 will move from module 5 to 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/008.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 4 moved from module 5 to 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/009.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 9 will move from module 10 to 9"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/010.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 9 moved from module 10 to 9"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/011.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 21 will move from module 22 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/012.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 21 moved from module 22 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/013.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 24 will move from module 25 to 18"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/014.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 24 moved from module 25 to 18"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/015.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 16 will move from module 17 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/016.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 16 moved from module 17 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/017.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 7 will move from module 8 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/018.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 7 moved from module 8 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/019.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 10 will move from module 11 to 13"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/020.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 10 moved from module 11 to 13"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/021.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 5 will move from module 6 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/022.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 5 moved from module 6 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/023.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 20 will move from module 21 to 20"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/024.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 20 moved from module 21 to 20"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/025.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 0 will move from module 1 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/026.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 0 moved from module 1 to 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/027.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 18 will move from module 19 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/028.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 18 moved from module 19 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/029.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 11 will move from module 12 to 13"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/030.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 11 moved from module 12 to 13"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/031.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 15 will move from module 16 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/032.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 15 moved from module 16 to 15"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/033.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 22 will move from module 23 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/034.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Node 22 moved from module 23 to 24"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/035.svg",
+      "title": "Choose visit order",
+      "phase": "Move nodes greedily",
+      "description": "Visit nodes: 22, 7, 19, 17, 14, 8, 9, 5, 23, 0, 10, 16, 20, 2, 6, 24, 3, 11, 21, 15, 18, 13, 4, 1, 12"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/036.svg",
+      "title": "Finish move loop",
+      "phase": "Move nodes greedily",
+      "description": "Move nodes greedily"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/037.svg",
+      "title": "Aggregate modules",
+      "phase": "Aggregate modules",
+      "description": "Modules become the active network for the next pass"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/038.svg",
+      "title": "Start from singletons",
+      "phase": "Aggregate modules",
+      "description": "Aggregate modules"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/039.svg",
+      "title": "Choose visit order",
+      "phase": "Move nodes greedily",
+      "description": "Visit module groups: 8, 7, 9, 1, 6, 5, 3, 4, 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/040.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 8 will move from module 8 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/041.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 8 moved from module 8 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/042.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 9 will move from module 9 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/043.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 9 moved from module 9 to 7"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/044.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 1 will move from module 1 to 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/045.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 1 moved from module 1 to 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/046.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 5 will move from module 5 to 4"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/047.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 5 moved from module 5 to 4"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/048.svg",
+      "title": "Preview node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 3 will move from module 3 to 4"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/049.svg",
+      "title": "Accept node move",
+      "phase": "Move nodes greedily",
+      "description": "Module group 3 moved from module 3 to 4"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/050.svg",
+      "title": "Choose visit order",
+      "phase": "Move nodes greedily",
+      "description": "Visit module groups: 9, 5, 2, 7, 4, 8, 6, 1, 3"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/051.svg",
+      "title": "Finish move loop",
+      "phase": "Move nodes greedily",
+      "description": "Move nodes greedily"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/052.svg",
+      "title": "Aggregate modules",
+      "phase": "Aggregate modules",
+      "description": "Modules become the active network for the next pass"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/053.svg",
+      "title": "Start from singletons",
+      "phase": "Aggregate modules",
+      "description": "Aggregate modules"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/054.svg",
+      "title": "Choose visit order",
+      "phase": "Move nodes greedily",
+      "description": "Visit module groups: 2, 4, 3, 1"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/055.svg",
+      "title": "Finish move loop",
+      "phase": "Move nodes greedily",
+      "description": "Move nodes greedily"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/056.svg",
+      "title": "Fine tune",
+      "phase": "Fine tune",
+      "description": "Revisit individual nodes after aggregation"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/057.svg",
+      "title": "Choose visit order",
+      "phase": "Fine tune",
+      "description": "Visit nodes: 23, 9, 0, 21, 8, 17, 1, 24, 15, 7, 22, 6, 20, 18, 3, 10, 2, 16, 4, 11, 12, 14, 19, 5, 13"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/058.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 23 to M2; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/059.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 9 to M4; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/060.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 0 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/061.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 21 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/062.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 8 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/063.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 17 to M3; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/064.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 1 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/065.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 24 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/066.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 15 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/067.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 7 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/068.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 22 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/069.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 6 to M1; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/070.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 20 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/071.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 18 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/072.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 3 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/073.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 10 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/074.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 2 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/075.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 16 to M4; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/076.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 4 to M2; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/077.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 11 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/078.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 12 to M3; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/079.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 14 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/080.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 19 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/081.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 5 to no neighboring modules; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/082.svg",
+      "title": "Test candidate modules",
+      "phase": "Fine tune",
+      "description": "Try moving node 13 to M2; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/083.svg",
+      "title": "Fine tune end",
+      "phase": "Fine tune",
+      "description": "Fine tune"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/084.svg",
+      "title": "Coarse tune",
+      "phase": "Coarse tune",
+      "description": "Move coarser groups to escape local minima"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/085.svg",
+      "title": "Choose visit order",
+      "phase": "Coarse tune",
+      "description": "Visit module groups: 3, 1, 4, 2"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/086.svg",
+      "title": "Test candidate modules",
+      "phase": "Coarse tune",
+      "description": "Try moving module group 3 to M2, M4; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/087.svg",
+      "title": "Test candidate modules",
+      "phase": "Coarse tune",
+      "description": "Try moving module group 1 to M2; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/088.svg",
+      "title": "Test candidate modules",
+      "phase": "Coarse tune",
+      "description": "Try moving module group 4 to M2, M3; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/089.svg",
+      "title": "Test candidate modules",
+      "phase": "Coarse tune",
+      "description": "Try moving module group 2 to M1, M3, M4; no improving move is accepted"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/090.svg",
+      "title": "Coarse tune end",
+      "phase": "Coarse tune",
+      "description": "Coarse tune"
+    },
+    {
+      "src": "/infomap/trace-demo/frames/091.svg",
+      "title": "Final partition",
+      "phase": "Algorithm",
+      "description": "Final four-module partition"
+    }
+  ]
+}

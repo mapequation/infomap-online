@@ -1,10 +1,12 @@
 import {
   Box,
+  Button,
   Link as CkLink,
   Container,
   Flex,
   Grid,
   Heading,
+  HStack,
   SimpleGrid,
   Stack,
   Text,
@@ -12,8 +14,16 @@ import {
 import TeX from "@matejmazur/react-katex";
 import type { NextPage } from "next";
 import NextLink from "next/link";
-import { useState } from "react";
-import { LuArrowRight } from "react-icons/lu";
+import { useEffect, useState } from "react";
+import {
+  LuArrowRight,
+  LuPause,
+  LuPlay,
+  LuRotateCcw,
+  LuStepBack,
+  LuStepForward,
+} from "react-icons/lu";
+import traceDemoManifest from "../../public/trace-demo/manifest.json";
 
 const railItems = [
   { id: "WhenToUse", label: "When to use" },
@@ -60,8 +70,12 @@ const algorithmSteps = [
     text: "Found modules are aggregated and moved together, repeating the same codelength-reducing logic at coarser scales.",
   },
   {
-    title: "Fine- and coarse-tune",
-    text: "Fine-tuning revisits individual nodes; coarse-tuning splits modules into submodules and moves those groups to avoid local minima.",
+    title: "Fine tune nodes",
+    text: "Fine-tuning revisits individual nodes inside the current partition and keeps only moves that further reduce codelength.",
+  },
+  {
+    title: "Coarse tune groups",
+    text: "Coarse-tuning splits modules into submodules and tests moving those groups to avoid local minima.",
   },
   {
     title: "Add levels when useful",
@@ -72,6 +86,18 @@ const algorithmSteps = [
     text: "Because the solution landscape is non-convex, multiple trials with different random seeds help find shorter codelengths.",
   },
 ];
+
+type TraceFrame = (typeof traceDemoManifest.frames)[number];
+
+function activeAlgorithmStepIndex(frame: TraceFrame) {
+  if (frame.title === "Start from singletons") return 0;
+  if (frame.phase === "Move nodes greedily") return 1;
+  if (frame.phase === "Aggregate modules") return 2;
+  if (frame.phase === "Fine tune") return 3;
+  if (frame.phase === "Coarse tune") return 4;
+  if (frame.phase === "Trial") return 6;
+  return -1;
+}
 
 const networkModels = [
   {
@@ -161,8 +187,132 @@ function SectionCard({
   );
 }
 
+function AlgorithmTraceDemo({
+  activeFrame,
+  setActiveFrame,
+}: {
+  activeFrame: number;
+  setActiveFrame: React.Dispatch<React.SetStateAction<number>>;
+}) {
+  const frames = traceDemoManifest.frames;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const frame = frames[activeFrame];
+  const isAtEnd = activeFrame === frames.length - 1;
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const id = window.setInterval(() => {
+      setActiveFrame((current) => {
+        if (current === frames.length - 1) {
+          setIsPlaying(false);
+          return current;
+        }
+        return current + 1;
+      });
+    }, 1100);
+    return () => window.clearInterval(id);
+  }, [frames.length, isPlaying]);
+
+  return (
+    <Box borderWidth="1px" borderColor="gray.200" borderRadius="md" mt={5}>
+      <Box bg="gray.50" borderBottomWidth="1px" borderBottomColor="gray.200">
+        <img
+          src={frame.src}
+          alt={frame.title}
+          style={{
+            aspectRatio: "800 / 640",
+            display: "block",
+            maxHeight: "68vh",
+            objectFit: "contain",
+            width: "100%",
+          }}
+        />
+      </Box>
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        justify="space-between"
+        align={{ base: "stretch", md: "center" }}
+        gap={3}
+        p={4}
+      >
+        <Box minW={0}>
+          <Text color="gray.500" fontFamily="monospace" fontSize="xs" mb={1}>
+            {activeFrame + 1} / {frames.length} · {frame.phase}
+          </Text>
+          <Heading as="h3" size="sm" mb={1}>
+            {frame.title}
+          </Heading>
+          <Text color="gray.600" fontSize="sm" mb={0}>
+            {frame.description}
+          </Text>
+        </Box>
+        <HStack gap={2} flexShrink={0}>
+          <Button
+            aria-label="Previous frame"
+            title="Previous frame"
+            size="sm"
+            variant="outline"
+            disabled={activeFrame === 0}
+            onClick={() =>
+              setActiveFrame((current) => Math.max(0, current - 1))
+            }
+          >
+            <LuStepBack />
+          </Button>
+          <Button
+            aria-label={
+              isAtEnd
+                ? "Restart animation"
+                : isPlaying
+                  ? "Pause animation"
+                  : "Play animation"
+            }
+            title={
+              isAtEnd
+                ? "Restart animation"
+                : isPlaying
+                  ? "Pause animation"
+                  : "Play animation"
+            }
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              if (isAtEnd) {
+                setIsPlaying(false);
+                setActiveFrame(0);
+                return;
+              }
+              setIsPlaying((playing) => !playing);
+            }}
+          >
+            {isAtEnd ? <LuRotateCcw /> : isPlaying ? <LuPause /> : <LuPlay />}
+          </Button>
+          <Button
+            aria-label="Next frame"
+            title="Next frame"
+            size="sm"
+            variant="outline"
+            disabled={activeFrame === frames.length - 1}
+            onClick={() =>
+              setActiveFrame((current) =>
+                Math.min(frames.length - 1, current + 1),
+              )
+            }
+          >
+            <LuStepForward />
+          </Button>
+        </HStack>
+      </Stack>
+    </Box>
+  );
+}
+
 const HowItWorksPage: NextPage = () => {
   const [active, setActive] = useState("WhenToUse");
+  const [traceFrame, setTraceFrame] = useState(0);
+  const activeTraceStep = activeAlgorithmStepIndex(
+    traceDemoManifest.frames[traceFrame],
+  );
 
   return (
     <Container>
@@ -505,34 +655,57 @@ const HowItWorksPage: NextPage = () => {
               eyebrow="Algorithm"
               title="Infomap searches for the shortest codelength"
             >
-              <Stack gap={0} borderTopWidth="1px" borderTopColor="gray.200">
-                {algorithmSteps.map((step, index) => (
-                  <Grid
-                    key={step.title}
-                    templateColumns={{ base: "1fr", md: "5rem 1fr" }}
-                    gap={{ base: 1, md: 4 }}
-                    py={4}
-                    borderBottomWidth="1px"
-                    borderBottomColor="gray.200"
-                  >
-                    <Text
-                      color="gray.500"
-                      fontFamily="monospace"
-                      fontSize="xs"
-                      mb={0}
+              <AlgorithmTraceDemo
+                activeFrame={traceFrame}
+                setActiveFrame={setTraceFrame}
+              />
+              <Stack
+                gap={0}
+                borderTopWidth="1px"
+                borderTopColor="gray.200"
+                mt={5}
+              >
+                {algorithmSteps.map((step, index) => {
+                  const isCurrent = index === activeTraceStep;
+                  return (
+                    <Grid
+                      key={step.title}
+                      templateColumns={{ base: "1fr", md: "5rem 1fr" }}
+                      gap={{ base: 1, md: 4 }}
+                      px={3}
+                      py={4}
+                      bg={isCurrent ? "red.50" : "transparent"}
+                      borderBottomWidth="1px"
+                      borderBottomColor="gray.200"
+                      borderLeftWidth="3px"
+                      borderLeftColor={isCurrent ? "red.500" : "transparent"}
+                      transition="background-color 160ms ease, border-color 160ms ease"
                     >
-                      STEP {index + 1}
-                    </Text>
-                    <Box>
-                      <Heading as="h3" size="sm" mb={1}>
-                        {step.title}
-                      </Heading>
-                      <Text color="gray.600" fontSize="sm" mb={0}>
-                        {step.text}
+                      <Text
+                        color={isCurrent ? "red.700" : "gray.500"}
+                        fontFamily="monospace"
+                        fontSize="xs"
+                        fontWeight={isCurrent ? 700 : 400}
+                        mb={0}
+                      >
+                        STEP {index + 1}
                       </Text>
-                    </Box>
-                  </Grid>
-                ))}
+                      <Box>
+                        <Heading
+                          as="h3"
+                          size="sm"
+                          mb={1}
+                          color={isCurrent ? "gray.950" : "gray.900"}
+                        >
+                          {step.title}
+                        </Heading>
+                        <Text color="gray.600" fontSize="sm" mb={0}>
+                          {step.text}
+                        </Text>
+                      </Box>
+                    </Grid>
+                  );
+                })}
               </Stack>
               <Text color="gray.600" fontSize="sm" mt={4} mb={0}>
                 Infomap optimizes the map equation. It favors partitions where
