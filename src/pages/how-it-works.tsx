@@ -304,10 +304,10 @@ const HowItWorksPage: NextPage = () => {
                   </Heading>
                   <Text color="gray.600" fontSize="sm" mb={0}>
                     The random walker does not have to be a literal moving
-                    object. It is often a useful proxy for how structure
-                    constrains flow. If your question is only about planted
-                    groups or pairwise similarity, compare with statistical or
-                    generative clustering models too.
+                    object. It is a useful proxy for finding modular structure
+                    in general. If your question is only about planted groups or
+                    pairwise similarity, compare with statistical or generative
+                    clustering models too.
                   </Text>
                 </Box>
               </SimpleGrid>

@@ -122,7 +122,13 @@ const Home: NextPage = () => {
           </Flex>
         </Stack>
 
-        <Box my={8} mx={50}>
+        <Box
+          my={8}
+          mx={{ base: "auto", lg: 50 }}
+          justifySelf={{ base: "center", lg: "auto" }}
+          w="100%"
+          maxW="350px"
+        >
           <FlowDemo />
         </Box>
       </SimpleGrid>

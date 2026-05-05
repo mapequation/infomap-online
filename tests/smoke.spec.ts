@@ -22,6 +22,11 @@ test("renders the static site and runs an example network", async ({
     page.getByRole("heading", { name: "Network input" }),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Run Infomap" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Network", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Interactive network preview")).toBeVisible();
+  await expect(page.getByText(/previewing network structure/i)).toBeVisible();
   await expect(page.getByRole("button", { name: /show network/i })).toHaveCount(
     0,
   );
@@ -30,6 +35,13 @@ test("renders the static site and runs an example network", async ({
 
   await page.getByRole("button", { name: "Two triangles" }).click();
   await page.getByRole("button", { name: "Run Infomap" }).click();
+
+  await expect(page.getByText(/colored by latest infomap result/i)).toBeVisible(
+    {
+      timeout: 60_000,
+    },
+  );
+  await page.getByRole("button", { name: "Fit network preview" }).click();
 
   const cluButton = page.getByRole("button", { name: "Clu", exact: true });
   await expect(cluButton).toBeVisible({

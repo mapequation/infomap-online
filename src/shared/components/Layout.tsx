@@ -14,7 +14,7 @@ import Script from "next/script";
 import { infomapVersionLabel } from "../infomapVersion";
 import ErrorBoundary from "./ErrorBoundary";
 import "katex/dist/katex.min.css";
-import { LuDownload, LuGithub, LuQuote } from "react-icons/lu";
+import { LuDownload, LuGithub } from "react-icons/lu";
 
 declare global {
   interface Window {
@@ -58,14 +58,22 @@ export const Layout = ({ children, fillViewport = false }) => {
       >
         <Container>
           <Stack
-            direction={{ base: "column", md: "row" }}
-            justify="flex-start"
+            direction="row"
+            flexWrap="wrap"
+            justify={{ base: "center", lg: "flex-start" }}
             align="center"
-            gap={10}
-            py={5}
+            columnGap={{ base: 1, sm: 2, md: 3 }}
+            rowGap={{ base: 2, md: 3 }}
+            py={{ base: 3, md: 5 }}
           >
             <NextLink href="/">
-              <HStack justify="flex-start" align="center" gap={2}>
+              <HStack
+                justify={{ base: "center", sm: "flex-start" }}
+                align="center"
+                gap={2}
+                flexBasis={{ base: "100%", sm: "auto" }}
+                mr={{ base: 0, md: 4 }}
+              >
                 <Box w="40px" h="40px" flexShrink="0">
                   <img
                     alt="MapEquation"
@@ -78,7 +86,7 @@ export const Layout = ({ children, fillViewport = false }) => {
 
                 <Box>
                   <Heading
-                    fontSize="1.75rem"
+                    fontSize={{ base: "1.55rem", md: "1.75rem" }}
                     fontFamily="Philosopher, serif"
                     fontWeight={700}
                   >
@@ -88,23 +96,25 @@ export const Layout = ({ children, fillViewport = false }) => {
                 </Box>
               </HStack>
             </NextLink>
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" size={{ base: "sm", md: "md" }}>
               <NextLink href="/online">Try it</NextLink>
             </Button>
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" size={{ base: "sm", md: "md" }}>
               <NextLink href="/install">Install</NextLink>
             </Button>
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" size={{ base: "sm", md: "md" }}>
               <NextLink href="/formats">Formats</NextLink>
             </Button>
-            <Button asChild variant="ghost" marginEnd="auto">
+            <Button asChild variant="ghost" size={{ base: "sm", md: "md" }}>
               <NextLink href="/how-it-works">How it works</NextLink>
             </Button>
-            <Button asChild variant="surface" size="sm">
-              <NextLink href="/references">
-                How to cite
-                <LuQuote />
-              </NextLink>
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              marginEnd={{ base: 0, lg: "auto" }}
+            >
+              <NextLink href="/references">How to cite</NextLink>
             </Button>
             <Button asChild variant="surface" size="sm">
               <a href="//github.com/mapequation/infomap/releases/latest">

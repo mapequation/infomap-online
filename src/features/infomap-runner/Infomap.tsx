@@ -7,21 +7,30 @@ import {
   Grid,
   GridItem,
   Heading,
+  HStack,
   Stack,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
-import { useEffect, useState } from "react";
-import { LuCheck, LuPlay } from "react-icons/lu";
+import { useEffect, useMemo, useState } from "react";
+import {
+  LuCheck,
+  LuPanelLeftOpen,
+  LuPanelRightOpen,
+  LuPlay,
+  LuX,
+} from "react-icons/lu";
 import useStore from "../../state";
+import { parseCluModules } from "../../state/output";
 import type { InputFile, InputName } from "../../state/types";
 import Console from "./Console";
 import ExampleNetworksList from "./ExamplesMenu";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
+import NetworkPreview from "./NetworkPreview";
 import Parameters from "./Parameters";
 
 localforage.config({ name: "infomap" });
@@ -31,6 +40,37 @@ const inputTabs = [
   { key: "cluster data", label: "Clusters" },
   { key: "meta data", label: "Metadata" },
 ] satisfies { key: InputName; label: string }[];
+
+type EvaluationMetadata = {
+  codeLength: number | null;
+  numLevels: number | null;
+};
+
+function parseEvaluationMetadata(content: Record<string, unknown>) {
+  const json = content.json ?? content.json_states;
+  if (!json) return { codeLength: null, numLevels: null };
+
+  let parsed: unknown = json;
+  if (typeof json === "string") {
+    try {
+      parsed = JSON.parse(json) as Record<string, unknown>;
+    } catch {
+      return { codeLength: null, numLevels: null };
+    }
+  }
+  if (!parsed || typeof parsed !== "object") {
+    return { codeLength: null, numLevels: null };
+  }
+
+  const source = parsed as { codelength?: unknown; numLevels?: unknown };
+  const codeLength = Number(source.codelength);
+  const numLevels = Number(source.numLevels);
+
+  return {
+    codeLength: Number.isFinite(codeLength) ? codeLength : null,
+    numLevels: Number.isFinite(numLevels) ? numLevels : null,
+  };
+}
 
 function PanelHeader({
   title,
@@ -73,7 +113,12 @@ export default function InfomapOnline() {
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
   const { hasArgsError } = store.params;
 
-  const [tab, setTab] = useState<"console" | "output">("console");
+  const [tab, setTab] = useState<"network" | "console" | "output">("network");
+  const [mobilePanel, setMobilePanel] = useState<"input" | "parameters" | null>(
+    null,
+  );
+  const [outputChangedAt, setOutputChangedAt] = useState(0);
+  const [clusterChangedAt, setClusterChangedAt] = useState(0);
 
   const [infomap] = useState(() =>
     new Infomap()
@@ -88,6 +133,7 @@ export default function InfomapOnline() {
       })
       .on("finished", async (content) => {
         store.output.setContent(content);
+        setOutputChangedAt(Date.now());
         await localforage.setItem("network", {
           timestamp: Date.now(),
           name: store.network.name,
@@ -116,6 +162,7 @@ export default function InfomapOnline() {
         store.setNetwork({ name, value });
       } else if (activeInput === "cluster data") {
         const param = store.params.getParam("--cluster-data");
+        setClusterChangedAt(Date.now());
         if (!value) return store.params.resetFileParam(param);
         store.params.setFileParam(param, { name, value });
       } else if (activeInput === "meta data") {
@@ -166,6 +213,105 @@ export default function InfomapOnline() {
   const onCopyClusters = () => store.output.setDownloaded(true);
 
   const { activeInput, network, clusterData, metaData, output, params } = store;
+  const [clusterEvaluation, setClusterEvaluation] =
+    useState<EvaluationMetadata>({
+      codeLength: null,
+      numLevels: null,
+    });
+  const clusterModules = useMemo(
+    () => parseCluModules(clusterData.value),
+    [clusterData.value],
+  );
+  const outputMatchesPreview =
+    output.modules.size > 0 &&
+    [...output.modules.keys()].some((id) => network.value.includes(String(id)));
+  const clusterMatchesPreview =
+    clusterModules.size > 0 &&
+    [...clusterModules.keys()].some((id) => network.value.includes(String(id)));
+  const outputWins =
+    outputMatchesPreview &&
+    (!clusterMatchesPreview || outputChangedAt >= clusterChangedAt);
+  const clusterWins = clusterMatchesPreview && !outputWins;
+  const previewModules = outputWins
+    ? output.modules
+    : clusterWins
+      ? clusterModules
+      : output.modules;
+  const previewModuleSource = outputWins
+    ? "latest Infomap result"
+    : clusterWins
+      ? "loaded clusters"
+      : "latest Infomap result";
+  const previewCodeLength =
+    outputWins && output.codeLength !== null
+      ? output.codeLength
+      : clusterWins && clusterEvaluation.codeLength !== null
+        ? clusterEvaluation.codeLength
+        : output.codeLength;
+  const previewNumLevels =
+    outputWins && output.numLevels !== null
+      ? output.numLevels
+      : clusterWins && clusterEvaluation.numLevels !== null
+        ? clusterEvaluation.numLevels
+        : output.numLevels;
+  const previewLevelModules = outputWins ? output.levelModules : undefined;
+  const cluLevelParam = params.getParam("--clu-level");
+  const previewSelectedLevel = cluLevelParam.active
+    ? Number(cluLevelParam.value)
+    : null;
+  const previewLevelLabel =
+    previewSelectedLevel === -1
+      ? "bottom"
+      : previewSelectedLevel !== null
+        ? String(previewSelectedLevel)
+        : undefined;
+
+  useEffect(() => {
+    if (!clusterData.value || !network.value) {
+      setClusterEvaluation({ codeLength: null, numLevels: null });
+      return;
+    }
+
+    setClusterEvaluation({ codeLength: null, numLevels: null });
+    let cancelled = false;
+    const timeout = window.setTimeout(() => {
+      const evaluator = new Infomap()
+        .on("finished", (content) => {
+          if (cancelled) return;
+          setClusterEvaluation(
+            parseEvaluationMetadata(content as Record<string, unknown>),
+          );
+        })
+        .on("error", () => {
+          if (!cancelled) {
+            setClusterEvaluation({ codeLength: null, numLevels: null });
+          }
+        });
+
+      try {
+        const args = params.noInfomapArgs.replace(/-o\s+\S+/g, "-o json");
+        evaluator.run({
+          network: network.value,
+          filename: network.name,
+          args,
+          files: { [clusterData.name || "clusters.clu"]: clusterData.value },
+        });
+      } catch {
+        setClusterEvaluation({ codeLength: null, numLevels: null });
+      }
+    }, 300);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [
+    clusterData.name,
+    clusterData.value,
+    network.name,
+    network.value,
+    params.noInfomapArgs,
+  ]);
 
   const inputOptions: Record<InputName, InputFile> = {
     network: network,
@@ -182,6 +328,102 @@ export default function InfomapOnline() {
   const inputValue = inputOptions[activeInput].value;
   const consoleContent = infomapOutput.join("\n");
   const outputFiles = [...physicalFiles, ...stateFiles];
+  const renderInputPanel = () => (
+    <>
+      <PanelHeader
+        title="Network input"
+        description={`Editing ${activeInput}`}
+        action={
+          <ButtonGroup attached size="sm">
+            <LoadButton
+              onDrop={onLoad(activeInput)}
+              accept={inputAccept[activeInput]}
+            >
+              Load
+            </LoadButton>
+          </ButtonGroup>
+        }
+      />
+
+      <ButtonGroup
+        attached
+        variant="outline"
+        size="sm"
+        flexShrink={0}
+        mb={1}
+        overflowX="auto"
+        maxW="100%"
+      >
+        {inputTabs.map(({ key, label }) => {
+          const hasInput = Boolean(inputOptions[key].value);
+          const isActive = activeInput === key;
+
+          return (
+            <Button
+              key={key}
+              type="button"
+              onClick={() => store.setActiveInput(key)}
+              disabled={isActive}
+              bg={isActive ? "gray.100" : undefined}
+            >
+              {hasInput && <LuCheck />}
+              {label}
+            </Button>
+          );
+        })}
+      </ButtonGroup>
+
+      <InputTextarea
+        onDrop={onLoad(activeInput)}
+        accept={inputAccept[activeInput]}
+        onChange={(event) => onInputChange(activeInput)(event.target)}
+        value={inputValue}
+        placeholder={`Input ${activeInput} here`}
+        spellCheck={false}
+        wrap="off"
+        overflow="auto"
+        resize="none"
+        flex="1 1 22rem"
+        minH={0}
+        variant="outline"
+        bg="gray.50"
+        fontSize="sm"
+      />
+      <ExampleNetworksList disabled={isRunning} />
+    </>
+  );
+  const renderParametersPanel = () => (
+    <>
+      <PanelHeader
+        title="Parameters"
+        description="CLI arguments and common options"
+        action={
+          <Button
+            bg="#b22222"
+            color="white"
+            _hover={{ bg: "#971d1d" }}
+            _active={{ bg: "#7f1818" }}
+            _disabled={{ bg: "gray.300", color: "gray.500" }}
+            disabled={hasArgsError || isRunning}
+            loading={isRunning}
+            onClick={run}
+            size="sm"
+          >
+            <LuPlay />
+            Run Infomap
+          </Button>
+        }
+      />
+
+      <Box flexShrink={0} mb={4}>
+        <InputParameters loading={isRunning} onClick={run} />
+      </Box>
+
+      <Box flex="1" minH={0} overflowY="auto" overflowX="hidden" pr={1}>
+        <Parameters />
+      </Box>
+    </>
+  );
 
   return (
     <Grid
@@ -192,15 +434,15 @@ export default function InfomapOnline() {
       gap={4}
       p={4}
       templateAreas={{
-        base: "'input' 'console' 'output'",
+        base: "'console'",
         xl: "'input console output'",
       }}
       templateColumns={{
         base: "minmax(0, 1fr)",
-        xl: "minmax(16rem, 1.15fr) minmax(24rem, 2fr) minmax(18rem, 1.15fr)",
+        xl: "minmax(18rem, 32rem) minmax(28rem, 1fr) minmax(20rem, 34rem)",
       }}
       templateRows={{
-        base: "minmax(24rem, 1.4fr) minmax(18rem, 1fr) minmax(18rem, 1fr)",
+        base: "minmax(0, 1fr)",
         xl: "minmax(0, 1fr)",
       }}
     >
@@ -208,7 +450,7 @@ export default function InfomapOnline() {
         area="input"
         minH={0}
         minW={0}
-        display="flex"
+        display={{ base: "none", xl: "flex" }}
         flexDirection="column"
         overflow="hidden"
         bg="white"
@@ -217,66 +459,7 @@ export default function InfomapOnline() {
         borderRadius="md"
         p={4}
       >
-        <PanelHeader
-          title="Network input"
-          description={`Editing ${activeInput}`}
-          action={
-            <ButtonGroup attached size="sm">
-              <LoadButton
-                onDrop={onLoad(activeInput)}
-                accept={inputAccept[activeInput]}
-              >
-                Load
-              </LoadButton>
-            </ButtonGroup>
-          }
-        />
-
-        <ButtonGroup
-          attached
-          variant="outline"
-          size="sm"
-          flexShrink={0}
-          mb={1}
-          overflowX="auto"
-          maxW="100%"
-        >
-          {inputTabs.map(({ key, label }) => {
-            const hasInput = Boolean(inputOptions[key].value);
-            const isActive = activeInput === key;
-
-            return (
-              <Button
-                key={key}
-                type="button"
-                onClick={() => store.setActiveInput(key)}
-                disabled={isActive}
-                bg={isActive ? "gray.100" : undefined}
-              >
-                {hasInput && <LuCheck />}
-                {label}
-              </Button>
-            );
-          })}
-        </ButtonGroup>
-
-        <InputTextarea
-          onDrop={onLoad(activeInput)}
-          accept={inputAccept[activeInput]}
-          onChange={(event) => onInputChange(activeInput)(event.target)}
-          value={inputValue}
-          placeholder={`Input ${activeInput} here`}
-          spellCheck={false}
-          wrap="off"
-          overflow="auto"
-          resize="none"
-          flex="1 1 22rem"
-          minH={0}
-          variant="outline"
-          bg="gray.50"
-          fontSize="sm"
-        />
-        <ExampleNetworksList disabled={isRunning} />
+        {renderInputPanel()}
       </GridItem>
       <GridItem
         area="console"
@@ -303,6 +486,24 @@ export default function InfomapOnline() {
           flexShrink={0}
           mb={1}
         >
+          <HStack display={{ base: "flex", xl: "none" }} gap={2}>
+            <Button
+              onClick={() => setMobilePanel("input")}
+              size="sm"
+              variant="surface"
+            >
+              <LuPanelLeftOpen />
+              Input
+            </Button>
+            <Button
+              onClick={() => setMobilePanel("parameters")}
+              size="sm"
+              variant="surface"
+            >
+              <LuPanelRightOpen />
+              Parameters
+            </Button>
+          </HStack>
           <ButtonGroup
             attached
             variant="outline"
@@ -310,6 +511,12 @@ export default function InfomapOnline() {
             overflowX="auto"
             maxW="100%"
           >
+            <Button
+              onClick={() => setTab("network")}
+              disabled={tab === "network"}
+            >
+              Network
+            </Button>
             <Button
               onClick={() => setTab("console")}
               disabled={tab === "console"}
@@ -345,7 +552,19 @@ export default function InfomapOnline() {
           )}
         </Stack>
 
-        {tab === "console" && (
+        <Box display={tab === "network" ? "flex" : "none"} flex="1" minH={0}>
+          <NetworkPreview
+            codeLength={previewCodeLength}
+            levelModules={previewLevelModules}
+            lockedLevelLabel={previewLevelLabel}
+            moduleSource={previewModuleSource}
+            network={network.value}
+            modules={previewModules}
+            numLevels={previewNumLevels}
+            selectedLevel={previewSelectedLevel}
+          />
+        </Box>
+        <Box display={tab === "console" ? "flex" : "none"} flex="1" minH={0}>
           <Console
             placeholder="Infomap output will be printed here"
             flex="1"
@@ -354,8 +573,8 @@ export default function InfomapOnline() {
           >
             {consoleContent}
           </Console>
-        )}
-        {tab === "output" && (
+        </Box>
+        <Box display={tab === "output" ? "flex" : "none"} flex="1" minH={0}>
           <Field.Root flex="1" minH={0}>
             <Textarea
               readOnly
@@ -373,14 +592,14 @@ export default function InfomapOnline() {
               fontSize="sm"
             />
           </Field.Root>
-        )}
+        </Box>
       </GridItem>
       <GridItem
         area="output"
         minH={0}
         minW={0}
         maxH="100%"
-        display="flex"
+        display={{ base: "none", xl: "flex" }}
         flexDirection="column"
         overflow="hidden"
         bg="white"
@@ -389,35 +608,56 @@ export default function InfomapOnline() {
         borderRadius="md"
         p={4}
       >
-        <PanelHeader
-          title="Parameters"
-          description="CLI arguments and common options"
-          action={
-            <Button
-              bg="#b22222"
-              color="white"
-              _hover={{ bg: "#971d1d" }}
-              _active={{ bg: "#7f1818" }}
-              _disabled={{ bg: "gray.300", color: "gray.500" }}
-              disabled={hasArgsError || isRunning}
-              loading={isRunning}
-              onClick={run}
-              size="sm"
-            >
-              <LuPlay />
-              Run Infomap
-            </Button>
-          }
-        />
-
-        <Box flexShrink={0} mb={4}>
-          <InputParameters loading={isRunning} onClick={run} />
-        </Box>
-
-        <Box flex="1" minH={0} overflowY="auto" overflowX="hidden" pr={1}>
-          <Parameters />
-        </Box>
+        {renderParametersPanel()}
       </GridItem>
+      {mobilePanel && (
+        <Box
+          display={{ base: "block", xl: "none" }}
+          inset={0}
+          position="fixed"
+          zIndex={1400}
+        >
+          <Box
+            bg="blackAlpha.500"
+            inset={0}
+            onClick={() => setMobilePanel(null)}
+            position="absolute"
+          />
+          <Box
+            bg="white"
+            bottom={0}
+            boxShadow="xl"
+            display="flex"
+            flexDirection="column"
+            left={mobilePanel === "input" ? 0 : undefined}
+            maxW="min(28rem, calc(100vw - 2rem))"
+            minH={0}
+            overflow="hidden"
+            p={4}
+            position="absolute"
+            right={mobilePanel === "parameters" ? 0 : undefined}
+            top={0}
+            w="100%"
+          >
+            <HStack justify="space-between" mb={4} flexShrink={0}>
+              <Heading as="h2" size="sm" mb={0}>
+                {mobilePanel === "parameters" ? "Parameters" : "Network input"}
+              </Heading>
+              <Button
+                aria-label="Close panel"
+                onClick={() => setMobilePanel(null)}
+                size="sm"
+                variant="ghost"
+              >
+                <LuX />
+              </Button>
+            </HStack>
+            {mobilePanel === "parameters"
+              ? renderParametersPanel()
+              : renderInputPanel()}
+          </Box>
+        </Box>
+      )}
     </Grid>
   );
 }

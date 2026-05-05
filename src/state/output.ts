@@ -5,8 +5,11 @@ import type { OutputContent, OutputFile, OutputKey } from "./types";
 
 export type OutputState = Record<OutputKey, string> & {
   activeKey: OutputKey;
+  codeLength: number | null;
   downloaded: boolean;
+  levelModules: Map<number, Map<number, string>>;
   modules: Map<number, number>;
+  numLevels: number | null;
 };
 
 export const emptyOutput = (): OutputState => ({
@@ -28,8 +31,11 @@ export const emptyOutput = (): OutputState => ({
   flow: "",
   flow_as_physical: "",
   activeKey: "tree",
+  codeLength: null,
   downloaded: false,
+  levelModules: new Map(),
   modules: new Map(),
+  numLevels: null,
 });
 
 export function outputCompleted(output: OutputState) {
@@ -51,18 +57,125 @@ export function stateFiles(output: OutputState, name: string) {
   return outputFiles(output, name).filter((file) => file.isStates);
 }
 
-export function parseModules(output: OutputState) {
-  const clu = output.clu_states || output.clu;
+export function parseCluModules(clu: string) {
   if (!clu) return new Map<number, number>();
 
   const modules = new Map<number, number>();
-  const lines = clu.split("\n").filter(Boolean);
+  const lines = clu.split(/\r?\n/).filter(Boolean);
   for (const line of lines) {
-    if (line.startsWith("#")) continue;
-    const [id, moduleId] = line.split(" ").map(Number);
-    modules.set(id, moduleId);
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("%")) {
+      continue;
+    }
+    const [id, moduleId] = trimmed.split(/\s+/).map(Number);
+    if (Number.isFinite(id) && Number.isFinite(moduleId)) {
+      modules.set(id, moduleId);
+    }
   }
   return modules;
+}
+
+export function parseModules(output: OutputState) {
+  return parseCluModules(output.clu_states || output.clu);
+}
+
+export function parseTreeLevelModules(tree: string) {
+  const levels = new Map<number, Map<number, string>>();
+
+  for (const line of tree.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (
+      !trimmed ||
+      trimmed.startsWith("#") ||
+      trimmed.startsWith("%") ||
+      trimmed.startsWith("*")
+    ) {
+      continue;
+    }
+
+    const columns = trimmed.split(/\s+/);
+    const path = columns[0];
+    const nodeId = Number(columns.at(-1));
+    if (!/^\d+(?::\d+)+$/.test(path) || !Number.isFinite(nodeId)) {
+      continue;
+    }
+
+    const parts = path.split(":");
+    const moduleDepth = Math.max(1, parts.length - 1);
+    for (let level = 1; level <= moduleDepth; level += 1) {
+      const moduleId = parts.slice(0, level).join(":");
+      const levelModules = levels.get(level) ?? new Map<number, string>();
+      levelModules.set(nodeId, moduleId);
+      levels.set(level, levelModules);
+    }
+  }
+
+  return levels;
+}
+
+function parseJsonMetadata(output: OutputState) {
+  const json = output.json_states || output.json;
+  if (!json) return { codeLength: null, numLevels: null };
+
+  try {
+    const content = JSON.parse(json) as {
+      codelength?: unknown;
+      codeLength?: unknown;
+      numLevels?: unknown;
+    };
+    const codeLength = Number(content.codelength ?? content.codeLength);
+    const numLevels = Number(content.numLevels);
+    return {
+      codeLength: Number.isFinite(codeLength) ? codeLength : null,
+      numLevels: Number.isFinite(numLevels) ? numLevels : null,
+    };
+  } catch {
+    return { codeLength: null, numLevels: null };
+  }
+}
+
+function parseTextCodeLength(output: OutputState) {
+  const content = [
+    output.tree_states,
+    output.ftree_states,
+    output.tree,
+    output.ftree,
+    output.clu_states,
+    output.clu,
+  ].join("\n");
+  const match = content.match(/#\s*codelength\s+([0-9.eE+-]+)/i);
+  if (!match?.[1]) return null;
+
+  const codeLength = Number(match[1]);
+  return Number.isFinite(codeLength) ? codeLength : null;
+}
+
+function parseTreeLevels(output: OutputState) {
+  const content = [
+    output.tree_states,
+    output.ftree_states,
+    output.tree,
+    output.ftree,
+  ].join("\n");
+  let maxDepth = 0;
+
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (
+      !trimmed ||
+      trimmed.startsWith("#") ||
+      trimmed.startsWith("%") ||
+      trimmed.startsWith("*")
+    ) {
+      continue;
+    }
+
+    const [path] = trimmed.split(/\s+/);
+    if (!/^\d+(?::\d+)+$/.test(path)) continue;
+    maxDepth = Math.max(maxDepth, path.split(":").length);
+  }
+
+  return maxDepth > 0 ? maxDepth : null;
 }
 
 export function applyOutputContent(
@@ -81,6 +194,12 @@ export function applyOutputContent(
   }
 
   next.modules = parseModules(next);
+  next.levelModules = parseTreeLevelModules(
+    next.tree_states || next.ftree_states || next.tree || next.ftree,
+  );
+  const jsonMetadata = parseJsonMetadata(next);
+  next.codeLength = jsonMetadata.codeLength ?? parseTextCodeLength(next);
+  next.numLevels = jsonMetadata.numLevels ?? parseTreeLevels(next);
   next.activeKey =
     ([
       "clu",
