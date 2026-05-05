@@ -124,11 +124,19 @@ const DropdownParameter = ({ param }) => {
     ? param.value.map((v) => ({ label: v, value: v }))
     : { label: param.value, value: param.value };
 
-  const onChange = (value) =>
-    store.params.setOption(
+  const onChange = (value) => {
+    if (!value) {
+      return store.params.setOption(
+        param,
+        isMulti ? [] : (param.default ?? ""),
+      );
+    }
+
+    return store.params.setOption(
       param,
       isMulti ? value.map((v) => v.value) : value.value,
     );
+  };
 
   const options = param.options.map((option) => ({
     value: option,
@@ -142,6 +150,7 @@ const DropdownParameter = ({ param }) => {
       chakraStyles={selectStyle}
       placeholder={param.longType}
       isMulti={isMulti}
+      isClearable={param.clearable}
       closeMenuOnSelect={!isMulti}
       value={value}
       onChange={onChange}
@@ -159,11 +168,13 @@ const InputParameter = ({ param }) => {
       //maxW="50%"
       w="5.5rem"
       bg="white"
-      _hover={{ bg: "white" }}
-      _focus={{ bg: "white" }}
+      borderColor={param.active ? "blue.300" : "gray.300"}
+      borderWidth="1px"
+      _hover={{ bg: "white", borderColor: "gray.400" }}
+      _focus={{ bg: "white", borderColor: "blue.500", boxShadow: "outline" }}
       fontSize="xs"
       h="1.875rem"
-      variant="subtle"
+      variant="outline"
       placeholder={param.default}
       value={param.value}
       onChange={(e) => store.params.setInput(param, e.target.value)}
@@ -314,19 +325,16 @@ const ParameterGroup = ({
     const { active, long, dropdown, input, file, incremental, value } = param;
 
     if (dropdown) {
-      const ref = store.params.getRef(long);
-      if (!ref) return { htmlFor: long };
       return {
-        htmlFor: long,
-        onClick: () => {
+        onClick: (event: MouseEvent<HTMLLabelElement>) => {
           if (active) {
+            event.preventDefault();
             const defaultValue =
               typeof param.default === "string" || Array.isArray(param.default)
                 ? param.default
                 : "";
             return store.params.setOption(param, defaultValue);
           }
-          //return (active ? store.params.setOption(param, param.default) : ref?.open()); },
         },
       };
     }

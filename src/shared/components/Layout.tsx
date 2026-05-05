@@ -170,12 +170,12 @@ export const Layout = ({ children, fillViewport = false }) => {
                 textTransform="uppercase"
                 mb={1}
               >
-                Use
+                Documentation
               </Text>
-              <NextLink href="/online">Workbench</NextLink>
               <NextLink href="/install">Install</NextLink>
-              <NextLink href="/formats">Input / output formats</NextLink>
+              <NextLink href="/formats">Formats</NextLink>
               <NextLink href="/how-it-works">How it works</NextLink>
+              <NextLink href="/references">How to cite</NextLink>
             </Stack>
 
             <Stack gap={2}>
@@ -189,12 +189,8 @@ export const Layout = ({ children, fillViewport = false }) => {
               >
                 Reference
               </Text>
-              <NextLink href="/references">How to cite</NextLink>
-              <a href="//www.mapequation.org/publications.html">Publications</a>
-              <a href="//mapequation.github.io/infomap/python">
-                Python API docs
-              </a>
-              <a href="//mapequation.r-universe.dev/infomap">R-universe docs</a>
+              <a href="//mapequation.github.io/infomap/python">Python API</a>
+              <a href="//mapequation.r-universe.dev/infomap">R-universe</a>
             </Stack>
 
             <Stack gap={2}>
@@ -209,14 +205,12 @@ export const Layout = ({ children, fillViewport = false }) => {
                 Project
               </Text>
               <a href="//github.com/mapequation/infomap">GitHub</a>
-              <a href="//github.com/mapequation/infomap/releases/latest">
-                Latest release
+              <a href="//github.com/mapequation/infomap/issues">Issues</a>
+              <a href="//github.com/mapequation/infomap/discussions">
+                Discussions
               </a>
               <a href="//github.com/mapequation/infomap/blob/master/CHANGELOG.md">
                 Changelog
-              </a>
-              <a href="//github.com/mapequation/infomap/issues">
-                Report an issue
               </a>
             </Stack>
           </SimpleGrid>
