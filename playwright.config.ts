@@ -12,9 +12,9 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "node scripts/serve-export.mjs",
+    command: "npm run build && node scripts/serve-export.mjs",
     url: "http://127.0.0.1:4173/infomap/",
     reuseExistingServer: !process.env.CI,
-    timeout: 30 * 1000,
+    timeout: 120 * 1000,
   },
 });

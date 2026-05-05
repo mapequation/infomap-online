@@ -70,25 +70,41 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  let servedPath = filePath;
+
   try {
-    const fileInfo = await stat(filePath);
+    const fileInfo = await stat(servedPath);
     if (!fileInfo.isFile()) {
       throw new Error("Not a regular file");
     }
   } catch {
-    res.writeHead(404);
-    res.end("Not found");
-    return;
+    if (!path.extname(filePath)) {
+      servedPath = `${filePath}.html`;
+      try {
+        const fileInfo = await stat(servedPath);
+        if (!fileInfo.isFile()) {
+          throw new Error("Not a regular file");
+        }
+      } catch {
+        res.writeHead(404);
+        res.end("Not found");
+        return;
+      }
+    } else {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
   }
 
-  const extension = path.extname(filePath);
+  const extension = path.extname(servedPath);
   res.writeHead(200, {
     "Content-Type": MIME_TYPES[extension] || "application/octet-stream",
     "Cache-Control": "no-cache",
   });
 
   try {
-    await pipeline(createReadStream(filePath), res);
+    await pipeline(createReadStream(servedPath), res);
   } catch {
     if (!res.headersSent) {
       res.writeHead(500);

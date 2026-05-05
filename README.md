@@ -33,7 +33,7 @@ npm run verify
 ## CI/CD
 
 - `CI` runs on every push and pull request. It installs dependencies, runs
-  `lint` and `typecheck`, builds the static export, and executes the Playwright
+  `check`, builds the static export, and executes the Playwright
   smoke test against the exported site.
 - `Deploy` runs after a successful `CI` run on `master` and deploys the tested
   `out/` artifact over SSH with `rsync --delete`.
