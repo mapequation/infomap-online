@@ -1,7 +1,6 @@
 import arg from "arg";
 import { create } from "zustand";
-import * as exampleNetworks from "../data/networks";
-import * as outputExamples from "../data/output";
+import { twoTriangles } from "../data/networks";
 import {
   applyOutputContent,
   downloadAllOutput,
@@ -89,8 +88,6 @@ type InfomapState = {
   setNetwork: (network: InputFile) => void;
   setClusterData: (file: InputFile) => void;
   setMetaData: (file: InputFile) => void;
-  getExampleNetwork: (name: keyof typeof exampleNetworks) => string;
-  getOutputFormat: (name: keyof typeof outputExamples) => string;
 };
 
 function withDerived(state: InfomapState): InfomapState {
@@ -306,7 +303,7 @@ export const useInfomapStore = create<InfomapState>((set, get) => {
   };
 
   return withDerived({
-    network: { name: "two_triangles", value: exampleNetworks.twoTriangles },
+    network: { name: "two_triangles", value: twoTriangles },
     clusterData: { name: "", value: "" },
     metaData: { name: "", value: "" },
     activeInput: "network",
@@ -346,8 +343,6 @@ export const useInfomapStore = create<InfomapState>((set, get) => {
           metaData: { name: name || DEFAULT_META_NAME, value },
         }),
       ),
-    getExampleNetwork: (name) => exampleNetworks[name],
-    getOutputFormat: (name) => outputExamples[name],
   });
 });
 

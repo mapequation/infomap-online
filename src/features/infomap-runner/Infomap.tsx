@@ -1,20 +1,24 @@
-// @ts-nocheck
 import {
   Box,
   Button,
   ButtonGroup,
   Field,
+  Flex,
   Grid,
   GridItem,
+  Heading,
   Stack,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import Infomap from "@mapequation/infomap";
 import localforage from "localforage";
 import { useEffect, useState } from "react";
-import useStore from "../../store";
+import { LuCheck, LuPlay } from "react-icons/lu";
+import useStore from "../../state";
+import type { InputFile, InputName } from "../../state/types";
 import Console from "./Console";
-import ExamplesMenu from "./ExamplesMenu";
+import ExampleNetworksList from "./ExamplesMenu";
 import InputParameters from "./InputParameters";
 import InputTextarea from "./InputTextarea";
 import LoadButton from "./LoadButton";
@@ -22,13 +26,49 @@ import Parameters from "./Parameters";
 
 localforage.config({ name: "infomap" });
 
+const inputTabs = [
+  { key: "network", label: "Network" },
+  { key: "cluster data", label: "Clusters" },
+  { key: "meta data", label: "Metadata" },
+] satisfies { key: InputName; label: string }[];
+
+function PanelHeader({
+  title,
+  description,
+  action,
+}: {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <Flex
+      align={{ base: "flex-start", sm: "center" }}
+      justify="space-between"
+      direction={{ base: "column", sm: "row" }}
+      gap={3}
+      flexShrink={0}
+      mb={3}
+    >
+      <Box>
+        <Heading as="h2" size="sm" mb={1}>
+          {title}
+        </Heading>
+        {description && (
+          <Text color="gray.500" fontSize="sm" mb={0}>
+            {description}
+          </Text>
+        )}
+      </Box>
+      {action}
+    </Flex>
+  );
+}
+
 export default function InfomapOnline() {
   const store = useStore();
-  const [infomapOutput, setInfomapOutput] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [infomapOutput, setInfomapOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [error, setError] = useState("");
 
   const { activeKey, setActiveKey, physicalFiles, stateFiles } = store.output;
   const { hasArgsError } = store.params;
@@ -37,13 +77,13 @@ export default function InfomapOnline() {
 
   const [infomap] = useState(() =>
     new Infomap()
-      .on("data", (data) => setInfomapOutput((output) => [...output, data]))
+      .on("data", (data) =>
+        setInfomapOutput((output) => [...output, String(data)]),
+      )
       .on("error", (error) => {
         const infomapError = error.replace(/^Error:\s+/i, "");
-        setError(infomapError);
-        setInfomapOutput((output) => [...output, error]);
+        setInfomapOutput((output) => [...output, `Error: ${infomapError}`]);
         setIsRunning(false);
-        setIsCompleted(false);
         console.error(infomapError);
       })
       .on("finished", async (content) => {
@@ -55,7 +95,6 @@ export default function InfomapOnline() {
           ...content,
         });
         setIsRunning(false);
-        setIsCompleted(true);
       }),
   );
 
@@ -71,8 +110,8 @@ export default function InfomapOnline() {
   }, [store.params.setArgs]);
 
   const onInputChange =
-    (activeInput) =>
-    ({ name, value }) => {
+    (activeInput: InputName) =>
+    ({ name, value }: InputFile) => {
       if (activeInput === "network") {
         store.setNetwork({ name, value });
       } else if (activeInput === "cluster data") {
@@ -86,31 +125,26 @@ export default function InfomapOnline() {
       }
 
       store.output.setDownloaded(false);
-
-      setIsLoading(false);
-      setIsCompleted(false);
-      setError("");
     };
 
-  const onLoad = (activeInput) => (files) => {
+  const onLoad = (activeInput: InputName) => (files: File[]) => {
     if (files.length < 1) return;
 
     const file = files[0];
     const reader = new FileReader();
 
-    reader.onloadend = () =>
-      onInputChange(activeInput)({ name: file.name, value: reader.result });
+    reader.onloadend = () => {
+      const value = typeof reader.result === "string" ? reader.result : "";
+      onInputChange(activeInput)({ name: file.name, value });
+    };
 
-    setIsLoading(true);
     reader.readAsText(file, "utf-8");
   };
 
   const run = () => {
     store.output.resetContent();
 
-    setError("");
     setIsRunning(true);
-    setIsCompleted(false);
     setInfomapOutput([]);
 
     try {
@@ -121,26 +155,25 @@ export default function InfomapOnline() {
         files: store.infomapFiles,
       });
     } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
       setIsRunning(false);
-      setError(e.message);
+      setInfomapOutput([`Error: ${message}`]);
       console.error(e);
       return;
     }
-
-    setError("");
   };
 
   const onCopyClusters = () => store.output.setDownloaded(true);
 
   const { activeInput, network, clusterData, metaData, output, params } = store;
 
-  const inputOptions = {
+  const inputOptions: Record<InputName, InputFile> = {
     network: network,
     "cluster data": clusterData,
     "meta data": metaData,
   };
 
-  const inputAccept = {
+  const inputAccept: Record<InputName, string[] | undefined> = {
     network: undefined, // FIXME
     "cluster data": params.getParam("--cluster-data").accept,
     "meta data": params.getParam("--meta-data").accept,
@@ -148,6 +181,7 @@ export default function InfomapOnline() {
 
   const inputValue = inputOptions[activeInput].value;
   const consoleContent = infomapOutput.join("\n");
+  const outputFiles = [...physicalFiles, ...stateFiles];
 
   return (
     <Grid
@@ -155,31 +189,75 @@ export default function InfomapOnline() {
       minH={0}
       h="100%"
       overflow="hidden"
+      gap={4}
+      p={4}
       templateAreas={{
+        base: "'input' 'console' 'output'",
         xl: "'input console output'",
       }}
       templateColumns={{
-        xl: "minmax(0, 2fr) minmax(0, 4fr) minmax(0, 2fr)",
+        base: "minmax(0, 1fr)",
+        xl: "minmax(16rem, 1.15fr) minmax(24rem, 2fr) minmax(18rem, 1.15fr)",
+      }}
+      templateRows={{
+        base: "minmax(24rem, 1.4fr) minmax(18rem, 1fr) minmax(18rem, 1fr)",
+        xl: "minmax(0, 1fr)",
       }}
     >
       <GridItem
         area="input"
-        className="network"
         minH={0}
         minW={0}
         display="flex"
         flexDirection="column"
         overflow="hidden"
+        bg="white"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        p={4}
       >
-        <ButtonGroup attached w="100%" mb="1rem">
-          <LoadButton
-            size="sm"
-            onDrop={onLoad(activeInput)}
-            accept={inputAccept[activeInput]}
-          >
-            Load {activeInput}
-          </LoadButton>
-          <ExamplesMenu disabled={isRunning} />
+        <PanelHeader
+          title="Network input"
+          description={`Editing ${activeInput}`}
+          action={
+            <ButtonGroup attached size="sm">
+              <LoadButton
+                onDrop={onLoad(activeInput)}
+                accept={inputAccept[activeInput]}
+              >
+                Load
+              </LoadButton>
+            </ButtonGroup>
+          }
+        />
+
+        <ButtonGroup
+          attached
+          variant="outline"
+          size="sm"
+          flexShrink={0}
+          mb={1}
+          overflowX="auto"
+          maxW="100%"
+        >
+          {inputTabs.map(({ key, label }) => {
+            const hasInput = Boolean(inputOptions[key].value);
+            const isActive = activeInput === key;
+
+            return (
+              <Button
+                key={key}
+                type="button"
+                onClick={() => store.setActiveInput(key)}
+                disabled={isActive}
+                bg={isActive ? "gray.100" : undefined}
+              >
+                {hasInput && <LuCheck />}
+                {label}
+              </Button>
+            );
+          })}
         </ButtonGroup>
 
         <InputTextarea
@@ -192,63 +270,53 @@ export default function InfomapOnline() {
           wrap="off"
           overflow="auto"
           resize="none"
-          flex="1"
+          flex="1 1 22rem"
           minH={0}
-          pb={15}
           variant="outline"
-          bg="white"
+          bg="gray.50"
           fontSize="sm"
         />
-      </GridItem>
-      <GridItem
-        area="inputMenu"
-        pt={{ base: 0, xl: "3em" }}
-        style={{ display: "none" }}
-      >
-        <Box as="ul" fontSize="sm" textAlign={{ base: "left", xl: "right" }}>
-          {["network", "cluster data", "meta data"].map((option) => (
-            <li key={option}>
-              <button
-                type="button"
-                onClick={() => store.setActiveInput(option)}
-                style={{
-                  background: "transparent",
-                  border: 0,
-                  color:
-                    option === activeInput
-                      ? "var(--chakra-colors-gray-900)"
-                      : "rgba(0, 0, 0, 0.6)",
-                  cursor: "pointer",
-                  marginBottom: "0.25rem",
-                  padding: 0,
-                  textAlign: "inherit",
-                  textTransform: "capitalize",
-                }}
-              >
-                {option}
-              </button>
-            </li>
-          ))}
-        </Box>
+        <ExampleNetworksList disabled={isRunning} />
       </GridItem>
       <GridItem
         area="console"
-        className="run"
         minH={0}
         minW={0}
         display="flex"
         flexDirection="column"
         overflow="hidden"
+        bg="white"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        p={4}
       >
-        <Stack direction="row" justify="space-between" flexShrink={0}>
-          <ButtonGroup attached w="100%" variant="outline" size="sm">
+        <PanelHeader
+          title="Run output"
+          description="Console logs and generated files"
+        />
+
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          justify="space-between"
+          gap={3}
+          flexShrink={0}
+          mb={1}
+        >
+          <ButtonGroup
+            attached
+            variant="outline"
+            size="sm"
+            overflowX="auto"
+            maxW="100%"
+          >
             <Button
               onClick={() => setTab("console")}
               disabled={tab === "console"}
             >
               Console
             </Button>
-            {[...physicalFiles, ...stateFiles].map((file) => (
+            {outputFiles.map((file) => (
               <Button
                 key={file.key}
                 onClick={() => {
@@ -262,8 +330,8 @@ export default function InfomapOnline() {
             ))}
           </ButtonGroup>
 
-          {output.activeContent && (
-            <ButtonGroup variant="outline" size="sm">
+          {tab === "output" && output.activeContent && (
+            <ButtonGroup variant="outline" size="sm" flexShrink={0}>
               <Button
                 onClick={output.downloadActiveContent}
                 disabled={!output.activeContent || isRunning}
@@ -301,7 +369,7 @@ export default function InfomapOnline() {
               h="100%"
               minH={0}
               variant="outline"
-              bg="white"
+              bg="gray.50"
               fontSize="sm"
             />
           </Field.Root>
@@ -309,32 +377,44 @@ export default function InfomapOnline() {
       </GridItem>
       <GridItem
         area="output"
-        className="output"
         minH={0}
         minW={0}
         maxH="100%"
         display="flex"
         flexDirection="column"
         overflow="hidden"
-        pr={2}
+        bg="white"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        p={4}
       >
-        <Box flexShrink={0}>
-          <Button
-            colorPalette="blue"
-            disabled={hasArgsError || isRunning}
-            loading={isRunning}
-            onClick={run}
-            px={10}
-            borderLeftRadius={0}
-            size="sm"
-          >
-            Run Infomap
-          </Button>
+        <PanelHeader
+          title="Parameters"
+          description="CLI arguments and common options"
+          action={
+            <Button
+              bg="#b22222"
+              color="white"
+              _hover={{ bg: "#971d1d" }}
+              _active={{ bg: "#7f1818" }}
+              _disabled={{ bg: "gray.300", color: "gray.500" }}
+              disabled={hasArgsError || isRunning}
+              loading={isRunning}
+              onClick={run}
+              size="sm"
+            >
+              <LuPlay />
+              Run Infomap
+            </Button>
+          }
+        />
 
-          <InputParameters loading={isRunning} />
+        <Box flexShrink={0} mb={4}>
+          <InputParameters loading={isRunning} onClick={run} />
         </Box>
 
-        <Box flex="1" minH={0} overflowY="auto" overflowX="hidden" pr={2}>
+        <Box flex="1" minH={0} overflowY="auto" overflowX="hidden" pr={1}>
           <Parameters />
         </Box>
       </GridItem>

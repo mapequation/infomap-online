@@ -1,3 +1,5 @@
+import { infomapVersionLabel } from "../shared/infomapVersion";
+
 export const tree = `# path flow name node_id
 1:1 0.214286 "1" 1
 1:2 0.142857 "2" 2
@@ -38,7 +40,7 @@ export const clu = `# module level: 1
 export const newick = `(((1:0.166667,2:0.166667,3:0.166667):0.5,(4:0.166667,5:0.166667,6:0.166667):0.5):1);`;
 
 export const json = `{
-  "version": "v2.0.0",
+  "version": "${infomapVersionLabel}",
   "args": "-o json example.net .",
   "startedAt": "${new Date().toLocaleString()}",
   "completedIn": 0.00249326,

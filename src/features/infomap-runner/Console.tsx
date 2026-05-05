@@ -1,9 +1,17 @@
-// @ts-nocheck
 import { Box, chakra } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { type ComponentProps, type ReactNode, useEffect, useRef } from "react";
 
-export default function Console({ placeholder, children, ...props }) {
-  const ref = useRef();
+type ConsoleProps = ComponentProps<typeof Box> & {
+  placeholder: string;
+  children?: ReactNode;
+};
+
+export default function Console({
+  placeholder,
+  children,
+  ...props
+}: ConsoleProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const currentRef = ref.current;

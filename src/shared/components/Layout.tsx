@@ -4,11 +4,14 @@ import {
   Container,
   Heading,
   HStack,
+  SimpleGrid,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import Link from "next/link";
+import NextLink from "next/link";
 import Script from "next/script";
+import { infomapVersionLabel } from "../infomapVersion";
 import ErrorBoundary from "./ErrorBoundary";
 import "katex/dist/katex.min.css";
 import { LuDownload, LuGithub, LuQuote } from "react-icons/lu";
@@ -53,67 +56,69 @@ export const Layout = ({ children, fillViewport = false }) => {
         }}
         flexShrink={0}
       >
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          justify="flex-start"
-          align="center"
-          gap={10}
-          p={5}
-        >
-          <Link href="/">
-            <HStack justify="flex-start" align="center" gap={2}>
-              <Box w="40px" h="40px" flexShrink="0">
-                <img
-                  alt="MapEquation"
-                  role="presentation"
-                  width="40px"
-                  height="40px"
-                  src="//mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
-                />
-              </Box>
+        <Container>
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            justify="flex-start"
+            align="center"
+            gap={10}
+            py={5}
+          >
+            <NextLink href="/">
+              <HStack justify="flex-start" align="center" gap={2}>
+                <Box w="40px" h="40px" flexShrink="0">
+                  <img
+                    alt="MapEquation"
+                    role="presentation"
+                    width="40px"
+                    height="40px"
+                    src="//mapequation.org/assets/img/twocolormapicon_whiteboarder.svg"
+                  />
+                </Box>
 
-              <Box>
-                <Heading
-                  fontSize="1.75rem"
-                  fontFamily="Philosopher, serif"
-                  fontWeight={700}
-                >
-                  <span style={{ color: "#555" }}>Infomap</span>{" "}
-                  <span style={{ color: "#b22222" }}>Online</span>
-                </Heading>
-              </Box>
-            </HStack>
-          </Link>
-          <Button asChild variant="ghost">
-            <Link href="/online">Try it</Link>
-          </Button>
-          <Button asChild variant="ghost">
-            <Link href="/install">Install</Link>
-          </Button>
-          <Button asChild variant="ghost">
-            <Link href="/formats">Formats</Link>
-          </Button>
-          <Button asChild variant="ghost" marginEnd="auto">
-            <Link href="/how-it-works">How it works</Link>
-          </Button>
-          <Button asChild variant="surface" size="sm">
-            <Link href="/references">
-              How to cite
-              <LuQuote />
-            </Link>
-          </Button>
-          <Button asChild variant="surface" size="sm">
-            <a href="//github.com/mapequation/infomap/releases/latest">
-              v2.10.0 <LuDownload />
-            </a>
-          </Button>
-          <Button asChild variant="surface" size="sm">
-            <a href="//github.com/mapequation/infomap">
-              GitHub
-              <LuGithub />
-            </a>
-          </Button>
-        </Stack>
+                <Box>
+                  <Heading
+                    fontSize="1.75rem"
+                    fontFamily="Philosopher, serif"
+                    fontWeight={700}
+                  >
+                    <span style={{ color: "#555" }}>Infomap</span>{" "}
+                    <span style={{ color: "#b22222" }}>Online</span>
+                  </Heading>
+                </Box>
+              </HStack>
+            </NextLink>
+            <Button asChild variant="ghost">
+              <NextLink href="/online">Try it</NextLink>
+            </Button>
+            <Button asChild variant="ghost">
+              <NextLink href="/install">Install</NextLink>
+            </Button>
+            <Button asChild variant="ghost">
+              <NextLink href="/formats">Formats</NextLink>
+            </Button>
+            <Button asChild variant="ghost" marginEnd="auto">
+              <NextLink href="/how-it-works">How it works</NextLink>
+            </Button>
+            <Button asChild variant="surface" size="sm">
+              <NextLink href="/references">
+                How to cite
+                <LuQuote />
+              </NextLink>
+            </Button>
+            <Button asChild variant="surface" size="sm">
+              <a href="//github.com/mapequation/infomap/releases/latest">
+                {infomapVersionLabel} <LuDownload />
+              </a>
+            </Button>
+            <Button asChild variant="surface" size="sm">
+              <a href="//github.com/mapequation/infomap">
+                GitHub
+                <LuGithub />
+              </a>
+            </Button>
+          </Stack>
+        </Container>
       </Box>
 
       <Box
@@ -127,16 +132,86 @@ export const Layout = ({ children, fillViewport = false }) => {
         <ErrorBoundary>{children}</ErrorBoundary>
       </Box>
 
-      <Container
-        as="footer"
-        maxW="120ch"
-        flexShrink={0}
-        textAlign="center"
-        py={4}
-      >
-        &copy; {new Date().getFullYear()} mapequation.org &ndash;{" "}
-        <a href="//www.mapequation.org/about.html#Terms">Terms</a>
-      </Container>
+      {!fillViewport && (
+        <Container
+          as="footer"
+          flexShrink={0}
+          py={12}
+          my={12}
+          borderTopWidth="1px"
+          borderTopColor="blackAlpha.200"
+        >
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={8}>
+            <Stack gap={2}>
+              <Heading as="h2" size="sm">
+                Infomap Online
+              </Heading>
+              <Text color="gray.600" mb={0}>
+                &copy; {new Date().getFullYear()} mapequation.org
+              </Text>
+            </Stack>
+
+            <Stack gap={2}>
+              <Text
+                color="gray.500"
+                fontFamily="monospace"
+                fontSize="xs"
+                letterSpacing="0.16em"
+                textTransform="uppercase"
+                mb={1}
+              >
+                Use
+              </Text>
+              <NextLink href="/online">Workbench</NextLink>
+              <NextLink href="/install">Install</NextLink>
+              <NextLink href="/formats">Input / output formats</NextLink>
+              <NextLink href="/how-it-works">How it works</NextLink>
+            </Stack>
+
+            <Stack gap={2}>
+              <Text
+                color="gray.500"
+                fontFamily="monospace"
+                fontSize="xs"
+                letterSpacing="0.16em"
+                textTransform="uppercase"
+                mb={1}
+              >
+                Reference
+              </Text>
+              <NextLink href="/references">How to cite</NextLink>
+              <a href="//www.mapequation.org/publications.html">Publications</a>
+              <a href="//mapequation.github.io/infomap/python">
+                Python API docs
+              </a>
+              <a href="//mapequation.r-universe.dev/infomap">R-universe docs</a>
+            </Stack>
+
+            <Stack gap={2}>
+              <Text
+                color="gray.500"
+                fontFamily="monospace"
+                fontSize="xs"
+                letterSpacing="0.16em"
+                textTransform="uppercase"
+                mb={1}
+              >
+                Project
+              </Text>
+              <a href="//github.com/mapequation/infomap">GitHub</a>
+              <a href="//github.com/mapequation/infomap/releases/latest">
+                Latest release
+              </a>
+              <a href="//github.com/mapequation/infomap/blob/master/CHANGELOG.md">
+                Changelog
+              </a>
+              <a href="//github.com/mapequation/infomap/issues">
+                Report an issue
+              </a>
+            </Stack>
+          </SimpleGrid>
+        </Container>
+      )}
     </Box>
   );
 };

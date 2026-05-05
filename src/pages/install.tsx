@@ -1,281 +1,540 @@
-// @ts-nocheck
-import { Container, Heading, Icon, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Link as CkLink,
+  Container,
+  chakra,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Stack,
+  Table,
+  Text,
+} from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { FaApple, FaUbuntu, FaWindows } from "react-icons/fa";
-import Code from "../shared/components/Code";
+import NextLink from "next/link";
+import { useState } from "react";
+import {
+  LuArrowRight,
+  LuCheck,
+  LuCopy,
+  LuMonitor,
+  LuTerminal,
+} from "react-icons/lu";
 
-const InstallPage: NextPage = () => {
+const installMethods = [
+  {
+    id: "PythonPackage",
+    label: "Python",
+    title: "Python package",
+    recommended: true,
+    description:
+      "Use this if you want the Python API or the easiest way to install the infomap command-line tool.",
+    tags: ["Python 3.11+", "macOS", "Linux", "Windows"],
+    command: "pip install infomap",
+    commands: [
+      ["Upgrade an existing installation", "pip install --upgrade infomap"],
+      ["Verify the installation", "infomap -v"],
+    ],
+    links: [
+      ["PyPI", "//pypi.org/project/infomap/"],
+      ["Python API reference", "//mapequation.github.io/infomap/python"],
+    ],
+  },
+  {
+    id: "HomebrewCli",
+    label: "CLI",
+    title: "Native CLI with Homebrew",
+    description:
+      "Use Homebrew if you want the native command-line tool without installing the Python package.",
+    tags: ["macOS", "Linux", "CLI"],
+    command: "brew install mapequation/infomap/infomap",
+    commands: [
+      [
+        "Tap and install separately",
+        "brew tap mapequation/infomap\nbrew install infomap",
+      ],
+      ["Upgrade with the normal Homebrew flow", "brew upgrade infomap"],
+    ],
+  },
+  {
+    id: "DownloadBinary",
+    label: "Binaries",
+    title: "Standalone binaries",
+    description:
+      "Use a standalone binary when you want to download an executable directly. OpenMP builds may be faster on larger networks but require OpenMP runtime libraries.",
+    tags: ["macOS", "Linux", "Windows", "OpenMP"],
+    custom: "binaries",
+    links: [
+      ["Latest release", "//github.com/mapequation/infomap/releases/latest"],
+    ],
+  },
+  {
+    id: "RPackage",
+    label: "R",
+    title: "R package",
+    description: "Pre-built R binaries are published on r-universe.",
+    tags: ["R", "r-universe"],
+    command:
+      'install.packages("infomap", repos = c("https://mapequation.r-universe.dev", "https://cloud.r-project.org"))',
+    links: [["r-universe", "//mapequation.r-universe.dev/infomap"]],
+  },
+  {
+    id: "JavaScriptPackage",
+    label: "TypeScript",
+    title: "TypeScript package",
+    description:
+      "Use the WebAssembly worker package to embed Infomap in browser and TypeScript applications.",
+    tags: ["TypeScript", "NPM"],
+    command: "npm install @mapequation/infomap",
+    links: [["npm", "//www.npmjs.com/package/@mapequation/infomap"]],
+  },
+  {
+    id: "Docker",
+    label: "Docker",
+    title: "Docker",
+    description:
+      "Use the GitHub Container Registry image for reproducible CLI runs in CI or shared compute environments.",
+    tags: ["Docker", "amd64", "arm64"],
+    command:
+      'docker run -it --rm -v "$(pwd)":/data ghcr.io/mapequation/infomap:latest [infomap arguments]',
+  },
+  {
+    id: "CompilingFromSource",
+    label: "Source",
+    title: "Build from source",
+    description:
+      "Build locally when you want to modify Infomap or compile with custom flags. Requires a working gcc or clang toolchain.",
+    tags: ["gcc", "clang"],
+    command:
+      "git clone git@github.com:mapequation/infomap.git\ncd infomap\nmake build-native",
+    commands: [
+      ["Build without OpenMP", "make build-native OPENMP=0"],
+      ["Show available CLI options", "./Infomap --help"],
+    ],
+  },
+];
+
+type RailItem =
+  | { kind: "heading"; label: string; id?: never; href?: never }
+  | { kind?: never; id: string; label: string; href?: string };
+
+const railItems: RailItem[] = [
+  ...installMethods.map(({ id, label }) => ({ id, label })),
+  { id: "Running", label: "Run Infomap" },
+  { kind: "heading", label: "Read next" },
+  { id: "FormatsNext", label: "Formats", href: "/formats" },
+];
+
+function CodeBlock({ children }) {
+  const [copied, setCopied] = useState(false);
+  const text = Array.isArray(children) ? children.join("") : String(children);
+
   return (
-    <Container>
-      <Heading as="h1" size="lg" mt={8} mb={6} id="Install">
-        Install Infomap
-      </Heading>
-
-      <p>
-        For most users, the Python package is the best starting point: it
-        installs both the Python API and the <code>infomap</code> command-line
-        tool. If you only need a native CLI, use Homebrew or a standalone
-        binary.
-      </p>
-
-      <Heading as="h2" size="md" mt={8} mb={6} id="PythonPackage">
-        Recommended: Python package
-      </Heading>
-
-      <p>
-        Install from{" "}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href="//pypi.org/project/infomap/"
+    <Box position="relative">
+      <Box
+        bg="gray.100"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        p={4}
+        overflowX="auto"
+      >
+        <chakra.pre
+          m={0}
+          fontFamily="monospace"
+          fontSize="sm"
+          lineHeight={1.6}
+          whiteSpace="pre-wrap"
         >
-          PyPI
-        </Link>
-        :
-      </p>
+          {children}
+        </chakra.pre>
+      </Box>
+      <Button
+        type="button"
+        variant="surface"
+        size="xs"
+        position="absolute"
+        top={2}
+        right={2}
+        onClick={async () => {
+          await navigator?.clipboard?.writeText(text);
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 1400);
+        }}
+      >
+        {copied ? <LuCheck /> : <LuCopy />}
+        {copied ? "Copied" : "Copy"}
+      </Button>
+    </Box>
+  );
+}
 
-      <Code>pip install infomap</Code>
-
-      <p>Upgrade an existing installation:</p>
-
-      <Code>pip install --upgrade infomap</Code>
-
-      <p>
-        The package also installs the <code>infomap</code> CLI. Verify the
-        installation with:
-      </p>
-
-      <Code>infomap -v</Code>
-
-      <p>
-        See the{" "}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href="//mapequation.github.io/infomap/python"
+function MethodCard({ method }) {
+  return (
+    <Box
+      as="article"
+      id={method.id}
+      bg="white"
+      borderWidth="1px"
+      borderColor={method.recommended ? "gray.300" : "gray.200"}
+      borderRadius="md"
+      p={{ base: 5, md: 6 }}
+      scrollMarginTop="6rem"
+      position="relative"
+    >
+      {method.recommended && (
+        <Box
+          position="absolute"
+          top="-0.7rem"
+          left={5}
+          borderRadius="sm"
+          backgroundColor="white"
+          borderColor="gray.300"
+          borderWidth="1px"
+          px={2}
+          py={1}
+          fontFamily="monospace"
+          fontSize="xs"
+          letterSpacing="0.08em"
+          textTransform="uppercase"
         >
-          Python API reference
-        </Link>{" "}
-        for package usage.
-      </p>
+          Most users start here
+        </Box>
+      )}
 
-      <Heading as="h2" size="md" mt={8} mb={6} id="HomebrewCli">
-        Native CLI with Homebrew
-      </Heading>
+      <Flex
+        justify="space-between"
+        align={{ base: "flex-start", md: "baseline" }}
+        gap={3}
+        direction={{ base: "column", md: "row" }}
+        mb={2}
+      >
+        <Heading as="h2" size="md">
+          {method.title}
+        </Heading>
+        <Flex gap={2} flexWrap="wrap">
+          {method.tags.map((tag) => (
+            <Box
+              key={tag}
+              as="span"
+              bg="gray.100"
+              color="gray.600"
+              borderRadius="sm"
+              px={2}
+              py={1}
+              fontFamily="monospace"
+              fontSize="xs"
+            >
+              {tag}
+            </Box>
+          ))}
+        </Flex>
+      </Flex>
 
-      <p>
-        Use Homebrew if you want the native command-line tool without installing
-        the Python package.
-      </p>
+      <Text color="gray.600" fontSize="sm">
+        {method.description}
+      </Text>
 
-      <Code>
-        brew tap mapequation/infomap
-        <br />
-        brew install infomap
-      </Code>
+      {method.custom === "binaries" ? (
+        <BinaryTable />
+      ) : (
+        <CodeBlock>{method.command}</CodeBlock>
+      )}
 
-      <p>Or install directly in one command:</p>
+      {method.commands?.length > 0 && (
+        <Box mt={3}>
+          <Stack gap={4} mt={3}>
+            {method.commands.map(([title, command]) => (
+              <Box key={title}>
+                <Text color="gray.600" fontSize="sm" mb={2}>
+                  {title}
+                </Text>
+                <CodeBlock>{command}</CodeBlock>
+              </Box>
+            ))}
+          </Stack>
+        </Box>
+      )}
 
-      <Code>brew install mapequation/infomap/infomap</Code>
+      {method.links?.length > 0 && (
+        <Flex gap={4} flexWrap="wrap" mt={4} pt={4} borderTopWidth="1px">
+          {method.links.map(([label, href]) => (
+            <CkLink
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              fontSize="sm"
+              fontWeight={600}
+            >
+              {label} <LuArrowRight />
+            </CkLink>
+          ))}
+        </Flex>
+      )}
+    </Box>
+  );
+}
 
-      <p>Upgrade with the normal Homebrew flow:</p>
-
-      <Code>brew upgrade infomap</Code>
-
-      <Heading as="h2" size="md" mt={8} mb={6} id="DownloadBinary">
-        Standalone binaries
-      </Heading>
-
-      <p>
-        Standalone binaries are useful when you want to download an executable
-        directly. You can download binaries from the{" "}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href="//github.com/mapequation/infomap/releases/latest"
-        >
-          latest release
-        </Link>{" "}
-        or use the direct links below. OpenMP builds may be faster on larger
-        networks but require OpenMP runtime libraries: <code>libomp-dev</code>{" "}
-        on Ubuntu and <code>libomp</code> on macOS.
-      </p>
-
-      <table>
-        <thead>
-          <tr>
-            <th />
-            <th>OpenMP</th>
-            <th>Without OpenMP</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>
-              <Icon as={FaWindows} color="blue.600" mr={2} />
+function BinaryTable() {
+  return (
+    <Box overflowX="auto">
+      <Table.Root variant="outline">
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader />
+            <Table.ColumnHeader>OpenMP</Table.ColumnHeader>
+            <Table.ColumnHeader>Without OpenMP</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>
+              <Icon as={LuMonitor} color="gray.600" mr={2} />
               Windows
-            </th>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win.zip">
                 infomap-win.zip
               </a>
-            </td>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-win-noomp.zip">
                 infomap-win-noomp.zip
               </a>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <Icon as={FaUbuntu} color="orange.500" mr={2} />
-              Ubuntu
-            </th>
-            <td>
-              <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">
-                infomap-ubuntu.zip
-              </a>
-            </td>
-            <td>
-              <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">
-                infomap-ubuntu-noomp.zip
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <Icon as={FaApple} color="black" mr={2} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <Icon as={LuMonitor} color="gray.600" mr={2} />
               macOS
-            </th>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac.zip">
                 infomap-mac.zip
               </a>
-            </td>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
               <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-mac-noomp.zip">
                 infomap-mac-noomp.zip
               </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <Icon as={LuTerminal} color="gray.600" mr={2} />
+              Ubuntu
+            </Table.Cell>
+            <Table.Cell>
+              <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu.zip">
+                infomap-ubuntu.zip
+              </a>
+            </Table.Cell>
+            <Table.Cell>
+              <a href="//github.com/mapequation/infomap/releases/latest/download/infomap-ubuntu-noomp.zip">
+                infomap-ubuntu-noomp.zip
+              </a>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table.Root>
+    </Box>
+  );
+}
 
-      <Heading as="h2" size="md" mt={8} mb={6} id="LanguagePackages">
-        Language packages
-      </Heading>
+const InstallPage: NextPage = () => {
+  const [active, setActive] = useState("PythonPackage");
 
-      <Heading as="h3" size="sm" mt={6} mb={4} id="RPackage">
-        R
-      </Heading>
-
-      <p>
-        Pre-built R binaries are published on{" "}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href="//mapequation.r-universe.dev"
+  return (
+    <Container>
+      <Grid
+        templateColumns={{ base: "1fr", lg: "13rem 1fr" }}
+        gap={{ base: 8, lg: 12 }}
+        alignItems="start"
+        mt={8}
+      >
+        <Box
+          as="aside"
+          display={{ base: "none", lg: "block" }}
+          position="sticky"
+          top="5rem"
         >
-          r-universe
-        </Link>
-        :
-      </p>
+          <Text
+            color="gray.500"
+            fontFamily="monospace"
+            fontSize="xs"
+            letterSpacing="0.1em"
+            textTransform="uppercase"
+            mb={3}
+          >
+            On this page
+          </Text>
+          <Box borderLeftWidth="1px" borderLeftColor="gray.300">
+            {railItems.map((item, index) =>
+              item.kind === "heading" ? (
+                <Text
+                  key={`${item.label}-${index}`}
+                  color="gray.500"
+                  fontSize="xs"
+                  letterSpacing="0.08em"
+                  textTransform="uppercase"
+                  px={4}
+                  pt={4}
+                  pb={1}
+                  mb={0}
+                >
+                  {item.label}
+                </Text>
+              ) : item.href ? (
+                <CkLink
+                  key={item.id}
+                  asChild
+                  display="block"
+                  color={active === item.id ? "gray.900" : "gray.500"}
+                  fontWeight={active === item.id ? 700 : 400}
+                  borderLeftWidth="2px"
+                  borderLeftColor={
+                    active === item.id ? "red.600" : "transparent"
+                  }
+                  ml="-1px"
+                  px={4}
+                  py={1.5}
+                  fontSize="sm"
+                  textDecoration="none"
+                >
+                  <NextLink href={item.href}>{item.label}</NextLink>
+                </CkLink>
+              ) : (
+                <CkLink
+                  key={item.id}
+                  href={`#${item.id}`}
+                  display="block"
+                  color={active === item.id ? "gray.900" : "gray.500"}
+                  fontWeight={active === item.id ? 700 : 400}
+                  borderLeftWidth="2px"
+                  borderLeftColor={
+                    active === item.id ? "red.600" : "transparent"
+                  }
+                  ml="-1px"
+                  px={4}
+                  py={1.5}
+                  fontSize="sm"
+                  textDecoration="none"
+                  onClick={() => setActive(item.id)}
+                >
+                  {item.label}
+                </CkLink>
+              ),
+            )}
+          </Box>
+        </Box>
 
-      <Code>
-        install.packages(
-        <br />
-        &nbsp;&nbsp;"infomap",
-        <br />
-        &nbsp;&nbsp;repos = c("https://mapequation.r-universe.dev",
-        "https://cloud.r-project.org")
-        <br />)
-      </Code>
+        <Box as="main">
+          <Text color="gray.500" fontSize="sm" mb={2}>
+            Documentation
+          </Text>
+          <Heading as="h1" size="lg" mb={4} id="Install">
+            Install Infomap
+          </Heading>
 
-      <Heading as="h3" size="sm" mt={6} mb={4} id="JavaScriptPackage">
-        JavaScript
-      </Heading>
+          <Text
+            color="gray.700"
+            fontSize={{ base: "md", md: "lg" }}
+            maxW="42rem"
+          >
+            For most users, the Python package is the best starting point: it
+            installs both the Python API and the <code>infomap</code>{" "}
+            command-line tool. If you only need a native CLI, use Homebrew or a
+            standalone binary.
+          </Text>
 
-      <p>
-        The browser worker package used by Infomap Online is published on{" "}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href="//www.npmjs.com/package/@mapequation/infomap"
-        >
-          npm
-        </Link>
-        :
-      </p>
+          <Flex gap={2} flexWrap="wrap" mb={8}>
+            {["Python 3.11+", "CLI included", "macOS / Linux / Windows"].map(
+              (tag) => (
+                <Box
+                  key={tag}
+                  as="span"
+                  bg="gray.100"
+                  color="gray.600"
+                  borderRadius="sm"
+                  px={2}
+                  py={1}
+                  fontFamily="monospace"
+                  fontSize="xs"
+                >
+                  {tag}
+                </Box>
+              ),
+            )}
+          </Flex>
 
-      <Code>npm install @mapequation/infomap</Code>
+          <Stack gap={6}>
+            {installMethods.map((method) => (
+              <MethodCard key={method.id} method={method} />
+            ))}
+          </Stack>
 
-      <Heading as="h2" size="md" mt={8} mb={6} id="Docker">
-        Docker
-      </Heading>
+          <Box
+            as="section"
+            id="Running"
+            bg="white"
+            borderWidth="1px"
+            borderColor="gray.200"
+            borderRadius="md"
+            p={{ base: 5, md: 6 }}
+            mt={8}
+            mb={12}
+            scrollMarginTop="6rem"
+          >
+            <Heading as="h2" size="md" mb={3}>
+              Run Infomap
+            </Heading>
+            <Text color="gray.600">
+              After installation, the command-line form is:
+            </Text>
+            <CodeBlock>infomap [options] network_data destination</CodeBlock>
 
-      <p>
-        Multi-architecture images are published to GitHub Container Registry.
-        Run the CLI image against files in the current directory with:
-      </p>
+            <Text color="gray.600" mt={5}>
+              For example:
+            </Text>
+            <CodeBlock>
+              {
+                "infomap network.net out\ninfomap --two-level --directed network.net out"
+              }
+            </CodeBlock>
 
-      <Code>
-        docker run -it --rm \<br />
-        &nbsp;&nbsp;-v "$(pwd)":/data \<br />
-        &nbsp;&nbsp;ghcr.io/mapequation/infomap:latest \<br />
-        &nbsp;&nbsp;[infomap arguments]
-      </Code>
+            <Text color="gray.600" mt={5}>
+              List all available options with:
+            </Text>
+            <CodeBlock>infomap --help</CodeBlock>
+          </Box>
 
-      <Heading as="h2" size="md" mt={8} mb={6} id="CompilingFromSource">
-        Build from source
-      </Heading>
-
-      <p>
-        Building locally requires a working <code>gcc</code> or{" "}
-        <code>clang</code> toolchain. Clone the repository and build the native
-        CLI:
-      </p>
-
-      <Code>
-        git clone git@github.com:mapequation/infomap.git
-        <br />
-        cd infomap
-        <br />
-        make build-native
-      </Code>
-
-      <p>
-        On macOS, the default OpenMP-enabled build may require Homebrew{" "}
-        <code>libomp</code>. If OpenMP is unavailable, build without it:
-      </p>
-
-      <Code>make build-native OPENMP=0</Code>
-
-      <p>
-        This creates the <code>Infomap</code> binary in the repository root.
-        Show the available CLI options with:
-      </p>
-
-      <Code>./Infomap --help</Code>
-
-      <Heading as="h2" size="md" mt={8} mb={6} id="Running">
-        Run Infomap
-      </Heading>
-
-      <p>The command-line form is:</p>
-
-      <Code>infomap [options] network_data destination</Code>
-
-      <p>For example:</p>
-
-      <Code>
-        infomap network.net out
-        <br />
-        infomap --two-level --directed network.net out
-      </Code>
-
-      <p>List all available options with:</p>
-
-      <Code>infomap --help</Code>
+          <Box
+            as="section"
+            id="ReadNext"
+            bg="white"
+            borderWidth="1px"
+            borderColor="gray.200"
+            borderRadius="md"
+            p={{ base: 5, md: 6 }}
+            mb={12}
+            scrollMarginTop="6rem"
+          >
+            <Heading as="h2" size="md" mb={3}>
+              Read next
+            </Heading>
+            <Flex gap={4} flexWrap="wrap">
+              <CkLink asChild fontWeight={600}>
+                <NextLink href="/formats">
+                  Input and output formats <LuArrowRight />
+                </NextLink>
+              </CkLink>
+            </Flex>
+          </Box>
+        </Box>
+      </Grid>
     </Container>
   );
 };

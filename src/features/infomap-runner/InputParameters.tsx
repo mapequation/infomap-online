@@ -1,9 +1,17 @@
-// @ts-nocheck
 import { Field, Input, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import useStore from "../../store";
+import { type ComponentProps, useEffect, useState } from "react";
+import useStore from "../../state";
 
-export default function InputParameters({ loading, onClick, ...props }) {
+type InputParametersProps = ComponentProps<typeof Field.Root> & {
+  loading?: boolean;
+  onClick: () => void;
+};
+
+export default function InputParameters({
+  loading,
+  onClick,
+  ...props
+}: InputParametersProps) {
   const store = useStore();
   const { args, setArgs, argsError, hasArgsError } = store.params;
   const [args_, setArgs_] = useState(args);
@@ -27,7 +35,7 @@ export default function InputParameters({ loading, onClick, ...props }) {
           placeholder="Parameters"
           value={args_}
           borderColor={hasArgsError ? "red.600" : undefined}
-          focusBorderColor={hasArgsError ? "red.600" : undefined}
+          _focus={{ borderColor: hasArgsError ? "red.600" : undefined }}
           onChange={(event) => setArgs_(event.target.value)}
           borderLeftRadius="md"
           borderRightRadius={0}

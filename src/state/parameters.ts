@@ -4,7 +4,7 @@ import type { InfomapParameter } from "./types";
 
 const getOptions = (description: string) => {
   const match = description.match(/Options: (.*)\.$/);
-  if (!(match && match[1])) return [];
+  if (!match?.[1]) return [];
 
   return match[1].split(",").map((option) => option.trim());
 };
@@ -181,7 +181,7 @@ export function applyArgsToParams(params: InfomapParameter[], argv: string[]) {
           break;
       }
     } else if (param.incremental) {
-      const index = args.findIndex((a) => a === param.long);
+      const index = args.indexOf(param.long);
       if (index > -1) {
         param.active = true;
         param.value = 1;
