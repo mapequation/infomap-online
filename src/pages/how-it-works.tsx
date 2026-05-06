@@ -25,10 +25,15 @@ import {
 } from "react-icons/lu";
 import traceDemoManifest from "../../public/trace-demo/manifest.json";
 
-const railItems = [
-  { id: "WhenToUse", label: "When to use" },
-  { id: "FlowPipeline", label: "Flow mapping" },
-  { id: "RandomWalks", label: "Random walks" },
+type RailItem =
+  | { kind: "heading"; label: string; id?: never; href?: never }
+  | { id: string; label: string; href?: string; kind?: never };
+
+const railItems: RailItem[] = [
+  { id: "Fit", label: "Fit" },
+  { id: "FlowIntuition", label: "Flow intuition" },
+  { id: "NetworkMap", label: "Network map" },
+  { id: "ThreeChoices", label: "Three choices" },
   { id: "Compression", label: "Compression" },
   { id: "MapEquation", label: "Map equation" },
   { id: "SearchAlgorithm", label: "Search algorithm" },
@@ -40,19 +45,19 @@ const railItems = [
 const formulaTerms = [
   {
     term: "L(M)",
-    text: "The lower bound on the per-step description length of the random walk for partition M.",
+    text: "The expected per-step description length for a random walk under partition M.",
   },
   {
     term: "q_{\\curvearrowleft}H(\\mathcal{Q})",
-    text: "The average cost of using the index codebook to name modules when flow enters them.",
+    text: "The cost of using an index codebook when flow moves between modules.",
   },
   {
     term: "p_{\\circlearrowright}^{i}H(\\mathcal{P}^{i})",
-    text: "The average cost of using module i's codebook to name node visits and exits.",
+    text: "The cost of using module i's local codebook to describe node visits and exits.",
   },
   {
     term: "\\min_M L(M)",
-    text: "Infomap searches for the partition whose modular code compresses the flow best.",
+    text: "Infomap searches for the map whose modular code gives the shortest useful flow description.",
   },
 ];
 
@@ -101,49 +106,117 @@ function activeAlgorithmStepIndex(frame: TraceFrame) {
 
 const networkModels = [
   {
-    title: "Weighted and directed links",
-    text: "Weights and directions often carry essential flow information, so the map equation uses them instead of discarding them.",
+    title: "Directed and weighted links",
+    text: "Use direction and weight when they should constrain where derived flow can move and how strongly links should guide it.",
     href: "/formats#InputLinkList",
+    linkText: "Link-list formats",
   },
   {
     title: "Hierarchical modules",
-    text: "If flows are organized at several scales, multilevel Infomap can add nested codebooks instead of forcing one flat partition.",
+    text: "Use hierarchical output when modular structure exists at several scales and a flat partition would hide important nested groups.",
     href: "/formats#OutputTree",
+    linkText: "Tree outputs",
   },
   {
     title: "Memory and state networks",
-    text: "State nodes represent higher-order dependencies, where the next step depends on previous steps or context.",
+    text: "Use state nodes when the next step depends on previous steps, context, layer, or another hidden state.",
     href: "/formats#InputStates",
+    linkText: "State input",
   },
   {
     title: "Multilayer networks",
-    text: "Layer-aware input distinguishes time, mode, or context while still allowing flow through shared physical nodes.",
+    text: "Use multilayer input when interactions depend on time, mode, layer, or context but still connect through shared physical nodes.",
     href: "/formats#InputMultilayer",
+    linkText: "Multilayer input",
   },
   {
     title: "Bipartite networks",
-    text: "Bipartite-aware coding can exploit alternating visits between two node types instead of projecting the network first.",
+    text: "Use bipartite input when two node types alternate naturally and a one-mode projection would distort the structure.",
     href: "/formats#InputBipartite",
+    linkText: "Bipartite input",
   },
   {
-    title: "Observed or modeled flows",
-    text: "If flows are observed, use them directly; otherwise a random walk turns network structure into an implied flow to analyze.",
-    href: "/formats",
+    title: "Regularized map equation",
+    text: "Use regularization for noisy, sparse, or incomplete networks where missing links can otherwise create spurious small modules.",
+    href: "/online",
+    linkText: "Workbench parameters",
   },
 ];
 
 const pipelineSteps = [
   {
-    title: "Choose a network representation",
-    text: "Represent the system at the level your question needs: weighted or directed links, multilayer data, state nodes, or bipartite structure.",
+    title: "Represent the network",
+    text: "Choose the structure your data needs: undirected, directed, weighted, bipartite, multilayer, state, or memory network.",
   },
   {
-    title: "Model the flow",
-    text: "Use observed flow when available. Otherwise derive an implied random-walk flow from the network; teleportation is only there to make directed flow ergodic.",
+    title: "Choose how Infomap derives flow",
+    text: "In practice, this means settings such as --directed, --flow-model, teleportation behavior, multilayer relaxation, Markov time, or --regularized for noisy or incomplete networks.",
   },
   {
     title: "Map the flow",
-    text: "Minimize the map equation to find modules where the walker remains long enough to make a modular description shorter.",
+    text: "Infomap searches for communities and hierarchies that give the shortest useful description of the derived flow.",
+  },
+];
+
+const fitCards = [
+  {
+    title: "Explicit flow",
+    text: "Traffic, mobility, transactions, web navigation, messages, or other measured transitions through a system.",
+  },
+  {
+    title: "Derived flow",
+    text: "Citation networks, knowledge graphs, biological interactions, dependencies, and other networks where topology guides a random walk.",
+  },
+  {
+    title: "Similarity and correlation data",
+    text: "Gene co-expression, neuroscience, ecology, molecular similarity, or other high-dimensional data represented as similarity networks.",
+  },
+  {
+    title: "Topology and benchmarks",
+    text: "LFR-style planted communities and other modular networks where flow over topology can reveal the underlying organization.",
+  },
+];
+
+const flowIntuitionCards = [
+  {
+    title: "Flow follows representation",
+    text: "Direction, weight, bipartite structure, layers, state nodes, and parameters determine how Infomap interprets links as flow.",
+  },
+  {
+    title: "Flow gets retained",
+    text: "A module is a region where derived or observed flow tends to circulate before moving elsewhere.",
+  },
+  {
+    title: "Flow reveals structure",
+    text: "The flow does not need to be a literal object. It is a lens for finding modular organization in topology, similarity, or interaction data.",
+  },
+];
+
+const networkMapItems = [
+  {
+    label: "Before",
+    title: "A dense network of nodes and links",
+    text: "The raw graph can hide the organization researchers care about, especially when thousands or millions of links overlap.",
+  },
+  {
+    label: "After",
+    title: "A readable map of communities and relationships",
+    text: "The result highlights communities, bridges, nested modules, and flow between groups without pretending every detail is equally important.",
+  },
+];
+
+const compressionCards = [
+  {
+    title: "Global names are expensive",
+    text: "Naming every node from one global codebook is simple, but it misses repeated local structure when flow is regional.",
+  },
+  {
+    title: "Local names reuse context",
+    text: "Modules get local codebooks. Node names can be reused inside modules, and exit codes mark when flow changes context.",
+  },
+  {
+    title: "The best map is concise",
+    text: "Infomap balances simplicity and detail by searching for the partition with the shortest expected codelength.",
   },
 ];
 
@@ -308,7 +381,7 @@ function AlgorithmTraceDemo({
 }
 
 const HowItWorksPage: NextPage = () => {
-  const [active, setActive] = useState("WhenToUse");
+  const [active, setActive] = useState("Fit");
   const [traceFrame, setTraceFrame] = useState(0);
   const activeTraceStep = activeAlgorithmStepIndex(
     traceDemoManifest.frames[traceFrame],
@@ -405,69 +478,157 @@ const HowItWorksPage: NextPage = () => {
             Documentation
           </Text>
           <Heading as="h1" size="lg" mb={4} id="HowItWorks">
-            How Infomap works
+            How Infomap maps networks into communities
           </Heading>
 
-          <Text
-            color="gray.700"
-            fontSize={{ base: "md", md: "lg" }}
-            maxW="44rem"
-            mb={8}
-          >
-            Infomap is a flow-based community detection method. It asks how a
-            process moves through a network, then finds modules that make that
-            movement easier to describe.
-          </Text>
+          <Stack gap={4} maxW="46rem" mb={8}>
+            <Text color="gray.700" fontSize={{ base: "md", md: "lg" }} mb={0}>
+              A network is often not enough. Nodes and links can represent a
+              complex system, but large networks quickly become too dense to
+              interpret directly.
+            </Text>
+            <Text color="gray.700" fontSize={{ base: "md", md: "lg" }} mb={0}>
+              Infomap turns networks into maps of communities, bridges,
+              hierarchies, and relationships between groups. It does this by
+              deriving flow from the network and finding where that flow is
+              retained.
+            </Text>
+          </Stack>
 
           <Stack gap={5}>
             <SectionCard
-              id="WhenToUse"
-              eyebrow="Scope"
-              title="Use Infomap when communities should explain flow"
+              id="Fit"
+              eyebrow="Fit"
+              title="When Infomap is a strong choice"
             >
+              <Text color="gray.600" fontSize="sm" maxW="42rem">
+                Infomap is strongest when communities should capture how a
+                process can move, persist, or be described on a network. That
+                includes explicit flows, but also derived flows over topology,
+                similarity, correlation, and interaction data.
+              </Text>
               <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
-                <Box
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  borderRadius="md"
-                  p={4}
-                  bg="gray.50"
-                >
-                  <Heading as="h3" size="sm" mb={2}>
-                    Good fit
-                  </Heading>
-                  <Text color="gray.600" fontSize="sm" mb={0}>
-                    Use Infomap when links represent movement, citations,
-                    traffic, communication, transitions, or interactions that
-                    can induce a process on the network. The modules then
-                    summarize where that process tends to remain.
-                  </Text>
-                </Box>
-                <Box
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  borderRadius="md"
-                  p={4}
-                >
-                  <Heading as="h3" size="sm" mb={2}>
-                    Match the question
-                  </Heading>
-                  <Text color="gray.600" fontSize="sm" mb={0}>
-                    The random walker does not have to be a literal moving
-                    object. It is a useful proxy for finding modular structure
-                    in general. If your question is only about planted groups or
-                    pairwise similarity, compare with statistical or generative
-                    clustering models too.
-                  </Text>
-                </Box>
+                {fitCards.map((card, index) => (
+                  <Box
+                    key={card.title}
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    p={4}
+                    bg={index === 1 ? "gray.50" : "white"}
+                  >
+                    <Heading as="h3" size="sm" mb={2}>
+                      {card.title}
+                    </Heading>
+                    <Text color="gray.600" fontSize="sm" mb={0}>
+                      {card.text}
+                    </Text>
+                  </Box>
+                ))}
               </SimpleGrid>
             </SectionCard>
 
             <SectionCard
-              id="FlowPipeline"
-              eyebrow="Workflow"
-              title="Map equation analysis has three choices"
+              id="FlowIntuition"
+              eyebrow="Intuition"
+              title="Communities are regions where flow gets retained"
             >
+              <Stack gap={3} maxW="44rem" mb={5}>
+                <Text color="gray.600" fontSize="sm" mb={0}>
+                  Imagine following one unit of activity through a network: a
+                  click, citation, message, transaction, visit, or modeled
+                  random walker. If it keeps circulating inside the same region
+                  before moving elsewhere, that region is likely to be a
+                  meaningful community.
+                </Text>
+                <Text color="gray.600" fontSize="sm" mb={0}>
+                  The flow does not need to be a literal moving object. A random
+                  walk can use topology, weights, direction, similarity, or
+                  interaction structure as a lens for revealing modular
+                  organization.
+                </Text>
+              </Stack>
+              <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
+                {flowIntuitionCards.map((card, index) => (
+                  <Box
+                    key={card.title}
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    p={4}
+                    bg={index === 1 ? "gray.50" : "white"}
+                  >
+                    <Text
+                      color="gray.500"
+                      fontFamily="monospace"
+                      fontSize="xs"
+                      mb={2}
+                    >
+                      0{index + 1}
+                    </Text>
+                    <Heading as="h3" size="sm" mb={2}>
+                      {card.title}
+                    </Heading>
+                    <Text color="gray.600" fontSize="sm" mb={0}>
+                      {card.text}
+                    </Text>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </SectionCard>
+
+            <SectionCard
+              id="NetworkMap"
+              eyebrow="Network map"
+              title="A network is not enough"
+            >
+              <Text color="gray.600" fontSize="sm" maxW="42rem">
+                Raw networks can hide the organization researchers care about. A
+                useful map simplifies the network without hiding important
+                structure: communities, bridge nodes, nested modules, and
+                relationships between groups.
+              </Text>
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                {networkMapItems.map((item, index) => (
+                  <Box
+                    key={item.label}
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    p={{ base: 4, md: 5 }}
+                    bg={index === 1 ? "gray.50" : "white"}
+                  >
+                    <Text
+                      color="gray.500"
+                      fontFamily="monospace"
+                      fontSize="xs"
+                      letterSpacing="0.08em"
+                      textTransform="uppercase"
+                      mb={2}
+                    >
+                      {item.label}
+                    </Text>
+                    <Heading as="h3" size="sm" mb={2}>
+                      {item.title}
+                    </Heading>
+                    <Text color="gray.600" fontSize="sm" mb={0}>
+                      {item.text}
+                    </Text>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </SectionCard>
+
+            <SectionCard
+              id="ThreeChoices"
+              eyebrow="Workflow"
+              title="Three choices shape an Infomap analysis"
+            >
+              <Text color="gray.600" fontSize="sm" maxW="44rem">
+                Most Infomap analyses do not start with observed flow. They
+                start with a network. Infomap derives a flow model from how that
+                network is represented and parameterized.
+              </Text>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
                 {pipelineSteps.map((step, index) => (
                   <Box
@@ -498,74 +659,26 @@ const HowItWorksPage: NextPage = () => {
             </SectionCard>
 
             <SectionCard
-              id="RandomWalks"
-              eyebrow="Intuition"
-              title="Communities are regions where flow lingers"
-            >
-              <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
-                {[
-                  [
-                    "Flow follows links",
-                    "When real flows are not observed, Infomap can use a random walk to translate link structure into an implied flow.",
-                  ],
-                  [
-                    "Flow lingers in regions",
-                    "A flow module is a group of nodes where observed or implied flow tends to stay for a relatively long time.",
-                  ],
-                  [
-                    "Flow also reflects structure",
-                    "The flow model is a lens on the network: structure shapes where flow can persist, and persistent flow highlights structure.",
-                  ],
-                ].map(([title, text], index) => (
-                  <Box
-                    key={title}
-                    borderWidth="1px"
-                    borderColor="gray.200"
-                    borderRadius="md"
-                    p={4}
-                    bg={index === 1 ? "gray.50" : "white"}
-                  >
-                    <Text
-                      color="gray.500"
-                      fontFamily="monospace"
-                      fontSize="xs"
-                      mb={2}
-                    >
-                      0{index + 1}
-                    </Text>
-                    <Heading as="h3" size="sm" mb={2}>
-                      {title}
-                    </Heading>
-                    <Text color="gray.600" fontSize="sm" mb={0}>
-                      {text}
-                    </Text>
-                  </Box>
-                ))}
-              </SimpleGrid>
-            </SectionCard>
-
-            <SectionCard
               id="Compression"
               eyebrow="Compression"
-              title="A good map compresses without hiding structure"
+              title="Good maps compress what matters"
             >
+              <Stack gap={3} maxW="44rem" mb={5}>
+                <Text color="gray.600" fontSize="sm" mb={0}>
+                  The map equation scores how efficiently a partition describes
+                  movement through the network. If flow stays within modules,
+                  local codebooks can reuse short names inside each module and
+                  only switch context when flow crosses module boundaries.
+                </Text>
+                <Text color="gray.600" fontSize="sm" mb={0}>
+                  Infomap searches for the community structure with the shortest
+                  expected codelength.
+                </Text>
+              </Stack>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
-                {[
-                  [
-                    "One global codebook",
-                    "Naming every node globally is simple, but it does not highlight important structures and can waste bits when flow is regional.",
-                  ],
-                  [
-                    "Local codebooks",
-                    "Modules get unique names, while node names are reused inside modules. Exit codes mark when flow leaves a module.",
-                  ],
-                  [
-                    "Best partition",
-                    "The best partition is the one that balances compression and map-like structure by minimizing expected codelength.",
-                  ],
-                ].map(([title, text], index) => (
+                {compressionCards.map((card, index) => (
                   <Box
-                    key={title}
+                    key={card.title}
                     borderWidth="1px"
                     borderColor="gray.200"
                     borderRadius="md"
@@ -581,10 +694,10 @@ const HowItWorksPage: NextPage = () => {
                       0{index + 1}
                     </Text>
                     <Heading as="h3" size="sm" mb={2}>
-                      {title}
+                      {card.title}
                     </Heading>
                     <Text color="gray.600" fontSize="sm" mb={0}>
-                      {text}
+                      {card.text}
                     </Text>
                   </Box>
                 ))}
@@ -596,6 +709,12 @@ const HowItWorksPage: NextPage = () => {
               eyebrow="Formula"
               title="The map equation scores a partition"
             >
+              <Text color="gray.600" fontSize="sm" maxW="44rem" mb={5}>
+                The map equation is an information-theoretic objective: the
+                expected codelength of describing a random walk with modular
+                codebooks. It connects community structure to how efficiently a
+                derived flow can be described.
+              </Text>
               <Grid
                 templateColumns={{ base: "minmax(0, 1fr)", md: "3fr 2fr" }}
                 gap={5}
@@ -626,8 +745,8 @@ const HowItWorksPage: NextPage = () => {
                   <Text color="gray.600" fontSize="sm" mb={0}>
                     The entropy terms come from source coding: common events can
                     have shorter codewords than rare events. A good partition
-                    makes codebook use predictable by matching the module
-                    boundaries to persistent flow.
+                    makes codebook use predictable by matching module boundaries
+                    to retained flow.
                   </Text>
                 </Stack>
                 <Stack gap={3}>
@@ -709,17 +828,17 @@ const HowItWorksPage: NextPage = () => {
               </Stack>
               <Text color="gray.600" fontSize="sm" mt={4} mb={0}>
                 Infomap optimizes the map equation. It favors partitions where
-                observed or implied flow stays within modules for long stretches
+                derived or observed flow stays within modules for long stretches
                 and crosses module boundaries infrequently. In practice, that
-                can reveal structure even when the data was not generated by an
-                explicit flow process.
+                can reveal structure in explicit flow data, topology, LFR-style
+                benchmark networks, and similarity or correlation networks.
               </Text>
             </SectionCard>
 
             <SectionCard
               id="NetworkModels"
               eyebrow="Models"
-              title="The same idea extends to richer network data"
+              title="Choose the right network model"
             >
               <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
                 {networkModels.map((model) => (
@@ -737,7 +856,7 @@ const HowItWorksPage: NextPage = () => {
                       {model.text}
                     </Text>
                     <CkLink href={model.href} fontSize="sm" fontWeight={600}>
-                      Related format <LuArrowRight />
+                      {model.linkText} <LuArrowRight />
                     </CkLink>
                   </Box>
                 ))}
