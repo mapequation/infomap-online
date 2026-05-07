@@ -183,8 +183,8 @@ const fitCards = [
     text: "Proximity, affinity, co-expression, molecular similarity, and other weighted networks where flow probes topology with care around noise and regularization.",
   },
   {
-    title: "Benchmark or model flow",
-    text: "Synthetic, generative, or benchmark networks where the goal is to study how modular organization appears under a specified network model.",
+    title: "Specified model flow",
+    text: "Use synthetic, generative, or benchmark networks when the research question is how modular organization appears under a known or controlled network model.",
   },
 ];
 
