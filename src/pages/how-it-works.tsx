@@ -32,11 +32,11 @@ type RailItem =
 const railItems: RailItem[] = [
   { id: "FlowLens", label: "Flow lens" },
   { id: "ChooseLens", label: "Choose lens" },
+  { id: "NetworkModels", label: "Network models" },
   { id: "RetainedFlow", label: "Retained flow" },
   { id: "Compression", label: "Compression" },
   { id: "MapEquation", label: "Map equation" },
   { id: "SearchAlgorithm", label: "Optimization" },
-  { id: "NetworkModels", label: "Network models" },
   { kind: "heading", label: "Read next" },
   { id: "HowToCiteNext", label: "How to cite", href: "/references" },
 ];
@@ -156,12 +156,8 @@ const researchToMapSteps = [
     text: "The representation induces the flow lens: how a random walker or higher-order process can move through the network.",
   },
   {
-    title: "Retained flow",
-    text: "Infomap looks for regions where that flow tends to remain before moving elsewhere.",
-  },
-  {
-    title: "Communities",
-    text: "The modules are the retained-flow structure visible through the chosen lens.",
+    title: "Retained-flow communities",
+    text: "Infomap looks for regions where that flow tends to remain before moving elsewhere; those regions are the modules of the map.",
   },
   {
     title: "Interpretation",
@@ -191,15 +187,15 @@ const fitCards = [
 const flowIntuitionCards = [
   {
     title: "Not just density",
-    text: "Infomap modules are not merely dense node sets. They are regions that make flow easier to describe under the chosen model.",
+    text: "A dense subgraph is not automatically a module. What matters is whether flow circulates inside the region long enough to make a boundary useful.",
   },
   {
     title: "Boundaries matter",
     text: "A module boundary is useful when flow can spend time inside a region before crossing to another region.",
   },
   {
-    title: "Interpret through the lens",
-    text: "The detected communities should be interpreted relative to the representation and flow model that produced them.",
+    title: "Lingering implies compressibility",
+    text: "When flow lingers inside a region, that region can be described more efficiently with a local codebook — the bridge to the map equation that follows.",
   },
 ];
 
@@ -482,15 +478,11 @@ const HowItWorksPage: NextPage = () => {
           <Stack gap={4} maxW="46rem" mb={8}>
             <Text color="gray.700" fontSize={{ base: "md", md: "lg" }} mb={0}>
               A network representation defines what can move, persist, or be
-              described. Infomap then asks where that flow is retained, where it
-              crosses boundaries, and which modular description best captures
-              the organization relevant to the research question.
-            </Text>
-            <Text color="gray.700" fontSize={{ base: "md", md: "lg" }} mb={0}>
-              Infomap reveals the modular organization implied by a chosen flow
-              model. A network does not define one universal community
-              structure; the resulting communities are meaningful with respect
-              to the flow lens used to model the network.
+              described. Infomap maps where that flow is retained, where it
+              crosses boundaries, and which modular description captures the
+              organization implied by the chosen lens. The resulting communities
+              are meaningful relative to that lens, not as a universal property
+              of the network.
             </Text>
           </Stack>
 
@@ -525,9 +517,9 @@ const HowItWorksPage: NextPage = () => {
                   Working definition
                 </Text>
                 <Text color="gray.700" fontSize="sm" fontWeight={600} mb={0}>
-                  In this page, a community means a region that gives a shorter
-                  description of observed or induced flow under the chosen
-                  network model.
+                  In this page, a community is a region where flow is retained
+                  under the chosen network model — a region the random walker
+                  tends to stay inside before moving on.
                 </Text>
               </Box>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
@@ -564,13 +556,11 @@ const HowItWorksPage: NextPage = () => {
               eyebrow="Modeling choice"
               title="Choosing the flow lens"
             >
-              <Text color="gray.600" fontSize="sm" maxW="42rem">
-                Flow is a modeling choice. In some systems, flow is observed:
-                traffic, mobility, transactions, messages, or navigation. In
-                others, flow is induced by the network representation:
-                citations, dependencies, biological interactions, similarity,
-                correlation, or topology. In both cases, Infomap uses flow as a
-                lens.
+              <Text color="gray.600" fontSize="sm" maxW="42rem" mb={4}>
+                Flow is a modeling choice. It can be measured directly in some
+                systems and induced by the network representation in others.
+                The four typical setups below differ in where flow comes from
+                and how strongly the data constrains the lens.
               </Text>
               <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
                 {fitCards.map((card, index) => (
@@ -594,29 +584,57 @@ const HowItWorksPage: NextPage = () => {
             </SectionCard>
 
             <SectionCard
+              id="NetworkModels"
+              eyebrow="Models"
+              title="Network models refine what the lens can see"
+            >
+              <Text color="gray.600" fontSize="sm" maxW="44rem" mb={5}>
+                The previous section asked what kind of process drives flow.
+                The network model decides how that process is encoded: direction,
+                weights, node types, layers, memory, scale, and regularization
+                each change what the random walker can do and which structure
+                becomes visible.
+              </Text>
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                {networkModels.map((model) => (
+                  <Box
+                    key={model.title}
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    p={4}
+                  >
+                    <Heading as="h3" size="sm" mb={2}>
+                      {model.title}
+                    </Heading>
+                    <Text color="gray.600" fontSize="sm">
+                      {model.text}
+                    </Text>
+                    <CkLink href={model.href} fontSize="sm" fontWeight={600}>
+                      {model.linkText} <LuArrowRight />
+                    </CkLink>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </SectionCard>
+
+            <SectionCard
               id="RetainedFlow"
               eyebrow="Communities"
               title="Communities are regions of retained flow"
             >
               <Stack gap={3} maxW="44rem" mb={5}>
                 <Text color="gray.600" fontSize="sm" mb={0}>
-                  Infomap defines communities as regions where observed or
-                  induced flow tends to remain before crossing module
-                  boundaries. This makes the interpretation different from
-                  density-based clustering: a module is not merely a dense group
-                  of nodes, but a region that gives a shorter description of
-                  flow under the chosen network model.
+                  Communities under this definition are not the same as dense
+                  node sets. A module is useful when flow circulates inside it
+                  long enough to make the boundary informative, regardless of
+                  how many edges connect the nodes.
                 </Text>
                 <Text color="gray.600" fontSize="sm" mb={0}>
-                  The flow does not need to be a literal moving object. A random
-                  walk can use topology, weights, direction, similarity, or
-                  interaction structure as a lens for revealing the organization
-                  implied by flow over the chosen representation.
-                </Text>
-                <Text color="gray.600" fontSize="sm" mb={0}>
-                  For similarity networks, flow probes the weighted topology; it
-                  does not imply that expression, similarity, or influence
-                  physically moves between nodes.
+                  For similarity, correlation, or affinity networks, flow probes
+                  the weighted topology — it does not imply that expression,
+                  similarity, or influence physically moves between nodes. The
+                  walker is a measurement device, not a claim about the system.
                 </Text>
               </Stack>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
@@ -654,17 +672,18 @@ const HowItWorksPage: NextPage = () => {
               title="Good maps compress what matters"
             >
               <Stack gap={3} maxW="44rem" mb={5}>
-                <Text color="gray.600" fontSize="sm" mb={0}>
-                  A useful map simplifies the network without hiding the
-                  organization that matters for the chosen lens. The map
-                  equation formalizes this idea by scoring how efficiently a
-                  partition describes movement through the network.
+                <Text color="gray.700" fontSize="sm" fontWeight={600} mb={0}>
+                  If flow lingers in a region, naming it locally is cheaper than
+                  naming it globally. Retained flow and short codelength are the
+                  same property seen from two angles.
                 </Text>
                 <Text color="gray.600" fontSize="sm" mb={0}>
-                  If flow stays within modules, local codebooks can reuse short
-                  names inside each module and only switch context when flow
-                  crosses module boundaries. Short codelength means that the map
-                  captures regularities in the modeled flow.
+                  The map equation makes this concrete by scoring how
+                  efficiently a partition describes movement. When flow stays
+                  within modules, local codebooks reuse short names inside each
+                  module and only switch context when flow crosses a boundary.
+                  Short codelength means the map captures regularities in the
+                  modeled flow.
                 </Text>
               </Stack>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
@@ -830,39 +849,6 @@ const HowItWorksPage: NextPage = () => {
                 interpreted relative to the representation, parameters, and
                 research question.
               </Text>
-            </SectionCard>
-
-            <SectionCard
-              id="NetworkModels"
-              eyebrow="Models"
-              title="Network models define and refine the lens"
-            >
-              <Text color="gray.600" fontSize="sm" maxW="44rem" mb={5}>
-                Infomap's network models are not just input formats. They are
-                ways to define what the flow lens can see: direction, weights,
-                node types, layers, memory, scale, and regularization.
-              </Text>
-              <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
-                {networkModels.map((model) => (
-                  <Box
-                    key={model.title}
-                    borderWidth="1px"
-                    borderColor="gray.200"
-                    borderRadius="md"
-                    p={4}
-                  >
-                    <Heading as="h3" size="sm" mb={2}>
-                      {model.title}
-                    </Heading>
-                    <Text color="gray.600" fontSize="sm">
-                      {model.text}
-                    </Text>
-                    <CkLink href={model.href} fontSize="sm" fontWeight={600}>
-                      {model.linkText} <LuArrowRight />
-                    </CkLink>
-                  </Box>
-                ))}
-              </SimpleGrid>
             </SectionCard>
 
             <Box
